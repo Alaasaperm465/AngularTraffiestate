@@ -1,0 +1,76 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Login</h2>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="userName">Username</label>
+        <input
+          type="text"
+          id="userName"
+          formControlName="userName"
+          placeholder="Enter your username"
+          class="form-input"
+          [class.error]="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+        />
+        <span
+          *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+          class="error-text"
+        >
+          {{ getErrorMessage('userName') }}
+        </span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            class="form-input"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <span
+          *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          class="error-text"
+        >
+          {{ getErrorMessage('password') }}
+        </span>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="isLoading || loginForm.invalid"
+      >
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <!-- Register Link -->
+    <div class="register-link">
+      <p>Don't have an account? <a routerLink="/register" routerLinkActive="Active">Register here</a></p>
+    </div>
+  </div>
+</div>
+
