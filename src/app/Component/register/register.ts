@@ -1,11 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { AuthService } from '../../Services/auth-service';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register {
+export class Register implements OnInit {
+  private router = inject(Router);
+  userFormGroup: FormGroup;
 
+  roles: string[] = [];
+
+  constructor(private auth: AuthService) {
+    this.userFormGroup = new FormGroup({
+      userName: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required),
+      confirmPassword: new FormControl('', Validators.required),
+      roleName: new FormControl('', Validators.required),
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadRoles();
+  }
+  register() {
+    this.auth.register(this.userFormGroup.value).subscribe((date) => {
+      this.router.navigate(['/login']);
+    });
+  }
+  loadRoles() {
+    this.auth.getRoles().subscribe({
+      next: (roles) => {
+        this.roles = roles;
+        console.log(roles);
+      },
+      error: (err) => console.error(err),
+    });
+  }
 }
