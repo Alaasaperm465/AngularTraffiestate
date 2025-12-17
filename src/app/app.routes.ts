@@ -4,9 +4,11 @@ import { Login } from './Component/login/login';
 import { Register } from './Component/register/register';
 
 export const routes: Routes = [
+    { path: '', redirectTo: '/home', pathMatch: 'full' },ء
     { path: 'home' , component:Home, title:'home Page'},
     { path: 'login' , component:Login, title:'Login Page'},
     { path: 'Register', component: Register, title: 'Register' },
+
 
 //************************************************************************************************************************** */ 
     // { path: '', redirectTo: '/client', pathMatch: 'full' },
