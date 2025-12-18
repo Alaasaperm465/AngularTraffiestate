@@ -80,7 +80,29 @@
           {{ getFieldError('confirmPassword') }}
         </div>
       </div>
-
+      <div class="form-group">
+        <label for="roleName">Role</label>
+        <select 
+          id="roleName" 
+          formControlName="roleName" 
+          class="form-control"
+          [class.is-invalid]="isFieldInvalid('roleName')"
+          required
+        >
+          <option value="" disabled selected>Select your role</option>
+          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+        <div class="invalid-feedback" *ngIf="isFieldInvalid('roleName')">
+          {{ getFieldError('roleName') }}
+        </div>
+      </div>
+      <button 
+        type="submit" 
+        class="btn btn-primary btn-block"
+        [disabled]="submitted && userFormGroup.invalid"
+      >
+        Register
+      </button>
     </form>
 
     <!-- Login Link -->
