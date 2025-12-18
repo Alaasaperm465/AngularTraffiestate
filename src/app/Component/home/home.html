@@ -17,8 +17,8 @@
           </div>
 
           <nav class="main-nav">
-            <a href="#" class="nav-link" [class.active]="activeTab === 'buy'">Buy</a>
-            <a href="#" class="nav-link" [class.active]="activeTab === 'rent'">Rent</a>
+            <a [routerLink]="['/buy']" class="nav-link" [class.active]="activeTab === 'buy'">Buy</a>
+            <a  [routerLink]="['/rent']" class="nav-link" [class.active]="activeTab === 'rent'">Rent</a>
             <a href="#" class="nav-link" [class.active]="activeTab === 'new-projects'">New projects</a>
             <a href="#" class="nav-link" [class.active]="activeTab === 'commercial'">Commercial</a>
             <a href="#" class="nav-link">Find agent</a>

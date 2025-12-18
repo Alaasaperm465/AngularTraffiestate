@@ -61,7 +61,7 @@ export class AuthService {
               id: userInfo.nameid || userInfo.sub,
               userName: userInfo.unique_name || userInfo.name,
               email: userInfo.email,
-              role: userInfo.role,
+              roleName: userInfo.role,
               phoneNumber: '',
               password: '',
               confirmPassword: ''
@@ -113,7 +113,7 @@ refreshToken(): Observable<IloginResponse> {
               id: userInfo.nameid || userInfo.sub,
               userName: userInfo.unique_name || userInfo.name,
               email: userInfo.email,
-              role: userInfo.role,
+              roleName: userInfo.role,
               phoneNumber: '',
               password: '',
               confirmPassword: ''
@@ -206,7 +206,7 @@ isAuthenticated(): boolean {
 
     // ?. = Optional Chaining
     // إذا كان user = null، لن يحاول الوصول لـ role (يمنع الـ Error)
-    return user?.role || null;
+    return user?.roleName || null;
   }
 
   private clearAuthData(): void {
