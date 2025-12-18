@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { IProperty ,phone,Call,email} from '../../models/iproperty';
 import { HttpClient } from '@angular/common/http';
 import { PropertyService } from '../../Services/PropertyService/property';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
@@ -11,9 +12,9 @@ import { PropertyService } from '../../Services/PropertyService/property';
   standalone: true,
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,RouterLink],
 
-  
+
 })
 export class Home implements OnInit {
   searchForm: FormGroup;
@@ -25,7 +26,7 @@ export class Home implements OnInit {
   phone=phone;
 
   email=email;
-  
+
   constructor(private fb: FormBuilder, private http: HttpClient) {
    this.searchForm = this.fb.group({
   title: [''],
@@ -33,11 +34,11 @@ export class Home implements OnInit {
   maxPrice: [''],
   city: [''],
   area: ['']
-  
+
 });
 
 
-    
+
   }
 
   ngOnInit(): void {
