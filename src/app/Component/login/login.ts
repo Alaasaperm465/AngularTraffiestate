@@ -51,7 +51,7 @@ private authService = inject( AuthService);
         this.isLoading = false;
         console.log('Login successful', response);
         // Navigate to home or dashboard
-        this.router.navigate(['/properties']);
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         this.isLoading = false;
