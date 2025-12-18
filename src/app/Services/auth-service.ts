@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IUser, roleRespone } from '../models/iuser';
 import { BehaviorSubject, map, Observable, retry, tap } from 'rxjs';
 import { IloginRequest } from '../models/ilogin-request';
 import { IloginResponse } from '../models/ilogin-response';
 import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,7 +47,8 @@ export class AuthService {
 }
 
   Login(loin:IloginRequest) :Observable<IloginResponse>{
-    return this.http.post<IloginResponse>(`${environment.apiUrl}/Account/Login`,loin,{withCredentials:true})
+    return this.http.post<IloginResponse>(`${environment.apiUrl}/Account/Login`
+      ,loin,{withCredentials:true})
       .pipe(tap((response:IloginResponse)=>{
         console.log('Login Successful',response);
         if(response.accessToken){
