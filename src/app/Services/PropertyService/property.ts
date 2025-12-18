@@ -7,7 +7,7 @@ import { IProperty } from '../../models/iproperty';
   providedIn: 'root',
 })
 export class PropertyService {
-  private apiUrl = 'https://localhost:7190/api/properties'; // غيرها حسب API الخاص بك
+  private apiUrl = 'https://localhost:7030/api/Client/properties'; // غيرها حسب API الخاص بك
 
   constructor(private http: HttpClient) {}
 
