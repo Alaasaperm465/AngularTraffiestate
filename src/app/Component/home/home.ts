@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 interface PropertyType {
   id: string;
@@ -49,12 +50,12 @@ interface PopularArea {
   standalone: true,
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule,RouterLink]
 })
 export class Home implements OnInit {
   searchForm: FormGroup;
   activeTab: string = 'buy';
-  
+
   tabs = [
     { id: 'buy', label: 'Buy' },
     { id: 'rent', label: 'Rent' },
@@ -249,7 +250,7 @@ export class Home implements OnInit {
   }
 
   selectBedsAndBaths(option: BedsAndBaths): void {
-    this.searchForm.patchValue({ 
+    this.searchForm.patchValue({
       beds: option.beds,
       baths: option.baths
     });
@@ -266,11 +267,11 @@ export class Home implements OnInit {
   getSelectedBedsAndBathsLabel(): string {
     const beds = this.searchForm.get('beds')?.value;
     const baths = this.searchForm.get('baths')?.value;
-    
+
     if (beds === 0 && baths === 0) {
       return 'Beds & Baths';
     }
-    
+
     return `${beds} Beds, ${baths} Baths`;
   }
 
@@ -314,7 +315,7 @@ export class Home implements OnInit {
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    
+
     // إغلاق القوائم المنسدلة عند النقر خارجها
     if (!target.closest('.dropdown-wrapper')) {
       this.showPropertyTypeDropdown = false;

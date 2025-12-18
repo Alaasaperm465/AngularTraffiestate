@@ -8,8 +8,5 @@ export interface IUser {
     roleName: string;
 }
 
-export interface roleRespone {
-    roles: string[];
-}
 
 
