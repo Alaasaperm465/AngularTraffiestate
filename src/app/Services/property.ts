@@ -18,6 +18,10 @@ export class PropertyٍService {
   {
       return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForRent`);
   }
+   getPropertyForBuy(): Observable<IProperty[]>
+  {
+      return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForSale`);
+  }
 
   // getAll(pageNumber: number = 1, pageSize: number = 10)
   //   : Observable<PagedResponse<Iproperty>> {
