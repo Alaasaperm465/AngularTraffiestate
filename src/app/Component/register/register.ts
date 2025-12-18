@@ -23,11 +23,11 @@ export class Register implements OnInit {
   userFormGroup: FormGroup;
   submitted: boolean = false;
 
-  roles = signal(['Owner', 'Buyer']);
+  // roles = signal(['Owner', 'Buyer']);
   
-  form = new FormGroup({
-    roleName: new FormControl('')
-  });
+  // form = new FormGroup({
+  //   roleName: new FormControl('')
+  // });
   constructor(private auth: AuthService) {
     this.userFormGroup = new FormGroup(
       {
