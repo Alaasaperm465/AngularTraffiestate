@@ -1,3 +1,5 @@
+// import { Property } from './property';
+
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { IProperty } from '../models/iproperty';
@@ -8,10 +10,18 @@ import { AuthService } from './auth-service';
 @Injectable({
   providedIn: 'root',
 })
-export class Property {
+export class PropertyٍService {
   private baseUrl = 'https://localhost:7030/api/PropertyOwner';
 
   constructor(private http: HttpClient) {}
+  getPropertyForRent(): Observable<IProperty[]>
+  {
+      return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForRent`);
+  }
+   getPropertyForBuy(): Observable<IProperty[]>
+  {
+      return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForSale`);
+  }
 
   // getAll(pageNumber: number = 1, pageSize: number = 10)
   //   : Observable<PagedResponse<Iproperty>> {
