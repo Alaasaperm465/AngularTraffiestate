@@ -1,0 +1,213 @@
+<div class="container mt-4 mb-5">
+  <h2 class="mb-4">Add Property</h2>
+
+  <form #f="ngForm" (ngSubmit)="submit(f)" novalidate>
+
+    <!-- Title -->
+    <div class="mb-3">
+      <label class="form-label">Title *</label>
+      <input
+        type="text"
+        class="form-control"
+        name="title"
+        [(ngModel)]="property.title"
+        required
+        minlength="3"
+        #title="ngModel"
+      />
+      <small class="text-danger" *ngIf="title.invalid && title.touched">
+        Title is required (min 3 characters)
+      </small>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea
+        class="form-control"
+        rows="3"
+        name="description"
+        [(ngModel)]="property.description">
+      </textarea>
+    </div>
+
+    <!-- Price & Area Space -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Price *</label>
+        <input
+          type="number"
+          class="form-control"
+          name="price"
+          [(ngModel)]="property.price"
+          required
+          min="1"
+          #price="ngModel"
+        />
+        <small class="text-danger" *ngIf="price.invalid && price.touched">
+          Valid price is required
+        </small>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Area Space (m²)</label>
+        <input
+          type="number"
+          class="form-control"
+          name="areaSpace"
+          [(ngModel)]="property.areaSpace"
+          min="1"
+        />
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="mb-3">
+      <label class="form-label">Location</label>
+      <input
+        type="text"
+        class="form-control"
+        name="location"
+        [(ngModel)]="property.location"
+      />
+    </div>
+
+    <!-- City -->
+    <div class="mb-3">
+      <label class="form-label">City *</label>
+      <select
+        class="form-select"
+        name="cityId"
+        [(ngModel)]="property.cityId"
+        (change)="onCityChange()"
+        required
+        #city="ngModel">
+        <option value="0">Select City</option>
+        <option *ngFor="let c of cities" [value]="c.id">
+          {{ c.name }}
+        </option>
+      </select>
+      <small class="text-danger" *ngIf="city.invalid && city.touched">
+        City is required
+      </small>
+    </div>
+
+    <!-- Area -->
+    <div class="mb-3">
+      <label class="form-label">Area *</label>
+      <select
+        class="form-select"
+        name="areaId"
+        [(ngModel)]="property.areaId"
+        required
+        #area="ngModel">
+        <option value="0">Select Area</option>
+        <option *ngFor="let a of areas" [value]="a.id">
+          {{ a.name }}
+        </option>
+      </select>
+      <small class="text-danger" *ngIf="area.invalid && area.touched">
+        Area is required
+      </small>
+    </div>
+
+    <!-- Rooms & Bathrooms -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Rooms</label>
+        <input
+          type="number"
+          class="form-control"
+          name="rooms"
+          [(ngModel)]="property.rooms"
+          min="0"
+        />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Bathrooms</label>
+        <input
+          type="number"
+          class="form-control"
+          name="bathrooms"
+          [(ngModel)]="property.bathrooms"
+          min="0"
+        />
+      </div>
+    </div>
+
+    <!-- Finishing Level -->
+    <div class="mb-3">
+      <label class="form-label">Finishing Level</label>
+      <select
+        class="form-select"
+        name="finishingLevel"
+        [(ngModel)]="property.finishingLevel">
+        <option value="">Select</option>
+        <option value="Super Lux">Super Lux</option>
+        <option value="Lux">Lux</option>
+        <option value="Semi Finished">Semi Finished</option>
+        <option value="Not Finished">Not Finished</option>
+      </select>
+    </div>
+
+    <!-- Property Type -->
+    <div class="mb-3">
+      <label class="form-label">Property Type</label>
+      <select
+        class="form-select"
+        name="propertyType"
+        [(ngModel)]="property.propertyType">
+        <option value="">Select</option>
+        <option value="Apartment">Apartment</option>
+        <option value="Villa">Villa</option>
+        <option value="Land">Land</option>
+      </select>
+    </div>
+
+    <!-- Purpose -->
+    <div class="mb-3">
+      <label class="form-label">Purpose</label>
+      <select
+        class="form-select"
+        name="purpose"
+        [(ngModel)]="property.purpose">
+        <option value="">Select</option>
+        <option value="Sale">Sale</option>
+        <option value="Rent">Rent</option>
+      </select>
+    </div>
+
+    <!-- Main Image -->
+    <div class="mb-3">
+      <label class="form-label">Main Image *</label>
+      <input
+        type="file"
+        class="form-control"
+        (change)="onMainImageChange($event)"
+        accept="image/*"
+      />
+    </div>
+
+    <!-- Additional Images -->
+    <div class="mb-4">
+      <label class="form-label">Additional Images</label>
+      <input
+        type="file"
+        class="form-control"
+        multiple
+        accept="image/*"
+        (change)="onAdditionalImagesChange($event)"
+      />
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      class="btn btn-success px-4"
+      [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Saving...' : 'Add Property' }}
+    </button>
+
+  </form>
+</div>
