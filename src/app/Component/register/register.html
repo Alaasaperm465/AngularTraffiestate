@@ -57,13 +57,15 @@
           required
         />
       </div>
-      <div class="form-group">
-        <label for="roleName">Role</label>
-        <select id="roleName" formControlName="roleName" class="form-control" required>
-          <option value="" disabled selected>Select your role</option>
-          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
-        </select>
-      </div>
+  <div class="form-group">
+    <label for="roleName">Role</label>
+    <select id="roleName" class="form-control" formControlName="roleName">
+      <option value="" disabled>Select your role</option>
+      @for (role of roles(); track role) {
+        <option [value]="role">{{ role }}</option>
+      }
+    </select>
+  </div>
       <button type="submit" class="btn btn-primary btn-block">Register</button>
     </form>
   </div>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../Services/auth-service';
 import {
   FormGroup,
@@ -20,8 +20,11 @@ export class Register implements OnInit {
   private router = inject(Router);
   userFormGroup: FormGroup;
 
-  roles: string[] = [];
-
+  roles = signal(['Owner', 'Buyer']);
+  
+  form = new FormGroup({
+    roleName: new FormControl('')
+  });
   constructor(private auth: AuthService) {
     this.userFormGroup = new FormGroup({
       userName: new FormControl('', Validators.required),
@@ -41,13 +44,14 @@ export class Register implements OnInit {
       this.router.navigate(['/login']);
     });
   }
-  loadRoles() {
-    this.auth.getRoles().subscribe({
-      next: (roles) => {
-        this.roles = roles;
-        console.log(roles);
-      },
-      error: (err) => console.error(err),
-    });
-  }
+loadRoles() {
+  this.auth.getRoles().subscribe({
+    next: (roles: string[]) => { // <-- now 'roles' is typed correctly
+      this.roles.set(roles);
+      console.log('Roles loaded:', this.roles()); // ["Owner", "Buyer"]
+    },
+    error: (err) => console.error(err),
+  });
+}
+
 }
