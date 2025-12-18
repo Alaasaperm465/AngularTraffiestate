@@ -3,7 +3,7 @@
   <div class="hero-section">
     <div class="hero-overlay"></div>
     <div class="hero-background"></div>
-    
+
     <!-- Navigation Header -->
     <header class="header">
       <div class="container">
@@ -15,10 +15,10 @@
             </svg>
             <span class="logo-text">Traffi<strong>Estate</strong></span>
           </div>
-          
+
           <nav class="main-nav">
             <a href="#" class="nav-link" [class.active]="activeTab === 'buy'">Buy</a>
-            <a href="#" class="nav-link" [class.active]="activeTab === 'rent'">Rent</a>
+            <a  [routerLink]="['/rent']" class="nav-link" [class.active]="activeTab === 'rent'">Rent</a>
             <a href="#" class="nav-link" [class.active]="activeTab === 'new-projects'">New projects</a>
             <a href="#" class="nav-link" [class.active]="activeTab === 'commercial'">Commercial</a>
             <a href="#" class="nav-link">Find agent</a>
@@ -29,7 +29,7 @@
               </svg>
             </a>
           </nav>
-          
+
           <button class="login-btn">Log in</button>
         </div>
       </div>
@@ -39,12 +39,12 @@
     <div class="hero-content">
       <h1 class="hero-title">Your home search starts here</h1>
       <p class="hero-subtitle">Find properties to rent, buy or invest</p>
-      
+
       <!-- Search Section -->
       <div class="search-section">
         <!-- Tabs -->
         <div class="tabs">
-          <button 
+          <button
             *ngFor="let tab of tabs"
             class="tab"
             [class.active]="activeTab === tab.id"
@@ -52,7 +52,7 @@
             {{ tab.label }}
           </button>
         </div>
-        
+
         <!-- Search Form -->
         <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
           <div class="search-inputs">
@@ -62,17 +62,17 @@
                 <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2"/>
                 <path d="M12 12L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              <input 
+              <input
                 type="text"
                 formControlName="searchQuery"
                 class="search-input"
                 placeholder="City, community or building"
                 (input)="onSearchInputChange($event)">
             </div>
-            
+
             <!-- Property Type Dropdown -->
             <div class="dropdown-wrapper">
-              <button 
+              <button
                 type="button"
                 class="dropdown-trigger"
                 (click)="togglePropertyTypeDropdown()">
@@ -81,9 +81,9 @@
                   <path d="M8 10L4 6H12L8 10Z"/>
                 </svg>
               </button>
-              
+
               <div class="dropdown-menu" *ngIf="showPropertyTypeDropdown">
-                <button 
+                <button
                   *ngFor="let type of propertyTypes"
                   type="button"
                   class="dropdown-item"
@@ -93,10 +93,10 @@
                 </button>
               </div>
             </div>
-            
+
             <!-- Beds & Baths Dropdown -->
             <div class="dropdown-wrapper">
-              <button 
+              <button
                 type="button"
                 class="dropdown-trigger"
                 (click)="toggleBedsAndBathsDropdown()">
@@ -105,9 +105,9 @@
                   <path d="M8 10L4 6H12L8 10Z"/>
                 </svg>
               </button>
-              
+
               <div class="dropdown-menu" *ngIf="showBedsAndBathsDropdown">
-                <button 
+                <button
                   *ngFor="let option of bedsAndBathsOptions"
                   type="button"
                   class="dropdown-item"
@@ -117,14 +117,14 @@
                 </button>
               </div>
             </div>
-            
+
             <!-- Search Button -->
             <button type="submit" class="search-button" [disabled]="!searchForm.valid">
               Search
             </button>
           </div>
         </form>
-        
+
         <!-- Quick Suggestions -->
         <div class="quick-suggestions">
           <h3>Popular Searches:</h3>
@@ -148,7 +148,7 @@
         <h2>Featured Properties</h2>
         <a href="#" class="see-all">See all</a>
       </div>
-      
+
       <div class="properties-grid">
         <div class="property-card" *ngFor="let property of featuredProperties">
           <div class="property-image">
@@ -156,9 +156,9 @@
             <div class="property-type">{{ property.type }}</div>
             <button class="favorite-btn">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 17L3.5 10.5C2.5 9.5 2 8.3 2 7C2 4.2 4.2 2 7 2C8.3 2 9.5 2.5 10.5 3.5L10 4L9.5 3.5C10.5 2.5 11.7 2 13 2C15.8 2 18 4.2 18 7C18 8.3 17.5 9.5 16.5 10.5L10 17Z" 
-                      [attr.fill]="property.isFavorite ? '#E63946' : 'none'" 
-                      stroke="#E63946" 
+                <path d="M10 17L3.5 10.5C2.5 9.5 2 8.3 2 7C2 4.2 4.2 2 7 2C8.3 2 9.5 2.5 10.5 3.5L10 4L9.5 3.5C10.5 2.5 11.7 2 13 2C15.8 2 18 4.2 18 7C18 8.3 17.5 9.5 16.5 10.5L10 17Z"
+                      [attr.fill]="property.isFavorite ? '#E63946' : 'none'"
+                      stroke="#E63946"
                       stroke-width="1.5"/>
               </svg>
             </button>
@@ -202,7 +202,7 @@
         <h2>New Projects</h2>
         <a href="#" class="see-all">See all</a>
       </div>
-      
+
       <div class="projects-slider">
         <div class="project-card" *ngFor="let project of newProjects">
           <div class="project-image">

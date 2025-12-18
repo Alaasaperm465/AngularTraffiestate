@@ -2,15 +2,20 @@ import { Routes } from '@angular/router';
 import { Home } from './Component/home/home';
 import { Login } from './Component/login/login';
 import { Register } from './Component/register/register';
+import { OwnerDashboard } from './Component/owner-dashboard/owner-dashboard';
+import { Rent } from './Component/rent/rent';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/home', pathMatch: 'full' },ء
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home' , component:Home, title:'home Page'},
     { path: 'login' , component:Login, title:'Login Page'},
     { path: 'Register', component: Register, title: 'Register' },
+      { path: 'rent', component: Rent, title: 'Rent Properties' },
+
+    { path: 'ownerDashboard', component: OwnerDashboard, title: 'Owner Dashboard' },
 
 
-//************************************************************************************************************************** */ 
+//************************************************************************************************************************** */
     // { path: '', redirectTo: '/client', pathMatch: 'full' },
 
   // Client Routes

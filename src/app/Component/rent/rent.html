@@ -1,0 +1,20 @@
+<p>rent works!</p>
+@for(item of rentproperties; track item.id){
+  <div class="col-3">
+
+    <div class="card shadow-sm" appCardSytle style="width: 18rem;">
+      <!-- //property binding  -->
+      <img [src]="item.imageUrl"
+           class="card-img-top"
+           alt="">
+
+      <div class="card-body">
+        <!-- //interpolation -->
+        <h5 class="card-title">{{item.price}}</h5>
+        <p class="card-text">{{item.description}}</p>
+        <p class="card-text">{{item.area}}</p>
+      </div>
+    </div>
+
+  </div>
+}
