@@ -71,8 +71,8 @@
           </div>
 
           <div class="form-group">
-            <label for="purpos">Purpose</label>
-            <select id="purpos" class="form-control" formControlName="purpos">
+            <label for="purpose">Purpose</label>
+            <select id="purpose" class="form-control" formControlName="purpos">
               <option value="" disabled>Select purpose</option>
               @for (purpose of propertyPurposes; track purpose) {
                 <option [value]="purpose">{{ purpose }}</option>
@@ -117,9 +117,9 @@
           </div>
 
           <div class="form-group">
-            <label for="pathRoomCount">Bathrooms Count</label>
+            <label for="bathRoomCount">Bathrooms Count</label>
             <input 
-              id="pathRoomCount" 
+              id="bathRoomCount" 
               type="number" 
               class="form-control" 
               formControlName="pathRoomCount"
@@ -217,39 +217,42 @@
   </div>
 
   <!-- Properties Grid -->
- <div class="properties-grid">
-    @for (property of getFilteredProperties(); track property['id']) {
+  <div class="properties-grid">
+    @for (property of getFilteredProperties(); track property.id) {
       <div class="property-card">
         <div class="property-image">
-          @if (property['imageUrl']) {
-            <img [src]="property['imageUrl']" [alt]="property['title']" />
+          @if (property.imageUrl) {
+            <img [src]="property.imageUrl" [alt]="property.title" />
           } @else {
             <div class="no-image">No Image</div>
           }
-          <span class="property-type-badge" [class.sale]="property['type'] === 'sale'">
-            {{ property['type'] === 'sale' ? 'For Sale' : 'For Rent' }}
+          <span class="property-type-badge" [class.sale]="property.type === 'sale'">
+            {{ property.type === 'sale' ? 'For Sale' : 'For Rent' }}
           </span>
         </div>
         
         <div class="property-content">
-          <h3>{{ property['title'] }}</h3>
-          <p class="property-location">📍 {{ property['location'] }}@if (property['city']) {, {{ property['city'] }}}</p>
-          <p class="property-price">${{ property['price'].toLocaleString() }}</p>
+          <h3>{{ property.title || 'No Title' }}</h3>
+          <p class="property-location">
+            <!-- 📍 {{ property.location || 'No Location' }} -->
+            @if (property.city) {, {{ property.city }}}
+          </p>
+          <p class="property-price">${{ (property.price || 0).toLocaleString() }}</p>
           
           <div class="property-details">
-            <span class="detail-item">🛏️ {{ property['RoomsCount'] }} Rooms</span>
-            <span class="detail-item">🚿 {{ property['pathRoomCount'] }} Baths</span>
-            <span class="detail-item">✨ {{ property['FinishLevel'] }}</span>
+            <span class="detail-item">🛏️ {{ property.rooms || 0 }} Rooms</span>
+            <span class="detail-item">🚿 {{ property.bathrooms || 0 }} Baths</span>
+            <span class="detail-item">✨ {{ property.finishingLevel || 'Not Specified' }}</span>
           </div>
           
-          <p class="property-description">{{ property['description'] }}</p>
-          <p class="property-status">Status: <strong>{{ property['status'] }}</strong></p>
+          <p class="property-description">{{ property.description || 'No description available' }}</p>
+          <!-- <p class="property-status">Status: <strong>{{ property.status || 'Unknown' }}</strong></p> -->
           
           <div class="property-actions">
             <button class="btn btn-sm btn-edit" (click)="editProperty(property)">
               Edit
             </button>
-            <button class="btn btn-sm btn-delete" (click)="deleteProperty(property['id'])">
+            <button class="btn btn-sm btn-delete" (click)="deleteProperty(property.id)">
               Delete
             </button>
           </div>
@@ -262,4 +265,3 @@
     }
   </div>
 </div>
-    

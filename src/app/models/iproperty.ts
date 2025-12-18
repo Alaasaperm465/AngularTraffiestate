@@ -26,6 +26,7 @@ export interface IProperty {
   finishingLevel: string;
   propertyType: string;
   purpose: 'Rent' | 'Buy';
+  type: 'sale' | 'rent';
   city: string;
   area: string;
   imageUrl: string;
