@@ -1,12 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 // import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { IUser } from '../models/iuser';
+import { IUser, roleRespone } from '../models/iuser';
 import { BehaviorSubject, map, Observable, retry, tap } from 'rxjs';
 import { IloginRequest } from '../models/ilogin-request';
 import { IloginResponse } from '../models/ilogin-response';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -37,15 +36,15 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getRoles(): Observable<string[]> {
-    return this.http.get<{ roles: string[] }>(`${environment.apiUrl}/Account/Get-Roles`).pipe(
-      retry(3),
-      map((response) => {
-        console.log('API Response:', response); // للتأكد من شكل الـ response
-        return response.roles;
-      })
-    );
-  }
+ getRoles(): Observable<string[]> {
+  return this.http.get<roleRespone>(`${environment.apiUrl}/Account/Get-Roles`).pipe(
+    retry(3),
+    map((response: roleRespone) => {
+      console.log('API Response:', response); // should log { roles: ["Owner","Buyer"] }
+      return response.roles; // now TypeScript knows 'roles' exists
+    })
+  );
+}
 
   Login(loin:IloginRequest) :Observable<IloginResponse>{
     return this.http.post<IloginResponse>(`${environment.apiUrl}/Account/Login`
@@ -61,7 +60,7 @@ export class AuthService {
               id: userInfo.nameid || userInfo.sub,
               userName: userInfo.unique_name || userInfo.name,
               email: userInfo.email,
-              role: userInfo.role,
+              roleName: userInfo.role,
               phoneNumber: '',
               password: '',
               confirmPassword: ''
@@ -113,7 +112,7 @@ refreshToken(): Observable<IloginResponse> {
               id: userInfo.nameid || userInfo.sub,
               userName: userInfo.unique_name || userInfo.name,
               email: userInfo.email,
-              role: userInfo.role,
+              roleName: userInfo.role,
               phoneNumber: '',
               password: '',
               confirmPassword: ''
@@ -206,7 +205,7 @@ isAuthenticated(): boolean {
 
     // ?. = Optional Chaining
     // إذا كان user = null، لن يحاول الوصول لـ role (يمنع الـ Error)
-    return user?.role || null;
+    return user?.roleName || null;
   }
 
   private clearAuthData(): void {

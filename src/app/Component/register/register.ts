@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../Services/auth-service';
 import {
   FormGroup,
@@ -23,8 +23,11 @@ export class Register implements OnInit {
   userFormGroup: FormGroup;
   submitted: boolean = false;
 
-  roles: string[] = [];
-
+  roles = signal(['Owner', 'Buyer']);
+  
+  form = new FormGroup({
+    roleName: new FormControl('')
+  });
   constructor(private auth: AuthService) {
     this.userFormGroup = new FormGroup(
       {
@@ -86,38 +89,4 @@ export class Register implements OnInit {
     }
   }
 
-  getFieldError(fieldName: string): string {
-    const field = this.userFormGroup.get(fieldName);
-    if (!field || !field.errors || !this.submitted) return '';
-
-    if (field.hasError('required')) return `${fieldName} is required`;
-    if (field.hasError('minlength'))
-      return `${fieldName} must be at least ${field.getError('minlength')?.requiredLength} characters`;
-    if (field.hasError('maxlength'))
-      return `${fieldName} cannot exceed ${field.getError('maxlength')?.requiredLength} characters`;
-    if (field.hasError('email')) return 'Please enter a valid email';
-    if (field.hasError('pattern')) {
-      if (fieldName === 'phoneNumber')
-        return 'Please enter a valid Egyptian phone number (e.g., 01012345678)';
-      if (fieldName === 'password')
-        return 'Password must be at least 6 characters with uppercase letter and digit';
-    }
-    if (field.hasError('passwordMismatch')) return 'Passwords do not match';
-    return '';
-  }
-
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.userFormGroup.get(fieldName);
-    return !!(field && field.invalid && (field.dirty || field.touched || this.submitted));
-  }
-
-  loadRoles() {
-    this.auth.getRoles().subscribe({
-      next: (roles) => {
-        this.roles = roles;
-        console.log(roles);
-      },
-      error: (err) => console.error(err),
-    });
-  }
 }
