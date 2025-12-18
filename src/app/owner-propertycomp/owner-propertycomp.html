@@ -1,0 +1,265 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Property Owner Dashboard</h1>
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      {{ showAddForm() ? 'Cancel' : '+ Add New Property' }}
+    </button>
+  </header>
+
+  <!-- Add/Edit Property Form -->
+  @if (showAddForm() || editingProperty()) {
+    <div class="form-card">
+      <h2>{{ editingProperty() ? 'Edit Property' : 'Add New Property' }}</h2>
+      <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="title"
+              placeholder="Enter property title"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input 
+              id="location" 
+              type="text" 
+              class="form-control" 
+              formControlName="location"
+              placeholder="Enter location"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input 
+              id="city" 
+              type="text" 
+              class="form-control" 
+              formControlName="city"
+              placeholder="Enter city"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="area">Area</label>
+            <input 
+              id="area" 
+              type="text" 
+              class="form-control" 
+              formControlName="area"
+              placeholder="Enter area"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input 
+              id="price" 
+              type="number" 
+              class="form-control" 
+              formControlName="price"
+              placeholder="Enter price"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="purpos">Purpose</label>
+            <select id="purpos" class="form-control" formControlName="purpos">
+              <option value="" disabled>Select purpose</option>
+              @for (purpose of propertyPurposes; track purpose) {
+                <option [value]="purpose">{{ purpose }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="type">Property Type</label>
+            <select id="type" class="form-control" formControlName="type">
+              <option value="" disabled>Select type</option>
+              @for (type of propertyTypes; track type) {
+                <option [value]="type">{{ type === 'sale' ? 'For Sale' : 'For Rent' }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status</label>
+            <input 
+              id="status" 
+              type="text" 
+              class="form-control" 
+              formControlName="status"
+              placeholder="Enter status"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="RoomsCount">Rooms Count</label>
+            <input 
+              id="RoomsCount" 
+              type="number" 
+              class="form-control" 
+              formControlName="RoomsCount"
+              placeholder="Number of rooms"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="pathRoomCount">Bathrooms Count</label>
+            <input 
+              id="pathRoomCount" 
+              type="number" 
+              class="form-control" 
+              formControlName="pathRoomCount"
+              placeholder="Number of bathrooms"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="FinishLevel">Finish Level</label>
+            <input 
+              id="FinishLevel" 
+              type="text" 
+              class="form-control" 
+              formControlName="FinishLevel"
+              placeholder="e.g., Luxury, Standard, Basic"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="imageUrl">Image URL</label>
+            <input 
+              id="imageUrl" 
+              type="text" 
+              class="form-control" 
+              formControlName="imageUrl"
+              placeholder="Enter image URL"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea 
+            id="description" 
+            class="form-control" 
+            formControlName="description"
+            rows="3"
+            placeholder="Enter property description"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success" [disabled]="!propertyForm.valid">
+            {{ editingProperty() ? 'Update' : 'Create' }} Property
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancelForm()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total Properties</h3>
+      <p class="stat-value">{{ allProperties().length }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>For Sale</h3>
+      <p class="stat-value">{{ forSaleProperties().length }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>For Rent</h3>
+      <p class="stat-value">{{ forRentProperties().length }}</p>
+    </div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab() === 'all'"
+      (click)="setActiveTab('all')"
+    >
+      All Properties ({{ allProperties().length }})
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab() === 'sale'"
+      (click)="setActiveTab('sale')"
+    >
+      For Sale ({{ forSaleProperties().length }})
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab() === 'rent'"
+      (click)="setActiveTab('rent')"
+    >
+      For Rent ({{ forRentProperties().length }})
+    </button>
+  </div>
+
+  <!-- Properties Grid -->
+ <div class="properties-grid">
+    @for (property of getFilteredProperties(); track property['id']) {
+      <div class="property-card">
+        <div class="property-image">
+          @if (property['imageUrl']) {
+            <img [src]="property['imageUrl']" [alt]="property['title']" />
+          } @else {
+            <div class="no-image">No Image</div>
+          }
+          <span class="property-type-badge" [class.sale]="property['type'] === 'sale'">
+            {{ property['type'] === 'sale' ? 'For Sale' : 'For Rent' }}
+          </span>
+        </div>
+        
+        <div class="property-content">
+          <h3>{{ property['title'] }}</h3>
+          <p class="property-location">📍 {{ property['location'] }}@if (property['city']) {, {{ property['city'] }}}</p>
+          <p class="property-price">${{ property['price'].toLocaleString() }}</p>
+          
+          <div class="property-details">
+            <span class="detail-item">🛏️ {{ property['RoomsCount'] }} Rooms</span>
+            <span class="detail-item">🚿 {{ property['pathRoomCount'] }} Baths</span>
+            <span class="detail-item">✨ {{ property['FinishLevel'] }}</span>
+          </div>
+          
+          <p class="property-description">{{ property['description'] }}</p>
+          <p class="property-status">Status: <strong>{{ property['status'] }}</strong></p>
+          
+          <div class="property-actions">
+            <button class="btn btn-sm btn-edit" (click)="editProperty(property)">
+              Edit
+            </button>
+            <button class="btn btn-sm btn-delete" (click)="deleteProperty(property['id'])">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No properties found. Add your first property to get started!</p>
+      </div>
+    }
+  </div>
+</div>
+    

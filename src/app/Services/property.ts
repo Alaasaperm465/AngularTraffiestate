@@ -9,6 +9,7 @@ import { AuthService } from './auth-service';
   providedIn: 'root',
 })
 export class Property {
+  [x: string]: any;
   private baseUrl = 'https://localhost:7030/api/PropertyOwner';
 
   constructor(private http: HttpClient) {}
