@@ -14,9 +14,9 @@
         <div class="form-row">
           <div class="form-group">
             <label for="title">Title</label>
-            <input 
-              type="text" 
-              class="form-control" 
+            <input
+              type="text"
+              class="form-control"
               formControlName="title"
               placeholder="Enter property title"
             />
@@ -24,10 +24,10 @@
 
           <div class="form-group">
             <label for="location">Location</label>
-            <input 
-              id="location" 
-              type="text" 
-              class="form-control" 
+            <input
+              id="location"
+              type="text"
+              class="form-control"
               formControlName="location"
               placeholder="Enter location"
             />
@@ -37,10 +37,10 @@
         <div class="form-row">
           <div class="form-group">
             <label for="city">City</label>
-            <input 
-              id="city" 
-              type="text" 
-              class="form-control" 
+            <input
+              id="city"
+              type="text"
+              class="form-control"
               formControlName="city"
               placeholder="Enter city"
             />
@@ -48,10 +48,10 @@
 
           <div class="form-group">
             <label for="area">Area</label>
-            <input 
-              id="area" 
-              type="text" 
-              class="form-control" 
+            <input
+              id="area"
+              type="text"
+              class="form-control"
               formControlName="area"
               placeholder="Enter area"
             />
@@ -61,10 +61,10 @@
         <div class="form-row">
           <div class="form-group">
             <label for="price">Price</label>
-            <input 
-              id="price" 
-              type="number" 
-              class="form-control" 
+            <input
+              id="price"
+              type="number"
+              class="form-control"
               formControlName="price"
               placeholder="Enter price"
             />
@@ -94,10 +94,10 @@
 
           <div class="form-group">
             <label for="status">Status</label>
-            <input 
-              id="status" 
-              type="text" 
-              class="form-control" 
+            <input
+              id="status"
+              type="text"
+              class="form-control"
               formControlName="status"
               placeholder="Enter status"
             />
@@ -107,10 +107,10 @@
         <div class="form-row">
           <div class="form-group">
             <label for="RoomsCount">Rooms Count</label>
-            <input 
-              id="RoomsCount" 
-              type="number" 
-              class="form-control" 
+            <input
+              id="RoomsCount"
+              type="number"
+              class="form-control"
               formControlName="RoomsCount"
               placeholder="Number of rooms"
             />
@@ -118,10 +118,10 @@
 
           <div class="form-group">
             <label for="bathRoomCount">Bathrooms Count</label>
-            <input 
-              id="bathRoomCount" 
-              type="number" 
-              class="form-control" 
+            <input
+              id="bathRoomCount"
+              type="number"
+              class="form-control"
               formControlName="pathRoomCount"
               placeholder="Number of bathrooms"
             />
@@ -131,10 +131,10 @@
         <div class="form-row">
           <div class="form-group">
             <label for="FinishLevel">Finish Level</label>
-            <input 
-              id="FinishLevel" 
-              type="text" 
-              class="form-control" 
+            <input
+              id="FinishLevel"
+              type="text"
+              class="form-control"
               formControlName="FinishLevel"
               placeholder="e.g., Luxury, Standard, Basic"
             />
@@ -142,10 +142,10 @@
 
           <div class="form-group">
             <label for="imageUrl">Image URL</label>
-            <input 
-              id="imageUrl" 
-              type="text" 
-              class="form-control" 
+            <input
+              id="imageUrl"
+              type="text"
+              class="form-control"
               formControlName="imageUrl"
               placeholder="Enter image URL"
             />
@@ -154,9 +154,9 @@
 
         <div class="form-group">
           <label for="description">Description</label>
-          <textarea 
-            id="description" 
-            class="form-control" 
+          <textarea
+            id="description"
+            class="form-control"
             formControlName="description"
             rows="3"
             placeholder="Enter property description"
@@ -193,22 +193,22 @@
 
   <!-- Filter Tabs -->
   <div class="filter-tabs">
-    <button 
-      class="tab-btn" 
+    <button
+      class="tab-btn"
       [class.active]="activeTab() === 'all'"
       (click)="setActiveTab('all')"
     >
       All Properties ({{ allProperties().length }})
     </button>
-    <button 
-      class="tab-btn" 
+    <button
+      class="tab-btn"
       [class.active]="activeTab() === 'sale'"
       (click)="setActiveTab('sale')"
     >
       For Sale ({{ forSaleProperties().length }})
     </button>
-    <button 
-      class="tab-btn" 
+    <button
+      class="tab-btn"
       [class.active]="activeTab() === 'rent'"
       (click)="setActiveTab('rent')"
     >
@@ -226,11 +226,11 @@
           } @else {
             <div class="no-image">No Image</div>
           }
-          <span class="property-type-badge" [class.sale]="property.type === 'sale'">
-            {{ property.type === 'sale' ? 'For Sale' : 'For Rent' }}
+          <span class="property-type-badge" [class.sale]="property.propertyType === 'sale'">
+            {{ property.propertyType === 'sale' ? 'For Sale' : 'For Rent' }}
           </span>
         </div>
-        
+
         <div class="property-content">
           <h3>{{ property.title || 'No Title' }}</h3>
           <p class="property-location">
@@ -238,16 +238,16 @@
             @if (property.city) {, {{ property.city }}}
           </p>
           <p class="property-price">${{ (property.price || 0).toLocaleString() }}</p>
-          
+
           <div class="property-details">
             <span class="detail-item">🛏️ {{ property.rooms || 0 }} Rooms</span>
             <span class="detail-item">🚿 {{ property.bathrooms || 0 }} Baths</span>
             <span class="detail-item">✨ {{ property.finishingLevel || 'Not Specified' }}</span>
           </div>
-          
+
           <p class="property-description">{{ property.description || 'No description available' }}</p>
           <!-- <p class="property-status">Status: <strong>{{ property.status || 'Unknown' }}</strong></p> -->
-          
+
           <div class="property-actions">
             <button class="btn btn-sm btn-edit" (click)="editProperty(property)">
               Edit
