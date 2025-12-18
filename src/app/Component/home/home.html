@@ -10,8 +10,8 @@
         <div class="nav-wrapper">
           <div class="logo">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <circle cx="16" cy="16" r="14" fill="#E63946"/>
-              <path d="M12 10L20 16L12 22V10Z" fill="white"/>
+              <circle cx="16" cy="16" r="14" fill="#E63946" />
+              <path d="M12 10L20 16L12 22V10Z" fill="white" />
             </svg>
             <span class="logo-text">Traffi<strong>Estate</strong></span>
           </div>
@@ -25,7 +25,7 @@
             <a href="#" class="nav-link dropdown">
               Explore
               <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                <path d="M6 8L2 4H10L6 8Z"/>
+                <path d="M6 8L2 4H10L6 8Z" />
               </svg>
             </a>
           </nav>
@@ -41,13 +41,10 @@
       <p class="hero-subtitle">Find properties to rent, buy or invest</p>
 
       <!-- Search Section -->
-      <div class="search-section">
+       <div class="search-section">
         <!-- Tabs -->
         <div class="tabs">
-          <button
-            *ngFor="let tab of tabs"
-            class="tab"
-            [class.active]="activeTab === tab.id"
+          <button *ngFor="let tab of tabs" class="tab" [class.active]="activeTab === tab.id"
             (click)="setActiveTab(tab.id)">
             {{ tab.label }}
           </button>
@@ -59,34 +56,24 @@
             <!-- Search Input -->
             <div class="search-input-wrapper">
               <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 12L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" />
+                <path d="M12 12L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
-              <input
-                type="text"
-                formControlName="searchQuery"
-                class="search-input"
-                placeholder="City, community or building"
-                (input)="onSearchInputChange($event)">
+              <input type="text" formControlName="searchQuery" class="search-input"
+                placeholder="City, community or building" (input)="onSearchInputChange($event)">
             </div>
 
             <!-- Property Type Dropdown -->
             <div class="dropdown-wrapper">
-              <button
-                type="button"
-                class="dropdown-trigger"
-                (click)="togglePropertyTypeDropdown()">
+              <button type="button" class="dropdown-trigger" (click)="togglePropertyTypeDropdown()">
                 {{ getSelectedPropertyTypeLabel() }}
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 10L4 6H12L8 10Z"/>
+                  <path d="M8 10L4 6H12L8 10Z" />
                 </svg>
               </button>
 
               <div class="dropdown-menu" *ngIf="showPropertyTypeDropdown">
-                <button
-                  *ngFor="let type of propertyTypes"
-                  type="button"
-                  class="dropdown-item"
+                <button *ngFor="let type of propertyTypes" type="button" class="dropdown-item"
                   [class.active]="searchForm.get('propertyType')?.value === type.value"
                   (click)="selectPropertyType(type)">
                   {{ type.label }}
@@ -96,21 +83,15 @@
 
             <!-- Beds & Baths Dropdown -->
             <div class="dropdown-wrapper">
-              <button
-                type="button"
-                class="dropdown-trigger"
-                (click)="toggleBedsAndBathsDropdown()">
+              <button type="button" class="dropdown-trigger" (click)="toggleBedsAndBathsDropdown()">
                 {{ getSelectedBedsAndBathsLabel() }}
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 10L4 6H12L8 10Z"/>
+                  <path d="M8 10L4 6H12L8 10Z" />
                 </svg>
               </button>
 
               <div class="dropdown-menu" *ngIf="showBedsAndBathsDropdown">
-                <button
-                  *ngFor="let option of bedsAndBathsOptions"
-                  type="button"
-                  class="dropdown-item"
+                <button *ngFor="let option of bedsAndBathsOptions" type="button" class="dropdown-item"
                   [class.active]="searchForm.get('beds')?.value === option.beds && searchForm.get('baths')?.value === option.baths"
                   (click)="selectBedsAndBaths(option)">
                   {{ option.label }}
@@ -138,6 +119,7 @@
           </div>
         </div>
       </div>
+      
     </div>
   </div>
 
@@ -145,21 +127,21 @@
   <section class="featured-properties">
     <div class="container">
       <div class="section-header">
-        <h2>Featured Properties</h2>
+        <h2>Collection of Properties</h2>
+
         <a href="#" class="see-all">See all</a>
       </div>
 
       <div class="properties-grid">
-        <div class="property-card" *ngFor="let property of featuredProperties">
+        <div class="property-card" *ngFor="let property of properties">
           <div class="property-image">
-            <img [src]="property.image" [alt]="property.title">
-            <div class="property-type">{{ property.type }}</div>
+            <img [src]="property.imageUrl" [alt]="property.title">
+            <div class="property-type">{{ property.propertyType }}</div>
             <button class="favorite-btn">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 17L3.5 10.5C2.5 9.5 2 8.3 2 7C2 4.2 4.2 2 7 2C8.3 2 9.5 2.5 10.5 3.5L10 4L9.5 3.5C10.5 2.5 11.7 2 13 2C15.8 2 18 4.2 18 7C18 8.3 17.5 9.5 16.5 10.5L10 17Z"
-                      [attr.fill]="property.isFavorite ? '#E63946' : 'none'"
-                      stroke="#E63946"
-                      stroke-width="1.5"/>
+                <path
+                  d="M10 17L3.5 10.5C2.5 9.5 2 8.3 2 7C2 4.2 4.2 2 7 2C8.3 2 9.5 2.5 10.5 3.5L10 4L9.5 3.5C10.5 2.5 11.7 2 13 2C15.8 2 18 4.2 18 7C18 8.3 17.5 9.5 16.5 10.5L10 17Z"
+                  [attr.fill]="property.isFavorite ? '#E63946' : 'none'" stroke="#E63946" stroke-width="1.5" />
               </svg>
             </button>
           </div>
@@ -168,94 +150,55 @@
             <h3 class="property-title">{{ property.title }}</h3>
             <p class="property-location">{{ property.location }}</p>
             <div class="property-features">
-              <span class="feature">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M2 4H14V12H2V4Z"/>
-                  <path d="M4 2V4M12 2V4"/>
-                </svg>
-                {{ property.beds }} beds
-              </span>
-              <span class="feature">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <circle cx="8" cy="6" r="1"/>
-                  <path d="M4 12V10C4 8.9 4.9 8 6 8H10C11.1 8 12 8.9 12 10V12"/>
-                </svg>
-                {{ property.baths }} baths
-              </span>
-              <span class="feature">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <rect x="2" y="4" width="12" height="8"/>
-                </svg>
-                {{ property.area }} m²
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+              <div class="feature">
+                {{ property.bathrooms }} baths
+                {{ property.rooms }} beds
+              </div>
+              <br>
+             <div class="contact-icons">
+  <!-- WhatsApp -->
+  <a [href]="'https://wa.me/' + phone" target="_blank" class="action-btn whatsapp" title="Chat on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" viewBox="0 0 16 16">
+      <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592"/>
+    </svg>
+  </a>
 
-  <!-- New Projects Section -->
-  <section class="new-projects">
-    <div class="container">
-      <div class="section-header">
-        <h2>New Projects</h2>
-        <a href="#" class="see-all">See all</a>
-      </div>
+ <!-- Phone -->
+<a [href]="'tel:' + phone" class="action-btn phone" title="Call">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" viewBox="0 0 24 24">
+    <path d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.74 21 3 13.26 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.26.2 2.5.57 3.57a1 1 0 0 1-.24 1.01l-2.2 2.21z"/>
+  </svg>
+</a>
 
-      <div class="projects-slider">
-        <div class="project-card" *ngFor="let project of newProjects">
-          <div class="project-image">
-            <img [src]="project.image" [alt]="project.name">
-            <div class="project-badge">New</div>
-          </div>
-          <div class="project-details">
-            <h3 class="project-name">{{ project.name }}</h3>
-            <p class="project-location">{{ project.location }}</p>
-            <div class="project-price-range">
-              Starting from {{ project.startingPrice }}
-            </div>
-            <div class="project-developer">
-              <span>by {{ project.developer }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Popular Areas Section -->
-  <section class="popular-areas">
-    <div class="container">
-      <h2>Popular Areas in Egypt</h2>
-      <div class="areas-grid">
-        <div class="area-card" *ngFor="let area of popularAreas">
-          <div class="area-image">
-            <img [src]="area.image" [alt]="area.name">
-            <div class="area-overlay">
-              <h3>{{ area.name }}</h3>
-              <p>{{ area.count }} properties</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Call to Action -->
-  <section class="cta-section">
-    <div class="container">
-      <div class="cta-content">
-        <h2>Find Your Dream Property</h2>
-        <p>Join thousands of satisfied customers who found their perfect home with us</p>
-        <div class="cta-buttons">
-          <button class="cta-btn primary">Browse Properties</button>
-          <button class="cta-btn secondary">Contact Agent</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-
+  <!-- Email -->
+  <a [href]="'mailto:' + email" class="action-btn email" title="Email">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="orange" viewBox="0 0 16 16">
+      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217l-8 4.8-8-4.8V4zm0 1.383v6.617a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.383l-7.447 4.468a1 1 0 0 1-1.106 0L0 5.383z"/>
+    </svg>
+  </a>
 </div>
+
+              <span>
+                <a [href]="'https://wa.me/' + phone" target="_blank" class="action-btn whatsapp"
+                  title="Chat on WhatsApp">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
+                    class="bi bi-whatsapp" viewBox="0 0 16 16">
+                    <path
+                      d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+                  </svg>
+                </a>
+              </span>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+ 

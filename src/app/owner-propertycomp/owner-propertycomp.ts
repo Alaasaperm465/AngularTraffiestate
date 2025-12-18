@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-owner-propertycomp',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './owner-propertycomp.html',
   styleUrl: './owner-propertycomp.css',
