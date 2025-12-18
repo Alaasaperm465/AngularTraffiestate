@@ -5,6 +5,7 @@ import { Register } from './Component/register/register';
 import { OwnerDashboard } from './Component/owner-dashboard/owner-dashboard';
 import { Rent } from './Component/rent/rent';
 import { Buy } from './Component/buy/buy';
+import { AddProperty } from './Component/add-property/add-property';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'Register', component: Register, title: 'Register' },
       { path: 'rent', component: Rent, title: 'Rent Properties' },
       { path: 'buy', component: Buy, title: 'Buy Properties' },
+      { path: 'addproperty', component: AddProperty, title: 'Add Property' },
 
     { path: 'ownerDashboard', component: OwnerDashboard, title: 'Owner Dashboard' },
 
