@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { CommonModule } from '@angular/common';
-// import { Auth } from '../../services/auth';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IloginRequest } from '../../models/ilogin-request';
 import { AuthService } from '../../Services/auth-service';
 
@@ -15,8 +13,10 @@ import { AuthService } from '../../Services/auth-service';
   styleUrl: './login.css',
 })
 export class Login {
-private authService = inject( AuthService);
+
+  private authService = inject( AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute)
   private formBuilder = inject(FormBuilder);
 
   loginForm: FormGroup;
@@ -49,9 +49,10 @@ private authService = inject( AuthService);
     this.authService.Login(loginRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log('Login successful', response);
+        // console.log('Login successful', response);
         // Navigate to home or dashboard
-        this.router.navigate(['/home']);
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+        this.router.navigateByUrl(returnUrl);
       },
       error: (error) => {
         this.isLoading = false;

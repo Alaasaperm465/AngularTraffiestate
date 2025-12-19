@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { IProperty, phone, Call, email } from '../../models/iproperty';
 import { HttpClient } from '@angular/common/http';
 import { PropertyService } from '../../Services/PropertyService/property';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
