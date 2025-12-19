@@ -134,15 +134,7 @@ export class AuthService {
             const userInfo = this.decodeToken(response.accessToken);
 
             if (userInfo) {
-              const user: IUser = {
-                id: userInfo.nameid,
-                userName: userInfo.unique_name,
-                email: userInfo.email,
-                roleName: userInfo.role,
-                phoneNumber: '',
-                password: '',
-                confirmPassword: '',
-              };
+              const user = this.extractUserFromToken(userInfo);
               localStorage.setItem(this.USER_KEY, JSON.stringify(user));
               this.userSubject.next(user);
               this.isAuthenticatedSubject.next(true);
@@ -191,16 +183,7 @@ export class AuthService {
             // خطوة 3: فك تشفير الـ Token لتحديث بيانات المستخدم
             const userInfo = this.decodeToken(response.accessToken);
             if (userInfo) {
-              // خطوة 4: بناء كائن المستخدم المحدث
-              const user: IUser = {
-                id: userInfo.nameid,
-                userName: userInfo.unique_name,
-                email: userInfo.email,
-                roleName: userInfo.role,
-                phoneNumber: '',
-                password: '',
-                confirmPassword: '',
-              };
+              const user = this.extractUserFromToken(userInfo);
               // خطوة 5: تحديث البيانات في localStorage و BehaviorSubject
               localStorage.setItem(this.USER_KEY, JSON.stringify(user));
               this.userSubject.next(user);
@@ -323,5 +306,48 @@ export class AuthService {
       token,
       newPassword,
     });
+  }
+
+// helper
+  private extractUserFromToken(decoded: any): IUser {
+    return {
+      id: this.getClaimValue(decoded, 'nameidentifier') || '',
+      userName: this.getClaimValue(decoded, 'name') || '',
+      email: this.getClaimValue(decoded, 'emailaddress') || '',
+      roleName: this.getClaimValue(decoded, 'role') || '',
+      phoneNumber: '',
+      password: '',
+      confirmPassword: '',
+    };
+  }
+
+  private getClaimValue(decoded: any, claimType: string): string | null {
+    // محاولة 1: الاسم القصير (مثل: nameid, unique_name, email, role)
+    const shortNames: { [key: string]: string } = {
+      'nameidentifier': 'nameid',
+      'name': 'unique_name',
+      'emailaddress': 'email',
+      'role': 'role'
+    };
+
+    const shortName = shortNames[claimType] || claimType;
+    if (decoded[shortName]) {
+      return decoded[shortName];
+    }
+
+    // محاولة 2: الاسم الطويل (مثل: http://schemas.xmlsoap.org/...)
+    const longNames: { [key: string]: string } = {
+      'nameidentifier': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
+      'name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
+      'emailaddress': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+      'role': 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+    };
+
+    const longName = longNames[claimType];
+    if (longName && decoded[longName]) {
+      return decoded[longName];
+    }
+
+    return null;
   }
 }
