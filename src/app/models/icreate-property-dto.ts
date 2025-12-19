@@ -13,4 +13,6 @@ export interface ICreatePropertyDto {
     purpose: string;
     status: string;
     ownerId?: string;
+    //////////////////////
+
 }

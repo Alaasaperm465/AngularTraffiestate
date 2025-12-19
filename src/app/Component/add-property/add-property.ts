@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PropertyٍService } from '../../Services/property';
+import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
 import { ICreatePropertyDto } from '../../models/icreate-property-dto';
 
@@ -14,7 +14,6 @@ import { ICreatePropertyDto } from '../../models/icreate-property-dto';
   styleUrl: './add-property.css',
 })
 export class AddProperty implements OnInit {
-
   cities: any[] = [];
   areas: any[] = [];
 
@@ -39,7 +38,7 @@ export class AddProperty implements OnInit {
   isSubmitting = false;
 
   constructor(
-    private propertyService: PropertyٍService,
+    private propertyService: PropertyService,
     private locationService: LocationService,
     private router: Router
   ) {}
@@ -49,15 +48,22 @@ export class AddProperty implements OnInit {
   }
 
   loadCities() {
-    this.locationService.getCities().subscribe(res => {
-      this.cities = res;
+    this.locationService.getCities().subscribe({
+      next: res => this.cities = res,
+      error: err => console.error('Failed to load cities:', err),
     });
   }
 
   onCityChange() {
-    this.property.areaId = 0;
-    this.locationService.getAreasByCity(this.property.cityId).subscribe(res => {
-      this.areas = res;
+    if (!this.property.cityId || this.property.cityId === 0) {
+      this.areas = [];
+      this.property.areaId = 0;
+      return;
+    }
+
+    this.locationService.getAreasByCity(this.property.cityId).subscribe({
+      next: res => this.areas = res,
+      error: err => console.error('Failed to load areas:', err),
     });
   }
 
@@ -77,18 +83,16 @@ export class AddProperty implements OnInit {
     }
 
     this.isSubmitting = true;
-
-    this.propertyService
-      .create(this.property, this.mainImage, this.additionalImages)
-      .subscribe({
-        next: () => {
-          alert('Property added successfully ');
-          this.router.navigate(['/properties']); // 🔁 Redirect
-        },
-        error: () => {
-          alert('Something went wrong ');
-          this.isSubmitting = false;
-        },
-      });
+    this.propertyService.create(this.property, this.mainImage, this.additionalImages).subscribe({
+      next: () => {
+        alert('Property added successfully');
+        this.router.navigate(['/properties']);
+      },
+      error: err => {
+        console.error(err);
+        alert('Something went wrong');
+        this.isSubmitting = false;
+      },
+    });
   }
 }

@@ -15,9 +15,11 @@
         minlength="3"
         #title="ngModel"
       />
-      <small class="text-danger" *ngIf="title.invalid && title.touched">
-        Title is required (min 3 characters)
-      </small>
+      @if(title.invalid && title.touched){
+        <small class="text-danger">
+          Title is required (min 3 characters)
+        </small>
+      }
     </div>
 
     <!-- Description -->
@@ -44,9 +46,11 @@
           min="1"
           #price="ngModel"
         />
-        <small class="text-danger" *ngIf="price.invalid && price.touched">
-          Valid price is required
-        </small>
+        @if(price.invalid && price.touched){
+          <small class="text-danger">
+            Valid price is required
+          </small>
+        }
       </div>
 
       <div class="col-md-6 mb-3">
@@ -82,14 +86,20 @@
         (change)="onCityChange()"
         required
         #city="ngModel">
-        <option value="0">Select City</option>
-        <option *ngFor="let c of cities" [value]="c.id">
-          {{ c.name }}
-        </option>
+
+        <option [ngValue]="null">Select City</option>
+
+        @for (c of cities; track c.id) {
+          <option [ngValue]="c.id">
+            {{ c.name }}
+          </option>
+        }
       </select>
-      <small class="text-danger" *ngIf="city.invalid && city.touched">
-        City is required
-      </small>
+      @if(city.invalid && city.touched){
+        <small class="text-danger">
+          City is required
+        </small>
+      }
     </div>
 
     <!-- Area -->
@@ -101,14 +111,18 @@
         [(ngModel)]="property.areaId"
         required
         #area="ngModel">
-        <option value="0">Select Area</option>
-        <option *ngFor="let a of areas" [value]="a.id">
-          {{ a.name }}
-        </option>
+        <option [ngValue]="null">Select Area</option>
+        @for (a of areas; track a.id) {
+          <option [value]="a.id">
+            {{ a.name }}
+          </option>
+        }
       </select>
-      <small class="text-danger" *ngIf="area.invalid && area.touched">
-        Area is required
-      </small>
+      @if(area.invalid && area.touched){
+        <small class="text-danger" >
+          Area is required
+        </small>
+      }
     </div>
 
     <!-- Rooms & Bathrooms -->
