@@ -2,7 +2,16 @@ import { inject, Injectable } from '@angular/core';
 // import { environment } from '../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IUser } from '../models/iuser';
-import { BehaviorSubject, catchError, map, Observable, retry, tap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  retry,
+  shareReplay,
+  tap,
+  throwError,
+} from 'rxjs';
 import { IloginRequest } from '../models/ilogin-request';
 import { IloginResponse } from '../models/ilogin-response';
 import { Router } from '@angular/router';
@@ -17,6 +26,9 @@ export class AuthService {
   private readonly TOKEN_KEY = 'accessToken';
   private readonly USER_KEY = 'currentUser';
   private tokenCheckInterval: any;
+
+  private refreshTokenInProgress = false;
+  private refreshTokenSubject: Observable<IloginResponse> | null = null;
 
   private cachedTokenString: string | null = null;
   private cachedTokenClaims: ITokenClaims | null = null;
@@ -36,7 +48,7 @@ export class AuthService {
     this.user$ = this.userSubject.asObservable();
     this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-    this.initializeAuth();
+    setTimeout(() => this.initializeAuth(), 0);
   }
 
   //  وظيفة جديدة لتحميل البيانات من localStorage
@@ -44,11 +56,30 @@ export class AuthService {
     const token = this.getToken();
     const user = this.getUserFromStorage();
 
-    if (token && !this.isTokenExpired(token) && user) {
-      this.userSubject.next(user);
-      this.isAuthenticatedSubject.next(true);
-      console.log('User authenticated from storage:', user.userName);
-      this.startTokenExpiryCheck();
+    if (token && user) {
+      if (this.isTokenExpired(token)) {
+        console.log('Token expired on init, attempting refresh...');
+
+        this.refreshToken().subscribe({
+          next: () => {
+            console.log(' Token refreshed on init');
+            //  جلب الـ user المحدث بعد الـ refresh
+            const updatedUser = this.getUserFromStorage();
+            this.userSubject.next(updatedUser);
+            this.isAuthenticatedSubject.next(true);
+            this.startTokenExpiryCheck();
+          },
+          error: () => {
+            console.log(' Token refresh failed on init, clearing auth');
+            this.clearAuthData();
+          },
+        });
+      } else {
+        this.userSubject.next(user);
+        this.isAuthenticatedSubject.next(true);
+        console.log(' User authenticated from storage:', user.userName);
+        this.startTokenExpiryCheck();
+      }
     } else {
       this.clearAuthData();
     }
@@ -57,40 +88,50 @@ export class AuthService {
   // تحقق من انتهاء الصلاحية كل دقيقة
   private startTokenExpiryCheck(): void {
     this.stopTokenExpiryCheck();
-    console.log('🔄 Starting token expiry check...');
+    console.log('Starting token expiry check...');
+
     this.tokenCheckInterval = setInterval(() => {
-      const token = this.getToken();
+      if (this.refreshTokenInProgress) {
+        console.log('Refresh already in progress, skipping check');
+        return;
+      }
 
       if (!this.isAuthenticated()) {
-        console.log(' User not authenticated, stopping token check');
+        console.log('User not authenticated, stopping token check');
         this.stopTokenExpiryCheck();
         return;
       }
-      if (token && !this.isTokenExpired(token)) {
-        const decoded = this.decodeToken(token);
 
-        if (decoded && decoded.exp) {
-          const expiresIn = decoded.exp * 1000 - Date.now();
-          const fiveMinutes = 3 * 60 * 1000;
+      const token = this.getToken();
+      if (!token) return;
 
-          //  إذا باقي 3 دقائق، حدث الـ Token
-          if (expiresIn < fiveMinutes && expiresIn > 0) {
-            console.log('Token expiring soon, refreshing...');
-            this.refreshToken().subscribe({
-              next: () => console.log('Token refreshed preemptively'),
-              error: (err) => {
-                console.error(' Preemptive refresh failed:', err);
-                if (err.status === 401) {
-                  console.warn('Refresh token expired, logging out...');
-                  this.clearAuthData();
-                  this.router.navigate(['/login'], {
-                    queryParams: { reason: 'session-expired' },
-                  });
-                }
-              },
-            });
-          }
-        }
+      const decoded = this.decodeToken(token);
+      if (!decoded?.exp) return;
+
+      const expiresIn = decoded.exp * 1000 - Date.now();
+      const threeMinutes = 3 * 60 * 1000;
+
+      //  تجديد استباقي قبل 3 دقائق من الانتهاء
+      if (expiresIn < threeMinutes && expiresIn > 0) {
+        console.log(' Token expiring soon, refreshing...');
+
+        this.refreshToken().subscribe({
+          next: () => console.log(' Token refreshed preemptively'),
+          error: (err) => {
+            console.error(' Preemptive refresh failed:', err);
+            if (err.status === 401) {
+              this.handleRefreshFailure();
+            }
+          },
+        });
+      } else if (expiresIn <= 0) {
+        // ⏰ Token منتهي بالفعل
+        console.log(' Token expired, attempting immediate refresh...');
+
+        this.refreshToken().subscribe({
+          next: () => console.log('Token refreshed successfully'),
+          error: () => this.handleRefreshFailure(),
+        });
       }
     }, 60000); // كل دقيقة
   }
@@ -102,6 +143,15 @@ export class AuthService {
       this.tokenCheckInterval = null;
       console.log('Token expiry check stopped');
     }
+  }
+
+  private handleRefreshFailure(): void {
+    console.warn('Refresh token expired, logging out...');
+    this.clearAuthData();
+    this.stopTokenExpiryCheck();
+    this.router.navigate(['/login'], {
+      queryParams: { reason: 'session-expired' },
+    });
   }
 
   register(user: IUser): Observable<IUser> {
@@ -130,7 +180,7 @@ export class AuthService {
         tap((response: IloginResponse) => {
           console.log('Login Successful', response);
           if (response.accessToken) {
-            localStorage.setItem(this.TOKEN_KEY, response.accessToken);
+            this.setToken(response.accessToken);
             const userInfo = this.decodeToken(response.accessToken);
 
             if (userInfo) {
@@ -168,7 +218,13 @@ export class AuthService {
   }
 
   refreshToken(): Observable<IloginResponse> {
-    return this.http
+    // إذا كان هناك refresh قيد التنفيذ، ارجع نفس الـ Observable
+    if (this.refreshTokenInProgress && this.refreshTokenSubject) {
+      return this.refreshTokenSubject;
+    }
+    this.refreshTokenInProgress = true;
+
+    this.refreshTokenSubject = this.http
       .post<IloginResponse>(
         `${environment.apiUrl}/Account/refresh-token`,
         {}, // body فارغ (الـ Token موجود في الـ Cookie)
@@ -179,7 +235,7 @@ export class AuthService {
           // خطوة 1: التحقق من وجود Token جديد
           if (response.accessToken) {
             // خطوة 2: حفظ الـ Access Token الجديد
-            localStorage.setItem(this.TOKEN_KEY, response.accessToken);
+            this.setToken(response.accessToken);
             // خطوة 3: فك تشفير الـ Token لتحديث بيانات المستخدم
             const userInfo = this.decodeToken(response.accessToken);
             if (userInfo) {
@@ -190,16 +246,33 @@ export class AuthService {
               console.log('Token refreshed successfully');
             }
           }
+          this.refreshTokenInProgress = false;
+          this.refreshTokenSubject = null;
         }),
         catchError((error: HttpErrorResponse) => {
           console.error('Refresh token failed:', error);
+
+          this.refreshTokenInProgress = false;
+          this.refreshTokenSubject = null;
+
           if (error.status === 401) {
             console.warn('Refresh token expired or invalid');
             this.clearAuthData();
           }
           return throwError(() => error);
-        })
+        }),
+        shareReplay(1)
       );
+    return this.refreshTokenSubject;
+  }
+  isRefreshingToken(): boolean {
+    return this.refreshTokenInProgress;
+  }
+
+  //  Setter مع تحديث الـ cache
+  private setToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+    this.clearTokenCache(); // مسح الـ cache القديم
   }
 
   getToken(): string | null {
@@ -214,7 +287,7 @@ export class AuthService {
     try {
       // خطوة 1: فصل الـ Token ونأخذ الـ Payload (الجزء الثاني)
       const payload = token.split('.')[1];
-      const decoded = JSON.parse(atob(payload)) as any;
+      const decoded = JSON.parse(atob(payload)) as ITokenClaims;
 
       this.cachedTokenString = token;
       this.cachedTokenClaims = decoded;
@@ -286,6 +359,8 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
     this.stopTokenExpiryCheck();
     this.clearTokenCache();
+    this.refreshTokenInProgress = false;
+    this.refreshTokenSubject = null;
     console.log('Auth data cleared');
   }
 
@@ -308,7 +383,7 @@ export class AuthService {
     });
   }
 
-// helper
+  // helper
   private extractUserFromToken(decoded: any): IUser {
     return {
       id: this.getClaimValue(decoded, 'nameidentifier') || '',
@@ -324,10 +399,10 @@ export class AuthService {
   private getClaimValue(decoded: any, claimType: string): string | null {
     // محاولة 1: الاسم القصير (مثل: nameid, unique_name, email, role)
     const shortNames: { [key: string]: string } = {
-      'nameidentifier': 'nameid',
-      'name': 'unique_name',
-      'emailaddress': 'email',
-      'role': 'role'
+      nameidentifier: 'nameid',
+      name: 'unique_name',
+      emailaddress: 'email',
+      role: 'role',
     };
 
     const shortName = shortNames[claimType] || claimType;
@@ -337,10 +412,10 @@ export class AuthService {
 
     // محاولة 2: الاسم الطويل (مثل: http://schemas.xmlsoap.org/...)
     const longNames: { [key: string]: string } = {
-      'nameidentifier': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
-      'name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
-      'emailaddress': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
-      'role': 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      nameidentifier: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
+      name: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
+      emailaddress: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+      role: 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
     };
 
     const longName = longNames[claimType];
