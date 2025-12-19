@@ -35,7 +35,6 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
 }
 
 .hero-background {
@@ -825,4 +824,82 @@ body {
     flex-direction: column;
     text-align: center;
   }
+}
+.search-bar-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background: #fff;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #e9e6ff;
+  color: #3f3d9d;
+  font-weight: 600;
+}
+
+/* Search form */
+.search-form {
+  display: flex;
+  background: #fff;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+/* Input with icon */
+.input-box {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  flex: 2;
+  min-height: 3rem;
+}
+
+.input-box i {
+  color: #777;
+  margin-right: 8px;
+}
+
+.input-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+/* Select */
+select {
+  border: none;
+  padding: 0 15px;
+  outline: none;
+  border-left: 1px solid #eee;
+}
+
+/* Button */
+.search-btn {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  padding: 0 30px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 0 30px 30px 0;
 }
