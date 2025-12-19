@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
-  private baseUrl = 'https://localhost:7030/api/PropertyOwner';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getCities(): Observable<any[]> {
-    return this.http.get<any[]>('https://localhost:7030/api/City/GetAll');
+    return this.http.get<any[]>(`${this.baseUrl}/City/GetAll`);
   }
 
-  getAreasByCity(cityId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/LoadAreas?cityId=${cityId}`);
+  getAreasByCity(cityId: number) {
+    return this.http.get<any[]>(`${this.baseUrl}/Area/GetByCity/${cityId}`);
   }
 }

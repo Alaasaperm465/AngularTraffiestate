@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PropertyٍService } from '../../Services/property';
+import { PropertyService } from '../../Services/property';
 import { IProperty } from '../../models/iproperty';
 
 @Component({
@@ -11,7 +11,7 @@ import { IProperty } from '../../models/iproperty';
 export class Rent implements OnInit
  {
   rentproperties!:IProperty[];
-  constructor(private rentserv:PropertyٍService,private cdn:ChangeDetectorRef)
+  constructor(private rentserv:PropertyService,private cdn:ChangeDetectorRef)
   {
 
   }

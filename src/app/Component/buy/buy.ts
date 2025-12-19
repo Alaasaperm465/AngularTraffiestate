@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { IProperty } from '../../models/iproperty';
-import { PropertyٍService } from '../../Services/property';
+import { PropertyService } from '../../Services/property';
 
 @Component({
   selector: 'app-buy',
@@ -10,7 +10,7 @@ import { PropertyٍService } from '../../Services/property';
 })
 export class Buy {
    buyproperties!:IProperty[];
-    constructor(private buyservice:PropertyٍService,private cdn:ChangeDetectorRef)
+    constructor(private buyservice:PropertyService,private cdn:ChangeDetectorRef)
      {
 
      }
