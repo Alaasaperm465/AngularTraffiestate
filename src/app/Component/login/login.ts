@@ -49,7 +49,7 @@ export class Login {
     this.authService.Login(loginRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log('Login successful', response);
+        // console.log('Login successful', response);
         // Navigate to home or dashboard
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
         this.router.navigateByUrl(returnUrl);
