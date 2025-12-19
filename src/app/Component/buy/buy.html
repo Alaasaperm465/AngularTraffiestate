@@ -1,21 +1,148 @@
-<p>buy works!</p>
-<p>rent works!</p>
-@for(item of buyproperties; track item.id){
-  <div class="col-3">
+<!-- ================= TOP SEARCH BAR ================= -->
+<div class="search-wrapper py-3 shadow-sm">
+  <div class="container">
 
-    <div class="card shadow-sm" appCardSytle style="width: 18rem;">
-      <!-- //property binding  -->
-      <img [src]="item.imageUrl"
-           class="card-img-top"
-           alt="">
+    <!-- Row 1 : Main Search -->
+    <div class="row g-2 align-items-center">
 
-      <div class="card-body">
-        <!-- //interpolation -->
-        <h5 class="card-title">{{item.price}}</h5>
-        <p class="card-text">{{item.description}}</p>
-        <p class="card-text">{{item.area}}</p>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="City, Area or Compound"
+        >
+      </div>
+
+      <div class="col-md-2">
+        <select class="form-select">
+          <option>Buy</option>
+          <option>Rent</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <select class="form-select">
+          <option>Property Type</option>
+          <option>Apartment</option>
+          <option>Villa</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <input type="number" class="form-control" placeholder="Min Price">
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn btn-danger w-100">
+          <i class="bi bi-search"></i> Search
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Row 2 : Filters -->
+    <div class="row g-2 mt-2">
+
+      <div class="col-md-2">
+        <select class="form-select">
+          <option>Bedrooms</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3+</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <select class="form-select">
+          <option>Bathrooms</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3+</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <input type="number" class="form-control" placeholder="Min Area (m²)">
+      </div>
+
+      <div class="col-md-2">
+        <input type="number" class="form-control" placeholder="Max Area (m²)">
+      </div>
+
+      <div class="col-md-2">
+        <select class="form-select">
+          <option>Sort By</option>
+          <option>Newest</option>
+          <option>Price (Low → High)</option>
+          <option>Price (High → Low)</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn btn-outline-secondary w-100">
+          More Filters
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!-- ================= MAIN CONTENT ================= -->
+<div class="container my-4">
+  <div class="row">
+
+    <!-- Properties (2/3) -->
+    <div class="col-lg-8">
+      <div class="row g-4">
+
+        @for (item of buyproperties; track item.id) {
+          <div class="col-md-6">
+
+            <div class="card property-card shadow-sm position-relative">
+
+              <img [src]="item.imageUrl" class="card-img-top">
+
+              <!-- Whats & Phone -->
+              <div class="contact-icons">
+                <button class="btn btn-success btn-sm">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+                <button class="btn btn-primary btn-sm">
+                  <i class="bi bi-telephone"></i>
+                </button>
+              </div>
+
+              <div class="card-body">
+                <p class="price">EGP {{ item.price  }}</p>
+                <h6>{{ item.title }}</h6>
+                <p class="text-muted">{{ item.area }}</p>
+                <small>
+                  {{ item.rooms }} Beds •
+                  {{ item.bathrooms }} Baths •
+                  {{ item.areaSpace }} m²
+                </small>
+              </div>
+
+            </div>
+
+          </div>
+        }
+
+      </div>
+    </div>
+
+    <!-- Ad (1/3) -->
+    <div class="col-lg-4">
+      <div class="sticky-top" style="top: 120px">
+
+        <img
+          src="https://picsum.photos/600/800?random=5"
+          class="img-fluid rounded shadow"
+        >
+
       </div>
     </div>
 
   </div>
-}
+</div>

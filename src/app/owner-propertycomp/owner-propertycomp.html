@@ -226,8 +226,8 @@
           } @else {
             <div class="no-image">No Image</div>
           }
-          <span class="property-type-badge" [class.sale]="property.type === 'sale'">
-            {{ property.type === 'sale' ? 'For Sale' : 'For Rent' }}
+          <span class="property-type-badge" [class.sale]="property.propertyType">
+            {{ property.propertyType }}
           </span>
         </div>
         

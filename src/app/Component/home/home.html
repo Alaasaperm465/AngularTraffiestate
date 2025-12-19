@@ -5,35 +5,7 @@
     <div class="hero-background"></div>
 
     <!-- Navigation Header -->
-    <header class="header">
-      <div class="container">
-        <div class="nav-wrapper">
-          <div class="logo">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <circle cx="16" cy="16" r="14" fill="#E63946" />
-              <path d="M12 10L20 16L12 22V10Z" fill="white" />
-            </svg>
-            <span class="logo-text">Traffi<strong>Estate</strong></span>
-          </div>
-
-          <nav class="main-nav">
-            <a [routerLink]="['/buy']" class="nav-link" [class.active]="activeTab === 'buy'">Buy</a>
-            <a  [routerLink]="['/rent']" class="nav-link" [class.active]="activeTab === 'rent'">Rent</a>
-            <a href="#" class="nav-link" [class.active]="activeTab === 'new-projects'">New projects</a>
-            <a href="#" class="nav-link" [class.active]="activeTab === 'commercial'">Commercial</a>
-            <a href="#" class="nav-link">Find agent</a>
-            <a href="#" class="nav-link dropdown">
-              Explore
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                <path d="M6 8L2 4H10L6 8Z" />
-              </svg>
-            </a>
-          </nav>
-
-          <button class="login-btn">Log in</button>
-        </div>
-      </div>
-    </header>
+   
 
     <!-- Hero Content -->
     <div class="hero-content">
@@ -42,8 +14,71 @@
 
       <!-- Search Section -->
       
-      
+      <div class="search-bar-container">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button
+      class="tab"
+      [class.active]="activeTab === 'sale'"
+      (click)="setTab('sale')">
+      Buy
+    </button>
+
+    <button
+      class="tab"
+      [class.active]="activeTab === 'rent'"
+      (click)="setTab('rent')">
+      Rent
+    </button>
+
+    
+
+   
+  </div>
+
+  <!-- Search Form -->
+  <form
+    [formGroup]="searchForm"
+    (ngSubmit)="onSearch()"
+    class="search-form">
+
+    <!-- City -->
+    <div class="input-box">
+      <i class="bi bi-search"></i>
+      <input
+        type="text"
+        placeholder="City, Area"
+        formControlName="city" />
     </div>
+
+    <!-- Property type -->
+    <select formControlName="propertyType">
+      <option value="">Property type</option>
+      <option value="apartment">Apartment</option>
+      <option value="villa">Villa</option>
+      <option value="land">Land</option>
+    </select>
+
+    <!-- Beds & Baths -->
+    <select formControlName="rooms">
+      <option value="">Beds & Baths</option>
+      <option value="1">1+</option>
+      <option value="2">2+</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+      <option value="6">6+</option>
+    </select>
+
+    <!-- Search button -->
+    <button type="submit" class="search-btn">
+      Search
+    </button>
+
+  </form>
+</div>
+
   </div>
 
   <!-- Featured Properties Section -->
