@@ -18,6 +18,7 @@ export const tokenRefreshInterceptor: HttpInterceptorFn = (req, next) => {
         '/Account/forget-password',
         '/Account/reset-password',
         '/Account/Get-Roles',
+        '/Account/refresh-token'
       ];
       const shouldExclude = excludedUrls.some((url) => req.url.includes(url));
 
@@ -35,7 +36,6 @@ export const tokenRefreshInterceptor: HttpInterceptorFn = (req, next) => {
         //  حاول تجديد الـ Token
         return authService.refreshToken().pipe(
           switchMap(() => {
-            isRefreshing = false;
             //  نجح التجديد، أعد المحاولة مع الـ Token الجديد
             const newToken = authService.getToken();
             if (!newToken) {
@@ -54,7 +54,6 @@ export const tokenRefreshInterceptor: HttpInterceptorFn = (req, next) => {
           }),
           catchError((refreshError: HttpErrorResponse) => {
             //  فشل التجديد، اذهب لصفحة Login
-            isRefreshing = false;
             console.error('Token refresh failed', refreshError.status);
             authService.clearAuthData();
             router.navigate(['/login'], {
