@@ -7,6 +7,7 @@ import { IloginRequest } from '../models/ilogin-request';
 import { IloginResponse } from '../models/ilogin-response';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.development';
+import { ITokenClaims } from '../models/itoken-claims';
 
 @Injectable({
   providedIn: 'root',
@@ -30,11 +31,55 @@ export class AuthService {
     // properly initialize public observables
     this.user$ = this.userSubject.asObservable();
     this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+    this.initializeAuth();
+    this.startTokenExpiryCheck();
   }
 
+   //  وظيفة جديدة لتحميل البيانات من localStorage
+  private initializeAuth(): void {
+    const token = this.getToken();
+    const user = this.getUserFromStorage();
+
+    if (token && !this.isTokenExpired(token) && user) {
+      this.userSubject.next(user);
+      this.isAuthenticatedSubject.next(true);
+      console.log('User authenticated from storage:', user.userName);
+    } else {
+      this.clearAuthData();
+    }
+  }
+
+   // تحقق من انتهاء الصلاحية كل دقيقة
+  private startTokenExpiryCheck(): void {
+    setInterval(() => {
+      const token = this.getToken();
+      if (token && !this.isTokenExpired(token)) {
+        const decoded = this.decodeToken(token);
+        if (decoded && decoded.exp) {
+          const expiresIn = decoded.exp * 1000 - Date.now();
+          const fiveMinutes = 3 * 60 * 1000;
+
+          //  إذا باقي 5 دقائق، حدث الـ Token
+          if (expiresIn < fiveMinutes && expiresIn > 0) {
+            console.log('Token expiring soon, refreshing...');
+            this.refreshToken().subscribe({
+              next: () => console.log('Token refreshed preemptively'),
+              error: (err) => console.error('Preemptive refresh failed:', err)
+            });
+          }
+        }
+      }
+    }, 60000); // كل دقيقة
+  }
+
+
   register(user: IUser): Observable<IUser> {
-    return this.http.post<IUser>(`${environment.apiUrl}/Account/register`, user);
+    return this.http.post<IUser>(`${environment.apiUrl}/Account/register`, user).pipe(
+      tap(()=>{
     this.router.navigate(['/login']);
+      })
+    );
   }
 
   getRoles(): Observable<string[]> {
@@ -58,8 +103,8 @@ export class AuthService {
 
           if (userInfo) {
             const user: IUser = {
-              id: userInfo.nameid || userInfo.sub,
-              userName: userInfo.unique_name || userInfo.name,
+              id: userInfo.nameid,
+              userName: userInfo.unique_name,
               email: userInfo.email,
               roleName: userInfo.role,
               phoneNumber: '',
@@ -110,8 +155,8 @@ refreshToken(): Observable<IloginResponse> {
           if (userInfo) {
             // خطوة 4: بناء كائن المستخدم المحدث
             const user: IUser = {
-              id: userInfo.nameid || userInfo.sub,
-              userName: userInfo.unique_name || userInfo.name,
+              id: userInfo.nameid,
+              userName: userInfo.unique_name,
               email: userInfo.email,
               roleName: userInfo.role,
               phoneNumber: '',
@@ -130,15 +175,19 @@ refreshToken(): Observable<IloginResponse> {
 getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
-private decodeToken(token: string): any {
+private decodeToken(token: string): ITokenClaims | null {
     try {
       // خطوة 1: فصل الـ Token ونأخذ الـ Payload (الجزء الثاني)
       const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload)) as ITokenClaims;
 
-      // خطوة 2: فك التشفير من Base64 وتحويله لـ Object
-      // atob() = decode from Base64
-      // JSON.parse() = convert string to object
-      return JSON.parse(atob(payload));
+      //  Log للتأكد من القيم (للـ debugging)
+      console.log('Decoded Token:', decoded);
+
+      console.log('Token Claims:', decoded);
+      console.log('Available Keys:', Object.keys(decoded));
+
+      return decoded;
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
@@ -209,17 +258,14 @@ isAuthenticated(): boolean {
     return user?.roleName || null;
   }
 
-  private clearAuthData(): void {
+  public clearAuthData(): void {
     // خطوة 1: مسح Access Token
     localStorage.removeItem(this.TOKEN_KEY);
-
     // خطوة 2: مسح بيانات المستخدم
     localStorage.removeItem(this.USER_KEY);
-
     // خطوة 3: إخطار جميع المشتركين بأن المستخدم = null
     // أي Component مشترك في user$ سيتلقى null تلقائياً
     this.userSubject.next(null);
-
     // خطوة 4: تحديث حالة المصادقة إلى false
     // أي Component مشترك في isAuthenticated$ سيتلقى false
     this.isAuthenticatedSubject.next(false);
@@ -240,5 +286,5 @@ isAuthenticated(): boolean {
         newPassword   // كلمة المرور الجديدة
       }
     );
-  } 
+  }
 }
