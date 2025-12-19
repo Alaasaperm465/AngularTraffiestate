@@ -3,14 +3,14 @@ import { inject } from '@angular/core';
 import { AuthService } from '../Services/auth-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-
   const excludedUrls = [
     '/Account/login',
     '/Account/register',
     '/Account/forget-password',
     '/Account/reset-password',
-    '/Account/Get-Roles'
+    '/Account/Get-Roles',
+    '/Account/refresh-token',
+    '/Account/logout'
   ];
 
   // تحقق إذا كان الـ URL من القائمة المستثناة
@@ -20,6 +20,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
+  const authService = inject(AuthService);
   const token = authService.getToken();
 
   if (token && !authService.isTokenExpired(token)) {

@@ -1,9 +1,10 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, EMPTY, finalize, switchMap, throwError } from 'rxjs';
+import { catchError, finalize, Subject, switchMap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../Services/auth-service';
 
+let refreshTokenSubject: Subject<string | null> | null = null;
 let isRefreshing = false;
 
 export const tokenRefreshInterceptor: HttpInterceptorFn = (req, next) => {
@@ -18,60 +19,100 @@ export const tokenRefreshInterceptor: HttpInterceptorFn = (req, next) => {
         '/Account/forget-password',
         '/Account/reset-password',
         '/Account/Get-Roles',
-        '/Account/refresh-token'
+        '/Account/refresh-token',
+        '/Account/logout',
       ];
+
       const shouldExclude = excludedUrls.some((url) => req.url.includes(url));
 
       if (shouldExclude) {
         return throwError(() => error);
       }
-      //  إذا حصل خطأ 401 (Unauthorized) والـ request ليس refresh-token نفسه
-      if (error.status === 401 && !req.url.includes('/Account/refresh-token')) {
+
+      //  معالجة خطأ 401 (Unauthorized)
+      if (error.status === 401) {
+        console.warn('⚠️ 401 error detected, attempting token refresh...');
+
+        //  إذا كان الـ refresh قيد التنفيذ، انتظر
         if (isRefreshing) {
-          console.log('Refresh already in progress, canceling request');
-          return EMPTY;
+          if (!refreshTokenSubject) {
+            refreshTokenSubject = new Subject<string | null>();
+          }
+
+          return refreshTokenSubject.pipe(
+            switchMap((newToken) => {
+              if (!newToken) {
+                return throwError(() => new Error('No token after refresh'));
+              }
+
+              const clonedReq = req.clone({
+                setHeaders: { Authorization: `Bearer ${newToken}` },
+                withCredentials: true,
+              });
+
+              return next(clonedReq);
+            }),
+            catchError(() => throwError(() => error))
+          );
         }
+
+        //  بدء الـ refresh
         isRefreshing = true;
-        console.warn('Token expired, attempting refresh...');
-        //  حاول تجديد الـ Token
+        refreshTokenSubject = new Subject<string | null>();
+
         return authService.refreshToken().pipe(
           switchMap(() => {
-            //  نجح التجديد، أعد المحاولة مع الـ Token الجديد
             const newToken = authService.getToken();
+
             if (!newToken) {
-              console.error('No token after refresh');
+              console.error(' No token after refresh');
               throw new Error('No token after refresh');
             }
+
+            //  إشعار جميع الـ requests المنتظرة
+            if (refreshTokenSubject) {
+              refreshTokenSubject.next(newToken);
+              refreshTokenSubject.complete();
+            }
+
+            //  إعادة المحاولة للـ request الحالي
             const clonedReq = req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${newToken}`,
-              },
+              setHeaders: { Authorization: `Bearer ${newToken}` },
               withCredentials: true,
             });
 
-            console.log('Token refreshed successfully, retrying request');
+            console.log(' Token refreshed, retrying request:', req.url);
             return next(clonedReq);
           }),
           catchError((refreshError: HttpErrorResponse) => {
-            //  فشل التجديد، اذهب لصفحة Login
-            console.error('Token refresh failed', refreshError.status);
-            authService.clearAuthData();
-            router.navigate(['/login'], {
-              queryParams: {
-                reason: 'session-expired',
-                returnUrl: router.url,
-              },
-            });
+            console.error(' Token refresh failed:', refreshError.status);
+
+            //  إشعار جميع الـ requests بالفشل
+            if (refreshTokenSubject) {
+              refreshTokenSubject.error(refreshError);
+              refreshTokenSubject.complete();
+            }
+
+            if (refreshError.status === 401) {
+              authService.clearAuthData();
+              router.navigate(['/login'], {
+                queryParams: {
+                  reason: 'session-expired',
+                  returnUrl: router.url,
+                },
+              });
+            }
+
             return throwError(() => refreshError);
           }),
-          finalize(()=> {
+          finalize(() => {
+            // ✅ Reset state
             isRefreshing = false;
-            console.log('Refresh flag reset');
+            refreshTokenSubject = null;
+            console.log('🔄 Refresh state reset');
           })
         );
       }
-
-      //  أي خطأ آخر، ارجعه كما هو
       return throwError(() => error);
     })
   );
