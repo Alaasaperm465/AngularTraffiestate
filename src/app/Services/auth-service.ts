@@ -77,6 +77,7 @@ export class AuthService {
   register(user: IUser): Observable<IUser> {
     return this.http.post<IUser>(`${environment.apiUrl}/Account/register`, user).pipe(
       tap(()=>{
+        console.log(' Registration successful');
     this.router.navigate(['/login']);
       })
     );
@@ -120,8 +121,8 @@ export class AuthService {
     );
 }
 
-  logout(): Observable<any> {
-    return this.http.post(
+  logout(): Observable<void> {
+    return this.http.post<void>(
       `${environment.apiUrl}/Account/logout`,
       {}, // body فارغ (لا نحتاج إرسال بيانات)
       { withCredentials: true } // لإرسال الـ Cookie
@@ -129,8 +130,7 @@ export class AuthService {
       tap(() => {
         // مسح جميع البيانات المحفوظة
         this.clearAuthData();
-        console.log('logout ')
-
+        console.log('Logged out successfully ')
         // إعادة التوجيه لصفحة اللوجن
         this.router.navigate(['/login']);
       })
@@ -163,7 +163,6 @@ refreshToken(): Observable<IloginResponse> {
               password: '',
               confirmPassword: ''
             };
-
             // خطوة 5: تحديث البيانات في localStorage و BehaviorSubject
             localStorage.setItem(this.USER_KEY, JSON.stringify(user));
             this.userSubject.next(user);
@@ -182,10 +181,9 @@ private decodeToken(token: string): ITokenClaims | null {
       const decoded = JSON.parse(atob(payload)) as ITokenClaims;
 
       //  Log للتأكد من القيم (للـ debugging)
-      console.log('Decoded Token:', decoded);
-
+      // console.log('Decoded Token:', decoded);
       console.log('Token Claims:', decoded);
-      console.log('Available Keys:', Object.keys(decoded));
+      // console.log('Available Keys:', Object.keys(decoded));
 
       return decoded;
     } catch (error) {
