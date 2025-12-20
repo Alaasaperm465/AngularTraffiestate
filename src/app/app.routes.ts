@@ -9,12 +9,14 @@ import { AddProperty } from './Component/add-property/add-property';
 import { authGuardGuard } from './guards/auth-guard-guard';
 import { roleGuardGuard } from './guards/role-guard-guard';
 import { NotFound } from './Component/not-found/not-found';
+import { PropertyDetails } from './Component/property-details/property-details';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: Home, title: 'home Page' },
   { path: 'login', component: Login, title: 'Login Page' },
   { path: 'register', component: Register, title: 'register' },
+  {path :'property/:id',component:PropertyDetails, title:'Property Details' },
   {
     path: 'rent',
     component: Rent,
