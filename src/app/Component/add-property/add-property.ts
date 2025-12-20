@@ -30,7 +30,7 @@ export class AddProperty implements OnInit {
     finishingLevel: '',
     propertyType: '',
     purpose: '',
-    status: 'Pending',
+    status: '0', // Enum as number
   };
 
   mainImage!: File;
@@ -49,8 +49,8 @@ export class AddProperty implements OnInit {
 
   loadCities() {
     this.locationService.getCities().subscribe({
-      next: res => this.cities = res,
-      error: err => console.error('Failed to load cities:', err),
+      next: (res) => (this.cities = res),
+      error: (err) => console.error('Failed to load cities:', err),
     });
   }
 
@@ -62,35 +62,40 @@ export class AddProperty implements OnInit {
     }
 
     this.locationService.getAreasByCity(this.property.cityId).subscribe({
-      next: res => this.areas = res,
-      error: err => console.error('Failed to load areas:', err),
+      next: (res) => (this.areas = res),
+      error: (err) => console.error('Failed to load areas:', err),
     });
   }
 
   onMainImageChange(event: any) {
-    this.mainImage = event.target.files[0];
+    if (event.target.files && event.target.files.length > 0) {
+      this.mainImage = event.target.files[0];
+    }
   }
 
   onAdditionalImagesChange(event: any) {
-    this.additionalImages = Array.from(event.target.files);
+    if (event.target.files && event.target.files.length > 0) {
+      this.additionalImages = Array.from(event.target.files);
+    }
   }
 
   submit(form: NgForm) {
     if (form.invalid || !this.mainImage) {
       form.control.markAllAsTouched();
-      alert('Please complete required fields');
+      alert('Please complete all required fields and select a main image.');
       return;
     }
 
     this.isSubmitting = true;
+
     this.propertyService.create(this.property, this.mainImage, this.additionalImages).subscribe({
-      next: () => {
-        alert('Property added successfully');
+      next: (res: any) => {
+        alert(res?.message || 'Property added successfully');
         this.router.navigate(['/properties']);
       },
-      error: err => {
-        console.error(err);
-        alert('Something went wrong');
+      error: (err) => {
+        console.error('Add Property Error:', err);
+        alert(err?.error?.message || 'Something went wrong while adding the property');
         this.isSubmitting = false;
       },
     });
