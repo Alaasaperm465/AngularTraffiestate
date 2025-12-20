@@ -31,7 +31,7 @@ export const tokenRefreshInterceptor: HttpInterceptorFn = (req, next) => {
 
       //  معالجة خطأ 401 (Unauthorized)
       if (error.status === 401) {
-        console.warn('⚠️ 401 error detected, attempting token refresh...');
+        console.warn(' 401 error detected, attempting token refresh...');
 
         //  إذا كان الـ refresh قيد التنفيذ، انتظر
         if (isRefreshing) {
@@ -106,7 +106,7 @@ export const tokenRefreshInterceptor: HttpInterceptorFn = (req, next) => {
             return throwError(() => refreshError);
           }),
           finalize(() => {
-            // ✅ Reset state
+            //  Reset state
             isRefreshing = false;
             refreshTokenSubject = null;
             console.log('🔄 Refresh state reset');

@@ -10,6 +10,8 @@ import { authGuardGuard } from './guards/auth-guard-guard';
 import { roleGuardGuard } from './guards/role-guard-guard';
 import { NotFound } from './Component/not-found/not-found';
 import { PropertyDetails } from './Component/property-details/property-details';
+import { ForgetPassword } from './Component/forget-password/forget-password';
+import { ResetPassword } from './Component/reset-password/reset-password';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -24,9 +26,10 @@ export const routes: Routes = [
     canActivate: [authGuardGuard]},
   { path: 'buy', component: Buy, title: 'Buy Properties' },
   { path: 'addproperty', component: AddProperty, title: 'Add Property' },
-  { path: '**', component: NotFound },
-
   { path: 'ownerDashboard', component: OwnerDashboard, title: 'Owner Dashboard' },
+  { path: 'forget-password', component: ForgetPassword },
+  { path: 'reset-password', component: ResetPassword },
+  { path: '**', component: NotFound },
 
   //************************************************************************************************************************** */
   // { path: '', redirectTo: '/client', pathMatch: 'full' },

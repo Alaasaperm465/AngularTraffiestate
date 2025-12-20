@@ -17,7 +17,7 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: 
+  background:
     radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 1px, transparent 1px),
     radial-gradient(circle at 70% 70%, rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size: 50px 50px;
@@ -36,7 +36,7 @@
   padding: 40px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(255, 255, 255, 0.2);
   position: relative;
@@ -47,7 +47,7 @@
 
 .login-card:hover {
   transform: translateY(-5px);
-  box-shadow: 
+  box-shadow:
     0 25px 50px rgba(0, 0, 0, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.3);
 }
@@ -303,21 +303,21 @@
   .login-container {
     padding: 16px;
   }
-  
+
   .login-card {
     padding: 30px 24px;
     border-radius: 20px;
   }
-  
+
   .login-card h2 {
     font-size: 24px;
     margin-bottom: 24px;
   }
-  
+
   .form-input {
     padding: 14px 16px;
   }
-  
+
   .btn-login {
     padding: 14px;
   }
@@ -327,34 +327,54 @@
 @media (prefers-color-scheme: dark) {
   .login-card {
     background: rgba(26, 32, 44, 0.95);
-    box-shadow: 
+    box-shadow:
       0 20px 40px rgba(0, 0, 0, 0.3),
       0 0 0 1px rgba(255, 255, 255, 0.05);
   }
-  
+
   .login-card h2 {
     color: #f7fafc;
   }
-  
+
   .form-group label {
     color: #cbd5e0;
   }
-  
+
   .form-input {
     background: #2d3748;
     border-color: #4a5568;
     color: #f7fafc;
   }
-  
+
   .form-input:focus {
     background: #1a202c;
   }
-  
+
   .register-link p {
     color: #a0aec0;
   }
-  
+
   .register-link a {
     color: #90cdf4;
   }
+
+  /* Forget Password Link */
+.forget-password-link {
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.forget-password-link a {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.forget-password-link a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
 }

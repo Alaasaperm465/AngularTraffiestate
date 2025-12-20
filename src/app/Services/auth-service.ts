@@ -370,18 +370,34 @@ export class AuthService {
   }
 
   forgetPassword(email: string): Observable<any> {
-    return this.http.post(
-      `${environment.apiUrl}/Account/forget-password`,
-      { email } // نرسل فقط البريد الإلكتروني
-    );
-  }
+  return this.http.post(`${environment.apiUrl}/Account/forget-password`, { email }).pipe(
+    tap((response) => {
+      console.log('✅ Forget password request sent', response);
+    }),
+    catchError((error: HttpErrorResponse) => {
+      console.error('Forget password failed:', error);
+      return throwError(() => error);
+    })
+  );
+}
   resetPassword(email: string, token: string, newPassword: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/Account/reset-password`, {
-      email,
-      token,
-      newPassword,
-    });
-  }
+  return this.http
+    .post(`${environment.apiUrl}/Account/reset-password`, {
+      email: email,
+      token: token,
+      newPassword: newPassword,
+      confirmPassword: newPassword
+    })
+    .pipe(
+      tap((response) => {
+        console.log(' Password reset successful', response);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(' Reset password failed:', error);
+        return throwError(() => error);
+      })
+    );
+}
 
   // helper
   private extractUserFromToken(decoded: any): IUser {
