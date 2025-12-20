@@ -5,7 +5,7 @@
     <div class="hero-background"></div>
 
     <!-- Navigation Header -->
-   
+
 
     <!-- Hero Content -->
     <div class="hero-content">
@@ -13,7 +13,7 @@
       <p class="hero-subtitle">Find properties to rent, buy or invest</p>
 
       <!-- Search Section -->
-      
+
       <div class="search-bar-container">
 
   <!-- Tabs -->
@@ -32,9 +32,9 @@
       Rent
     </button>
 
-    
 
-   
+
+
   </div>
 
   <!-- Search Form -->
@@ -91,7 +91,9 @@
       </div>
 
       <div class="properties-grid">
-        <div class="property-card" *ngFor="let property of properties">
+        <div class="property-card" *ngFor="let property of properties"
+             [routerLink]="['/property', property.id]">
+>
           <div class="property-image">
             <img [src]="property.imageUrl" [alt]="property.title">
             <div class="property-type">{{ property.propertyType }}</div>
@@ -148,7 +150,7 @@
                 </a>
               </span>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -159,4 +161,4 @@
 
 
 
- 
+
