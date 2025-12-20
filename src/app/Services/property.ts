@@ -23,15 +23,11 @@ export class PropertyService {
   {
       return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForSale`);
   }
-<<<<<<< HEAD
-     create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
-=======
   getPropertyById(id: number): Observable<IProperty> {
     return this.http.get<IProperty>(`https://localhost:7030/api/Client/properties/${id}`);
   }
 
   create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
->>>>>>> ec36138b080f2f2cdd838e8de1183d19371a97b2
     const formData = new FormData();
 
     // بيانات العقار
