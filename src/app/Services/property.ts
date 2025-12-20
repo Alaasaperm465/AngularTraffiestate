@@ -15,44 +15,44 @@ export class PropertyService {
   private baseUrl = 'https://localhost:7030/api/PropertyOwner';
 
   constructor(private http: HttpClient) {}
-  getPropertyForRent(): Observable<IProperty[]>
-  {
-      return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForRent`);
+  getPropertyForRent(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForRent`);
   }
-   getPropertyForBuy(): Observable<IProperty[]>
-  {
-      return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForSale`);
+  getPropertyForBuy(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForSale`);
   }
-     create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
+  getPropertyById(id: number): Observable<IProperty> {
+    return this.http.get<IProperty>(`https://localhost:7030/api/Client/properties/${id}`);
+  }
+
+  create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
     const formData = new FormData();
 
-    // بيانات العقار
     formData.append('Title', property.title);
     formData.append('Description', property.description);
     formData.append('Price', property.price.toString());
     formData.append('AreaSpace', property.areaSpace.toString());
     formData.append('Location', property.location);
+
     formData.append('CityId', property.cityId.toString());
     formData.append('AreaId', property.areaId.toString());
+
     formData.append('Rooms', property.rooms.toString());
     formData.append('Bathrooms', property.bathrooms.toString());
-    formData.append('FinishingLevel', property.finishingLevel);
-    formData.append('PropertyType', property.propertyType);
-    formData.append('Purpose', property.purpose);
-    formData.append('Status', property.status);
 
-    // الصور داخل DTO
-    formData.append('ImagesFiles', mainImage); // الصورة الرئيسية
-    additionalImages.forEach(img => formData.append('AdditionalImages', img));
+    formData.append('FinishingLevel', property.finishingLevel || '');
+    formData.append('PropertyType', property.propertyType || '');
+    formData.append('Purpose', property.purpose || '');
 
-    return this.http.post(`${this.baseUrl}/Create`, formData);
+    formData.append('Status', '0'); // Enum as number
+
+    formData.append('mainImage', mainImage);
+
+    additionalImages.forEach((img) => {
+      formData.append('additionalImages', img);
+    });
+
+    //  important: set responseType to 'text' explicitly
+    return this.http.post(`${this.baseUrl}/Create`, formData, { responseType: 'text' });
   }
-
-  // getAll(pageNumber: number = 1, pageSize: number = 10)
-  //   : Observable<PagedResponse<Iproperty>> {
-
-  //   return this.http.get<PagedResponse<Iproperty>>(
-  //     `${this.baseUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`
-  //   );
-  }
-
+}
