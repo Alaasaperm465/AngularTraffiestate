@@ -16,7 +16,7 @@ import { FavoriteService } from '../../Services/favorite-service';
 })
 export class Home implements OnInit, OnDestroy {
   searchForm: FormGroup;
-  activeTab: string = ''; // فاضي عشان يعرض كل العقارات في البداية
+  activeTab: string = ''; 
   properties: IProperty[] = [];
   allProperties: IProperty[] = [];
   showPropertyTypeDropdown = false;
@@ -25,6 +25,14 @@ export class Home implements OnInit, OnDestroy {
   phone = phone;
   email = email;
   favoritesIds: number[] = [];
+
+
+  selectedPropertyTypes: Set<string> = new Set();
+  selectedBedrooms: Set<string> = new Set();
+  selectedAreas: Set<string> = new Set();
+  selectedSort: string = '';
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -42,121 +50,129 @@ export class Home implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('🚀 Component initialized');
     
-    // جلب جميع العقارات من الخدمة
+    
     this.propertyService.getAllProperties().subscribe({
       next: (data: IProperty[]) => {
-        console.log('📦 API Response received');
-        console.log('✅ Properties loaded:', data);
-        console.log('📊 Total properties loaded:', data.length);
+        console.log(' API Response received');
+        console.log('Properties loaded:', data);
+        console.log(' Total properties loaded:', data.length);
         
-        // عرض بعض الأمثلة
+        
         if (data.length > 0) {
-          console.log('🏠 Sample property:', data[0]);
-          console.log('📋 Available purposes:', [...new Set(data.map(p => p.purpose))]);
-          console.log('🏘️ Available cities:', [...new Set(data.map(p => p.city))]);
-          console.log('🏢 Available types:', [...new Set(data.map(p => p.propertyType))]);
+          console.log(' Sample property:', data[0]);
+          console.log('Available purposes:', [...new Set(data.map(p => p.purpose))]);
+          console.log(' Available cities:', [...new Set(data.map(p => p.city))]);
+          console.log('Available types:', [...new Set(data.map(p => p.propertyType))]);
         }
         
         this.allProperties = data;
         
-        // عرض كل العقارات في البداية
+        
         this.properties = [...data];
         
-        console.log('✅ All properties displayed:', this.properties.length);
+        console.log(' All properties displayed:', this.properties.length);
       },
       error: (err) => {
-        console.error('❌ Error loading properties:', err);
+        console.error(' Error loading properties:', err);
       }
     });
 
-    // جلب المفضلات
+
     this.favoriteService.getMyFavorites().subscribe({
       next: (res: any) => {
         const items = res?.value?.items ?? res?.items ?? [];
         this.favoritesIds = items.map((f: any) => f.propertyId);
-        console.log('⭐ Favorites loaded:', this.favoritesIds);
+        console.log(' Favorites loaded:', this.favoritesIds);
       },
       error: (err) => {
-        console.error('❌ Error loading favorites:', err);
+        console.error('Error loading favorites:', err);
       }
     });
   }
 
   ngOnDestroy(): void {
-    // لا حاجة للتنظيف لأن @HostListener بيتعامل معاه Angular تلقائياً
+    
   }
 
-  // ===== تعيين التاب =====
+  
   setActiveTab(tab: string): void {
     this.activeTab = tab;
     console.log('🔄 Active tab changed to:', tab);
-    // تطبيق الفلاتر مباشرة
+  
     this.applyAllFilters();
   }
 
-  // ===== دالة البحث الرئيسية =====
+  
   onSearch(): void {
-    console.log('🔍 Search triggered');
+    console.log(' Search icon clicked - Resetting to show all properties');
     
-    // التحقق إذا كان في بحث فعلي
-    const searchData = this.searchForm.value;
-    const hasSearch = searchData.city || searchData.propertyType || searchData.rooms;
     
-    if (hasSearch) {
-      // لو في بحث، طبق الفلاتر
-      this.applyAllFilters();
-    } else {
-      // لو مفيش بحث، اعمل Reset وارجع كل العقارات
-      this.resetSearch();
-    }
+    this.resetSearch();
   }
 
-  // ===== إعادة تعيين البحث =====
+  
   resetSearch(): void {
-    console.log('🔄 Resetting search...');
+    console.log(' Resetting search...');
     
-    // مسح التاب
+
+    this.selectedPropertyTypes.clear();
+    this.selectedBedrooms.clear();
+    this.selectedAreas.clear();
+    this.selectedSort = '';
+    this.minPrice = null;
+    this.maxPrice = null;
     this.activeTab = '';
 
-    // مسح الفورم
+    
     this.searchForm.reset();
+    
+    
+    document.querySelectorAll('.filter-options input').forEach((input: any) => {
+      input.checked = false;
+    });
 
-    // عرض كل العقارات
+    
+    const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
+    const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
+    if (minEl) minEl.value = '';
+    if (maxEl) maxEl.value = '';
+
+
     this.properties = [...this.allProperties];
-    console.log('✅ Search reset, showing all properties:', this.properties.length);
+    console.log('Search reset, showing all properties:', this.properties.length);
   }
 
-  // ===== تطبيق جميع الفلاترات =====
+  
   private applyAllFilters(): void {
-    console.log('⚙️ ====== Applying All Filters ======');
+    console.log(' ====== Applying All Filters ======');
     
-    // نبدأ من كل العقارات
+    
     let filtered = [...this.allProperties];
-    console.log(`📦 Starting with ${filtered.length} properties`);
+    console.log(` Starting with ${filtered.length} properties`);
     
     const searchData = this.searchForm.value;
-    console.log('🔍 Search form values:', searchData);
-    console.log('🏷️ Active tab:', this.activeTab);
+    console.log(' Search form values:', searchData);
+    console.log('Active tab:', this.activeTab);
 
-    // 1️⃣ فلترة حسب التاب (Buy / Rent)
+    
     if (this.activeTab && this.activeTab.trim()) {
       const beforeCount = filtered.length;
       filtered = filtered.filter(p => {
         const purpose = (p.purpose || '').toLowerCase().trim();
         const tab = this.activeTab.toLowerCase().trim();
         
-        // مقارنة مباشرة
+        
         return purpose === tab;
       });
-      console.log(`✅ Tab filter (${this.activeTab}): ${beforeCount} → ${filtered.length} properties`);
+      console.log(`Tab filter (${this.activeTab}): ${beforeCount} → ${filtered.length} properties`);
       
       if (filtered.length === 0 && beforeCount > 0) {
-        console.warn('⚠️ No properties match the tab filter. Available purposes:', 
+        console.warn(' No properties match the tab filter. Available purposes:', 
           [...new Set(this.allProperties.map(p => p.purpose))]);
       }
     }
 
-    // 2️⃣ فلترة المدينة / المنطقة
+    
     if (searchData.city && searchData.city.trim()) {
       const beforeCount = filtered.length;
       const citySearch = searchData.city.toLowerCase().trim();
@@ -169,10 +185,10 @@ export class Home implements OnInit, OnDestroy {
                area.includes(citySearch) || 
                location.includes(citySearch);
       });
-      console.log(`✅ City filter (${searchData.city}): ${beforeCount} → ${filtered.length} properties`);
+      console.log(`City filter (${searchData.city}): ${beforeCount} → ${filtered.length} properties`);
     }
 
-    // 3️⃣ فلترة نوع العقار من السيرش فورم
+    
     if (searchData.propertyType && searchData.propertyType.trim()) {
       const beforeCount = filtered.length;
       const typeSearch = searchData.propertyType.toLowerCase().trim();
@@ -180,10 +196,10 @@ export class Home implements OnInit, OnDestroy {
         const propertyType = (p.propertyType || '').toLowerCase().trim();
         return propertyType === typeSearch;
       });
-      console.log(`✅ Property type filter (${searchData.propertyType}): ${beforeCount} → ${filtered.length} properties`);
+      console.log(` Property type filter (${searchData.propertyType}): ${beforeCount} → ${filtered.length} properties`);
     }
 
-    // 4️⃣ فلترة عدد الغرف من السيرش فورم
+    
     if (searchData.rooms && searchData.rooms.trim()) {
       const beforeCount = filtered.length;
       const roomsValue = parseInt(searchData.rooms, 10);
@@ -193,16 +209,184 @@ export class Home implements OnInit, OnDestroy {
         }
         return p.rooms === roomsValue;
       });
-      console.log(`✅ Rooms filter (${searchData.rooms}): ${beforeCount} → ${filtered.length} properties`);
+      console.log(`Rooms filter (${searchData.rooms}): ${beforeCount} → ${filtered.length} properties`);
     }
 
-    // تحديث النتيجة النهائية
+    
+    if (this.selectedPropertyTypes.size > 0) {
+      const beforeCount = filtered.length;
+      filtered = filtered.filter(p => {
+        const propertyType = (p.propertyType || '').toLowerCase().trim();
+        return this.selectedPropertyTypes.has(propertyType);
+      });
+      console.log(` Sidebar property type filter: ${beforeCount} → ${filtered.length} properties`);
+    }
+
+    
+    if (this.selectedBedrooms.size > 0) {
+      const beforeCount = filtered.length;
+      filtered = filtered.filter(p => {
+        const rooms = (p.rooms || 0).toString();
+        const has4Plus = this.selectedBedrooms.has('4plus') && (p.rooms || 0) >= 4;
+        const hasExactMatch = this.selectedBedrooms.has(rooms);
+        return has4Plus || hasExactMatch;
+      });
+      console.log(` Bedrooms filter: ${beforeCount} → ${filtered.length} properties`);
+    }
+
+    
+    if (this.selectedAreas.size > 0) {
+      const beforeCount = filtered.length;
+      filtered = filtered.filter(p => {
+        const area = Number(p.areaSpace) || 0;
+        
+        for (const areaRange of this.selectedAreas) {
+          if (areaRange === 'under100' && area < 100) return true;
+          if (areaRange === '100-200' && area >= 100 && area < 200) return true;
+          if (areaRange === '200-300' && area >= 200 && area < 300) return true;
+          if (areaRange === '300plus' && area >= 300) return true;
+        }
+        
+        return false;
+      });
+      console.log(`Area filter: ${beforeCount} → ${filtered.length} properties`);
+    }
+
+    
+    if (this.minPrice !== null && this.minPrice > 0) {
+      const beforeCount = filtered.length;
+      filtered = filtered.filter(p => (p.price || 0) >= this.minPrice!);
+      console.log(`Min price filter (${this.minPrice}): ${beforeCount} → ${filtered.length} properties`);
+    }
+    if (this.maxPrice !== null && this.maxPrice > 0) {
+      const beforeCount = filtered.length;
+      filtered = filtered.filter(p => (p.price || 0) <= this.maxPrice!);
+      console.log(`Max price filter (${this.maxPrice}): ${beforeCount} → ${filtered.length} properties`);
+    }
+
+    
+    if (this.selectedSort) {
+      filtered.sort((a, b) => {
+        switch (this.selectedSort) {
+          case 'price-low':
+            return (a.price || 0) - (b.price || 0);
+          case 'price-high':
+            return (b.price || 0) - (a.price || 0);
+          case 'newest':
+            return (b.id || 0) - (a.id || 0);
+          case 'popular':
+            return (b.views || 0) - (a.views || 0);
+          default:
+            return 0;
+        }
+      });
+      console.log(`Sorted by: ${this.selectedSort}`);
+    }
+
+    
     this.properties = filtered;
-    console.log(`🎯 Final result: ${this.properties.length} properties`);
-    console.log('⚙️ ====== Filter Complete ======');
+    console.log(` Final result: ${this.properties.length} properties`);
+    console.log(' ====== Filter Complete ======');
   }
 
-  // ===== تبديل حالة القائمة المنسدلة - نوع العقار =====
+  
+  onFilterChange(event: any): void {
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+
+    console.log('🔧 Filter changed:', { type: target.type, name: target.name, value, checked: target.checked });
+
+    if (target.type === 'checkbox') {
+      let filterSet: Set<string>;
+
+      if (['1', '2', '3', '4plus'].includes(value)) {
+        filterSet = this.selectedBedrooms;
+      } else {
+        filterSet = this.selectedAreas;
+      }
+
+      if (target.checked) {
+        filterSet.add(value);
+      } else {
+        filterSet.delete(value);
+      }
+
+      console.log(' Updated filter set:', Array.from(filterSet));
+    } else if (target.type === 'radio' && target.name === 'sort') {
+      this.selectedSort = target.checked ? value : '';
+      console.log('Sort changed to:', this.selectedSort);
+    }
+
+    
+    this.applyAllFilters();
+  }
+
+  
+  onPropertyTypeChange(event: any): void {
+    const target = event.target as HTMLInputElement;
+    const value = target.value.toLowerCase();
+
+    console.log(' Property type filter changed:', { value, checked: target.checked });
+
+    if (target.checked) {
+      this.selectedPropertyTypes.add(value);
+    } else {
+      this.selectedPropertyTypes.delete(value);
+    }
+
+    console.log(' Updated property types:', Array.from(this.selectedPropertyTypes));
+
+  
+    this.applyAllFilters();
+  }
+
+
+  onPriceFilterChange(): void {
+    const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
+    const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
+
+    this.minPrice = minEl?.value ? parseInt(minEl.value, 10) : null;
+    this.maxPrice = maxEl?.value ? parseInt(maxEl.value, 10) : null;
+
+    console.log(' Price filter changed:', { min: this.minPrice, max: this.maxPrice });
+
+    this.applyAllFilters();
+  }
+
+  
+  clearAllFilters(): void {
+    console.log(' Clearing all filters...');
+    
+    
+    this.selectedPropertyTypes.clear();
+    this.selectedBedrooms.clear();
+    this.selectedAreas.clear();
+    this.selectedSort = '';
+    this.minPrice = null;
+    this.maxPrice = null;
+    
+    
+    this.activeTab = '';
+
+    
+    this.searchForm.reset();
+    
+    
+    document.querySelectorAll('.filter-options input').forEach((input: any) => {
+      input.checked = false;
+    });
+
+    
+    const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
+    const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
+    if (minEl) minEl.value = '';
+    if (maxEl) maxEl.value = '';
+
+    
+    this.properties = [...this.allProperties];
+    console.log(' All filters cleared, showing all properties:', this.properties.length);
+  }
+
   togglePropertyTypeDropdown(event?: Event): void {
     if (event) {
       event.stopPropagation();
@@ -213,7 +397,7 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  // ===== تبديل حالة القائمة المنسدلة - الغرف =====
+  
   toggleBedsAndBathsDropdown(event?: Event): void {
     if (event) {
       event.stopPropagation();
@@ -224,70 +408,69 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  // ===== اختيار نوع العقار =====
+  
   selectPropertyType(type: string, event: Event): void {
     event.stopPropagation();
-    console.log('🏢 Property type selected:', type);
+    console.log('Property type selected:', type);
     this.searchForm.patchValue({ propertyType: type });
     this.showPropertyTypeDropdown = false;
-    // تطبيق الفلتر مباشرة
+    
     this.applyAllFilters();
   }
 
-  // ===== اختيار عدد الغرف =====
+
   selectRooms(rooms: string, event: Event): void {
     event.stopPropagation();
-    console.log('🚪 Rooms selected:', rooms);
+    console.log(' Rooms selected:', rooms);
     this.searchForm.patchValue({ rooms: rooms });
     this.showBedsAndBathsDropdown = false;
-    // تطبيق الفلتر مباشرة
+    
     this.applyAllFilters();
   }
 
-  // ===== تبديل المفضلة =====
   toggleFavorite(propertyId: number): void {
     if (this.favoritesIds.includes(propertyId)) {
       this.favoriteService.removeFromFavorites(propertyId).subscribe({
         next: () => {
           this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
-          console.log('💔 Removed from favorites:', propertyId);
+          console.log(' Removed from favorites:', propertyId);
         },
         error: (err) => {
-          console.error('❌ Error removing favorite:', err);
+          console.error(' Error removing favorite:', err);
         }
       });
     } else {
       this.favoriteService.addToFavorites(propertyId).subscribe({
         next: () => {
           this.favoritesIds.push(propertyId);
-          console.log('💖 Added to favorites:', propertyId);
+          console.log(' Added to favorites:', propertyId);
         },
         error: (err) => {
-          console.error('❌ Error adding favorite:', err);
+          console.error('Error adding favorite:', err);
         }
       });
     }
   }
 
-  // ===== التحقق من العقار المفضل =====
+  
   isFavorite(propertyId: number): boolean {
     return this.favoritesIds.includes(propertyId);
   }
 
-  // ===== البحث السريع =====
+  
   setQuickSearch(city: string): void {
-    console.log('⚡ Quick search clicked:', city);
+    console.log(' Quick search clicked:', city);
     this.searchForm.patchValue({ city: city });
     this.applyAllFilters();
   }
 
-  // ===== الاستماع لحدث التمرير =====
+  
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.isScrolled = window.scrollY > 100;
   }
 
-  // ===== الاستماع لحدث النقر خارج القوائم المنسدلة =====
+  
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -297,27 +480,27 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  // ===== تتبع العنصر حسب المعرف =====
+  
   trackById(index: number, item: IProperty): number {
     return item.id;
   }
 
-  // ===== إنشاء رابط واتساب صحيح =====
+
   getWhatsAppLink(phoneNumber: string): string {
-    // إزالة كل الأحرف غير الرقمية
+    
     let cleanPhone = phoneNumber.replace(/\D/g, '');
     
-    // إزالة الصفر من البداية إذا كان موجود
+    
     if (cleanPhone.startsWith('0')) {
       cleanPhone = cleanPhone.substring(1);
     }
     
-    // إضافة كود الدولة إذا لم يكن موجود
+    
     if (!cleanPhone.startsWith('20')) {
       cleanPhone = '20' + cleanPhone;
     }
     
-    console.log('📱 WhatsApp Link:', `https://wa.me/${cleanPhone}`);
+    console.log(' WhatsApp Link:', `https://wa.me/${cleanPhone}`);
     
     return `https://wa.me/${cleanPhone}`;
   }

@@ -132,6 +132,42 @@ export class PropertyService {
   }
 
   /**
+   * ترتيب حسب السعر
+   */
+  sortByPrice(order: 'asc' | 'desc'): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(
+      `${this.apiUrl}/properties/sort/price/${order}`
+    );
+  }
+
+  /**
+   * ترتيب حسب الأحدث
+   */
+  sortByNewest(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(
+      `${this.apiUrl}/properties/sort/newest`
+    );
+  }
+
+  /**
+   * ترتيب حسب الأكثر شعبية
+   */
+  sortByPopular(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(
+      `${this.apiUrl}/properties/sort/popular`
+    );
+  }
+
+  /**
+   * فلترة حسب نوع العقار
+   */
+  filterByPropertyType(type: string): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(
+      `${this.apiUrl}/properties/by-type?type=${type}`
+    );
+  }
+
+  /**
    * استخراج array من العقارات من الـ response
    * @param response الـ response من الـ API
    * @returns IProperty[]

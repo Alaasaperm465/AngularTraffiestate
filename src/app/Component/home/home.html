@@ -242,7 +242,7 @@
           </div>
           <h3>No Properties Found</h3>
           <p>Try adjusting your search filters or explore different areas</p>
-          <!-- <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button> -->
+          <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button>
         </div>
 
         <!-- Pagination -->
@@ -301,18 +301,21 @@
           </h4>
           <div class="filter-options">
             <label class="filter-option">
-              <input type="checkbox" value="apartment" (change)="onFilterChange($event)">
+<input type="checkbox" value="Apartment" (change)="onPropertyTypeChange($event)">
               <span>Apartment</span>
             </label>
             <label class="filter-option">
-              <input type="checkbox" value="villa" (change)="onFilterChange($event)">
+<input type="checkbox" value="Villa" (change)="onPropertyTypeChange($event)">
               <span>Villa</span>
             </label>
             <label class="filter-option">
-              <input type="checkbox" value="house" (change)="onFilterChange($event)">
-              <span>land</span>
+<input type="checkbox" value="House" (change)="onPropertyTypeChange($event)">
+              <span>House</span>
             </label>
-            
+            <label class="filter-option">
+<input type="checkbox" value="Studio" (change)="onPropertyTypeChange($event)">
+              <span>Studio</span>
+            </label>
           </div>
         </div>
 
