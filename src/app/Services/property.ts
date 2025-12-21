@@ -23,13 +23,11 @@ export class PropertyService {
   {
       return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForSale`);
   }
-    getPropertyById(id: number): Observable<IProperty> {
-    return this.http.get<IProperty>(
-      `https://localhost:7030/api/Client/properties/${id}`
-    );
+  getPropertyById(id: number): Observable<IProperty> {
+    return this.http.get<IProperty>(`https://localhost:7030/api/Client/properties/${id}`);
   }
 
-     create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
+  create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
     const formData = new FormData();
 
     // بيانات العقار
