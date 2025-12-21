@@ -64,12 +64,9 @@
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'House'}); showPropertyTypeDropdown = false">
                   <i class="bi bi-house-door"></i>
-                  House
+                  land
                 </div>
-                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Studio'}); showPropertyTypeDropdown = false">
-                  <i class="bi bi-door-open"></i>
-                  Studio
-                </div>
+                
               </div>
             </div>
 
@@ -242,7 +239,7 @@
           </div>
           <h3>No Properties Found</h3>
           <p>Try adjusting your search filters or explore different areas</p>
-          <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button>
+          <!-- <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button> -->
         </div>
 
         <!-- Pagination -->

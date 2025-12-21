@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { IProperty } from '../../models/iproperty';
 
@@ -8,102 +8,161 @@ import { IProperty } from '../../models/iproperty';
   providedIn: 'root',
 })
 export class PropertyService {
-  private apiUrl = 'https://localhost:7030/api/Client';
+  private clientApiUrl = 'https://localhost:7030/api/Client';
+  private ownerApiUrl = 'https://localhost:7030/api/PropertyOwner';
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * جلب كل العقارات (Buy + Rent مع بعض)
-   * @returns Observable<IProperty[]>
-   */
   getAllProperties(): Observable<IProperty[]> {
-    // جلب عقارات البيع والإيجار في نفس الوقت
-    return forkJoin({
-      forSale: this.getPropertiesForSale().pipe(catchError(() => of([]))),
-      forRent: this.getPropertiesForRent().pipe(catchError(() => of([])))
-    }).pipe(
-      map(result => {
-        console.log('🏠 For Sale properties:', result.forSale.length);
-        console.log('🏘️ For Rent properties:', result.forRent.length);
+    return this.http.get<any>(`${this.clientApiUrl}/properties`).pipe(
+      map(response => {
+        let data: IProperty[] = this.extractPropertiesArray(response);
         
-        // دمج النتيجتين
-        const allProperties = [...result.forSale, ...result.forRent];
-        console.log('📊 Total properties:', allProperties.length);
+        data = data.map(property => {
+          let normalizedPurpose = (property.purpose || '').toLowerCase().trim();
+          
+          if (normalizedPurpose === 'sale' || normalizedPurpose === 'forsale') {
+            normalizedPurpose = 'buy';
+          }
+          else if (normalizedPurpose === 'forrent') {
+            normalizedPurpose = 'rent';
+          }
+          
+          return {
+            ...property,
+            purpose: normalizedPurpose
+          };
+        });
         
-        return allProperties;
+        return data;
+      }),
+      catchError(error => {
+        console.error('Error loading from Client API:', error);
+        return this.getAllPropertiesFromOwnerAPI();
       })
     );
   }
 
-  /**
-   * جلب عقارات البيع فقط
-   * @returns Observable<IProperty[]>
-   */
+  private getAllPropertiesFromOwnerAPI(): Observable<IProperty[]> {
+    return this.http.get<any>(`${this.ownerApiUrl}/owner-properties`).pipe(
+      map(response => {
+        let data: IProperty[] = this.extractPropertiesArray(response);
+        return data;
+      }),
+      catchError(error => {
+        console.error('Error loading from Owner API:', error);
+        return of([]);
+      })
+    );
+  }
+
+  getAllPropertiesWithPagination(pageSize: number = 100, pageNumber: number = 1): Observable<IProperty[]> {
+    const endpoints = [
+      `${this.clientApiUrl}/properties?pageSize=${pageSize}&pageNumber=${pageNumber}`,
+      `${this.clientApiUrl}/properties?$top=${pageSize}&$skip=${(pageNumber - 1) * pageSize}`,
+      `${this.clientApiUrl}/properties?limit=${pageSize}&offset=${(pageNumber - 1) * pageSize}`,
+      `${this.ownerApiUrl}/owner-properties?pageSize=${pageSize}&pageNumber=${pageNumber}`
+    ];
+
+    return this.tryEndpoints(endpoints, `Pagination (pageSize=${pageSize})`);
+  }
+
+  private tryEndpoints(endpoints: string[], description: string): Observable<IProperty[]> {
+    const tryNext = (index: number): Observable<IProperty[]> => {
+      if (index >= endpoints.length) {
+        console.error(`All endpoints failed for: ${description}`);
+        return of([]);
+      }
+
+      return this.http.get<any>(endpoints[index]).pipe(
+        map(response => {
+          let data = this.extractPropertiesArray(response);
+          return data;
+        }),
+        catchError(error => {
+          return tryNext(index + 1);
+        })
+      );
+    };
+
+    return tryNext(0);
+  }
+
   getPropertiesForSale(): Observable<IProperty[]> {
-    return this.http.get<any>(`${this.apiUrl}/properties/ForSale`).pipe(
+    return this.http.get<any>(`${this.clientApiUrl}/properties/ForSale`).pipe(
       map(response => {
-        // معالجة الـ response
         let data: IProperty[] = this.extractPropertiesArray(response);
         
-        // إضافة purpose = "Buy" لكل عقار
         data = data.map(property => ({
           ...property,
-          purpose: 'Buy'
+          purpose: 'buy'
         }));
         
-        console.log('✅ For Sale properties processed:', data.length);
         return data;
+      }),
+      catchError(error => {
+        console.error('Error loading ForSale properties:', error);
+        return of([]);
       })
     );
   }
 
-  /**
-   * جلب عقارات الإيجار فقط
-   * @returns Observable<IProperty[]>
-   */
   getPropertiesForRent(): Observable<IProperty[]> {
-    return this.http.get<any>(`${this.apiUrl}/properties/ForRent`).pipe(
+    return this.http.get<any>(`${this.clientApiUrl}/properties/ForRent`).pipe(
       map(response => {
-        // معالجة الـ response
         let data: IProperty[] = this.extractPropertiesArray(response);
         
-        // إضافة purpose = "Rent" لكل عقار
         data = data.map(property => ({
           ...property,
-          purpose: 'Rent'
+          purpose: 'rent'
         }));
         
-        console.log('✅ For Rent properties processed:', data.length);
         return data;
+      }),
+      catchError(error => {
+        console.error('Error loading ForRent properties:', error);
+        return of([]);
       })
     );
   }
 
-  /**
-   * جلب عقار واحد حسب الـ id
-   * @param id معرف العقار
-   * @returns Observable<IProperty>
-   */
-  getPropertyById(id: number): Observable<IProperty> {
-    return this.http.get<IProperty>(`${this.apiUrl}/properties/${id}`);
+  getPropertiesForLand(): Observable<IProperty[]> {
+    const endpoints = [
+      `${this.clientApiUrl}/properties/ForLand`,
+      `${this.clientApiUrl}/properties/Land`,
+      `${this.clientApiUrl}/properties?purpose=Land`
+    ];
+
+    return this.tryEndpoints(endpoints, 'Land Properties').pipe(
+      map(data => {
+        return data.map(property => ({
+          ...property,
+          purpose: 'land'
+        }));
+      })
+    );
   }
 
-  /**
-   * البحث عن العقارات حسب المدينة أو المنطقة
-   * @param searchData اسم المدينة أو المنطقة
-   * @returns Observable<IProperty[]>
-   */
+  getPropertyById(id: number): Observable<IProperty> {
+    return this.http.get<IProperty>(`${this.clientApiUrl}/properties/${id}`).pipe(
+      catchError(error => {
+        console.error(`Error loading property ${id}:`, error);
+        throw error;
+      })
+    );
+  }
+
   getByCityOrArea(searchData: string): Observable<IProperty[]> {
     return this.http.get<IProperty[]>(
-      `${this.apiUrl}/ByCity?cityName=${searchData}`
+      `${this.clientApiUrl}/ByCity?cityName=${searchData}`
+    ).pipe(
+      catchError(error => {
+        console.error('Error searching by city:', error);
+        return of([]);
+      })
     );
   }
 
-  /**
-   * البحث عن العقارات حسب معايير متعددة
-   * @param filters كائن يحتوي على معايير البحث
-   * @returns Observable<IProperty[]>
-   */
   searchProperties(filters: any): Observable<IProperty[]> {
     let queryString = '';
 
@@ -123,67 +182,76 @@ export class PropertyService {
       queryString += `bedrooms=${filters.rooms}&`;
     }
 
-    // إزالة الـ & الأخير
     queryString = queryString.slice(0, -1);
 
     return this.http.get<IProperty[]>(
-      `${this.apiUrl}/search?${queryString}`
+      `${this.clientApiUrl}/search?${queryString}`
+    ).pipe(
+      catchError(error => {
+        console.error('Error searching properties:', error);
+        return of([]);
+      })
     );
   }
 
-  /**
-   * ترتيب حسب السعر
-   */
   sortByPrice(order: 'asc' | 'desc'): Observable<IProperty[]> {
     return this.http.get<IProperty[]>(
-      `${this.apiUrl}/properties/sort/price/${order}`
+      `${this.clientApiUrl}/properties/sort/price/${order}`
+    ).pipe(
+      catchError(error => {
+        console.error('Error sorting by price:', error);
+        return of([]);
+      })
     );
   }
 
-  /**
-   * ترتيب حسب الأحدث
-   */
   sortByNewest(): Observable<IProperty[]> {
     return this.http.get<IProperty[]>(
-      `${this.apiUrl}/properties/sort/newest`
+      `${this.clientApiUrl}/properties/sort/newest`
+    ).pipe(
+      catchError(error => {
+        console.error('Error sorting by newest:', error);
+        return of([]);
+      })
     );
   }
 
-  /**
-   * ترتيب حسب الأكثر شعبية
-   */
   sortByPopular(): Observable<IProperty[]> {
     return this.http.get<IProperty[]>(
-      `${this.apiUrl}/properties/sort/popular`
+      `${this.clientApiUrl}/properties/sort/popular`
+    ).pipe(
+      catchError(error => {
+        console.error('Error sorting by popular:', error);
+        return of([]);
+      })
     );
   }
 
-  /**
-   * فلترة حسب نوع العقار
-   */
   filterByPropertyType(type: string): Observable<IProperty[]> {
     return this.http.get<IProperty[]>(
-      `${this.apiUrl}/properties/by-type?type=${type}`
+      `${this.clientApiUrl}/properties/by-type?type=${type}`
+    ).pipe(
+      catchError(error => {
+        console.error('Error filtering by property type:', error);
+        return of([]);
+      })
     );
   }
 
-  /**
-   * استخراج array من العقارات من الـ response
-   * @param response الـ response من الـ API
-   * @returns IProperty[]
-   */
   private extractPropertiesArray(response: any): IProperty[] {
     if (Array.isArray(response)) {
       return response;
-    } else if (response?.value && Array.isArray(response.value)) {
+    } 
+    else if (response?.value && Array.isArray(response.value)) {
       return response.value;
-    } else if (response?.items && Array.isArray(response.items)) {
+    } 
+    else if (response?.items && Array.isArray(response.items)) {
       return response.items;
-    } else if (response?.data && Array.isArray(response.data)) {
+    } 
+    else if (response?.data && Array.isArray(response.data)) {
       return response.data;
     }
     
-    console.warn('⚠️ Unexpected response format:', response);
     return [];
   }
 }
