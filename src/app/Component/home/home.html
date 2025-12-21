@@ -1,166 +1,426 @@
-<div class="property-search-container">
-  <!-- Hero Section with Background -->
-  <div class="hero-section">
-    <div class="hero-overlay"></div>
-    <div class="hero-background"></div>
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="hero-content-wrapper">
+    <div class="hero-text-content">
+      <h1 class="hero-main-title">Find Your Dream Property</h1>
+      <p class="hero-description">Discover the perfect place to call home from our extensive collection of properties</p>
 
-    <!-- Navigation Header -->
+      <!-- Search Box in Hero -->
+      <div class="hero-search-box">
+        <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="hero-search-form">
 
-
-    <!-- Hero Content -->
-    <div class="hero-content">
-      <h1 class="hero-title">Your home search starts here</h1>
-      <p class="hero-subtitle">Find properties to rent, buy or invest</p>
-
-      <!-- Search Section -->
-
-      <div class="search-bar-container">
-
-  <!-- Tabs -->
-  <div class="tabs">
-    <button
-      class="tab"
-      [class.active]="activeTab === 'sale'"
-      (click)="setTab('sale')">
-      Buy
-    </button>
-
-    <button
-      class="tab"
-      [class.active]="activeTab === 'rent'"
-      (click)="setTab('rent')">
-      Rent
-    </button>
-
-
-
-
-  </div>
-
-  <!-- Search Form -->
-  <form
-    [formGroup]="searchForm"
-    (ngSubmit)="onSearch()"
-    class="search-form">
-
-    <!-- City -->
-    <div class="input-box">
-      <i class="bi bi-search"></i>
-      <input
-        type="text"
-        placeholder="City, Area"
-        formControlName="city" />
-    </div>
-
-    <!-- Property type -->
-    <select formControlName="propertyType">
-      <option value="">Property type</option>
-      <option value="apartment">Apartment</option>
-      <option value="villa">Villa</option>
-      <option value="land">Land</option>
-    </select>
-
-    <!-- Beds & Baths -->
-    <select formControlName="rooms">
-      <option value="">Beds & Baths</option>
-      <option value="1">1+</option>
-      <option value="2">2+</option>
-      <option value="3">3+</option>
-      <option value="4">4+</option>
-      <option value="5">5+</option>
-      <option value="6">6+</option>
-    </select>
-
-    <!-- Search button -->
-    <button type="submit" class="search-btn">
-      Search
-    </button>
-
-  </form>
-</div>
-
-  </div>
-
-  <!-- Featured Properties Section -->
-  <section class="featured-properties">
-    <div class="container">
-      <div class="section-header">
-        <h2>Collection of Properties</h2>
-
-        <a href="#" class="see-all">See all</a>
-      </div>
-
-      <div class="properties-grid">
-        <div class="property-card" *ngFor="let property of properties"
-             [routerLink]="['/property', property.id]">
->
-          <div class="property-image">
-            <img [src]="property.imageUrl" [alt]="property.title">
-            <div class="property-type">{{ property.propertyType }}</div>
-<button class="favorite-btn" (click)="toggleFavorite(property.id); $event.stopPropagation()">
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path
-      d="M10 17L3.5 10.5C2.5 9.5 2 8.3 2 7C2 4.2 4.2 2 7 2C8.3 2 9.5 2.5 10.5 3.5L10 4L9.5 3.5C10.5 2.5 11.7 2 13 2C15.8 2 18 4.2 18 7C18 8.3 17.5 9.5 16.5 10.5L10 17Z"
-      [attr.fill]="isFavorite(property.id) ? '#E63946' : 'none'" stroke="#E63946" stroke-width="1.5" />
-  </svg>
-</button>
-
-
+          <!-- Tabs Inside Search -->
+          <div class="search-tabs-hero">
+            <button
+              type="button"
+              class="tab-btn-hero"
+              [class.active]="activeTab === 'buy'"
+              (click)="setActiveTab('buy')">
+              <i class="bi bi-house-door"></i>
+              Buy
+            </button>
+            <button
+              type="button"
+              class="tab-btn-hero"
+              [class.active]="activeTab === 'rent'"
+              (click)="setActiveTab('rent')">
+              <i class="bi bi-key"></i>
+              Rent
+            </button>
           </div>
-          <div class="property-details">
-            <div class="price">{{ property.price }}</div>
-            <h3 class="property-title">{{ property.title }}</h3>
-            <p class="property-location">{{ property.location }}</p>
-            <div class="property-features">
-              <div class="feature">
-                {{ property.bathrooms }} baths
-                {{ property.rooms }} beds
-              </div>
-              <br>
-             <div class="contact-icons">
-  <!-- WhatsApp -->
-  <a [href]="'https://wa.me/' + phone" target="_blank" class="action-btn whatsapp" title="Chat on WhatsApp">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" viewBox="0 0 16 16">
-      <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592"/>
-    </svg>
-  </a>
 
- <!-- Phone -->
-<a [href]="'tel:' + phone" class="action-btn phone" title="Call">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" viewBox="0 0 24 24">
-    <path d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.74 21 3 13.26 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.26.2 2.5.57 3.57a1 1 0 0 1-.24 1.01l-2.2 2.21z"/>
-  </svg>
-</a>
-
-
-  <!-- Email -->
-  <a [href]="'mailto:' + email" class="action-btn email" title="Email">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="orange" viewBox="0 0 16 16">
-      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217l-8 4.8-8-4.8V4zm0 1.383v6.617a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.383l-7.447 4.468a1 1 0 0 1-1.106 0L0 5.383z"/>
-    </svg>
-  </a>
-</div>
-
-              <span>
-                <a [href]="'https://wa.me/' + phone" target="_blank" class="action-btn whatsapp"
-                  title="Chat on WhatsApp">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
-                    class="bi bi-whatsapp" viewBox="0 0 16 16">
-                    <path
-                      d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
-                  </svg>
-                </a>
-              </span>
+          <div class="search-fields-wrapper">
+            <!-- City Input -->
+            <div class="search-field-hero">
+              <i class="bi bi-geo-alt"></i>
+              <input
+                type="text"
+                formControlName="city"
+                placeholder="City, Area or Neighborhood"
+                class="search-input-hero">
             </div>
 
+            <!-- Property Type Dropdown -->
+            <div class="search-field-hero dropdown-wrapper">
+              <i class="bi bi-house-door"></i>
+              <input
+                type="text"
+                formControlName="propertyType"
+                placeholder="Property Type"
+                class="search-input-hero"
+                readonly
+                (click)="togglePropertyTypeDropdown()">
+              <i class="bi bi-chevron-down toggle-icon"></i>
+
+              <div class="dropdown-menu-hero" *ngIf="showPropertyTypeDropdown">
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Apartment'}); showPropertyTypeDropdown = false">
+                  <i class="bi bi-building"></i>
+                  Apartment
+                </div>
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Villa'}); showPropertyTypeDropdown = false">
+                  <i class="bi bi-house"></i>
+                  Villa
+                </div>
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'House'}); showPropertyTypeDropdown = false">
+                  <i class="bi bi-house-door"></i>
+                  House
+                </div>
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Studio'}); showPropertyTypeDropdown = false">
+                  <i class="bi bi-door-open"></i>
+                  Studio
+                </div>
+              </div>
+            </div>
+
+            <!-- Rooms Dropdown -->
+            <div class="search-field-hero dropdown-wrapper">
+              <i class="bi bi-door-open"></i>
+              <input
+                type="text"
+                formControlName="rooms"
+                placeholder="Bedrooms"
+                class="search-input-hero"
+                readonly
+                (click)="toggleBedsAndBathsDropdown()">
+              <i class="bi bi-chevron-down toggle-icon"></i>
+
+              <div class="dropdown-menu-hero" *ngIf="showBedsAndBathsDropdown">
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '1'}); showBedsAndBathsDropdown = false">
+                  <i class="bi bi-1-circle"></i>
+                  1 Bedroom
+                </div>
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '2'}); showBedsAndBathsDropdown = false">
+                  <i class="bi bi-2-circle"></i>
+                  2 Bedrooms
+                </div>
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '3'}); showBedsAndBathsDropdown = false">
+                  <i class="bi bi-3-circle"></i>
+                  3 Bedrooms
+                </div>
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '4'}); showBedsAndBathsDropdown = false">
+                  <i class="bi bi-4-circle"></i>
+                  4+ Bedrooms
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Button -->
+            <button type="submit" class="search-btn-hero" title="Search">
+              <i class="bi bi-search"></i>
+            </button>
           </div>
+        </form>
+
+        <!-- Quick Search -->
+        <div class="quick-search-hero">
+          <span class="quick-label">Popular: </span>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Cairo')">Cairo</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Alexandria')">Alexandria</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Giza')">Giza</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('New Cairo')">New Cairo</button>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
+<!-- Filters & Properties Section -->
+<section class="properties-main-section">
+  <div class="container-full">
+    <div class="main-layout">
 
+      <!-- Properties Grid -->
+      <div class="properties-content">
+        <div class="properties-header">
+          <h2 class="properties-count">
+            <span class="count-number">{{ properties.length }}</span> Properties Found
+          </h2>
+          <div class="view-toggle">
+            <button type="button" class="view-btn active" title="Grid View"><i class="bi bi-grid-3x3-gap"></i></button>
+            <button type="button" class="view-btn" title="List View"><i class="bi bi-list"></i></button>
+          </div>
+        </div>
 
+        <!-- Properties Grid -->
+        <div class="properties-grid" *ngIf="properties.length > 0">
+          <div
+            class="property-card"
+            *ngFor="let property of properties; trackBy: trackById">
 
+            <!-- Property Image -->
+            <div class="property-image">
+              <img [src]="property.imageUrl || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'"
+                   [alt]="property.title">
 
+              <!-- Favorite Button -->
+              <button
+                type="button"
+                class="favorite-btn"
+                [class.active]="isFavorite(property.id)"
+                (click)="toggleFavorite(property.id); $event.stopPropagation()">
+                <i class="bi" [ngClass]="isFavorite(property.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+              </button>
 
+              <!-- Purpose Badge -->
+              <span class="purpose-badge" [class.rent]="property.purpose === 'Rent'">
+                {{ property.purpose === 'Buy' ? 'For Sale' : 'For Rent' }}
+              </span>
+
+              <!-- Featured Badge -->
+              <span class="featured-badge" *ngIf="property.isFeatured">
+                <i class="bi bi-star-fill"></i>
+                Featured
+              </span>
+            </div>
+
+            <!-- Property Info -->
+            <div class="property-info">
+              <div class="property-header">
+                <h3 class="property-title">{{ property.title }}</h3>
+                <p class="property-location">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  {{ property.area }}, {{ property.city }}
+                </p>
+              </div>
+
+              <div class="property-details">
+                <span class="detail-item">
+                  <i class="bi bi-door-open-fill"></i>
+                  {{ property.rooms }} Beds
+                </span>
+                <span class="detail-item">
+                  <i class="bi bi-droplet-fill"></i>
+                  {{ property.bathrooms }} Baths
+                </span>
+                <span class="detail-item">
+                  <i class="bi bi-arrows-fullscreen"></i>
+                  {{ property.area }} m²
+                </span>
+              </div>
+
+              <div class="property-footer">
+                <div class="property-price">
+                  <span class="price-value">{{ property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
+                  <span class="price-period" *ngIf="property.purpose === 'Rent'">/month</span>
+                </div>
+                <div class="property-contact-actions">
+                  <a
+                    class="contact-icon-btn whatsapp-btn"
+                    title="Contact on WhatsApp"
+                    [href]="'https://wa.me/' + phone.replace(/\D/g, '')"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    (click)="$event.stopPropagation()">
+                    <i class="bi bi-whatsapp"></i>
+                  </a>
+                  <a
+                    class="contact-icon-btn phone-btn"
+                    [href]="'tel:' + phone"
+                    title="Call Now"
+                    (click)="$event.stopPropagation()">
+                    <i class="bi bi-telephone-fill"></i>
+                  </a>
+                  <button
+                    type="button"
+                    class="view-details-btn"
+                    [routerLink]="['/property', property.id]"
+                    (click)="$event.stopPropagation()">
+                    <i class="bi bi-eye"></i>
+                    View
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Results -->
+        <div class="no-results" *ngIf="properties.length === 0">
+          <div class="no-results-icon">
+            <i class="bi bi-search"></i>
+          </div>
+          <h3>No Properties Found</h3>
+          <p>Try adjusting your search filters or explore different areas</p>
+          <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" *ngIf="properties.length > 0">
+          <button type="button" class="page-btn prev-btn">
+            <i class="bi bi-chevron-left"></i>
+            Previous
+          </button>
+          <button type="button" class="page-btn active">1</button>
+          <button type="button" class="page-btn">2</button>
+          <button type="button" class="page-btn">3</button>
+          <button type="button" class="page-btn">4</button>
+          <button type="button" class="page-btn next-btn">
+            Next
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar Filters - On the Right -->
+      <aside class="filters-sidebar">
+        <div class="filters-header">
+          <h3>Filters</h3>
+          <button type="button" class="clear-filters" (click)="clearAllFilters()">Clear All</button>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-title">
+            <i class="bi bi-sort-down"></i>
+            Sort By
+          </h4>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="radio" name="sort" value="newest" (change)="onFilterChange($event)">
+              <span>Newest First</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="sort" value="price-low" (change)="onFilterChange($event)">
+              <span>Price: Low to High</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="sort" value="price-high" (change)="onFilterChange($event)">
+              <span>Price: High to Low</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="sort" value="popular" (change)="onFilterChange($event)">
+              <span>Most Popular</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-title">
+            <i class="bi bi-house"></i>
+            Property Type
+          </h4>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" value="apartment" (change)="onFilterChange($event)">
+              <span>Apartment</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="villa" (change)="onFilterChange($event)">
+              <span>Villa</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="house" (change)="onFilterChange($event)">
+              <span>House</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="studio" (change)="onFilterChange($event)">
+              <span>Studio</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-title">
+            <i class="bi bi-currency-dollar"></i>
+            Price Range
+          </h4>
+          <div class="price-inputs">
+            <input type="number" placeholder="Min" class="price-input" #minPrice (change)="onPriceFilterChange()">
+            <span class="price-separator">-</span>
+            <input type="number" placeholder="Max" class="price-input" #maxPrice (change)="onPriceFilterChange()">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-title">
+            <i class="bi bi-arrows-fullscreen"></i>
+            Area (m²)
+          </h4>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" value="under100" (change)="onFilterChange($event)">
+              <span>Under 100</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="100-200" (change)="onFilterChange($event)">
+              <span>100 - 200</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="200-300" (change)="onFilterChange($event)">
+              <span>200 - 300</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="300plus" (change)="onFilterChange($event)">
+              <span>300+</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-title">
+            <i class="bi bi-door-open"></i>
+            Bedrooms
+          </h4>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" value="1" (change)="onFilterChange($event)">
+              <span>1 Bedroom</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="2" (change)="onFilterChange($event)">
+              <span>2 Bedrooms</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="3" (change)="onFilterChange($event)">
+              <span>3 Bedrooms</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" value="4plus" (change)="onFilterChange($event)">
+              <span>4+ Bedrooms</span>
+            </label>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Contact CTA Section -->
+<section class="contact-cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-text">
+        <h2>Can't Find What You're Looking For?</h2>
+        <p>Our expert team is here to help you find your perfect property</p>
+      </div>
+      <div class="cta-buttons">
+        <a [href]="'https://wa.me/' + phone.replace(/\D/g, '')" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-whatsapp"></i>
+          WhatsApp Us
+        </a>
+        <a [href]="'tel:' + phone" class="cta-btn secondary">
+          <i class="bi bi-telephone-fill"></i>
+          Call Us
+        </a>
+      </div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item">
+        <i class="bi bi-whatsapp"></i>
+        <span>{{ phone }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-telephone-fill"></i>
+        <span>{{ phone }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-envelope-fill"></i>
+        <span>{{ email }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-geo-alt-fill"></i>
+        <span>Cairo, Egypt</span>
+      </div>
+    </div>
+  </div>
+</section>
