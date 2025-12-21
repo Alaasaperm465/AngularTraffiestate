@@ -207,6 +207,9 @@ export class Home implements OnInit {
   phone = phone;
   email = email;
   favoritesIds: number[] = [];
+  selectedTypes: string[] = [];
+// properties: IProperty[] = [];
+
 
   // فلترة الخيارات
   selectedPropertyTypes: Set<string> = new Set();
@@ -343,35 +346,62 @@ export class Home implements OnInit {
   }
 
   // ===== 4️⃣ معالج تغيير الفلاترات =====
+  // onFilterChange(event: any): void {
+  //   const target = event.target as HTMLInputElement;
+  //   const value = target.value;
+
+  //   if (target.type === 'checkbox') {
+  //     // تحديد نوع الفلتر
+  //     let filterSet: Set<string>;
+
+  //     if (['apartment', 'villa', 'house', 'studio'].includes(value)) {
+  //       filterSet = this.selectedPropertyTypes;
+  //     } else if (['1', '2', '3', '4plus'].includes(value)) {
+  //       filterSet = this.selectedBedrooms;
+  //     } else {
+  //       filterSet = this.selectedAreas;
+  //     }
+
+  //     // تحديث المجموعة
+  //     if (target.checked) {
+  //       filterSet.add(value);
+  //     } else {
+  //       filterSet.delete(value);
+  //     }
+  //   } else if (target.type === 'radio' && target.name === 'sort') {
+  //     this.selectedSort = target.checked ? value : '';
+  //   }
+
+  //   // تطبيق الفلاترات
+  //   this.onSearch();
+  // }
   onFilterChange(event: any): void {
-    const target = event.target as HTMLInputElement;
-    const value = target.value;
+  const value = event.target.value;
 
-    if (target.type === 'checkbox') {
-      // تحديد نوع الفلتر
-      let filterSet: Set<string>;
+  switch (value) {
 
-      if (['apartment', 'villa', 'house', 'studio'].includes(value)) {
-        filterSet = this.selectedPropertyTypes;
-      } else if (['1', '2', '3', '4plus'].includes(value)) {
-        filterSet = this.selectedBedrooms;
-      } else {
-        filterSet = this.selectedAreas;
-      }
+    case 'newest':
+      this.propertyService.sortByNewest()
+        .subscribe(data => this.properties = data);
+      break;
 
-      // تحديث المجموعة
-      if (target.checked) {
-        filterSet.add(value);
-      } else {
-        filterSet.delete(value);
-      }
-    } else if (target.type === 'radio' && target.name === 'sort') {
-      this.selectedSort = target.checked ? value : '';
-    }
+    case 'price-low':
+      this.propertyService.sortByPrice('asc')
+        .subscribe(data => this.properties = data);
+      break;
 
-    // تطبيق الفلاترات
-    this.onSearch();
+    case 'price-high':
+      this.propertyService.sortByPrice('desc')
+        .subscribe(data => this.properties = data);
+      break;
+
+    case 'popular':
+      this.propertyService.sortByPopular()
+        .subscribe(data => this.properties = data);
+      break;
   }
+}
+
 
   // ===== 5️⃣ معالج تغيير السعر =====
   onPriceFilterChange(): void {
@@ -404,6 +434,11 @@ export class Home implements OnInit {
 
   // ===== 7️⃣ تحميل البيانات الأولية =====
   ngOnInit(): void {
+
+    this.propertyService.getAllProperties().subscribe(data => {
+    this.allProperties = data;
+    this.properties = data;
+  });
     // جلب جميع العقارات من الخدمة
     this.propertyService.getAllProperties().subscribe({
       next: (data: IProperty[]) => {
@@ -488,6 +523,19 @@ export class Home implements OnInit {
     this.onSearch();
   }
 
+
+
+  applyPropertyTypeFilter(): void {
+  if (this.selectedTypes.length === 0) {
+    this.properties = this.allProperties;
+    return;
+  }
+
+  this.properties = this.allProperties.filter(p =>
+    this.selectedTypes.includes(p.propertyType)
+  );
+}
+
   // ===== 1️⃣3️⃣ الاستماع لحدث التمرير =====
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
@@ -509,4 +557,20 @@ export class Home implements OnInit {
   trackById(index: number, item: IProperty): number {
     return item.id;
   }
+  /************************************************ */
+ onPropertyTypeChange(event: any): void {
+  const type = event.target.value;
+  const checked = event.target.checked;
+
+  if (checked) {
+    this.selectedTypes.push(type);
+  } else {
+    this.selectedTypes = this.selectedTypes.filter(t => t !== type);
+  }
+
+  this.applyPropertyTypeFilter();
+}
+
+
+/******************************************************** */
 }
