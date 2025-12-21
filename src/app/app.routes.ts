@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { Home } from './Component/home/home';
 import { Login } from './Component/login/login';
@@ -12,6 +13,7 @@ import { NotFound } from './Component/not-found/not-found';
 import { PropertyDetails } from './Component/property-details/property-details';
 import { ForgetPassword } from './Component/forget-password/forget-password';
 import { ResetPassword } from './Component/reset-password/reset-password';
+import { FaviroteCom } from './Component/favirote-com/favirote-com';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,6 +21,7 @@ export const routes: Routes = [
   { path: 'login', component: Login, title: 'Login Page' },
   { path: 'register', component: Register, title: 'register' },
   {path :'property/:id',component:PropertyDetails, title:'Property Details' },
+  {path:'favorites',component:FaviroteCom,title:'My Favorites'},
   {
     path: 'rent',
     component: Rent,

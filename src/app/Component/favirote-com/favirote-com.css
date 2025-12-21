@@ -1,0 +1,42 @@
+.favorite-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.image-wrapper img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.title {
+  font-size: 15px;
+  color: #333;
+}
+
+.location {
+  font-size: 14px;
+  color: #666;
+}
+
+.property-info span {
+  margin-right: 15px;
+  font-size: 14px;
+  color: #444;
+}
+
+.actions button {
+  margin-right: 8px;
+}
+
+.favorite-btn {
+  border-radius: 50%;
+}
+.filled {
+  color: red;
+}

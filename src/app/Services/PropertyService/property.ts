@@ -16,6 +16,9 @@ export class PropertyService {
     return this.http.get<IProperty[]>(`${this.apiUrl}/properties`);
   }
 
+
+
+
   // جلب عقار واحد حسب الـ id
   getPropertyById(id: number): Observable<IProperty> {
     return this.http.get<IProperty>(`${this.apiUrl}/properties/${id}`);
