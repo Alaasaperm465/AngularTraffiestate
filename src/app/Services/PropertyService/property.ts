@@ -1,69 +1,82 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-// import { IProperty } from '../../models/iproperty';
-
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class PropertyService {
-//   private apiUrl = 'https://localhost:7030/api/Client'; // غيرها حسب API الخاص بك
-
-//   constructor(private http: HttpClient) {}
-
-//   // جلب كل العقارات
-//   getAllProperties(): Observable<IProperty[]> {
-//     return this.http.get<IProperty[]>(`${this.apiUrl}/properties`);
-//   }
-
-
-
-
-//   // جلب عقار واحد حسب الـ id
-//   getPropertyById(id: number): Observable<IProperty> {
-//     return this.http.get<IProperty>(`${this.apiUrl}/properties/${id}`);
-//   }
-
-//   // إنشاء عقار جديد
-//   // createProperty(property: IProperty): Observable<IProperty> {
-//   //   return this.http.post<IProperty>(this.apiUrl, property);
-//   // }
-
-//   // // تعديل عقار
-//   // updateProperty(id: number, property: IProperty): Observable<IProperty> {
-//   //   return this.http.put<IProperty>(`${this.apiUrl}/${id}`, property);
-//   // }
-
-//   // حذف عقار
-//   // deleteProperty(id: number): Observable<any> {
-//   //   return this.http.delete(`${this.apiUrl}/${id}`);
-//   // }
-//   getByCityOrArea(searchData: string): Observable<IProperty[]> {
-//     return this.http.get<IProperty[]>(`${this.apiUrl}/ByCity?cityName=${searchData}`);
-//   }
-// }
-
-
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { IProperty } from '../../models/iproperty';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PropertyService {
-  private apiUrl = 'https://localhost:7030/api/Client'; // غيرها حسب API الخاص بك
+  private apiUrl = 'https://localhost:7030/api/Client';
 
   constructor(private http: HttpClient) {}
 
   /**
-   * جلب كل العقارات
+   * جلب كل العقارات (Buy + Rent مع بعض)
    * @returns Observable<IProperty[]>
    */
   getAllProperties(): Observable<IProperty[]> {
-    return this.http.get<IProperty[]>(`${this.apiUrl}/properties`);
+    // جلب عقارات البيع والإيجار في نفس الوقت
+    return forkJoin({
+      forSale: this.getPropertiesForSale().pipe(catchError(() => of([]))),
+      forRent: this.getPropertiesForRent().pipe(catchError(() => of([])))
+    }).pipe(
+      map(result => {
+        console.log('🏠 For Sale properties:', result.forSale.length);
+        console.log('🏘️ For Rent properties:', result.forRent.length);
+        
+        // دمج النتيجتين
+        const allProperties = [...result.forSale, ...result.forRent];
+        console.log('📊 Total properties:', allProperties.length);
+        
+        return allProperties;
+      })
+    );
+  }
+
+  /**
+   * جلب عقارات البيع فقط
+   * @returns Observable<IProperty[]>
+   */
+  getPropertiesForSale(): Observable<IProperty[]> {
+    return this.http.get<any>(`${this.apiUrl}/properties/ForSale`).pipe(
+      map(response => {
+        // معالجة الـ response
+        let data: IProperty[] = this.extractPropertiesArray(response);
+        
+        // إضافة purpose = "Buy" لكل عقار
+        data = data.map(property => ({
+          ...property,
+          purpose: 'Buy'
+        }));
+        
+        console.log('✅ For Sale properties processed:', data.length);
+        return data;
+      })
+    );
+  }
+
+  /**
+   * جلب عقارات الإيجار فقط
+   * @returns Observable<IProperty[]>
+   */
+  getPropertiesForRent(): Observable<IProperty[]> {
+    return this.http.get<any>(`${this.apiUrl}/properties/ForRent`).pipe(
+      map(response => {
+        // معالجة الـ response
+        let data: IProperty[] = this.extractPropertiesArray(response);
+        
+        // إضافة purpose = "Rent" لكل عقار
+        data = data.map(property => ({
+          ...property,
+          purpose: 'Rent'
+        }));
+        
+        console.log('✅ For Rent properties processed:', data.length);
+        return data;
+      })
+    );
   }
 
   /**
@@ -118,8 +131,23 @@ export class PropertyService {
     );
   }
 
-  // ملاحظات:
-  // - تأكد من أن API URL صحيح
-  // - استبدل المسارات حسب API الخاص بك
-  // - تأكد من أن النموذج IProperty يتطابق مع البيانات المرجعة من API
+  /**
+   * استخراج array من العقارات من الـ response
+   * @param response الـ response من الـ API
+   * @returns IProperty[]
+   */
+  private extractPropertiesArray(response: any): IProperty[] {
+    if (Array.isArray(response)) {
+      return response;
+    } else if (response?.value && Array.isArray(response.value)) {
+      return response.value;
+    } else if (response?.items && Array.isArray(response.items)) {
+      return response.items;
+    } else if (response?.data && Array.isArray(response.data)) {
+      return response.data;
+    }
+    
+    console.warn('⚠️ Unexpected response format:', response);
+    return [];
+  }
 }

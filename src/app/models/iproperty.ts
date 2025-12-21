@@ -38,6 +38,6 @@ export interface IProperty {
   CreatedAt?: Date;
  
 }
-export const phone: string = '+20115851932';
-export const Call: string = '+20115851932';
+export const phone: string = '+201158519320';
+export const Call: string = '+201158519320';
 export const email: string = 'abrarbadr02@gmail.com';
