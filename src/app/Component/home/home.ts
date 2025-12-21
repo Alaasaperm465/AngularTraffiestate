@@ -6,6 +6,7 @@ import { IProperty, phone, Call, email } from '../../models/iproperty';
 import { HttpClient } from '@angular/common/http';
 import { PropertyService } from '../../Services/PropertyService/property';
 import { RouterLink } from '@angular/router';
+import { FavoriteService } from '../../Services/favorite-service';
 
 
 @Component({
@@ -27,7 +28,10 @@ export class Home implements OnInit {
 
   email = email;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  favoritesIds: number[] = [];
+
+
+  constructor(private fb: FormBuilder, private http: HttpClient,private favoriteService: FavoriteService,private propertyService: PropertyService) {
     this.searchForm = this.fb.group({
       city: [''],
       propertyType: [''],
@@ -86,6 +90,18 @@ export class Home implements OnInit {
       this.allProperties = data;
       this.properties = data;
     });
+
+
+      // جلب المفضلات
+ this.favoriteService.getMyFavorites().subscribe({
+  next: (res: any) => {
+    const items = res?.value?.items ?? [];
+    this.favoritesIds = items.map((f: any) => f.propertyId);
+  },
+  error: err => console.error(err)
+});
+
+
   }
 
   setActiveTab(tabId: string): void {
@@ -104,9 +120,29 @@ export class Home implements OnInit {
 
 
 
+  // toggleFavorite(propertyId: number): void {
+  //   const property = this.properties.find(p => p.id === propertyId);
+  //   if (property) property.isFavorite = !property.isFavorite;
+  // }
+
+
+
+   // ===== 4️⃣ دالة toggleFavorite =====
   toggleFavorite(propertyId: number): void {
-    const property = this.properties.find(p => p.id === propertyId);
-    if (property) property.isFavorite = !property.isFavorite;
+    if (this.favoritesIds.includes(propertyId)) {
+      this.favoriteService.removeFromFavorites(propertyId).subscribe(() => {
+        this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
+      });
+    } else {
+      this.favoriteService.addToFavorites(propertyId).subscribe(() => {
+        this.favoritesIds.push(propertyId);
+      });
+    }
+  }
+
+  // ===== 5️⃣ دالة isFavorite =====
+  isFavorite(propertyId: number): boolean {
+    return this.favoritesIds.includes(propertyId);
   }
 
   @HostListener('window:scroll', [])

@@ -97,13 +97,15 @@
           <div class="property-image">
             <img [src]="property.imageUrl" [alt]="property.title">
             <div class="property-type">{{ property.propertyType }}</div>
-            <button class="favorite-btn">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M10 17L3.5 10.5C2.5 9.5 2 8.3 2 7C2 4.2 4.2 2 7 2C8.3 2 9.5 2.5 10.5 3.5L10 4L9.5 3.5C10.5 2.5 11.7 2 13 2C15.8 2 18 4.2 18 7C18 8.3 17.5 9.5 16.5 10.5L10 17Z"
-                  [attr.fill]="property.isFavorite ? '#E63946' : 'none'" stroke="#E63946" stroke-width="1.5" />
-              </svg>
-            </button>
+<button class="favorite-btn" (click)="toggleFavorite(property.id); $event.stopPropagation()">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <path
+      d="M10 17L3.5 10.5C2.5 9.5 2 8.3 2 7C2 4.2 4.2 2 7 2C8.3 2 9.5 2.5 10.5 3.5L10 4L9.5 3.5C10.5 2.5 11.7 2 13 2C15.8 2 18 4.2 18 7C18 8.3 17.5 9.5 16.5 10.5L10 17Z"
+      [attr.fill]="isFavorite(property.id) ? '#E63946' : 'none'" stroke="#E63946" stroke-width="1.5" />
+  </svg>
+</button>
+
+
           </div>
           <div class="property-details">
             <div class="price">{{ property.price }}</div>

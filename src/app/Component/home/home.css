@@ -17,6 +17,12 @@ body {
   padding: 0 20px;
 }
 
+.favorite-btn svg path[fill="#E63946"] {
+  fill: #E63946;
+}
+
+
+
 /* Hero Section */
 .property-search-container {
   min-height: 100vh;
@@ -790,36 +796,36 @@ body {
     flex-direction: column;
     gap: 16px;
   }
-  
+
   .main-nav {
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
   }
-  
+
   .hero-title {
     font-size: 32px;
   }
-  
+
   .hero-subtitle {
     font-size: 18px;
   }
-  
+
   .search-inputs {
     grid-template-columns: 1fr;
   }
-  
+
   .properties-grid,
   .projects-slider,
   .areas-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .footer-content {
     grid-template-columns: 1fr;
     text-align: center;
   }
-  
+
   .footer-bottom {
     flex-direction: column;
     text-align: center;

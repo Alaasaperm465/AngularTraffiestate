@@ -1,0 +1,146 @@
+<br>
+<br>
+<br>
+<div class="container my-4">
+
+  <!-- Header -->
+  <h3 class="mb-3">My account</h3>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a class="nav-link active">
+        Saved properties ({{ favorites.length }})
+      </a>
+    </li>
+  </ul>
+
+  <!-- Empty Favorites Message -->
+  <div class="text-center my-5" *ngIf="favorites.length === 0">
+    <img src="https://static-assets.propertyfinder.com/icons/saved-properties.svg" alt="No favorites" class="img-fluid mb-3" style="max-width:200px;">
+    <h5>Your favorites list is empty</h5>
+    <p>Start adding properties you like to your favorites!</p>
+  </div>
+
+  <!-- Favorite Card -->
+  <div
+    class="favorite-card mb-4"
+    *ngFor="let fav of favorites"
+    [routerLink]="['/property', fav.property.id]"
+    style="cursor: pointer;"
+  >
+    <div class="row g-0">
+
+      <!-- Image -->
+      <div class="col-md-4 image-wrapper">
+        <img
+          [src]="fav.property.imageUrl"
+          class="img-fluid h-100 w-100"
+          alt="property"
+        />
+      </div>
+
+      <!-- Details -->
+      <div class="col-md-8 p-3 position-relative">
+
+        <small class="text-muted">
+          {{ fav.property.propertyType }}
+        </small>
+
+        <h4 class="price mt-1">
+          {{ fav.property.price | number }} EGP
+        </h4>
+
+        <p class="title">
+          {{ fav.property.title }}
+        </p>
+
+        <p class="location">
+          <i class="bi bi-geo-alt"></i>
+          {{ fav.property.location }}
+        </p>
+
+        <!-- Property Info -->
+        <div class="property-info my-2">
+          <span>
+            <i class="bi bi-door-closed"></i>
+            {{ fav.property.rooms }}
+          </span>
+          <span>
+            <i class="bi bi-droplet"></i>
+            {{ fav.property.bathrooms }}
+          </span>
+          <span>
+            <i class="bi bi-arrows-fullscreen"></i>
+            {{ fav.property.area }} sqm
+          </span>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions mt-3">
+          <a href="tel:+201200003943" class="btn btn-outline-primary btn-sm">
+            Call
+          </a>
+
+          <a href="mailto:example@example.com" class="btn btn-outline-secondary btn-sm">
+            Email
+          </a>
+
+          <a href="https://wa.me/201200003943" target="_blank" class="btn btn-outline-success btn-sm">
+            WhatsApp
+          </a>
+
+          <button
+            class="btn btn-light favorite-btn btn-sm"
+            [title]="isFavorite(fav.propertyId) ? 'Remove from favorites' : 'Add to favorites'"
+            (click)="toggleFavorite(fav.propertyId); $event.stopPropagation()"
+          >
+            <span [class.filled]="isFavorite(fav.propertyId)">❤️</span>
+          </button>
+
+        </div>
+
+        <small class="text-muted d-block mt-2">
+          Listed {{ fav.property.CreatedAt | date:'shortDate' }}
+        </small>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div
+    class="d-flex justify-content-between align-items-center mt-4"
+    *ngIf="favorites.length > 0"
+  >
+    <button
+      class="btn btn-outline-secondary"
+      [disabled]="pageNumber === 1"
+      (click)="prevPage()"
+    >
+      ‹ Previous
+    </button>
+
+    <span class="fw-bold">
+      Page {{ pageNumber }}
+    </span>
+
+    <button
+      class="btn btn-outline-secondary"
+      [disabled]="!hasNextPage"
+      (click)="nextPage()"
+    >
+      Next ›
+    </button>
+  </div>
+
+  <!-- Delete all -->
+  <!-- Delete all -->
+<div class="text-center mt-4" *ngIf="favorites.length > 0">
+  <button class="btn btn-link text-danger" (click)="deleteAll()">
+    <i class="bi bi-trash"></i> Delete All
+  </button>
+</div>
+
+
+</div>
