@@ -25,6 +25,9 @@ export class Home implements OnInit, OnDestroy {
   phone = phone;
   email = email;
   favoritesIds: number[] = [];
+  selectedTypes: string[] = [];
+// properties: IProperty[] = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -42,14 +45,12 @@ export class Home implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('🚀 Component initialized');
     
-    // جلب جميع العقارات من الخدمة
     this.propertyService.getAllProperties().subscribe({
       next: (data: IProperty[]) => {
         console.log('📦 API Response received');
         console.log('✅ Properties loaded:', data);
         console.log('📊 Total properties loaded:', data.length);
         
-        // عرض بعض الأمثلة
         if (data.length > 0) {
           console.log('🏠 Sample property:', data[0]);
           console.log('📋 Available purposes:', [...new Set(data.map(p => p.purpose))]);
@@ -59,17 +60,15 @@ export class Home implements OnInit, OnDestroy {
         
         this.allProperties = data;
         
-        // عرض كل العقارات في البداية
         this.properties = [...data];
         
         console.log('✅ All properties displayed:', this.properties.length);
       },
       error: (err) => {
-        console.error('❌ Error loading properties:', err);
+        console.error(' Error loading properties:', err);
       }
     });
 
-    // جلب المفضلات
     this.favoriteService.getMyFavorites().subscribe({
       next: (res: any) => {
         const items = res?.value?.items ?? res?.items ?? [];

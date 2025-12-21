@@ -130,6 +130,32 @@ export class PropertyService {
       `${this.apiUrl}/search?${queryString}`
     );
   }
+//***************************************************** */
+sortByPrice(order: 'asc' | 'desc') {
+  return this.http.get<IProperty[]>(
+    `${this.apiUrl}/properties/sort/price/${order}`
+  );
+}
+
+sortByNewest() {
+  return this.http.get<IProperty[]>(
+    `${this.apiUrl}/properties/sort/newest`
+  );
+}
+
+sortByPopular() {
+  return this.http.get<IProperty[]>(
+    `${this.apiUrl}/properties/sort/popular`
+  );
+}
+filterByPropertyType(type: string) {
+  return this.http.get<IProperty[]>(
+    `${this.apiUrl}/properties/by-type?type=${type}`
+  );
+}
+
+
+
 
   /**
    * استخراج array من العقارات من الـ response
