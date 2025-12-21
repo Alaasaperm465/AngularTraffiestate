@@ -1,7 +1,11 @@
+import { IProperty } from "./iproperty";
+
 export interface Favorite {
     id: number;
     propertyId: number;
     userId: number;
-    title?: string;
-    imageUrl?: string;
+      property: IProperty;
+
+    // title?: string;
+    // imageUrl?: string;
 }

@@ -2,17 +2,17 @@
 <header class="pf-header">
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom fixed-top pf-navbar">
     <div class="container-fluid px-3 px-lg-4">
-      
+
       <!-- Logo & Mobile Toggle -->
       <div class="d-flex align-items-center">
         <!-- Mobile Toggle Button -->
-        <button class="navbar-toggler d-lg-none me-3 border-0" type="button" 
-                data-bs-toggle="collapse" data-bs-target="#navbarContent" 
-                aria-controls="navbarContent" aria-expanded="false" 
+        <button class="navbar-toggler d-lg-none me-3 border-0" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false"
                 aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
           <img
@@ -28,18 +28,18 @@
       <!-- Center Navigation -->
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav mx-auto align-items-center gap-3 gap-lg-4 pf-nav-links">
-          
+
           <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded" 
-               routerLink="/buy" 
+            <a class="nav-link px-3 py-2 rounded"
+               routerLink="/buy"
                routerLinkActive="active">
               Buy
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded" 
-               routerLink="/rent" 
+            <a class="nav-link px-3 py-2 rounded"
+               routerLink="/rent"
                routerLinkActive="active">
               Rent
             </a>
@@ -47,32 +47,32 @@
 
           <li class="nav-item">
             <!-- عنصر باللغة العربية -->
-            <a class="nav-link px-3 py-2 rounded arabic-text" 
-               routerLink="/properties" 
+            <a class="nav-link px-3 py-2 rounded arabic-text"
+               routerLink="/properties"
                routerLinkActive="active">
               العقارات
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded" 
-               routerLink="/projects" 
+            <a class="nav-link px-3 py-2 rounded"
+               routerLink="/projects"
                routerLinkActive="active">
               New Projects
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded" 
-               routerLink="/commercial" 
+            <a class="nav-link px-3 py-2 rounded"
+               routerLink="/commercial"
                routerLinkActive="active">
               Commercial
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded" 
-               routerLink="/agents" 
+            <a class="nav-link px-3 py-2 rounded"
+               routerLink="/agents"
                routerLinkActive="active">
               Find Agent
             </a>
@@ -88,28 +88,28 @@
               Explore
               <span class="ms-1 pf-arrow" [class.rotate-180]="isExploreOpen">▾</span>
             </button>
-            <ul class="pf-dropdown-menu shadow border-0 rounded-3 p-2" 
+            <ul class="pf-dropdown-menu shadow border-0 rounded-3 p-2"
                 [class.show]="isExploreOpen">
               <li>
-                <a routerLink="/areas" class="dropdown-item px-3 py-2 rounded-2" 
+                <a routerLink="/areas" class="dropdown-item px-3 py-2 rounded-2"
                    (click)="isExploreOpen = false">
                   Areas
                 </a>
               </li>
               <li>
-                <a routerLink="/developers" class="dropdown-item px-3 py-2 rounded-2" 
+                <a routerLink="/developers" class="dropdown-item px-3 py-2 rounded-2"
                    (click)="isExploreOpen = false">
                   Developers
                 </a>
               </li>
               <li>
-                <a routerLink="/guides" class="dropdown-item px-3 py-2 rounded-2" 
+                <a routerLink="/guides" class="dropdown-item px-3 py-2 rounded-2"
                    (click)="isExploreOpen = false">
                   Guides
                 </a>
               </li>
               <li>
-                <a routerLink="/insights" class="dropdown-item px-3 py-2 rounded-2" 
+                <a routerLink="/insights" class="dropdown-item px-3 py-2 rounded-2"
                    (click)="isExploreOpen = false">
                   Market Insights
                 </a>
@@ -122,24 +122,25 @@
       <!-- Right Actions -->
       <div class="pf-actions d-flex align-items-center gap-2 gap-lg-3">
         <!-- Favorites Button -->
-        <button class="pf-icon-btn btn btn-light rounded-circle p-2 position-relative" 
-                aria-label="Favorites">
+        <button class="pf-icon-btn btn btn-light rounded-circle p-2 position-relative"
+                aria-label="Favorites"
+                 (click)="goToFavorites()">
           <i class="bi bi-heart fs-5"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                 style="font-size: 0.6rem;">
-            3
+
           </span>
         </button>
 
         <!-- User Avatar / Login -->
         <div class="dropdown">
-          
+
             <i class="bi bi-person-circle fs-5"></i>
             <a class="pf-user-avatar btn btn-outline-primary d-flex align-items-center gap-2 rounded-pill px-3 py-2"
             routerLink="/login" routerLinkActive="active">
             <i class="bi bi-person-circle fs-5"></i>
             Login
-            </a>          
+            </a>
           <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-2 mt-2">
             <li>
               <a class="dropdown-item px-3 py-2 rounded-2" routerLink="/login" routerLinkActive="active">
