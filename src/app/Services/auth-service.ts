@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-// import { environment } from '../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IUser } from '../models/iuser';
 import {
@@ -36,7 +35,6 @@ export class AuthService {
   userSubject: BehaviorSubject<IUser | null>;
   isAuthenticatedSubject: BehaviorSubject<boolean>;
 
-  // Public observables
   user$: Observable<IUser | null>;
   isAuthenticated$: Observable<boolean>;
 
@@ -44,14 +42,12 @@ export class AuthService {
     this.userSubject = new BehaviorSubject<IUser | null>(null);
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
-    // properly initialize public observables
     this.user$ = this.userSubject.asObservable();
     this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
     setTimeout(() => this.initializeAuth(), 0);
   }
 
-  //  وظيفة جديدة لتحميل البيانات من localStorage
   private initializeAuth(): void {
     const token = this.getToken();
     const user = this.getUserFromStorage();
@@ -63,7 +59,6 @@ export class AuthService {
         this.refreshToken().subscribe({
           next: () => {
             console.log(' Token refreshed on init');
-            //  جلب الـ user المحدث بعد الـ refresh
             const updatedUser = this.getUserFromStorage();
             this.userSubject.next(updatedUser);
             this.isAuthenticatedSubject.next(true);
@@ -85,7 +80,6 @@ export class AuthService {
     }
   }
 
-  // تحقق من انتهاء الصلاحية كل دقيقة
   private startTokenExpiryCheck(): void {
     this.stopTokenExpiryCheck();
     console.log('Starting token expiry check...');
@@ -111,7 +105,6 @@ export class AuthService {
       const expiresIn = decoded.exp * 1000 - Date.now();
       const threeMinutes = 3 * 60 * 1000;
 
-      //  تجديد استباقي قبل 3 دقائق من الانتهاء
       if (expiresIn < threeMinutes && expiresIn > 0) {
         console.log(' Token expiring soon, refreshing...');
 
@@ -125,7 +118,6 @@ export class AuthService {
           },
         });
       } else if (expiresIn <= 0) {
-        // ⏰ Token منتهي بالفعل
         console.log(' Token expired, attempting immediate refresh...');
 
         this.refreshToken().subscribe({
@@ -133,10 +125,9 @@ export class AuthService {
           error: () => this.handleRefreshFailure(),
         });
       }
-    }, 60000); // كل دقيقة
+    }, 60000);
   }
 
-  // method جديدة لإيقاف الـ Timer
   private stopTokenExpiryCheck(): void {
     if (this.tokenCheckInterval) {
       clearInterval(this.tokenCheckInterval);
@@ -167,7 +158,7 @@ export class AuthService {
     return this.http.get<{ roles: string[] }>(`${environment.apiUrl}/Account/Get-Roles`).pipe(
       retry(3),
       map((response) => {
-        console.log('API Response:', response); // للتأكد من شكل الـ response
+        console.log('API Response:', response);
         return response.roles;
       })
     );
@@ -199,8 +190,8 @@ export class AuthService {
     return this.http
       .post<void>(
         `${environment.apiUrl}/Account/logout`,
-        {}, // body فارغ (لا نحتاج إرسال بيانات)
-        { withCredentials: true } // لإرسال الـ Cookie
+        {},
+        { withCredentials: true }
       )
       .pipe(
         tap(() => {
@@ -218,7 +209,6 @@ export class AuthService {
   }
 
   refreshToken(): Observable<IloginResponse> {
-    // إذا كان هناك refresh قيد التنفيذ، ارجع نفس الـ Observable
     if (this.refreshTokenInProgress && this.refreshTokenSubject) {
       return this.refreshTokenSubject;
     }
@@ -227,20 +217,16 @@ export class AuthService {
     this.refreshTokenSubject = this.http
       .post<IloginResponse>(
         `${environment.apiUrl}/Account/refresh-token`,
-        {}, // body فارغ (الـ Token موجود في الـ Cookie)
-        { withCredentials: true } // ضروري لإرسال الـ Cookie
+        {},
+        { withCredentials: true }
       )
       .pipe(
         tap((response: IloginResponse) => {
-          // خطوة 1: التحقق من وجود Token جديد
           if (response.accessToken) {
-            // خطوة 2: حفظ الـ Access Token الجديد
             this.setToken(response.accessToken);
-            // خطوة 3: فك تشفير الـ Token لتحديث بيانات المستخدم
             const userInfo = this.decodeToken(response.accessToken);
             if (userInfo) {
               const user = this.extractUserFromToken(userInfo);
-              // خطوة 5: تحديث البيانات في localStorage و BehaviorSubject
               localStorage.setItem(this.USER_KEY, JSON.stringify(user));
               this.userSubject.next(user);
               console.log('Token refreshed successfully');
@@ -269,10 +255,9 @@ export class AuthService {
     return this.refreshTokenInProgress;
   }
 
-  //  Setter مع تحديث الـ cache
   private setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
-    this.clearTokenCache(); // مسح الـ cache القديم
+    this.clearTokenCache();
   }
 
   getToken(): string | null {
@@ -285,16 +270,12 @@ export class AuthService {
     }
 
     try {
-      // خطوة 1: فصل الـ Token ونأخذ الـ Payload (الجزء الثاني)
       const payload = token.split('.')[1];
       const decoded = JSON.parse(atob(payload)) as ITokenClaims;
 
       this.cachedTokenString = token;
       this.cachedTokenClaims = decoded;
-      //  Log للتأكد من القيم (للـ debugging)
       console.log('Decoded Token:', decoded);
-      // console.log('Token Claims:', decoded);
-      // console.log('Available Keys:', Object.keys(decoded));
 
       return decoded;
     } catch (error) {
@@ -305,15 +286,11 @@ export class AuthService {
   }
 
   isTokenExpired(token?: string | null): boolean {
-    // خطوة 1: إذا لم يُرسل token، نجلب المحفوظ
     if (!token) {
       token = this.getToken();
     }
-    // خطوة 2: إذا لا يوجد token أصلاً، نعتبره منتهي
     if (!token) return true;
-    // خطوة 3: فك تشفير الـ Token
     const decoded = this.decodeToken(token);
-    // خطوة 4: إذا فشل فك التشفير أو لا يوجد exp، نعتبره منتهي
     if (!decoded || !decoded.exp) return true;
     const expirationTime = decoded.exp * 1000;
     const currentTime = Date.now();
@@ -327,11 +304,9 @@ export class AuthService {
   }
 
   private getUserFromStorage(): IUser | null {
-    // خطوة 1: جلب النص من localStorage
     const userJson = localStorage.getItem(this.USER_KEY);
     if (userJson) {
       try {
-        // خطوة 2: تحويل النص JSON إلى Object
         return JSON.parse(userJson);
       } catch (error) {
         console.error('Error parsing user from storage:', error);
@@ -348,7 +323,6 @@ export class AuthService {
 
   getUserRole(): string | null {
     const user = this.getCurrentUser();
-    // إذا كان user = null، لن يحاول الوصول لـ role (يمنع الـ Error)
     return user?.roleName || null;
   }
 
@@ -413,7 +387,6 @@ export class AuthService {
   }
 
   private getClaimValue(decoded: any, claimType: string): string | null {
-    // محاولة 1: الاسم القصير (مثل: nameid, unique_name, email, role)
     const shortNames: { [key: string]: string } = {
       nameidentifier: 'nameid',
       name: 'unique_name',
@@ -426,7 +399,6 @@ export class AuthService {
       return decoded[shortName];
     }
 
-    // محاولة 2: الاسم الطويل (مثل: http://schemas.xmlsoap.org/...)
     const longNames: { [key: string]: string } = {
       nameidentifier: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
       name: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
