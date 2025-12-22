@@ -64,12 +64,9 @@
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'House'}); showPropertyTypeDropdown = false">
                   <i class="bi bi-house-door"></i>
-                  House
+                  land
                 </div>
-                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Studio'}); showPropertyTypeDropdown = false">
-                  <i class="bi bi-door-open"></i>
-                  Studio
-                </div>
+                
               </div>
             </div>
 
@@ -309,10 +306,13 @@
               <span>Villa</span>
             </label>
             <label class="filter-option">
-              <input type="checkbox" value="house" (change)="onFilterChange($event)">
-              <span>land</span>
+<input type="checkbox" value="House" (change)="onPropertyTypeChange($event)">
+              <span>House</span>
             </label>
-            
+            <label class="filter-option">
+<input type="checkbox" value="Studio" (change)="onPropertyTypeChange($event)">
+              <span>Studio</span>
+            </label>
           </div>
         </div>
 
