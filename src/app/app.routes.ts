@@ -14,6 +14,7 @@ import { PropertyDetails } from './Component/property-details/property-details';
 import { ForgetPassword } from './Component/forget-password/forget-password';
 import { ResetPassword } from './Component/reset-password/reset-password';
 import { FaviroteCom } from './Component/favirote-com/favirote-com';
+import { SuccessComponent } from './Component/success/success';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -25,13 +26,13 @@ export const routes: Routes = [
   {
     path: 'rent',
     component: Rent,
-    title: 'Rent Properties',
-    canActivate: [authGuardGuard]},
+    title: 'Rent Properties'},
   { path: 'buy', component: Buy, title: 'Buy Properties' },
   { path: 'addproperty', component: AddProperty, title: 'Add Property' },
   { path: 'ownerDashboard', component: OwnerDashboard, title: 'Owner Dashboard' },
   { path: 'forget-password', component: ForgetPassword },
   { path: 'reset-password', component: ResetPassword },
+  { path: 'success', component: SuccessComponent },
   { path: '**', component: NotFound },
 
   //************************************************************************************************************************** */

@@ -1,227 +1,402 @@
-<div class="container mt-4 mb-5">
-  <h2 class="mb-4">Add Property</h2>
+<!-- Add Property - Multi Step Form -->
+<div class="add-property-wrapper">
 
-  <form #f="ngForm" (ngSubmit)="submit(f)" novalidate>
-
-    <!-- Title -->
-    <div class="mb-3">
-      <label class="form-label">Title *</label>
-      <input
-        type="text"
-        class="form-control"
-        name="title"
-        [(ngModel)]="property.title"
-        required
-        minlength="3"
-        #title="ngModel"
-      />
-      @if(title.invalid && title.touched){
-        <small class="text-danger">
-          Title is required (min 3 characters)
-        </small>
-      }
+  <!-- Header Hero Section -->
+  <section class="add-property-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Add Your Property</h1>
+      <p class="hero-subtitle">أضف عقارك وابدأ في الكسب</p>
     </div>
+  </section>
 
-    <!-- Description -->
-    <div class="mb-3">
-      <label class="form-label">Description</label>
-      <textarea
-        class="form-control"
-        rows="3"
-        name="description"
-        [(ngModel)]="property.description">
-      </textarea>
-    </div>
+  <!-- Main Content -->
+  <div class="container">
+    <div class="add-property-container">
 
-    <!-- Price & Area Space -->
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Price *</label>
-        <input
-          type="number"
-          class="form-control"
-          name="price"
-          [(ngModel)]="property.price"
-          required
-          min="1"
-          #price="ngModel"
-        />
-        @if(price.invalid && price.touched){
-          <small class="text-danger">
-            Valid price is required
-          </small>
-        }
+      <!-- Progress Steps -->
+      <div class="steps-container">
+        <div class="steps-wrapper">
+          <div
+            *ngFor="let step of [1, 2, 3, 4]"
+            class="step-item"
+            [class.active]="isStepActive(step)"
+            [class.completed]="isStepCompleted(step)"
+            (click)="goToStep(step)">
+            <div class="step-number">
+              <span *ngIf="!isStepCompleted(step)">{{ step }}</span>
+              <i *ngIf="isStepCompleted(step)" class="bi bi-check-lg"></i>
+            </div>
+            <div class="step-info">
+              <span class="step-label">Step {{ step }}</span>
+              <span class="step-title">{{ getStepTitle(step) }}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Area Space (m²)</label>
-        <input
-          type="number"
-          class="form-control"
-          name="areaSpace"
-          [(ngModel)]="property.areaSpace"
-          min="1"
-        />
+      <!-- Form Container -->
+      <form class="form-container" [ngSwitch]="currentStep">
+
+        <!-- STEP 1: BASIC INFORMATION -->
+        <div *ngSwitchCase="1" class="form-step">
+          <div class="step-header">
+            <h2 class="step-title-main">{{ getStepTitle(1) }}</h2>
+            <p class="step-description">{{ getStepDescription(1) }}</p>
+          </div>
+
+          <div class="form-group">
+            <label for="title" class="form-label">Property Title <span class="required">*</span></label>
+            <input
+              type="text"
+              id="title"
+              class="form-control"
+              [(ngModel)]="property.title"
+              name="title"
+              placeholder="e.g., Modern Apartment in Downtown Cairo"
+              [class.error]="showValidationErrors && property.title.trim() === ''">
+            <small class="error-text" *ngIf="showValidationErrors && property.title.trim() === ''">
+              Title is required
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">Description <span class="required">*</span></label>
+            <textarea
+              id="description"
+              class="form-control textarea"
+              [(ngModel)]="property.description"
+              name="description"
+              rows="5"
+              placeholder="Describe your property in detail..."
+              [class.error]="showValidationErrors && property.description.trim() === ''"></textarea>
+            <small class="error-text" *ngIf="showValidationErrors && property.description.trim() === ''">
+              Description is required
+            </small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="propertyType" class="form-label">Property Type <span class="required">*</span></label>
+              <select
+                id="propertyType"
+                class="form-control"
+                [(ngModel)]="property.propertyType"
+                name="propertyType"
+                [class.error]="showValidationErrors && property.propertyType === ''">
+                <option value="">Select Type</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Villa">Villa</option>
+                <option value="House">House</option>
+                <option value="Studio">Studio</option>
+                <option value="Townhouse">Townhouse</option>
+              </select>
+              <small class="error-text" *ngIf="showValidationErrors && property.propertyType === ''">
+                Property type is required
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="purpose" class="form-label">Purpose <span class="required">*</span></label>
+              <select
+                id="purpose"
+                class="form-control"
+                [(ngModel)]="property.purpose"
+                name="purpose"
+                [class.error]="showValidationErrors && property.purpose === ''">
+                <option value="">Select Purpose</option>
+                <option value="Buy">For Sale</option>
+                <option value="Rent">For Rent</option>
+              </select>
+              <small class="error-text" *ngIf="showValidationErrors && property.purpose === ''">
+                Purpose is required
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: LOCATION -->
+        <div *ngSwitchCase="2" class="form-step">
+          <div class="step-header">
+            <h2 class="step-title-main">{{ getStepTitle(2) }}</h2>
+            <p class="step-description">{{ getStepDescription(2) }}</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city" class="form-label">City <span class="required">*</span></label>
+              <select
+                id="city"
+                class="form-control"
+                [(ngModel)]="property.cityId"
+                name="cityId"
+                (change)="onCityChange()"
+                [class.error]="showValidationErrors && property.cityId === 0">
+                <option value="0">Select City</option>
+                <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+              </select>
+              <small class="error-text" *ngIf="showValidationErrors && property.cityId === 0">
+                City is required
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="area" class="form-label">Area <span class="required">*</span></label>
+              <select
+                id="area"
+                class="form-control"
+                [(ngModel)]="property.areaId"
+                name="areaId"
+                [disabled]="areas.length === 0"
+                [class.error]="showValidationErrors && property.areaId === 0">
+                <option value="0">Select Area</option>
+                <option *ngFor="let area of areas" [value]="area.id">{{ area.name }}</option>
+              </select>
+              <small class="error-text" *ngIf="showValidationErrors && property.areaId === 0">
+                Area is required
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="location" class="form-label">Street Address <span class="required">*</span></label>
+            <input
+              type="text"
+              id="location"
+              class="form-control"
+              [(ngModel)]="property.location"
+              name="location"
+              placeholder="Enter the exact street address"
+              [class.error]="showValidationErrors && property.location.trim() === ''">
+            <small class="error-text" *ngIf="showValidationErrors && property.location.trim() === ''">
+              Location is required
+            </small>
+          </div>
+        </div>
+
+        <!-- STEP 3: PROPERTY DETAILS -->
+        <div *ngSwitchCase="3" class="form-step">
+          <div class="step-header">
+            <h2 class="step-title-main">{{ getStepTitle(3) }}</h2>
+            <p class="step-description">{{ getStepDescription(3) }}</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="price" class="form-label">Price <span class="required">*</span></label>
+              <input
+                type="number"
+                id="price"
+                class="form-control"
+                [(ngModel)]="property.price"
+                name="price"
+                placeholder="0"
+                [class.error]="showValidationErrors && property.price === 0">
+              <small class="error-text" *ngIf="showValidationErrors && property.price === 0">
+                Price is required
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="areaSpace" class="form-label">Area Space (m²) <span class="required">*</span></label>
+              <input
+                type="number"
+                id="areaSpace"
+                class="form-control"
+                [(ngModel)]="property.areaSpace"
+                name="areaSpace"
+                placeholder="0"
+                [class.error]="showValidationErrors && property.areaSpace === 0">
+              <small class="error-text" *ngIf="showValidationErrors && property.areaSpace === 0">
+                Area space is required
+              </small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="rooms" class="form-label">Bedrooms <span class="required">*</span></label>
+              <input
+                type="number"
+                id="rooms"
+                class="form-control"
+                [(ngModel)]="property.rooms"
+                name="rooms"
+                placeholder="0"
+                [class.error]="showValidationErrors && property.rooms === 0">
+              <small class="error-text" *ngIf="showValidationErrors && property.rooms === 0">
+                Bedrooms is required
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="bathrooms" class="form-label">Bathrooms <span class="required">*</span></label>
+              <input
+                type="number"
+                id="bathrooms"
+                class="form-control"
+                [(ngModel)]="property.bathrooms"
+                name="bathrooms"
+                placeholder="0"
+                [class.error]="showValidationErrors && property.bathrooms === 0">
+              <small class="error-text" *ngIf="showValidationErrors && property.bathrooms === 0">
+                Bathrooms is required
+              </small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="finishingLevel" class="form-label">Finishing Level <span class="required">*</span></label>
+              <select
+                id="finishingLevel"
+                class="form-control"
+                [(ngModel)]="property.finishingLevel"
+                name="finishingLevel"
+                [class.error]="showValidationErrors && property.finishingLevel === ''">
+                <option value="">Select Level</option>
+                <option value="Standard">Standard</option>
+                <option value="Semi-Furnished">Semi-Furnished</option>
+                <option value="Luxury">Luxury</option>
+              </select>
+              <small class="error-text" *ngIf="showValidationErrors && property.finishingLevel === ''">
+                Finishing level is required
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="status" class="form-label">Status</label>
+              <select
+                id="status"
+                class="form-control"
+                [(ngModel)]="property.status"
+                name="status">
+                <option value="0">Active</option>
+                <option value="1">Inactive</option>
+                <option value="2">Pending</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: IMAGES -->
+        <div *ngSwitchCase="4" class="form-step">
+          <div class="step-header">
+            <h2 class="step-title-main">{{ getStepTitle(4) }}</h2>
+            <p class="step-description">{{ getStepDescription(4) }}</p>
+          </div>
+
+          <!-- Main Image -->
+          <div class="form-group">
+            <label class="form-label">Main Image <span class="required">*</span></label>
+            <div class="image-upload-area">
+              <div *ngIf="!mainImagePreview" class="upload-placeholder">
+                <i class="bi bi-cloud-upload"></i>
+                <p>Click or drag main image here</p>
+                <small>JPG, PNG (Max 5MB)</small>
+              </div>
+              <div *ngIf="mainImagePreview" class="image-preview-main">
+                <img [src]="mainImagePreview" alt="Main Image Preview">
+                <button type="button" class="remove-btn" (click)="removeMainImage()">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <input
+                type="file"
+                class="file-input"
+                accept="image/*"
+                (change)="onMainImageChange($event)">
+            </div>
+            <small class="error-text" *ngIf="showValidationErrors && !mainImage">
+              Main image is required
+            </small>
+          </div>
+
+          <!-- Additional Images -->
+          <div class="form-group">
+            <label class="form-label">Additional Images</label>
+            <div class="image-upload-area">
+              <div *ngIf="additionalImagesPreview.length === 0" class="upload-placeholder">
+                <i class="bi bi-cloud-upload"></i>
+                <p>Click or drag additional images here</p>
+                <small>Multiple files allowed</small>
+              </div>
+              <div class="images-preview-grid" *ngIf="additionalImagesPreview.length > 0">
+                <div
+                  *ngFor="let preview of additionalImagesPreview; let i = index"
+                  class="image-preview-item">
+                  <img [src]="preview" [alt]="'Additional Image ' + (i + 1)">
+                  <button type="button" class="remove-btn" (click)="removeAdditionalImage(i)">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
+                </div>
+              </div>
+              <input
+                type="file"
+                class="file-input"
+                accept="image/*"
+                multiple
+                (change)="onAdditionalImagesChange($event)">
+            </div>
+          </div>
+
+          <!-- Images Summary -->
+          <div class="images-summary">
+            <p>
+              <strong>Main Image:</strong>
+              <span *ngIf="mainImage">{{ mainImage.name }}</span>
+              <span *ngIf="!mainImage" class="text-danger">Not selected</span>
+            </p>
+            <p *ngIf="additionalImages.length > 0">
+              <strong>Additional Images:</strong> {{ additionalImages.length }} file(s)
+            </p>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Form Navigation Buttons -->
+      <div class="form-navigation">
+        <button
+          class="btn btn-secondary"
+          (click)="previousStep()"
+          [disabled]="currentStep === 1">
+          <i class="bi bi-chevron-right"></i>
+          Previous
+        </button>
+
+        <div class="progress-info">
+          <span class="progress-text">Step {{ currentStep }} of {{ totalSteps }}</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(currentStep / totalSteps) * 100"></div>
+          </div>
+        </div>
+
+        <button
+          *ngIf="currentStep < totalSteps"
+          class="btn btn-primary"
+          (click)="nextStep()">
+          Next
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <button
+          *ngIf="currentStep === totalSteps"
+          class="btn btn-success"
+          (click)="submit()"
+          [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">
+            <i class="bi bi-check-lg"></i>
+            Submit Property
+          </span>
+          <span *ngIf="isSubmitting">
+            <i class="bi bi-hourglass-split"></i>
+            Submitting...
+          </span>
+        </button>
       </div>
+
     </div>
+  </div>
 
-    <!-- Location -->
-    <div class="mb-3">
-      <label class="form-label">Location</label>
-      <input
-        type="text"
-        class="form-control"
-        name="location"
-        [(ngModel)]="property.location"
-      />
-    </div>
-
-    <!-- City -->
-    <div class="mb-3">
-      <label class="form-label">City *</label>
-      <select
-        class="form-select"
-        name="cityId"
-        [(ngModel)]="property.cityId"
-        (change)="onCityChange()"
-        required
-        #city="ngModel">
-
-        <option [ngValue]="null">Select City</option>
-
-        @for (c of cities; track c.id) {
-          <option [ngValue]="c.id">
-            {{ c.name }}
-          </option>
-        }
-      </select>
-      @if(city.invalid && city.touched){
-        <small class="text-danger">
-          City is required
-        </small>
-      }
-    </div>
-
-    <!-- Area -->
-    <div class="mb-3">
-      <label class="form-label">Area *</label>
-      <select
-        class="form-select"
-        name="areaId"
-        [(ngModel)]="property.areaId"
-        required
-        #area="ngModel">
-        <option [ngValue]="null">Select Area</option>
-        @for (a of areas; track a.id) {
-          <option [value]="a.id">
-            {{ a.name }}
-          </option>
-        }
-      </select>
-      @if(area.invalid && area.touched){
-        <small class="text-danger" >
-          Area is required
-        </small>
-      }
-    </div>
-
-    <!-- Rooms & Bathrooms -->
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Rooms</label>
-        <input
-          type="number"
-          class="form-control"
-          name="rooms"
-          [(ngModel)]="property.rooms"
-          min="0"
-        />
-      </div>
-
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Bathrooms</label>
-        <input
-          type="number"
-          class="form-control"
-          name="bathrooms"
-          [(ngModel)]="property.bathrooms"
-          min="0"
-        />
-      </div>
-    </div>
-
-    <!-- Finishing Level -->
-    <div class="mb-3">
-      <label class="form-label">Finishing Level</label>
-      <select
-        class="form-select"
-        name="finishingLevel"
-        [(ngModel)]="property.finishingLevel">
-        <option value="">Select</option>
-        <option value="Super Lux">Super Lux</option>
-        <option value="Lux">Lux</option>
-        <option value="Semi Finished">Semi Finished</option>
-        <option value="Not Finished">Not Finished</option>
-      </select>
-    </div>
-
-    <!-- Property Type -->
-    <div class="mb-3">
-      <label class="form-label">Property Type</label>
-      <select
-        class="form-select"
-        name="propertyType"
-        [(ngModel)]="property.propertyType">
-        <option value="">Select</option>
-        <option value="Apartment">Apartment</option>
-        <option value="Villa">Villa</option>
-        <option value="Land">Land</option>
-      </select>
-    </div>
-
-    <!-- Purpose -->
-    <div class="mb-3">
-      <label class="form-label">Purpose</label>
-      <select
-        class="form-select"
-        name="purpose"
-        [(ngModel)]="property.purpose">
-        <option value="">Select</option>
-        <option value="Sale">Sale</option>
-        <option value="Rent">Rent</option>
-      </select>
-    </div>
-
-    <!-- Main Image -->
-    <div class="mb-3">
-      <label class="form-label">Main Image *</label>
-      <input
-        type="file"
-        class="form-control"
-        (change)="onMainImageChange($event)"
-        accept="image/*"
-      />
-    </div>
-
-    <!-- Additional Images -->
-    <div class="mb-4">
-      <label class="form-label">Additional Images</label>
-      <input
-        type="file"
-        class="form-control"
-        multiple
-        accept="image/*"
-        (change)="onAdditionalImagesChange($event)"
-      />
-    </div>
-
-    <!-- Submit -->
-    <button
-      type="submit"
-      class="btn btn-success px-4"
-      [disabled]="isSubmitting">
-      {{ isSubmitting ? 'Saving...' : 'Add Property' }}
-    </button>
-
-  </form>
 </div>
