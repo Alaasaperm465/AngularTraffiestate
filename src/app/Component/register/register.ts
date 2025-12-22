@@ -120,4 +120,30 @@ export class Register implements OnInit {
       error: (err) => console.error(err),
     });
   }
+
+  // Add these methods to your component.ts file
+// Add these methods to your component.ts file
+registerWithGoogle() {
+  // Add your Google OAuth registration logic here
+  console.log('Register with Google clicked');
+  // Example: this.authService.googleSignIn();
+}
+
+registerWithFacebook() {
+  // Add your Facebook OAuth registration logic here
+  console.log('Register with Facebook clicked');
+  // Example: this.authService.facebookSignIn();
+}
+
+// Keep the existing password toggle methods
+showPassword = false;
+showConfirmPassword = false;
+
+togglePasswordVisibility() {
+  this.showPassword = !this.showPassword;
+}
+
+toggleConfirmPasswordVisibility() {
+  this.showConfirmPassword = !this.showConfirmPassword;
+}
 }

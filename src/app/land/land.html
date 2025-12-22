@@ -1,0 +1,276 @@
+<div class="land-container">
+
+  <!-- ================= HERO ================= -->
+  <section class="land-hero">
+    <div class="hero-overlay">
+      <h1>Find Your Perfect Land</h1>
+      <p>Discover premium land opportunities across Egypt</p>
+    </div>
+  </section>
+
+  <!-- ================= SEARCH ================= -->
+  <section class="search-section">
+    <form class="search-container" [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <div class="search-grid">
+
+        <!-- City / Area -->
+        <div class="search-group">
+          <label>
+            <i class="bi bi-geo-alt"></i>
+            City / Area
+          </label>
+          <input
+            type="text"
+            placeholder="Cairo, Giza, New Cairo..."
+            formControlName="city"
+          />
+        </div>
+
+        <!-- Property Type (Fixed: Land) -->
+        <div class="search-group">
+          <label>
+            <i class="bi bi-layers"></i>
+            Property Type
+          </label>
+          <div class="type-display">
+            <i class="bi bi-tree"></i>
+            Land
+          </div>
+        </div>
+
+        <!-- Land Size -->
+        <div class="search-group">
+          <label>
+            <i class="bi bi-aspect-ratio"></i>
+            Size (sqm)
+          </label>
+          <div class="range-inputs">
+            <input type="number" placeholder="Min" formControlName="minSize" />
+            <span>-</span>
+            <input type="number" placeholder="Max" formControlName="maxSize" />
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="search-group">
+          <label>
+            <i class="bi bi-cash-stack"></i>
+            Price (EGP)
+          </label>
+          <div class="range-inputs">
+            <input type="number" placeholder="Min" formControlName="minPrice" />
+            <span>-</span>
+            <input type="number" placeholder="Max" formControlName="maxPrice" />
+          </div>
+        </div>
+
+        <!-- Search Button -->
+        <button class="search-btn" type="submit">
+          <i class="bi bi-search"></i>
+          Search
+        </button>
+
+      </div>
+    </form>
+  </section>
+
+  <!-- ================= QUICK SEARCH ================= -->
+  <section class="quick-search-section">
+    <h3>Popular Locations</h3>
+    <div class="quick-search-grid">
+      <div
+        class="quick-search-item"
+        *ngFor="let city of quickSearchCities"
+        (click)="setQuickSearch(city.name)"
+      >
+        <div class="city-name">
+          <i class="bi bi-geo"></i>
+          {{ city.name }}
+        </div>
+        <span class="city-count">
+          {{ getCityCount(city.name) }}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <div class="land-content">
+
+    <!-- ========== FILTERS SIDEBAR ========== -->
+    <aside class="filters-sidebar">
+      <div class="filter-section">
+        <h4>
+          <i class="bi bi-funnel"></i>
+          Filters
+        </h4>
+
+        <!-- Land Type -->
+        <div class="filter-group">
+          <h5>
+            <i class="bi bi-tags"></i>
+            Land Type
+          </h5>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let type of landTypes">
+              <input
+                type="checkbox"
+                [value]="type.value"
+                (change)="onFilterChange($event)"
+              />
+              <label>{{ type.label }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Land Size -->
+        <div class="filter-group">
+          <h5>
+            <i class="bi bi-aspect-ratio"></i>
+            Size
+          </h5>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let size of landSizes">
+              <input
+                type="checkbox"
+                [value]="size.value"
+                (change)="onFilterChange($event)"
+              />
+              <label>{{ size.label }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="filter-group">
+          <h5>
+            <i class="bi bi-currency-dollar"></i>
+            Price
+          </h5>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let price of landPriceRanges">
+              <input
+                type="checkbox"
+                [value]="price.value"
+                (change)="onFilterChange($event)"
+              />
+              <label>{{ price.label }}</label>
+            </div>
+          </div>
+        </div>
+
+        <button class="clear-filters-btn" (click)="clearAllFilters()">
+          <i class="bi bi-x-circle"></i>
+          Clear Filters
+        </button>
+      </div>
+    </aside>
+
+    <!-- ========== RESULTS ========== -->
+    <section class="lands-grid">
+
+      <div class="results-header">
+        <h3>{{ landProperties.length }} Lands Found</h3>
+
+        <div class="results-actions">
+          <button class="map-view-btn">
+            <i class="bi bi-map"></i>
+            Map View
+          </button>
+
+          <button class="save-search-btn">
+            <i class="bi bi-bookmark"></i>
+            Save Search
+          </button>
+        </div>
+      </div>
+
+      <!-- No Results -->
+      <div class="no-results" *ngIf="landProperties.length === 0">
+        <i class="bi bi-search"></i>
+        <h4>No lands found</h4>
+        <p>Try adjusting your filters</p>
+      </div>
+
+      <!-- Cards -->
+      <div class="lands-grid-content" *ngIf="landProperties.length > 0">
+        <div
+          class="land-card"
+          *ngFor="let land of landProperties; trackBy: trackById"
+        >
+
+          <!-- Image -->
+          <div class="land-image">
+            <img
+              [src]="land.imageUrl || 'https://via.placeholder.com/400x250'"
+              alt="Land Image"
+            />
+            <div class="image-overlay">
+              <span class="land-type">Land</span>
+
+              <button
+                class="favorite-btn"
+                [class.favorited]="isFavorite(land.id)"
+                (click)="toggleFavorite(land.id)"
+              >
+                <i class="bi bi-heart-fill"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div class="land-details">
+            <div class="land-price">
+              <span class="price">
+                {{ land.price | number }} EGP
+              </span>
+              <span class="price-per-sqm">
+                {{ (land.price / land.areaSpace) | number:'1.0-0' }} / sqm
+              </span>
+            </div>
+
+            <h4 class="land-title">{{ land.title }}</h4>
+
+            <div class="land-location">
+              <i class="bi bi-geo-alt"></i>
+              {{ land.city }} - {{ land.area }}
+            </div>
+
+            <div class="land-features">
+              <div class="feature">
+                <i class="bi bi-aspect-ratio"></i>
+                {{ land.areaSpace }} sqm
+              </div>
+              <div class="feature">
+                <i class="bi bi-eye"></i>
+                {{ land.views || 0 }} Views
+              </div>
+              <div class="feature">
+                <i class="bi bi-star"></i>
+                {{ land.isFeatured ? 'Featured' : 'Standard' }}
+              </div>
+            </div>
+
+            <p class="land-description">
+              {{ land.description | slice:0:120 }}...
+            </p>
+
+            <div class="land-actions">
+              <button class="btn-details">
+                <i class="bi bi-info-circle"></i>
+                Details
+              </button>
+              <button class="btn-contact">
+                <i class="bi bi-telephone"></i>
+                Contact
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+</div>
