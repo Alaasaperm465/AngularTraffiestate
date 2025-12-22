@@ -115,11 +115,27 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
     this.loadUserProfile();
     this.loadDashboardStatistics();
     this.loadProperties();
+    this.setupProfileMenuListener();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    window.removeEventListener('toggleProfileMenu', this.handleToggleProfileMenu.bind(this));
+  }
+
+  /**
+   * Listen for toggle profile menu event from navbar
+   */
+  private setupProfileMenuListener(): void {
+    window.addEventListener('toggleProfileMenu', this.handleToggleProfileMenu.bind(this));
+  }
+
+  /**
+   * Handle toggle profile menu event
+   */
+  private handleToggleProfileMenu(): void {
+    this.toggleProfileMenu();
   }
 
   // ============ INITIALIZATION ============

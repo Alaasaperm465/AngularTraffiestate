@@ -3,16 +3,8 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom fixed-top pf-navbar">
     <div class="container-fluid px-3 px-lg-4">
 
-      <!-- Logo & Mobile Toggle -->
+      <!-- Logo on the left -->
       <div class="d-flex align-items-center">
-        <!-- Mobile Toggle Button -->
-        <button class="navbar-toggler d-lg-none me-3 border-0" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                aria-controls="navbarContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
           <img
@@ -21,13 +13,29 @@
             alt="TraffiEstate Logo"
             class="d-none d-sm-block"
           >
-          <span class="fw-bold fs-5 text-primary pf-brand-text">TraffiEstate</span>
+          <span class="fw-bold fs-5 pf-brand-text">TraffiEstate</span>
         </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler d-lg-none ms-auto border-0" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
       </div>
 
       <!-- Center Navigation -->
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav mx-auto align-items-center gap-3 gap-lg-4 pf-nav-links">
+
+          <li class="nav-item">
+            <a class="nav-link px-3 py-2 rounded"
+               routerLink="/home"
+               routerLinkActive="active">
+              Home
+            </a>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link px-3 py-2 rounded"
@@ -46,122 +54,64 @@
           </li>
 
           <li class="nav-item">
-            <!-- عنصر باللغة العربية -->
-            <a class="nav-link px-3 py-2 rounded arabic-text"
+            <a class="nav-link px-3 py-2 rounded"
                routerLink="/properties"
                routerLinkActive="active">
-              العقارات
+              Properties
             </a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link px-3 py-2 rounded"
-               routerLink="/projects"
+               routerLink="/about"
                routerLinkActive="active">
-              New Projects
+              About
             </a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link px-3 py-2 rounded"
-               routerLink="/commercial"
+               routerLink="/contact"
                routerLinkActive="active">
-              Commercial
+              Contact
             </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded"
-               routerLink="/agents"
-               routerLinkActive="active">
-              Find Agent
-            </a>
-          </li>
-
-          <!-- Explore Dropdown -->
-          <li class="nav-item dropdown pf-dropdown position-relative">
-            <button
-              class="nav-link dropdown-toggle px-3 py-2 rounded d-flex align-items-center gap-1"
-              type="button"
-              (click)="toggleExplore()"
-              [attr.aria-expanded]="isExploreOpen">
-              Explore
-              <span class="ms-1 pf-arrow" [class.rotate-180]="isExploreOpen">▾</span>
-            </button>
-            <ul class="pf-dropdown-menu shadow border-0 rounded-3 p-2"
-                [class.show]="isExploreOpen">
-              <li>
-                <a routerLink="/areas" class="dropdown-item px-3 py-2 rounded-2"
-                   (click)="isExploreOpen = false">
-                  Areas
-                </a>
-              </li>
-              <li>
-                <a routerLink="/developers" class="dropdown-item px-3 py-2 rounded-2"
-                   (click)="isExploreOpen = false">
-                  Developers
-                </a>
-              </li>
-              <li>
-                <a routerLink="/guides" class="dropdown-item px-3 py-2 rounded-2"
-                   (click)="isExploreOpen = false">
-                  Guides
-                </a>
-              </li>
-              <li>
-                <a routerLink="/insights" class="dropdown-item px-3 py-2 rounded-2"
-                   (click)="isExploreOpen = false">
-                  Market Insights
-                </a>
-              </li>
-            </ul>
           </li>
         </ul>
       </div>
 
       <!-- Right Actions -->
-      <div class="pf-actions d-flex align-items-center gap-2 gap-lg-3">
-        <!-- Favorites Button -->
-        <button class="pf-icon-btn btn btn-light rounded-circle p-2 position-relative"
-                aria-label="Favorites"
-                 (click)="goToFavorites()">
-          <i class="bi bi-heart fs-5"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                style="font-size: 0.6rem;">
-
-          </span>
+      <div class="pf-actions d-flex align-items-center gap-2 gap-lg-3 ms-auto">
+        <!-- Add Property Button -->
+        <button class="btn btn-success pf-add-property rounded-pill px-3 py-2 d-flex align-items-center gap-2"
+                (click)="goToAddProperty()">
+          <i class="bi bi-plus-lg"></i>
+          <span>Add Property</span>
         </button>
 
         <!-- User Avatar / Login -->
-        <div class="dropdown">
+        <div class="pf-user-dropdown">
+          <!-- Logged In User Profile Button -->
+          <button *ngIf="isLoggedIn"
+                  class="btn btn-success pf-user-btn rounded-pill px-3 py-2 d-flex align-items-center gap-2"
+                  type="button"
+                  (click)="goToDashboard()"
+                  style="border: none; background-color: #1a5a40;">
+            <img [src]="userAvatar"
+                 [alt]="userName"
+                 class="pf-user-avatar-small rounded-circle"
+                 width="28"
+                 height="28">
+            <span class="fw-bold">{{ userName }}</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
 
-            <i class="bi bi-person-circle fs-5"></i>
-            <a class="pf-user-avatar btn btn-outline-primary d-flex align-items-center gap-2 rounded-pill px-3 py-2"
-            routerLink="/login" routerLinkActive="active">
-            <i class="bi bi-person-circle fs-5"></i>
-            Login
-            </a>
-          <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-2 mt-2">
-            <li>
-              <a class="dropdown-item px-3 py-2 rounded-2" routerLink="/login" routerLinkActive="active">
-                <i class="bi bi-box-arrow-in-right me-2"></i>
-                Sign In
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item px-3 py-2 rounded-2" routerLink="/register">
-                <i class="bi bi-person-plus me-2"></i>
-                Create Account
-              </a>
-            </li>
-            <li><hr class="dropdown-divider my-2"></li>
-            <li>
-              <a class="dropdown-item px-3 py-2 rounded-2" routerLink="/help">
-                <i class="bi bi-question-circle me-2"></i>
-                Help Center
-              </a>
-            </li>
-          </ul>
+          <!-- Not Logged In - Login Button -->
+          <a *ngIf="!isLoggedIn"
+             class="btn btn-success pf-user-btn rounded-pill px-3 py-2 d-flex align-items-center gap-2"
+             routerLink="/login"
+             style="border: none; background-color: #1a5a40;">
+            <span>Sign In</span>
+          </a>
         </div>
       </div>
     </div>

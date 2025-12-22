@@ -12,10 +12,9 @@
 }
 
 .pf-brand-text {
-  background: linear-gradient(135deg, #3a86ff 0%, #8338ec 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #0f5c3a;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 /* تحسين الروابط */
@@ -30,25 +29,72 @@
 }
 
 .pf-nav-links .nav-link:hover {
-  color: #3a86ff;
-  background-color: rgba(58, 134, 255, 0.05);
+  color: #0f5c3a;
+  background-color: rgba(15, 92, 58, 0.05);
 }
 
 .pf-nav-links .nav-link.active {
-  color: #3a86ff;
-  background-color: rgba(58, 134, 255, 0.1);
+  color: #0f5c3a;
+  background-color: rgba(15, 92, 58, 0.1);
   font-weight: 600;
 }
 
-.pf-nav-links .nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 15%;
-  width: 70%;
-  height: 2px;
-  background-color: #3a86ff;
-  border-radius: 2px;
+/* Add Property Button */
+.pf-add-property {
+  border-color: #0f5c3a;
+  color: #0f5c3a;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.pf-add-property:hover {
+  background-color: #0f5c3a;
+  color: white;
+  border-color: #0f5c3a;
+}
+
+/* User Button Styles */
+.pf-user-btn {
+  background-color: #0f5c3a;
+  color: white;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.pf-user-btn:hover {
+  background-color: #0d4a2d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 92, 58, 0.3);
+}
+
+.pf-user-btn.dropdown-toggle::after {
+  display: none;
+}
+
+.pf-user-avatar-small {
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 991.98px) {
+  .pf-nav-links {
+    padding: 1rem 0;
+  }
+
+  .pf-nav-links .nav-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .pf-actions {
+    margin-left: auto;
+  }
+
+  .navbar-collapse {
+    order: 3;
+    width: 100%;
+  }
 }
 
 /* تحسين القوائم المنسدلة */
@@ -117,16 +163,35 @@
   color: white !important;
 }
 
+/* User Profile Dropdown Styles */
+.pf-user-profile {
+  background-color: #f0f4f8;
+  border: 1px solid #e0e6ed;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pf-user-profile:hover {
+  background-color: #e0e6ed;
+  box-shadow: 0 2px 8px rgba(58, 134, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.pf-user-avatar-small {
+  object-fit: cover;
+  border: 2px solid #3a86ff;
+}
+
 /* تحسينات للشاشات الصغيرة */
 @media (max-width: 991.98px) {
   .pf-nav-links {
     padding: 1rem 0;
   }
-  
+
   .pf-nav-links .nav-item {
     margin-bottom: 0.5rem;
   }
-  
+
   .pf-dropdown-menu {
     position: static;
     border: none;
@@ -134,11 +199,11 @@
     padding-left: 1rem;
     animation: none;
   }
-  
+
   .pf-actions {
     margin-left: auto;
   }
-  
+
   .navbar-collapse {
     order: 3;
     width: 100%;
@@ -171,7 +236,7 @@
     display: block;
     animation: fadeInDown 0.2s ease;
   }
-  
+
   .pf-dropdown:hover .pf-arrow {
     transform: rotate(180deg);
   }
