@@ -1,37 +1,68 @@
 <div class="login-container">
   <div class="login-card">
-    <h2>Login</h2>
+    <!-- Decorative Elements -->
+    <div class="login-decoration">
+      <div class="decoration-circle circle-1"></div>
+      <div class="decoration-circle circle-2"></div>
+      <div class="decoration-circle circle-3"></div>
+    </div>
+
+    <!-- Login Header -->
+    <div class="login-header">
+      <div class="logo-wrapper">
+        <i class="fas fa-home"></i>
+        <span>PropertyHub</span>
+      </div>
+      <h2>Welcome Back</h2>
+      <p class="login-subtitle">Sign in to your account to continue</p>
+    </div>
 
     <!-- Error Message -->
     <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
+      <i class="fas fa-exclamation-circle"></i>
+      <div class="error-content">
+        <strong>Login Failed</strong>
+        <span>{{ errorMessage }}</span>
+      </div>
     </div>
 
     <!-- Login Form -->
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <!-- Username Field -->
       <div class="form-group">
-        <label for="userName">Username</label>
-        <input
-          type="text"
-          id="userName"
-          formControlName="userName"
-          placeholder="Enter your username or Email"
-          class="form-input"
-          [class.error]="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
-        />
-        <span
+        <label for="userName">
+          <i class="fas fa-user"></i>
+          Username or Email
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="userName"
+            formControlName="userName"
+            placeholder="Enter your username or email"
+            class="form-input"
+            [class.error]="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+          />
+          <div class="input-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+        </div>
+        <div
           *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
           class="error-text"
         >
+          <i class="fas fa-exclamation-triangle"></i>
           {{ getErrorMessage('userName') }}
-        </span>
+        </div>
       </div>
 
       <!-- Password Field -->
       <div class="form-group">
-        <label for="password">Password</label>
-        <div class="password-input-wrapper">
+        <label for="password">
+          <i class="fas fa-lock"></i>
+          Password
+        </label>
+        <div class="input-wrapper">
           <input
             [type]="showPassword ? 'text' : 'password'"
             id="password"
@@ -40,26 +71,38 @@
             class="form-input"
             [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
           />
+          <div class="input-icon">
+            <i class="fas fa-key"></i>
+          </div>
           <button
             type="button"
             class="toggle-password"
             (click)="togglePasswordVisibility()"
             tabindex="-1"
+            [class.active]="showPassword"
           >
-            {{ showPassword ? 'Hide' : 'Show' }}
+            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
           </button>
         </div>
-        <span
+        <div
           *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
           class="error-text"
         >
+          <i class="fas fa-exclamation-triangle"></i>
           {{ getErrorMessage('password') }}
-        </span>
+        </div>
       </div>
 
-      <!--  Forget Password Link -->
-      <div class="forget-password-link">
-        <a routerLink="/forget-password" routerLinkActive="Active">Forgot your password?</a>
+      <!-- Forget Password Link -->
+      <div class="form-options">
+        <div class="remember-me">
+          <input type="checkbox" id="remember" />
+          <label for="remember">Remember me</label>
+        </div>
+        <a routerLink="/forget-password" class="forget-password-link">
+          <i class="fas fa-question-circle"></i>
+          Forgot password?
+        </a>
       </div>
 
       <!-- Submit Button -->
@@ -67,14 +110,48 @@
         type="submit"
         class="btn-login"
         [disabled]="isLoading || loginForm.invalid"
+        [class.loading]="isLoading"
       >
-        {{ isLoading ? 'Logging in...' : 'Login' }}
+        <span class="btn-content">
+          <i class="fas fa-sign-in-alt"></i>
+          {{ isLoading ? 'Authenticating...' : 'Sign In' }}
+        </span>
+        <span class="btn-loader" *ngIf="isLoading">
+          <div class="loader-spinner"></div>
+        </span>
       </button>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>or continue with</span>
+      </div>
+
+      <!-- Social Login Options -->
+     <!-- Social Login Options -->
+      <div class="social-login">
+        <button type="button" class="social-btn google">
+          <i class="fab fa-google"></i>
+          Google
+        </button>
+        <button type="button" class="social-btn facebook">
+          <i class="fab fa-facebook-f"></i>
+          Facebook
+        </button>
+      </div>
     </form>
 
     <!-- Register Link -->
     <div class="register-link">
-      <p>Don't have an account? <a routerLink="/register" routerLinkActive="Active">Register here</a></p>
+      <p>Don't have an account?</p>
+      <a routerLink="/register" class="btn-register">
+        <i class="fas fa-user-plus"></i>
+        Create New Account
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <p>By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
     </div>
   </div>
 </div>

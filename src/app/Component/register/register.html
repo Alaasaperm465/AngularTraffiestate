@@ -1,113 +1,199 @@
 <div class="container-mt-5">
   <div class="form-container">
-    <h3 class="form-header">Sign Up</h3>
+    <!-- Header with logo -->
+    <div class="register-header">
+      <div class="logo-wrapper">
+        <i class="fas fa-home"></i>
+        <span>TraffiEstate</span>
+      </div>
+      <h3 class="form-header">Sign Up</h3>
+    </div>
+
+    <!-- Social Registration Options -->
+    <div class="social-register-section">
+      <p class="social-register-title">Sign up with</p>
+      <div class="social-buttons">
+        <button type="button" class="social-btn google-btn" (click)="registerWithGoogle()">
+          <i class="fab fa-google"></i>
+          Google
+        </button>
+        <button type="button" class="social-btn facebook-btn" (click)="registerWithFacebook()">
+          <i class="fab fa-facebook-f"></i>
+          Facebook
+        </button>
+      </div>
+      
+      <!-- Divider -->
+      <div class="divider">
+        <span>or with email</span>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
     <form (ngSubmit)="register()" [formGroup]="userFormGroup" novalidate>
+      <!-- Name Field -->
       <div class="form-group">
         <label for="userName">Name</label>
-        <input
-          type="text"
-          id="userName"
-          formControlName="userName"
-          class="form-control"
-          [class.is-invalid]="isFieldInvalid('userName')"
-          placeholder="Enter your name"
-          required
-        />
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="userName"
+            formControlName="userName"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('userName')"
+            placeholder="Enter your name"
+            required
+          />
+          <i class="fas fa-user input-icon"></i>
+        </div>
         <div class="invalid-feedback" *ngIf="isFieldInvalid('userName')">
+          <i class="fas fa-exclamation-circle"></i>
           {{ getFieldError('userName') }}
         </div>
       </div>
+
+      <!-- Phone Number Field -->
       <div class="form-group">
         <label for="phoneNumber">Phone Number</label>
-        <input
-          type="text"
-          id="phoneNumber"
-          formControlName="phoneNumber"
-          class="form-control"
-          [class.is-invalid]="isFieldInvalid('phoneNumber')"
-          placeholder="Enter your phone number"
-          required
-        />
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('phoneNumber')"
+            placeholder="Enter your phone number"
+            required
+          />
+          <i class="fas fa-phone input-icon"></i>
+        </div>
         <div class="invalid-feedback" *ngIf="isFieldInvalid('phoneNumber')">
+          <i class="fas fa-exclamation-circle"></i>
           {{ getFieldError('phoneNumber') }}
         </div>
       </div>
+
+      <!-- Email Field -->
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          class="form-control"
-          [class.is-invalid]="isFieldInvalid('email')"
-          placeholder="Enter your email"
-          required
-        />
+        <div class="input-wrapper">
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('email')"
+            placeholder="Enter your email"
+            required
+          />
+          <i class="fas fa-envelope input-icon"></i>
+        </div>
         <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+          <i class="fas fa-exclamation-circle"></i>
           {{ getFieldError('email') }}
         </div>
       </div>
+
+      <!-- Password Field -->
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="form-control"
-          [class.is-invalid]="isFieldInvalid('password')"
-          placeholder="Enter your password"
-          required
-        />
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('password')"
+            placeholder="Enter your password"
+            required
+          />
+          <i class="fas fa-lock input-icon"></i>
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" tabindex="-1">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
         <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
+          <i class="fas fa-exclamation-circle"></i>
           {{ getFieldError('password') }}
         </div>
         <small class="form-text text-muted d-block mt-2">
+          <i class="fas fa-info-circle"></i>
           Password must be at least 6 characters with uppercase letter and digit
         </small>
       </div>
+
+      <!-- Confirm Password Field -->
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          formControlName="confirmPassword"
-          class="form-control"
-          [class.is-invalid]="isFieldInvalid('confirmPassword')"
-          placeholder="Confirm your password"
-          required
-        />
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('confirmPassword')"
+            placeholder="Confirm your password"
+            required
+          />
+          <i class="fas fa-lock input-icon"></i>
+          <button type="button" class="toggle-password" (click)="toggleConfirmPasswordVisibility()" tabindex="-1">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
         <div class="invalid-feedback" *ngIf="isFieldInvalid('confirmPassword')">
+          <i class="fas fa-exclamation-circle"></i>
           {{ getFieldError('confirmPassword') }}
         </div>
       </div>
+
+      <!-- Role Selection -->
       <div class="form-group">
         <label for="roleName">Role</label>
-        <select 
-          id="roleName" 
-          formControlName="roleName" 
-          class="form-control"
-          [class.is-invalid]="isFieldInvalid('roleName')"
-          required
-        >
-          <option value="" disabled selected>Select your role</option>
-          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
-        </select>
+        <div class="input-wrapper select-wrapper">
+          <select 
+            id="roleName" 
+            formControlName="roleName" 
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('roleName')"
+            required
+          >
+            <option value="" disabled selected>Select your role</option>
+            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+          </select>
+          <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
         <div class="invalid-feedback" *ngIf="isFieldInvalid('roleName')">
+          <i class="fas fa-exclamation-circle"></i>
           {{ getFieldError('roleName') }}
         </div>
       </div>
+
+      <!-- Terms Agreement -->
+      <div class="form-group terms-checkbox">
+        <input type="checkbox" id="terms" required>
+        <label for="terms">
+          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </label>
+      </div>
+
+      <!-- Submit Button -->
       <button 
         type="submit" 
         class="btn btn-primary btn-block"
         [disabled]="submitted && userFormGroup.invalid"
       >
+        <i class="fas fa-user-plus"></i>
         Register
       </button>
     </form>
 
     <!-- Login Link -->
     <div class="login-link">
-      <p>Already have an account? <a routerLink="/login">Login here</a></p>
+      <p>Already have an account?</p>
+      <a routerLink="/login" class="login-link-btn">
+        <i class="fas fa-sign-in-alt"></i>
+        Login here
+      </a>
     </div>
   </div>
 </div>
