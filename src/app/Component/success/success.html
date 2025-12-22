@@ -1,0 +1,106 @@
+<!-- Success Page -->
+<div class="success-wrapper" [class.show]="showAnimation">
+
+  <!-- Background Elements -->
+  <div class="background-elements">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="success-container">
+
+    <!-- Success Icon -->
+    <div class="success-icon" [class.animate]="showAnimation">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Circle -->
+        <circle cx="50" cy="50" r="48" fill="none" stroke="#28a745" stroke-width="2" class="circle-stroke"/>
+
+        <!-- Checkmark -->
+        <polyline
+          points="25,50 45,70 75,30"
+          fill="none"
+          stroke="#28a745"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="checkmark"/>
+      </svg>
+    </div>
+
+    <!-- Success Content -->
+    <div class="success-content" [class.animate]="showAnimation">
+
+      <!-- Main Title -->
+      <h1 class="success-title">Congratulations!</h1>
+
+      <!-- Subtitle -->
+      <p class="success-subtitle">Your property has been registered successfully</p>
+
+      <!-- Message -->
+      <div class="success-message">
+        <p>
+          Our team at Golden Beit will review your property and approve it soon.
+          We will confirm the details and activate your property listing.
+        </p>
+      </div>
+
+      <!-- Details Box -->
+      <!-- <div class="details-box">
+        <div class="detail-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Property information saved</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Images uploaded successfully</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-check-circle"></i>
+          <span>Awaiting team review</span>
+        </div>
+      </div> -->
+
+      <!-- Next Steps -->
+      <!-- <div class="next-steps">
+        <h3>What's Next?</h3>
+        <ol>
+          <li>Our team will review your property details</li>
+          <li>We'll verify the images and information</li>
+          <li>Your property will be published on our platform</li>
+          <li>You'll receive email confirmation when approved</li>
+        </ol>
+      </div> -->
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="goToProperties()">
+          <i class="bi bi-house-heart"></i>
+          View My Properties
+        </button>
+
+        <button class="btn btn-secondary" (click)="addAnotherProperty()">
+          <i class="bi bi-plus-circle"></i>
+          Add Another Property
+        </button>
+      </div>
+
+      <!-- Home Link -->
+      <div class="home-link">
+        <a routerLink="/" class="link">← Back to Home</a>
+      </div>
+
+    </div>
+
+    <!-- Timer -->
+    <div class="timer-section">
+      <p class="timer-text">Redirecting to properties in <span class="timer-count">5</span> seconds...</p>
+      <div class="timer-bar">
+        <div class="timer-fill"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
