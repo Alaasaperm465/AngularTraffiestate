@@ -1,5 +1,4 @@
-/* ============= BUY & RENT PAGE STYLES ============= */
-/* استخدم هذا الملف لكل من buy.css و rent.css */
+/* ============= BUY PAGE STYLES ============= */
 
 /* HERO SECTION */
 .hero-section {
@@ -415,10 +414,20 @@
   font-size: 24px;
   font-weight: 700;
   color: #0B3122;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .count-number {
   color: #E2B43B;
+}
+
+.page-info {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6c757d;
 }
 
 .view-toggle {
@@ -776,43 +785,48 @@
   box-shadow: 0 6px 20px rgba(226, 180, 59, 0.4);
 }
 
-/* PAGINATION */
-.pagination {
+/* SEE MORE BUTTON */
+.see-more-section {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 48px;
-  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 40px;
+  padding: 20px;
 }
 
-.page-btn {
-  min-width: 44px;
-  height: 44px;
-  padding: 0 16px;
-  background: white;
-  border: 1px solid #e0e0e0;
+.see-more-btn {
+  padding: 14px 32px;
+  background: #E2B43B;
+  border: none;
   border-radius: 8px;
-  font-size: 15px;
+  color: #0B3122;
+  font-size: 16px;
   font-weight: 600;
-  color: #2c3e50;
   cursor: pointer;
-  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(226, 180, 59, 0.3);
 }
 
-.page-btn:hover {
-  border-color: #E2B43B;
-  color: #E2B43B;
+.see-more-btn:hover {
+  background: #d4a535;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(226, 180, 59, 0.4);
 }
 
-.page-btn.active {
-  background: #E2B43B;
-  border-color: #E2B43B;
-  color: #0B3122;
+.see-more-btn:active {
+  transform: translateY(0);
+}
+
+.see-more-btn i {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.see-more-btn:hover i {
+  transform: translateY(3px);
 }
 
 /* CONTACT CTA */
@@ -928,7 +942,7 @@
   }
 
   .search-btn-hero {
-    width: 50px;
+    width: 100%;
   }
 
   .cta-content {
@@ -988,6 +1002,19 @@
     justify-content: center;
     flex-direction: column;
   }
+
+  .properties-count {
+    font-size: 20px;
+  }
+
+  .page-info {
+    font-size: 12px;
+  }
+
+  .see-more-btn {
+    padding: 12px 28px;
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1009,5 +1036,11 @@
 
   .cta-btn {
     width: 100%;
+  }
+
+  .see-more-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
   }
 }

@@ -1,36 +1,3 @@
-// import { ChangeDetectorRef, Component } from '@angular/core';
-// import { IProperty } from '../../models/iproperty';
-// import { PropertyService } from '../../Services/property';
-
-// @Component({
-//   selector: 'app-buy',
-//   imports: [],
-//   templateUrl: './buy.html',
-//   styleUrl: './buy.css',
-// })
-// export class Buy {
-//    buyproperties!:IProperty[];
-//     constructor(private buyservice:PropertyService,private cdn:ChangeDetectorRef)
-//      {
-
-//      }
-//       ngOnInit(): void
-//   {
-//     this.buyservice.getPropertyForBuy().subscribe((data)=>
-//     {
-//       console.log(data);
-//       this.buyproperties=data;
-//       this.cdn.detectChanges();
-//     });
-//   }
-
-
-// }
-
-
-
-
-
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -50,6 +17,8 @@ export class Buy implements OnInit {
   searchForm: FormGroup;
   buyProperties: IProperty[] = [];
   allBuyProperties: IProperty[] = [];
+  displayedProperties: IProperty[] = [];
+  
   showPropertyTypeDropdown = false;
   showBedsAndBathsDropdown = false;
   isScrolled = false;
@@ -57,7 +26,10 @@ export class Buy implements OnInit {
   email = email;
   favoritesIds: number[] = [];
 
-  // فلترة الخيارات
+  // Load More functionality
+  itemsPerLoad = 8; // Number of items to load each time
+  currentLoadedCount = 4; // Start by showing 4 items
+
   selectedPropertyTypes: Set<string> = new Set();
   selectedBedrooms: Set<string> = new Set();
   selectedAreas: Set<string> = new Set();
@@ -79,11 +51,12 @@ export class Buy implements OnInit {
   }
 
   ngOnInit(): void {
-    // جلب العقارات للبيع
+    // Load buy properties
     this.buyService.getPropertyForBuy().subscribe({
       next: (data: IProperty[]) => {
         this.allBuyProperties = data;
         this.buyProperties = data;
+        this.updateDisplayedProperties();
         this.cdr.detectChanges();
         console.log('Buy properties loaded:', data);
       },
@@ -92,7 +65,7 @@ export class Buy implements OnInit {
       }
     });
 
-    // جلب المفضلات
+    // Load favorites
     this.favoriteService.getMyFavorites().subscribe({
       next: (res: any) => {
         const items = res?.value?.items ?? [];
@@ -104,100 +77,107 @@ export class Buy implements OnInit {
     });
   }
 
-  // ===== تعيين التاب =====
-  setActiveTab(): void {
-    // تعيين تلقائي للـ Buy
-    setTimeout(() => this.onSearch(), 0);
+  // ===== LOAD MORE METHODS =====
+  updateDisplayedProperties(): void {
+    this.displayedProperties = this.buyProperties.slice(0, this.currentLoadedCount);
   }
 
-  // ===== دالة البحث الرئيسية =====
+  loadMore(): void {
+    this.currentLoadedCount += this.itemsPerLoad;
+    this.updateDisplayedProperties();
+    this.cdr.detectChanges();
+  }
+
+  hasMoreToLoad(): boolean {
+    return this.currentLoadedCount < this.buyProperties.length;
+  }
+
+  get remainingCount(): number {
+    return this.buyProperties.length - this.currentLoadedCount;
+  }
+
+  // ===== MAIN SEARCH =====
   onSearch(): void {
     const searchData = this.searchForm.value;
     let filtered = [...this.allBuyProperties];
 
-    // ✅ فلترة المدينة / المنطقة
-    if (searchData.city && searchData.city.trim()) {
+    // Filter by city/area
+    if (searchData.city?.trim()) {
+      const citySearch = searchData.city.toLowerCase().trim();
       filtered = filtered.filter(p =>
-        p.city?.toLowerCase().includes(searchData.city.toLowerCase()) ||
-        p.area?.toLowerCase().includes(searchData.city.toLowerCase())
+        (p.city?.toLowerCase().includes(citySearch)) ||
+        (p.area?.toLowerCase().includes(citySearch))
       );
     }
 
-    // ✅ فلترة نوع العقار
-    if (searchData.propertyType && searchData.propertyType.trim()) {
+    // Filter by property type
+    if (searchData.propertyType?.trim()) {
+      const typeSearch = searchData.propertyType.toLowerCase().trim();
       filtered = filtered.filter(p =>
-        p.propertyType?.toLowerCase() === searchData.propertyType.toLowerCase()
+        (p.propertyType?.toLowerCase().trim() === typeSearch)
       );
     }
 
-    // ✅ فلترة عدد الغرف
-    if (searchData.rooms && searchData.rooms.trim()) {
+    // Filter by rooms
+    if (searchData.rooms?.trim()) {
       const roomsValue = parseInt(searchData.rooms, 10);
-      filtered = filtered.filter(p => p.rooms === roomsValue);
+      filtered = filtered.filter(p => {
+        if (searchData.rooms === '4') return (p.rooms || 0) >= 4;
+        return p.rooms === roomsValue;
+      });
     }
 
-    // تطبيق الفلاترات الإضافية
+    // Apply additional filters
     filtered = this.applyFilters(filtered);
 
-    // تحديث النتيجة
     this.buyProperties = filtered;
+    this.currentLoadedCount = this.itemsPerLoad; // Reset to initial load count
+    this.updateDisplayedProperties();
     this.cdr.detectChanges();
   }
 
-  // ===== تطبيق الفلاترات =====
+  // ===== APPLY FILTERS =====
   private applyFilters(properties: IProperty[]): IProperty[] {
     let filtered = [...properties];
 
-    // فلتر نوع العقار
     if (this.selectedPropertyTypes.size > 0) {
       filtered = filtered.filter(p =>
         this.selectedPropertyTypes.has(p.propertyType?.toLowerCase() || '')
       );
     }
 
-    // فلتر عدد الغرف
     if (this.selectedBedrooms.size > 0) {
       filtered = filtered.filter(p => {
-        const rooms = p.rooms?.toString();
-        return this.selectedBedrooms.has(rooms || '') ||
+        const rooms = (p.rooms || 0).toString();
+        return this.selectedBedrooms.has(rooms) ||
                (this.selectedBedrooms.has('4plus') && p.rooms! >= 4);
       });
     }
 
-    // فلتر المساحة
     if (this.selectedAreas.size > 0) {
       filtered = filtered.filter(p => {
         const area = Number(p.area) || 0;
-        if (this.selectedAreas.has('under100') && area < 100) return true;
-        if (this.selectedAreas.has('100-200') && area >= 100 && area < 200) return true;
-        if (this.selectedAreas.has('200-300') && area >= 200 && area < 300) return true;
-        if (this.selectedAreas.has('300plus') && area >= 300) return true;
+        for (const areaRange of this.selectedAreas) {
+          if (areaRange === 'under100' && area < 100) return true;
+          if (areaRange === '100-200' && area >= 100 && area < 200) return true;
+          if (areaRange === '200-300' && area >= 200 && area < 300) return true;
+          if (areaRange === '300plus' && area >= 300) return true;
+        }
         return false;
       });
     }
 
-    // فلتر السعر
-    if (this.minPrice !== null) {
-      filtered = filtered.filter(p => p.price >= this.minPrice!);
-    }
-    if (this.maxPrice !== null) {
-      filtered = filtered.filter(p => p.price <= this.maxPrice!);
-    }
+    if (this.minPrice !== null) filtered = filtered.filter(p => p.price >= this.minPrice!);
+    if (this.maxPrice !== null) filtered = filtered.filter(p => p.price <= this.maxPrice!);
 
-    // ترتيب النتائج
     if (this.selectedSort) {
       filtered.sort((a, b) => {
         switch (this.selectedSort) {
-          case 'price-low':
-            return a.price - b.price;
-          case 'price-high':
-            return b.price - a.price;
-          case 'newest':
-            return (b.id || 0) - (a.id || 0);
-          case 'popular':
-            return (b.views || 0) - (a.views || 0);
-          default:
-            return 0;
+          case 'price-low': return (a.price || 0) - (b.price || 0);
+          case 'price-high': return (b.price || 0) - (a.price || 0);
+          case 'newest': return (b.id || 0) - (a.id || 0);
+          case 'popular': return (b.views || 0) - (a.views || 0);
+          default: return 0;
         }
       });
     }
@@ -205,27 +185,19 @@ export class Buy implements OnInit {
     return filtered;
   }
 
-  // ===== معالج تغيير الفلاترات =====
+  // ===== FILTER CHANGE =====
   onFilterChange(event: any): void {
     const target = event.target as HTMLInputElement;
     const value = target.value;
 
     if (target.type === 'checkbox') {
       let filterSet: Set<string>;
+      if (['apartment', 'villa', 'house', 'studio'].includes(value)) filterSet = this.selectedPropertyTypes;
+      else if (['1','2','3','4plus'].includes(value)) filterSet = this.selectedBedrooms;
+      else filterSet = this.selectedAreas;
 
-      if (['apartment', 'villa', 'house', 'studio'].includes(value)) {
-        filterSet = this.selectedPropertyTypes;
-      } else if (['1', '2', '3', '4plus'].includes(value)) {
-        filterSet = this.selectedBedrooms;
-      } else {
-        filterSet = this.selectedAreas;
-      }
-
-      if (target.checked) {
-        filterSet.add(value);
-      } else {
-        filterSet.delete(value);
-      }
+      if (target.checked) filterSet.add(value);
+      else filterSet.delete(value);
     } else if (target.type === 'radio' && target.name === 'sort') {
       this.selectedSort = target.checked ? value : '';
     }
@@ -233,7 +205,7 @@ export class Buy implements OnInit {
     this.onSearch();
   }
 
-  // ===== معالج تغيير السعر =====
+  // ===== PRICE FILTER =====
   onPriceFilterChange(): void {
     const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
     const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
@@ -244,7 +216,7 @@ export class Buy implements OnInit {
     this.onSearch();
   }
 
-  // ===== مسح جميع الفلاترات =====
+  // ===== CLEAR ALL FILTERS =====
   clearAllFilters(): void {
     this.selectedPropertyTypes.clear();
     this.selectedBedrooms.clear();
@@ -253,39 +225,39 @@ export class Buy implements OnInit {
     this.minPrice = null;
     this.maxPrice = null;
 
-    document.querySelectorAll('.filter-options input').forEach((input: any) => {
-      input.checked = false;
-    });
+    // Reset form
+    this.searchForm.reset();
+
+    // Clear all checkboxes and radio buttons
+    document.querySelectorAll('.filter-options input').forEach((input: any) => input.checked = false);
+    
+    // Clear price inputs
+    const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
+    const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
+    if (minEl) minEl.value = '';
+    if (maxEl) maxEl.value = '';
 
     this.onSearch();
   }
 
-  // ===== تبديل حالة القائمة المنسدلة - نوع العقار =====
+  // ===== DROPDOWNS =====
   togglePropertyTypeDropdown(): void {
     this.showPropertyTypeDropdown = !this.showPropertyTypeDropdown;
-    if (this.showPropertyTypeDropdown) {
-      this.showBedsAndBathsDropdown = false;
-    }
+    if (this.showPropertyTypeDropdown) this.showBedsAndBathsDropdown = false;
   }
 
-  // ===== تبديل حالة القائمة المنسدلة - الغرف =====
   toggleBedsAndBathsDropdown(): void {
     this.showBedsAndBathsDropdown = !this.showBedsAndBathsDropdown;
-    if (this.showBedsAndBathsDropdown) {
-      this.showPropertyTypeDropdown = false;
-    }
+    if (this.showBedsAndBathsDropdown) this.showPropertyTypeDropdown = false;
   }
 
-  // ===== تبديل المفضلة =====
+  // ===== FAVORITES =====
   toggleFavorite(propertyId: number): void {
     if (this.favoritesIds.includes(propertyId)) {
       this.favoriteService.removeFromFavorites(propertyId).subscribe({
         next: () => {
           this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
           this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error removing favorite:', err);
         }
       });
     } else {
@@ -293,34 +265,28 @@ export class Buy implements OnInit {
         next: () => {
           this.favoritesIds.push(propertyId);
           this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error adding favorite:', err);
         }
       });
     }
   }
 
-  // ===== التحقق من العقار المفضل =====
   isFavorite(propertyId: number): boolean {
     return this.favoritesIds.includes(propertyId);
   }
 
-  // ===== البحث السريع =====
+  // ===== QUICK SEARCH =====
   setQuickSearch(city: string): void {
-    this.searchForm.patchValue({
-      city: city
-    });
+    this.searchForm.patchValue({ city });
     this.onSearch();
   }
 
-  // ===== الاستماع لحدث التمرير =====
+  // ===== SCROLL EVENT =====
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.isScrolled = window.scrollY > 100;
   }
 
-  // ===== الاستماع لحدث النقر خارج القوائم المنسدلة =====
+  // ===== CLICK OUTSIDE DROPDOWNS =====
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -330,7 +296,6 @@ export class Buy implements OnInit {
     }
   }
 
-  // ===== تتبع العنصر حسب المعرف =====
   trackById(index: number, item: IProperty): number {
     return item.id;
   }

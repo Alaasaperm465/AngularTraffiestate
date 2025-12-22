@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { IProperty } from '../../models/iproperty';
@@ -8,252 +8,161 @@ import { IProperty } from '../../models/iproperty';
   providedIn: 'root',
 })
 export class PropertyService {
-  private clientApiUrl = 'https://localhost:7030/api/Client';
-  private ownerApiUrl = 'https://localhost:7030/api/PropertyOwner';
+
+  private readonly clientApiUrl = 'https://localhost:7030/api/Client';
+  private readonly ownerApiUrl  = 'https://localhost:7030/api/PropertyOwner';
 
   constructor(private http: HttpClient) {}
 
+  /* =====================================================
+     🔹 MAIN – Get All Properties (Client → Owner fallback)
+     ===================================================== */
   getAllProperties(): Observable<IProperty[]> {
     return this.http.get<any>(`${this.clientApiUrl}/properties`).pipe(
-      map(response => {
-        let data: IProperty[] = this.extractPropertiesArray(response);
-        
-        data = data.map(property => {
-          let normalizedPurpose = (property.purpose || '').toLowerCase().trim();
-          
-          if (normalizedPurpose === 'sale' || normalizedPurpose === 'forsale') {
-            normalizedPurpose = 'buy';
-          }
-          else if (normalizedPurpose === 'forrent') {
-            normalizedPurpose = 'rent';
-          }
-          
-          return {
-            ...property,
-            purpose: normalizedPurpose
-          };
-        });
-        
-        return data;
-      }),
-      catchError(error => {
-        console.error('Error loading from Client API:', error);
-        return this.getAllPropertiesFromOwnerAPI();
+      map(res => this.normalizeProperties(res)),
+      catchError(err => {
+        console.warn(' Client API failed, switching to Owner API', err);
+        return this.getAllPropertiesFromOwner();
       })
     );
   }
 
-  private getAllPropertiesFromOwnerAPI(): Observable<IProperty[]> {
+  private getAllPropertiesFromOwner(): Observable<IProperty[]> {
     return this.http.get<any>(`${this.ownerApiUrl}/owner-properties`).pipe(
-      map(response => {
-        let data: IProperty[] = this.extractPropertiesArray(response);
-        return data;
-      }),
-      catchError(error => {
-        console.error('Error loading from Owner API:', error);
+      map(res => this.normalizeProperties(res)),
+      catchError(err => {
+        console.error('❌ Owner API failed', err);
         return of([]);
       })
     );
   }
 
-  getAllPropertiesWithPagination(pageSize: number = 100, pageNumber: number = 1): Observable<IProperty[]> {
+  /* =====================================================
+     🔹 PAGINATION (try multiple formats)
+     ===================================================== */
+  getAllPropertiesWithPagination(
+    pageSize: number = 20,
+    pageNumber: number = 1
+  ): Observable<IProperty[]> {
+
     const endpoints = [
       `${this.clientApiUrl}/properties?pageSize=${pageSize}&pageNumber=${pageNumber}`,
       `${this.clientApiUrl}/properties?$top=${pageSize}&$skip=${(pageNumber - 1) * pageSize}`,
       `${this.clientApiUrl}/properties?limit=${pageSize}&offset=${(pageNumber - 1) * pageSize}`,
-      `${this.ownerApiUrl}/owner-properties?pageSize=${pageSize}&pageNumber=${pageNumber}`
+      `${this.ownerApiUrl}/owner-properties?pageSize=${pageSize}&pageNumber=${pageNumber}`,
     ];
 
-    return this.tryEndpoints(endpoints, `Pagination (pageSize=${pageSize})`);
+    return this.tryEndpointsSequentially(endpoints);
   }
 
-  private tryEndpoints(endpoints: string[], description: string): Observable<IProperty[]> {
+  private tryEndpointsSequentially(urls: string[]): Observable<IProperty[]> {
     const tryNext = (index: number): Observable<IProperty[]> => {
-      if (index >= endpoints.length) {
-        console.error(`All endpoints failed for: ${description}`);
-        return of([]);
-      }
+      if (index >= urls.length) return of([]);
 
-      return this.http.get<any>(endpoints[index]).pipe(
-        map(response => {
-          let data = this.extractPropertiesArray(response);
-          return data;
-        }),
-        catchError(error => {
-          return tryNext(index + 1);
-        })
+      return this.http.get<any>(urls[index]).pipe(
+        map(res => this.normalizeProperties(res)),
+        catchError(() => tryNext(index + 1))
       );
     };
 
     return tryNext(0);
   }
 
-  getPropertiesForSale(): Observable<IProperty[]> {
-    return this.http.get<any>(`${this.clientApiUrl}/properties/ForSale`).pipe(
-      map(response => {
-        let data: IProperty[] = this.extractPropertiesArray(response);
-        
-        data = data.map(property => ({
-          ...property,
-          purpose: 'buy'
-        }));
-        
-        return data;
-      }),
-      catchError(error => {
-        console.error('Error loading ForSale properties:', error);
+  /* =====================================================
+     🔹 FILTERING / SEARCH
+     ===================================================== */
+  searchProperties(filters: {
+    city?: string;
+    propertyType?: string;
+    rooms?: number;
+    minPrice?: number;
+    maxPrice?: number;
+  }): Observable<IProperty[]> {
+
+    let params = new HttpParams();
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
+        params = params.set(key, value as any);
+      }
+    });
+
+    return this.http.get<any>(`${this.clientApiUrl}/search`, { params }).pipe(
+      map(res => this.normalizeProperties(res)),
+      catchError(err => {
+        console.error(' Search error', err);
         return of([]);
       })
     );
   }
 
-  getPropertiesForRent(): Observable<IProperty[]> {
-    return this.http.get<any>(`${this.clientApiUrl}/properties/ForRent`).pipe(
-      map(response => {
-        let data: IProperty[] = this.extractPropertiesArray(response);
-        
-        data = data.map(property => ({
-          ...property,
-          purpose: 'rent'
-        }));
-        
-        return data;
-      }),
-      catchError(error => {
-        console.error('Error loading ForRent properties:', error);
-        return of([]);
-      })
-    );
-  }
-
-  getPropertiesForLand(): Observable<IProperty[]> {
-    const endpoints = [
-      `${this.clientApiUrl}/properties/ForLand`,
-      `${this.clientApiUrl}/properties/Land`,
-      `${this.clientApiUrl}/properties?purpose=Land`
-    ];
-
-    return this.tryEndpoints(endpoints, 'Land Properties').pipe(
-      map(data => {
-        return data.map(property => ({
-          ...property,
-          purpose: 'land'
-        }));
-      })
-    );
-  }
-
-  getPropertyById(id: number): Observable<IProperty> {
-    return this.http.get<IProperty>(`${this.clientApiUrl}/properties/${id}`).pipe(
-      catchError(error => {
-        console.error(`Error loading property ${id}:`, error);
-        throw error;
-      })
-    );
-  }
-
-  getByCityOrArea(searchData: string): Observable<IProperty[]> {
-    return this.http.get<IProperty[]>(
-      `${this.clientApiUrl}/ByCity?cityName=${searchData}`
-    ).pipe(
-      catchError(error => {
-        console.error('Error searching by city:', error);
-        return of([]);
-      })
-    );
-  }
-
-  searchProperties(filters: any): Observable<IProperty[]> {
-    let queryString = '';
-
-    if (filters.city) {
-      queryString += `cityName=${filters.city}&`;
-    }
-    if (filters.propertyType) {
-      queryString += `propertyType=${filters.propertyType}&`;
-    }
-    if (filters.minPrice) {
-      queryString += `minPrice=${filters.minPrice}&`;
-    }
-    if (filters.maxPrice) {
-      queryString += `maxPrice=${filters.maxPrice}&`;
-    }
-    if (filters.rooms) {
-      queryString += `bedrooms=${filters.rooms}&`;
-    }
-
-    queryString = queryString.slice(0, -1);
-
-    return this.http.get<IProperty[]>(
-      `${this.clientApiUrl}/search?${queryString}`
-    ).pipe(
-      catchError(error => {
-        console.error('Error searching properties:', error);
-        return of([]);
-      })
-    );
-  }
-
+  /* =====================================================
+     🔹 SORTING
+     ===================================================== */
   sortByPrice(order: 'asc' | 'desc'): Observable<IProperty[]> {
-    return this.http.get<IProperty[]>(
-      `${this.clientApiUrl}/properties/sort/price/${order}`
-    ).pipe(
-      catchError(error => {
-        console.error('Error sorting by price:', error);
-        return of([]);
-      })
-    );
+    return this.http
+      .get<any>(`${this.clientApiUrl}/properties/sort/price/${order}`)
+      .pipe(
+        map(res => this.normalizeProperties(res)),
+        catchError(() => of([]))
+      );
   }
-sortByNewest() {
-  return this.http.get<IProperty[]>(
-    `${this.clientApiUrl}/properties/sort/newest`
-  );
-}
 
-  
+  sortByNewest(): Observable<IProperty[]> {
+    return this.http
+      .get<any>(`${this.clientApiUrl}/properties/sort/newest`)
+      .pipe(
+        map(res => this.normalizeProperties(res)),
+        catchError(() => of([]))
+      );
+  }
 
   sortByPopular(): Observable<IProperty[]> {
-    return this.http.get<IProperty[]>(
-      `${this.clientApiUrl}/properties/sort/popular`
-    ).pipe(
-      catchError(error => {
-        console.error('Error sorting by popular:', error);
-        return of([]);
-      })
-    );
+    return this.http
+      .get<any>(`${this.clientApiUrl}/properties/sort/popular`)
+      .pipe(
+        map(res => this.normalizeProperties(res)),
+        catchError(() => of([]))
+      );
   }
 
-  filterByPropertyType(type: string): Observable<IProperty[]> {
-    return this.http.get<IProperty[]>(
-      `${this.clientApiUrl}/properties/by-type?type=${type}`
-    ).pipe(
-      catchError(error => {
-        console.error('Error filtering by property type:', error);
-        return of([]);
-      })
-    );
+  /* =====================================================
+     🔹 SINGLE PROPERTY
+     ===================================================== */
+  getPropertyById(id: number): Observable<IProperty> {
+    return this.http.get<IProperty>(`${this.clientApiUrl}/properties/${id}`);
   }
 
+  /* =====================================================
+     🔹 NORMALIZATION (IMPORTANT)
+     ===================================================== */
+  private normalizeProperties(response: any): IProperty[] {
+    const data = this.extractPropertiesArray(response);
 
-  /**
-   * استخراج array من العقارات من الـ response
-   * @param response الـ response من الـ API
-   * @returns IProperty[]
-   */
+    return data.map(property => ({
+      ...property,
+      purpose: this.normalizePurpose(property.purpose),
+    }));
+  }
+
+  private normalizePurpose(purpose: string): 'buy' | 'rent' | 'land' {
+    const value = (purpose || '').toLowerCase().trim();
+
+    if (['sale', 'forsale', 'buy'].includes(value)) return 'buy';
+    if (['rent', 'forrent'].includes(value)) return 'rent';
+    if (['land'].includes(value)) return 'land';
+
+    return 'buy';
+  }
+
+  /* =====================================================
+     🔹 SAFE ARRAY EXTRACTOR
+     ===================================================== */
   private extractPropertiesArray(response: any): IProperty[] {
-    if (Array.isArray(response)) {
-      return response;
-    } 
-    else if (response?.value && Array.isArray(response.value)) {
-      return response.value;
-    } 
-    else if (response?.items && Array.isArray(response.items)) {
-      return response.items;
-    } 
-    else if (response?.data && Array.isArray(response.data)) {
-      return response.data;
-    }
-    
+    if (Array.isArray(response)) return response;
+    if (Array.isArray(response?.value)) return response.value;
+    if (Array.isArray(response?.items)) return response.items;
+    if (Array.isArray(response?.data)) return response.data;
     return [];
   }
 }

@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   padding: 80px 20px 60px;
-  overflow: visible; /* مهم! */
+  overflow: visible;
 }
 
 .hero-overlay {
@@ -111,7 +111,7 @@
   gap: 12px;
   margin-bottom: 20px;
   align-items: stretch;
-  overflow: visible !important; /* مهم جداً! */
+  overflow: visible !important;
 }
 
 .search-field-hero {
@@ -123,7 +123,7 @@
   border-radius: 12px;
   padding: 16px 20px;
   transition: all 0.3s ease;
-  overflow: visible; /* مهم! */
+  overflow: visible;
 }
 
 .search-field-hero:focus-within {
@@ -173,7 +173,7 @@
   color: #E2B43B;
 }
 
-/* DROPDOWN STYLES - FIXED */
+/* DROPDOWN STYLES */
 .dropdown-wrapper {
   position: relative;
   cursor: pointer;
@@ -189,7 +189,7 @@
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  z-index: 9999; /* عالي جداً! */
+  z-index: 9999;
   overflow-y: auto;
   max-height: 320px;
   animation: slideDown 0.3s ease;
@@ -475,10 +475,22 @@
   font-size: 24px;
   font-weight: 700;
   color: #0B3122;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .count-number {
   color: #E2B43B;
+}
+
+/* PAGE INFO - المفقود! */
+.page-info {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6c757d;
+  margin-left: 5px;
 }
 
 .view-toggle {
@@ -836,43 +848,48 @@
   box-shadow: 0 6px 20px rgba(226, 180, 59, 0.4);
 }
 
-/* PAGINATION */
-.pagination {
+/* SEE MORE BUTTON - المفقود! */
+.see-more-section {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 48px;
-  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 40px;
+  padding: 20px;
 }
 
-.page-btn {
-  min-width: 44px;
-  height: 44px;
-  padding: 0 16px;
-  background: white;
-  border: 1px solid #e0e0e0;
+.see-more-btn {
+  padding: 14px 32px;
+  background: #E2B43B;
+  border: none;
   border-radius: 8px;
-  font-size: 15px;
+  color: #0B3122;
+  font-size: 16px;
   font-weight: 600;
-  color: #2c3e50;
   cursor: pointer;
-  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(226, 180, 59, 0.3);
 }
 
-.page-btn:hover {
-  border-color: #E2B43B;
-  color: #E2B43B;
+.see-more-btn:hover {
+  background: #d4a535;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(226, 180, 59, 0.4);
 }
 
-.page-btn.active {
-  background: #E2B43B;
-  border-color: #E2B43B;
-  color: #0B3122;
+.see-more-btn:active {
+  transform: translateY(0);
+}
+
+.see-more-btn i {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.see-more-btn:hover i {
+  transform: translateY(3px);
 }
 
 /* CONTACT CTA */
@@ -1060,6 +1077,11 @@
     justify-content: center;
     flex-direction: column;
   }
+
+  .see-more-btn {
+    padding: 12px 28px;
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1071,23 +1093,4 @@
     width: 100%;
   }
 
-  .search-fields-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .search-btn-hero {
-    width: 100%;
-  }
-
-  .properties-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-  }
-
-  .cta-btn {
-    width: 100%;
-  }
 }

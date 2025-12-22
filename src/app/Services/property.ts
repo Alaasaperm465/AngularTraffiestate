@@ -52,11 +52,6 @@ export class PropertyService {
     return this.http.post(`${this.baseUrl}/Create`, formData);
   }
 
-  // getAll(pageNumber: number = 1, pageSize: number = 10)
-  //   : Observable<PagedResponse<Iproperty>> {
-
-  //   return this.http.get<PagedResponse<Iproperty>>(
-  //     `${this.baseUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`
-  //   );
+  
   }
 
