@@ -721,4 +721,10 @@
   .similar-grid {
     grid-template-columns: 1fr;
   }
+
+}
+@media (max-width: 480px) {
+  .thumbnail-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
