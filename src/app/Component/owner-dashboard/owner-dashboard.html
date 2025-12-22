@@ -67,8 +67,8 @@
               <i class="bi bi-check-circle"></i>
             </div>
             <div class="stat-content">
-              <h3>{{ activeProperties }}</h3>
-              <p>Active</p>
+              <h3>{{ ApprovedProperties }}</h3>
+              <p>Approved</p>
             </div>
           </div>
 
@@ -83,14 +83,15 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon views">
-              <i class="bi bi-eye"></i>
+            <div class="stat-icon rejected" style="color: #e74c3c;">
+              <i class="bi bi-x-circle"></i>
             </div>
             <div class="stat-content">
-              <h3>{{ totalViews }}</h3>
-              <p>Total Views</p>
+              <h3>{{ rejectedProperties }}</h3>
+              <p>Rejected</p>
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -150,9 +151,9 @@
               (change)="onStatusChange(filters.status)"
               class="filter-select">
               <option value="all">All Status</option>
-              <option value="active">Active</option>
+              <option value="approved">approved</option>
               <option value="pending">Pending Review</option>
-              <option value="inactive">Inactive</option>
+              <option value="rejected">Rejected</option>
             </select>
 
             <select
@@ -223,7 +224,7 @@
 
             <!-- Status Badge -->
             <span class="status-badge" [ngClass]="getStatusColor(property.status)">
-              {{ property.status === 'active' ? 'نشط' :
+              {{ property.status === 'approved' ? 'موافق عليه' :
                  property.status === 'pending' ? 'قيد المراجعة' : 'غير نشط' }}
             </span>
 

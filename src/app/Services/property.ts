@@ -12,6 +12,7 @@ import { ICreatePropertyDto } from '../models/icreate-property-dto';
   providedIn: 'root',
 })
 export class PropertyService {
+ 
   private baseUrl = 'https://localhost:7030/api/PropertyOwner';
 
   constructor(private http: HttpClient) {}
@@ -26,6 +27,10 @@ export class PropertyService {
   getPropertyById(id: number): Observable<IProperty> {
     return this.http.get<IProperty>(`https://localhost:7030/api/Client/properties/${id}`);
   }
+  getOwnerProperties(): Observable<IProperty[]> {
+  return this.http.get<IProperty[]>(
+    `https://localhost:7030/api/PropertyOwner/owner-properties`);
+}
 
   create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
     const formData = new FormData();
