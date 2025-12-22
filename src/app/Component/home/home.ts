@@ -465,6 +465,7 @@ export class Home implements OnInit, OnDestroy {
   }
 
   
+  // ===== الاستماع لحدث التمرير =====
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.isScrolled = window.scrollY > 100;
@@ -485,7 +486,7 @@ export class Home implements OnInit, OnDestroy {
     return item.id;
   }
 
-
+  // ===== إنشاء رابط واتساب صحيح =====
   getWhatsAppLink(phoneNumber: string): string {
     
     let cleanPhone = phoneNumber.replace(/\D/g, '');
@@ -505,3 +506,4 @@ export class Home implements OnInit, OnDestroy {
     return `https://wa.me/${cleanPhone}`;
   }
 }
+

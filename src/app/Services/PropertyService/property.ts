@@ -204,17 +204,13 @@ export class PropertyService {
       })
     );
   }
+sortByNewest() {
+  return this.http.get<IProperty[]>(
+    `${this.clientApiUrl}/properties/sort/newest`
+  );
+}
 
-  sortByNewest(): Observable<IProperty[]> {
-    return this.http.get<IProperty[]>(
-      `${this.clientApiUrl}/properties/sort/newest`
-    ).pipe(
-      catchError(error => {
-        console.error('Error sorting by newest:', error);
-        return of([]);
-      })
-    );
-  }
+  
 
   sortByPopular(): Observable<IProperty[]> {
     return this.http.get<IProperty[]>(
@@ -238,6 +234,12 @@ export class PropertyService {
     );
   }
 
+
+  /**
+   * استخراج array من العقارات من الـ response
+   * @param response الـ response من الـ API
+   * @returns IProperty[]
+   */
   private extractPropertiesArray(response: any): IProperty[] {
     if (Array.isArray(response)) {
       return response;
