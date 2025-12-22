@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { Home } from './Component/home/home';
 import { Login } from './Component/login/login';
 import { Register } from './Component/register/register';
-import { OwnerDashboard } from './Component/owner-dashboard/owner-dashboard';
+// import { OwnerDashboard } from './Component/owner-dashboard/owner-dashboard';
 import { Rent } from './Component/rent/rent';
 import { Buy } from './Component/buy/buy';
 import { AddProperty } from './Component/add-property/add-property';
@@ -15,6 +15,7 @@ import { ForgetPassword } from './Component/forget-password/forget-password';
 import { ResetPassword } from './Component/reset-password/reset-password';
 import { FaviroteCom } from './Component/favirote-com/favirote-com';
 import { SuccessComponent } from './Component/success/success';
+import { OwnerDashboardComponent } from './Component/owner-dashboard/owner-dashboard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -29,7 +30,7 @@ export const routes: Routes = [
     title: 'Rent Properties'},
   { path: 'buy', component: Buy, title: 'Buy Properties' },
   { path: 'addproperty', component: AddProperty, title: 'Add Property' },
-  { path: 'ownerDashboard', component: OwnerDashboard, title: 'Owner Dashboard' },
+  { path: 'ownerDashboard', component: OwnerDashboardComponent, title: 'Owner Dashboard' },
   { path: 'forget-password', component: ForgetPassword },
   { path: 'reset-password', component: ResetPassword },
   { path: 'success', component: SuccessComponent },
