@@ -1211,3 +1211,17 @@
     gap: 1rem;
   }
 }
+.status-approved {
+  background-color: #2ecc71; /* green */
+  color: white;
+}
+
+.status-pending {
+  background-color: #f1c40f; /* yellow */
+  color: white;
+}
+
+.status-rejected {
+  background-color: #e74c3c; /* red */
+  color: white;
+}

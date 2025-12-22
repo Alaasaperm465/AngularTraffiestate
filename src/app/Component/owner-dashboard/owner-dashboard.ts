@@ -43,7 +43,7 @@ interface PropertyCard {
   areaSpace: number;
   rooms: number;
   bathrooms: number;
-  status: 'active' | 'inactive' | 'pending';
+  status: 'approved' | 'pending' | 'rejected';
   isFavorite: boolean;
   isBookmarked: boolean;
   isSubmitted: boolean;
@@ -79,8 +79,9 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
 
   // Dashboard Statistics
   totalProperties: number = 0;
-  activeProperties: number = 0;
+  ApprovedProperties: number = 0;
   pendingProperties: number = 0;
+  rejectedProperties: number = 0;
   totalViews: number = 0;
 
   // Property Management
@@ -108,6 +109,7 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
   // Pagination
   currentPage: number = 1;
   itemsPerPage: number = 12;
+  authService: any;
 
   // ============ LIFECYCLE HOOKS ============
   ngOnInit(): void {
@@ -171,36 +173,39 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
   /**
    * Load properties based on current filters
    */
-  loadProperties(): void {
-    this.isLoading = true;
-    this.error = null;
+ loadProperties(): void {
+  this.isLoading = true;
+  this.error = null;
 
-    this.propertyService
-      .getPropertyForRent()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response: any) => {
-          const properties = Array.isArray(response) ? response : response.data || [];
-          this.allProperties = this.mapPropertiesToCards(properties);
-          this.updateStatistics();
-          this.applyFilter();
-          this.isLoading = false;
-        },
-        error: (error: any) => {
-          console.error('Failed to load properties:', error);
-          this.error = 'Failed to load properties. Please try again.';
-          this.isLoading = false;
-        },
-      });
-  }
+  this.propertyService
+    .getOwnerProperties()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (properties: IProperty[]) => {
+  console.log('API statuses:', properties.map(p => p.status));
+
+        this.allProperties = this.mapPropertiesToCards(properties);
+        this.updateStatistics();
+        this.applyFilter();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load owner properties:', error);
+        this.error = 'Failed to load your properties';
+        this.isLoading = false;
+      }
+    });
+}
+
 
   /**
    * Update statistics based on loaded properties
    */
   private updateStatistics(): void {
     this.totalProperties = this.allProperties.length;
-    this.activeProperties = this.allProperties.filter(p => p.status === 'active').length;
+    this.ApprovedProperties = this.allProperties.filter(p => p.status === 'approved').length;
     this.pendingProperties = this.allProperties.filter(p => p.status === 'pending').length;
+      this.rejectedProperties = this.allProperties.filter(p => p.status === 'rejected').length;
     this.totalViews = 0;
   }
 
@@ -238,12 +243,38 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
       areaSpace: prop.areaSpace,
       rooms: prop.rooms,
       bathrooms: prop.bathrooms,
-      status: (prop.status || 'active') as 'active' | 'inactive' | 'pending',
+    status: this.normalizeStatus(prop.approvalStatus), // ← IMPORTANT
       isFavorite: prop.isFavorite || false,
       isBookmarked: false,
       isSubmitted: false,
     }));
   }
+
+ /**
+ * Normalize property status from API to dashboard-friendly status
+ * Returns: 'approved' | 'pending' | 'rejected'
+ */
+private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
+  // If status is number (from enum)
+  if (typeof status === 'number') {
+    switch (status) {
+      case 0: return 'pending';
+      case 1: return 'approved';
+      case 2: return 'rejected';
+      default: return 'pending'; // fallback
+    }
+  }
+
+  // If status is string (just in case)
+  if (typeof status === 'string') {
+    const value = status.toLowerCase().trim();
+    if (value === 'pending') return 'pending';
+    if (value === 'approved') return 'approved';
+    if (value === 'rejected') return 'rejected';
+  }
+
+  return 'pending'; // default fallback
+}
 
   /**
    * Apply filtering based on current tab and search
@@ -514,18 +545,20 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
   /**
    * Get status badge color
    */
-  getStatusColor(status: string): string {
-    switch (status) {
-      case 'active':
-        return 'status-active';
-      case 'pending':
-        return 'status-pending';
-      case 'inactive':
-        return 'status-inactive';
-      default:
-        return 'status-default';
-    }
+getStatusColor(status: string): string {
+  switch (status) {
+    case 'approved':
+      return 'status-approved';
+    case 'pending':
+      return 'status-pending';
+    case 'rejected':
+      return 'status-rejected';
+    default:
+      return 'status-default';
   }
+}
+
+
 
   /**
    * Get total selected properties
@@ -563,4 +596,5 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
     this.applyFilter();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  
 }
