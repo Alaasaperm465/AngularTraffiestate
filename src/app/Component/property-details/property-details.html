@@ -1,135 +1,349 @@
-<div class="property-details-wrapper">
-  <div class="container mt-4" *ngIf="property">
+<div class="property-details-page" *ngIf="property">
 
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-        <li class="breadcrumb-item"><a routerLink="/properties">Properties</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ property.title }}</li>
-      </ol>
-    </nav>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-section">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a routerLink="/">Home</a>
+        <i class="bi bi-chevron-left"></i>
+        <a routerLink="/properties">Properties</a>
+        <i class="bi bi-chevron-left"></i>
+        <span>{{ property.title }}</span>
+      </nav>
+    </div>
+  </div>
 
-    <div class="row g-4">
-      <!-- Left Column: Images -->
-      <div class="col-lg-7">
-        <div class="main-image-container">
-          <img [src]="mainImageUrl"
-               class="main-image"
-               alt="{{ property.title }}">
-          <div class="image-overlay">
-            <span class="badge-type">{{ property.propertyType }}</span>
-            <span class="badge-purpose">{{ property.purpose }}</span>
-          </div>
-        </div>
+  <div class="container">
+    <div class="details-layout">
 
-        <div class="thumbnail-gallery" *ngIf="property.images && property.images.length > 0">
-          <div class="thumbnail-item" *ngFor="let img of property.images">
-<img [src]="img"
-     alt="Property thumbnail"
-     (click)="changeMainImage(img)"
-     [class.selected]="img === mainImageUrl">          </div>
-        </div>
-      </div>
+      <!-- Left Column - Images & Details -->
+      <div class="details-main">
 
-      <!-- Right Column: Details -->
-      <div class="col-lg-5">
-        <div class="property-details-card">
-          <h1 class="property-title">{{ property.title }}</h1>
-
-          <div class="property-price">
-            <i class="fas fa-tag"></i>
-            {{ property.price | currency:'EGP' }}
-          </div>
-
-          <div class="property-info-grid">
-            <div class="info-item">
-              <i class="fas fa-map-marker-alt"></i>
-              <div>
-                <span class="info-label">Location</span>
-                <span class="info-value">{{ property.location }}</span>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <i class="fas fa-city"></i>
-              <div>
-                <span class="info-label">City</span>
-                <span class="info-value">{{ property.city }}</span>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <i class="fas fa-ruler-combined"></i>
-              <div>
-                <span class="info-label">Area</span>
-                <span class="info-value">{{ property.areaSpace }} m²</span>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <i class="fas fa-bed"></i>
-              <div>
-                <span class="info-label">Rooms</span>
-                <span class="info-value">{{ property.rooms }}</span>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <i class="fas fa-bath"></i>
-              <div>
-                <span class="info-label">Bathrooms</span>
-                <span class="info-value">{{ property.bathrooms }}</span>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <i class="fas fa-paint-roller"></i>
-              <div>
-                <span class="info-label">Finishing</span>
-                <span class="info-value">{{ property.finishingLevel }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="owner-section">
-            <div class="owner-header">
-              <i class="fas fa-user-circle"></i>
-              <span>Property Owner</span>
-            </div>
-            <div class="owner-info">
-              <p class="owner-name">{{ property.ownerName }}</p>
-              <p class="owner-phone">
-                <i class="fas fa-phone"></i>
-                {{ property.ownerPhone }}
+        <!-- Property Header -->
+        <div class="property-header-section">
+          <div class="header-content">
+            <div class="title-section">
+              <h1 class="property-main-title">{{ property.title }}</h1>
+              <p class="property-location-main">
+                <i class="bi bi-geo-alt-fill"></i>
+                {{ property.area }}, {{ property.city }}
               </p>
             </div>
+            <div class="header-actions">
+              <button class="share-btn">
+                <i class="bi bi-share"></i>
+              </button>
+              <button
+                class="favorite-btn-large"
+                [class.active]="property.isFavorite"
+                (click)="toggleFavorite(property, $event)">
+                <i class="bi" [ngClass]="property.isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+              </button>
+            </div>
+          </div>
+          <div class="price-section">
+            <span class="main-price">{{ property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
+            <span class="price-label">{{ property.purpose === 'Buy' ? 'Total Price' : 'Per Month' }}</span>
+          </div>
+        </div>
+
+        <!-- Image Gallery -->
+        <div class="image-gallery-section">
+          <div class="main-image">
+            <img [src]="mainImageUrl" [alt]="property.title">
+            <span class="purpose-badge-details" [class.rent]="property.purpose === 'Rent'">
+              {{ property.purpose === 'Buy' ? 'For Sale' : 'For Rent' }}
+            </span>
           </div>
 
-          <div class="action-buttons">
-           <a class="btn btn-contact"
-   href="https://wa.me/+201200003943?text=Hello, I am interested in your property."
-   target="_blank">
-  <i class="fab fa-whatsapp"></i>
-  Contact us
-</a>
-            <button class="btn btn-favorite" (click)="toggleFavorite(property, $event)">
-              <i [class]="property.isFavorite ? 'fas fa-heart' : 'far fa-heart'"></i>
-              {{ property.isFavorite ? 'Saved' : 'Save' }}
-            </button>
+          <div class="thumbnail-images">
+            <div
+              class="thumbnail"
+              [class.active]="mainImageUrl === property.imageUrl"
+              (click)="changeMainImage(property.imageUrl|| '')">
+              <img [src]="property.imageUrl" alt="Image 1">
+            </div>
+            <div
+              class="thumbnail"
+              (click)="changeMainImage('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400')">
+              <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400" alt="Image 2">
+            </div>
+            <div
+              class="thumbnail"
+              (click)="changeMainImage('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400')">
+              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400" alt="Image 3">
+            </div>
+            <div
+              class="thumbnail"
+              (click)="changeMainImage('https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400')">
+              <img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400" alt="Image 4">
+            </div>
+            <div
+              class="thumbnail"
+              (click)="changeMainImage('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400')">
+              <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400" alt="Image 5">
+            </div>
+          </div>
+        </div>
+
+        <!-- Property Details -->
+        <div class="details-section">
+          <h2 class="section-title">
+            <i class="bi bi-info-circle"></i>
+            Property Details
+          </h2>
+
+          <div class="details-grid">
+            <div class="detail-card">
+              <i class="bi bi-door-open-fill"></i>
+              <div class="detail-info">
+                <span class="detail-label">Bedrooms</span>
+                <span class="detail-value">{{ property.rooms }}</span>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <i class="bi bi-droplet-fill"></i>
+              <div class="detail-info">
+                <span class="detail-label">Bathrooms</span>
+                <span class="detail-value">{{ property.bathrooms }}</span>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <i class="bi bi-arrows-fullscreen"></i>
+              <div class="detail-info">
+                <span class="detail-label">Area</span>
+                <span class="detail-value">{{ property.area }} m²</span>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <i class="bi bi-house"></i>
+              <div class="detail-info">
+                <span class="detail-label">Type</span>
+                <span class="detail-value">{{ property.propertyType }}</span>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <i class="bi bi-calendar-check"></i>
+              <div class="detail-info">
+                <span class="detail-label">Year Built</span>
+                <span class="detail-value">2020</span>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <i class="bi bi-car-front"></i>
+              <div class="detail-info">
+                <span class="detail-label">Parking</span>
+                <span class="detail-value">2 Cars</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="description-section">
+          <h2 class="section-title">
+            <i class="bi bi-file-text"></i>
+            Description
+          </h2>
+          <p class="description-text">
+            {{ property.description || 'This stunning property offers modern living at its finest. With spacious rooms, contemporary finishes, and prime location, this home is perfect for families looking for comfort and convenience. The property features high-quality materials throughout, ample natural light, and easy access to local amenities.' }}
+          </p>
+        </div>
+
+        <!-- Features & Amenities -->
+        <div class="features-section">
+          <h2 class="section-title">
+            <i class="bi bi-check-circle"></i>
+            Features & Amenities
+          </h2>
+          <div class="features-grid">
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Air Conditioning</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Swimming Pool</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Garden</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Security System</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Balcony</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Modern Kitchen</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Storage Room</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-check2"></i>
+              <span>Elevator</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Map -->
+        <div class="location-section">
+          <h2 class="section-title">
+            <i class="bi bi-geo-alt"></i>
+            Location
+          </h2>
+          <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55251.37747992967!2d31.223915!3d30.0444196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583fa60b21beeb%3A0x79dfb296e8423bba!2sCairo%2C%20Egypt!5e0!3m2!1sen!2s!4v1234567890"
+              width="100%"
+              height="400"
+              style="border:0; border-radius: 12px;"
+              allowfullscreen=""
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- Similar Properties -->
+        <div class="similar-properties-section">
+          <h2 class="section-title">
+            <i class="bi bi-houses"></i>
+            Similar Properties
+          </h2>
+          <div class="similar-grid">
+            <!-- Property Card 1 -->
+            <div class="similar-card">
+              <div class="similar-image">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400" alt="Property">
+                <span class="similar-badge">For Sale</span>
+              </div>
+              <div class="similar-info">
+                <h4>Modern Apartment</h4>
+                <p class="similar-location">
+                  <i class="bi bi-geo-alt"></i>
+                  New Cairo, Cairo
+                </p>
+                <div class="similar-details">
+                  <span><i class="bi bi-door-open"></i> 3</span>
+                  <span><i class="bi bi-droplet"></i> 2</span>
+                  <span><i class="bi bi-arrows-fullscreen"></i> 150</span>
+                </div>
+                <div class="similar-price">2,500,000 EGP</div>
+              </div>
+            </div>
+
+            <!-- Property Card 2 -->
+            <div class="similar-card">
+              <div class="similar-image">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400" alt="Property">
+                <span class="similar-badge rent">For Rent</span>
+              </div>
+              <div class="similar-info">
+                <h4>Luxury Villa</h4>
+                <p class="similar-location">
+                  <i class="bi bi-geo-alt"></i>
+                  Sheikh Zayed, Giza
+                </p>
+                <div class="similar-details">
+                  <span><i class="bi bi-door-open"></i> 4</span>
+                  <span><i class="bi bi-droplet"></i> 3</span>
+                  <span><i class="bi bi-arrows-fullscreen"></i> 250</span>
+                </div>
+                <div class="similar-price">15,000 EGP/month</div>
+              </div>
+            </div>
+
+            <!-- Property Card 3 -->
+            <div class="similar-card">
+              <div class="similar-image">
+                <img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400" alt="Property">
+                <span class="similar-badge">For Sale</span>
+              </div>
+              <div class="similar-info">
+                <h4>Cozy House</h4>
+                <p class="similar-location">
+                  <i class="bi bi-geo-alt"></i>
+                  Maadi, Cairo
+                </p>
+                <div class="similar-details">
+                  <span><i class="bi bi-door-open"></i> 2</span>
+                  <span><i class="bi bi-droplet"></i> 2</span>
+                  <span><i class="bi bi-arrows-fullscreen"></i> 120</span>
+                </div>
+                <div class="similar-price">1,800,000 EGP</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Description Section -->
-    <div class="description-section">
-      <h3 class="section-title">
-        <i class="fas fa-info-circle"></i>
-        Property Description
-      </h3>
-      <p class="description-text">{{ property.description }}</p>
-    </div>
+      <!-- Right Sidebar - Contact Card -->
+      <aside class="contact-sidebar">
+        <div class="contact-card sticky-card">
+          <div class="agent-info">
+            <img src="https://i.pravatar.cc/100?img=12" alt="Agent" class="agent-avatar">
+            <div class="agent-details">
+              <h3>Ahmed Hassan</h3>
+              <p>Real Estate Agent</p>
+              <div class="agent-rating">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                <span>4.8 (120 reviews)</span>
+              </div>
+            </div>
+          </div>
 
+          <div class="contact-actions">
+            <a href="tel:+201234567890" class="contact-btn primary">
+              <i class="bi bi-telephone-fill"></i>
+              Call Now
+            </a>
+            <a href="mailto:agent@goldenbeit.com" class="contact-btn secondary">
+              <i class="bi bi-envelope-fill"></i>
+              Send Email
+            </a>
+            <a href="https://wa.me/201234567890" class="contact-btn whatsapp">
+              <i class="bi bi-whatsapp"></i>
+              WhatsApp
+            </a>
+          </div>
+
+          <div class="schedule-visit">
+            <h4>Schedule a Visit</h4>
+            <form class="visit-form">
+              <input type="text" placeholder="Your Name" class="form-input">
+              <input type="email" placeholder="Your Email" class="form-input">
+              <input type="tel" placeholder="Your Phone" class="form-input">
+              <input type="date" placeholder="Preferred Date" class="form-input">
+              <textarea placeholder="Message (Optional)" class="form-textarea" rows="3"></textarea>
+              <button type="submit" class="submit-btn">
+                <i class="bi bi-calendar-check"></i>
+                Request Visit
+              </button>
+            </form>
+          </div>
+        </div>
+      </aside>
+    </div>
   </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-state" *ngIf="!property">
+  <div class="spinner"></div>
+  <p>Loading property details...</p>
 </div>

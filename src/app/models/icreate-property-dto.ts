@@ -11,7 +11,7 @@ export interface ICreatePropertyDto {
     finishingLevel: string;
     propertyType: string;
     purpose: string;
-    status: string;
+    status: 0;
     ownerId?: string;
     //////////////////////
 

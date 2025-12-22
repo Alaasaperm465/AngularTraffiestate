@@ -43,10 +43,10 @@ export class PropertyService {
     formData.append('FinishingLevel', property.finishingLevel);
     formData.append('PropertyType', property.propertyType);
     formData.append('Purpose', property.purpose);
-    formData.append('Status', property.status);
+    formData.append('Status', property.status.toString());
 
     // الصور داخل DTO
-    formData.append('ImagesFiles', mainImage); // الصورة الرئيسية
+    formData.append('mainImage', mainImage); // الصورة الرئيسية
     additionalImages.forEach(img => formData.append('AdditionalImages', img));
 
     return this.http.post(`${this.baseUrl}/Create`, formData);
