@@ -17,6 +17,7 @@ import { FaviroteCom } from './Component/favirote-com/favirote-com';
 import { SuccessComponent } from './Component/success/success';
 import { OwnerDashboardComponent } from './Component/owner-dashboard/owner-dashboard';
 import { Land } from './land/land';
+import { ProfileComponent } from './Component/profile/profile';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,13 +27,11 @@ export const routes: Routes = [
   {path :'property/:id',component:PropertyDetails, title:'Property Details' },
   {path:'favorites',component:FaviroteCom,title:'My Favorites'},
   {path:'land',component:Land,title:'Land Properties'},
-  {
-    path: 'rent',
-    component: Rent,
-    title: 'Rent Properties'},
+  {path: 'rent',component: Rent,title: 'Rent Properties'},
   { path: 'buy', component: Buy, title: 'Buy Properties' },
   { path: 'addproperty', component: AddProperty, title: 'Add Property' },
   { path: 'ownerDashboard', component: OwnerDashboardComponent, title: 'Owner Dashboard' },
+  { path: 'userProfile', component: ProfileComponent, title: 'User Profile' },
   { path: 'forget-password', component: ForgetPassword },
   { path: 'reset-password', component: ResetPassword },
   { path: 'success', component: SuccessComponent },
