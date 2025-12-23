@@ -5,12 +5,11 @@ import { UserService, UserProfile } from '../../Services/users';
 
 @Component({
   selector: 'app-profile',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class ProfileComponent implements OnInit {
+export class Profile {
 
   user: UserProfile | null = null;
   loading = true;
