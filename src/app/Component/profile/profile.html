@@ -1,54 +1,130 @@
 <!-- Profile Page -->
-<div *ngIf="!loading && user" class="profile-page">
+<div class="profile-page">
 
-  <!-- Header -->
-  <div class="profile-header">
-    <h1>Dashboard</h1>
-    <p>Manage your account information</p>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
   </div>
 
-  <!-- Stats Cards -->
-  <div class="stats-cards">
-    <div class="card">
-      <h3>{{ user.userName }}</h3>
-      <span>User Name</span>
+  <!-- Profile Content -->
+  <div *ngIf="!loading && user" class="profile-container">
+
+    <!-- Header Section -->
+    <div class="profile-header-section">
+      <div class="header-content">
+        <div class="avatar-container">
+          <img
+            [src]="user.avatarUrl || 'assets/avatar-default.png'"
+            [alt]="user.userName"
+            class="avatar"
+          >
+          <div class="avatar-info">
+            <h1>{{ user.userName }}</h1>
+            <p class="role-badge">{{ user.role || 'User' }}</p>
+          </div>
+        </div>
+        <button (click)="goToEditProfile()" class="btn-edit-primary">
+          <i class="fas fa-edit"></i> Edit Profile
+        </button>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>{{ user.email }}</h3>
-      <span>Email</span>
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-building"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ user.propertiesCount }}</h3>
+          <p>Properties</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ user.favoritesCount }}</h3>
+          <p>Favorites</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ user.averageRating.toFixed(1) }}</h3>
+          <p>Average Rating</p>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>{{ user.phoneNumber || 'N/A' }}</h3>
-      <span>Phone</span>
+    <!-- Profile Details Section -->
+    <div class="details-section">
+      <h2>Profile Information</h2>
+
+      <div class="details-grid">
+        <!-- Email -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-envelope"></i>
+            Email
+          </label>
+          <p class="detail-value">{{ user.email }}</p>
+        </div>
+
+        <!-- Phone -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-phone"></i>
+            Phone Number
+          </label>
+          <p class="detail-value">{{ user.phoneNumber || 'Not provided' }}</p>
+        </div>
+
+        <!-- User ID -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-id-card"></i>
+            User ID
+          </label>
+          <p class="detail-value">{{ user.userId }}</p>
+        </div>
+
+        <!-- Role -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-user-tag"></i>
+            Role
+          </label>
+          <p class="detail-value">{{ user.role || 'User' }}</p>
+        </div>
+      </div>
+
+      <!-- Bio Section -->
+      <div *ngIf="user.bio" class="bio-section">
+        <h3>Bio</h3>
+        <p>{{ user.bio }}</p>
+      </div>
     </div>
+
   </div>
 
-  <!-- Profile Details Section -->
-  <div class="profile-details">
-    <h2>Profile Details</h2>
-
-    <div class="detail-row">
-      <span>Username</span>
-      <strong>{{ user.userName }}</strong>
-    </div>
-
-    <div class="detail-row">
-      <span>Email</span>
-      <strong>{{ user.email }}</strong>
-    </div>
-
-    <div class="detail-row">
-      <span>Phone</span>
-      <strong>{{ user.phoneNumber || 'Not Provided' }}</strong>
-    </div>
-
-    <!-- Edit Button -->
-    <div class="edit-btn-container">
-      <button class="edit-btn">
-        <a routerLink="/editProfile" class="edit-link" routerLinkActive="active">Edit Profile</a>
+  <!-- Error State -->
+  <div *ngIf="!loading && !user && error" class="error-container">
+    <div class="error-card">
+      <i class="fas fa-exclamation-circle"></i>
+      <h2>Unable to Load Profile</h2>
+      <p>{{ error }}</p>
+      <button (click)="loadProfile()" class="btn-retry">
+        <i class="fas fa-redo"></i> Try Again
       </button>
     </div>
   </div>
+
 </div>
+
