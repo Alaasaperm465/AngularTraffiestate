@@ -189,7 +189,7 @@ body {
   width: 100%;
   padding: 11px;
   background: linear-gradient(135deg, var(--primary-green), var(--primary-light));
-  color: white;
+  color:#2b3d4f;
   border: none;
   border-radius: 10px;
   font-size: 0.9rem;
