@@ -6,7 +6,9 @@
       <nav class="breadcrumb">
         <a routerLink="/">Home</a>
         <i class="bi bi-chevron-left"></i>
-        <a routerLink="/properties">Properties</a>
+        <a [routerLink]="property.purpose.toLowerCase() === 'rent' ? '/rent' : '/buy'">
+          {{ property.purpose.toLowerCase() === 'rent' ? 'Rent' : 'Buy' }}
+        </a>
         <i class="bi bi-chevron-left"></i>
         <span>{{ property.title }}</span>
       </nav>
@@ -30,20 +32,22 @@
               </p>
             </div>
             <div class="header-actions">
-              <button class="share-btn">
+              <button type="button" class="share-btn" (click)="shareProperty()" title="Share">
                 <i class="bi bi-share"></i>
               </button>
               <button
+                type="button"
                 class="favorite-btn-large"
                 [class.active]="property.isFavorite"
-                (click)="toggleFavorite(property, $event)">
+                (click)="toggleFavorite($event)"
+                title="Add to Favorites">
                 <i class="bi" [ngClass]="property.isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
               </button>
             </div>
           </div>
           <div class="price-section">
             <span class="main-price">{{ property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
-            <span class="price-label">{{ property.purpose === 'Buy' ? 'Total Price' : 'Per Month' }}</span>
+            <span class="price-label">{{ getPriceLabel() }}</span>
           </div>
         </div>
 
@@ -51,39 +55,21 @@
         <div class="image-gallery-section">
           <div class="main-image">
             <img [src]="mainImageUrl" [alt]="property.title">
-            <span class="purpose-badge-details" [class.rent]="property.purpose === 'Rent'">
-              {{ property.purpose === 'Buy' ? 'For Sale' : 'For Rent' }}
+            <span class="purpose-badge-details" [class.rent]="property.purpose?.toLowerCase() === 'rent'">
+              {{ getPropertyPurposeLabel() }}
             </span>
           </div>
 
-          <div class="thumbnail-images">
-            <div
-              class="thumbnail"
-              [class.active]="mainImageUrl === property.imageUrl"
-              (click)="changeMainImage(property.imageUrl|| '')">
-              <img [src]="property.imageUrl" alt="Image 1">
-            </div>
-            <div
-              class="thumbnail"
-              (click)="changeMainImage('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400')">
-              <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400" alt="Image 2">
-            </div>
-            <div
-              class="thumbnail"
-              (click)="changeMainImage('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400')">
-              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400" alt="Image 3">
-            </div>
-            <div
-              class="thumbnail"
-              (click)="changeMainImage('https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400')">
-              <img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400" alt="Image 4">
-            </div>
-            <div
-              class="thumbnail"
-              (click)="changeMainImage('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400')">
-              <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400" alt="Image 5">
-            </div>
-          </div>
+         <!-- الصور الإضافية من images -->
+          <div class="row">
+<div
+  class="thumbnail"
+  *ngFor="let img of property.images || []"
+  [class.active]="mainImageUrl === img"
+  (click)="changeMainImage(img)">
+  <img [src]="img" alt="Additional Image">
+</div>
+        </div>
         </div>
 
         <!-- Property Details -->
@@ -98,7 +84,7 @@
               <i class="bi bi-door-open-fill"></i>
               <div class="detail-info">
                 <span class="detail-label">Bedrooms</span>
-                <span class="detail-value">{{ property.rooms }}</span>
+                <span class="detail-value">{{ property.rooms || 'N/A' }}</span>
               </div>
             </div>
 
@@ -106,7 +92,7 @@
               <i class="bi bi-droplet-fill"></i>
               <div class="detail-info">
                 <span class="detail-label">Bathrooms</span>
-                <span class="detail-value">{{ property.bathrooms }}</span>
+                <span class="detail-value">{{ property.bathrooms || 'N/A' }}</span>
               </div>
             </div>
 
@@ -114,7 +100,7 @@
               <i class="bi bi-arrows-fullscreen"></i>
               <div class="detail-info">
                 <span class="detail-label">Area</span>
-                <span class="detail-value">{{ property.area }} m²</span>
+                <span class="detail-value">{{ property.areaSpace || property.area || 'N/A' }} m²</span>
               </div>
             </div>
 
@@ -122,23 +108,23 @@
               <i class="bi bi-house"></i>
               <div class="detail-info">
                 <span class="detail-label">Type</span>
-                <span class="detail-value">{{ property.propertyType }}</span>
+                <span class="detail-value">{{ property.propertyType || 'N/A' }}</span>
               </div>
             </div>
 
             <div class="detail-card">
-              <i class="bi bi-calendar-check"></i>
+              <i class="bi bi-paint-bucket"></i>
               <div class="detail-info">
-                <span class="detail-label">Year Built</span>
-                <span class="detail-value">2020</span>
+                <span class="detail-label">Finishing</span>
+                <span class="detail-value">{{ property.finishingLevel || 'N/A' }}</span>
               </div>
             </div>
 
             <div class="detail-card">
-              <i class="bi bi-car-front"></i>
+              <i class="bi bi-eye-fill"></i>
               <div class="detail-info">
-                <span class="detail-label">Parking</span>
-                <span class="detail-value">2 Cars</span>
+                <span class="detail-label">Views</span>
+                <span class="detail-value">{{ property.views || 0 }}</span>
               </div>
             </div>
           </div>
@@ -156,7 +142,7 @@
         </div>
 
         <!-- Features & Amenities -->
-        <div class="features-section">
+        <!-- <div class="features-section">
           <h2 class="section-title">
             <i class="bi bi-check-circle"></i>
             Features & Amenities
@@ -195,6 +181,41 @@
               <span>Elevator</span>
             </div>
           </div>
+        </div> -->
+
+        <!-- Rating Section -->
+        <div class="rating-section">
+          <h2 class="section-title">
+            <i class="bi bi-star"></i>
+            Rate This Property
+          </h2>
+          <div class="rating-container">
+            <div class="rating-summary">
+              <div class="rating-number">{{ averageRating | number:'1.1-1' }}</div>
+              <div class="rating-stars-display">
+                <i class="bi" [ngClass]="getStarClass(1)"></i>
+                <i class="bi" [ngClass]="getStarClass(2)"></i>
+                <i class="bi" [ngClass]="getStarClass(3)"></i>
+                <i class="bi" [ngClass]="getStarClass(4)"></i>
+                <i class="bi" [ngClass]="getStarClass(5)"></i>
+              </div>
+              <div class="rating-count">{{ totalRatings }} ratings</div>
+            </div>
+
+            <div class="rating-input">
+              <p class="rating-label">{{ hasRated ? 'Thank you for rating!' : 'Rate this property:' }}</p>
+              <div class="rating-stars">
+                <i
+                  *ngFor="let star of [1,2,3,4,5]"
+                  class="bi rating-star"
+                  [ngClass]="(hoverRating || userRating) >= star ? 'bi-star-fill active' : 'bi-star'"
+                  (click)="setRating(star)"
+                  (mouseenter)="setHoverRating(star)"
+                  (mouseleave)="clearHoverRating()">
+                </i>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Location Map -->
@@ -216,72 +237,37 @@
         </div>
 
         <!-- Similar Properties -->
-        <div class="similar-properties-section">
+        <div class="similar-properties-section" *ngIf="similarProperties.length > 0">
           <h2 class="section-title">
             <i class="bi bi-houses"></i>
             Similar Properties
           </h2>
           <div class="similar-grid">
-            <!-- Property Card 1 -->
-            <div class="similar-card">
+            <div
+              class="similar-card"
+              *ngFor="let prop of similarProperties; trackBy: trackById"
+              [routerLink]="['/property', prop.id]">
               <div class="similar-image">
-                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400" alt="Property">
-                <span class="similar-badge">For Sale</span>
+                <img [src]="prop.imageUrl || galleryImages[0]" [alt]="prop.title">
+                <span class="similar-badge" [class.rent]="prop.purpose.toLowerCase() === 'rent'">
+                  {{ prop.purpose.toLowerCase() === 'rent' ? 'For Rent' : 'For Sale' }}
+                </span>
               </div>
               <div class="similar-info">
-                <h4>Modern Apartment</h4>
+                <h4>{{ prop.title }}</h4>
                 <p class="similar-location">
                   <i class="bi bi-geo-alt"></i>
-                  New Cairo, Cairo
+                  {{ prop.area }}, {{ prop.city }}
                 </p>
                 <div class="similar-details">
-                  <span><i class="bi bi-door-open"></i> 3</span>
-                  <span><i class="bi bi-droplet"></i> 2</span>
-                  <span><i class="bi bi-arrows-fullscreen"></i> 150</span>
+                  <span><i class="bi bi-door-open"></i> {{ prop.rooms }}</span>
+                  <span><i class="bi bi-droplet"></i> {{ prop.bathrooms }}</span>
+                  <span><i class="bi bi-arrows-fullscreen"></i> {{ prop.areaSpace || prop.area }}</span>
                 </div>
-                <div class="similar-price">2,500,000 EGP</div>
-              </div>
-            </div>
-
-            <!-- Property Card 2 -->
-            <div class="similar-card">
-              <div class="similar-image">
-                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400" alt="Property">
-                <span class="similar-badge rent">For Rent</span>
-              </div>
-              <div class="similar-info">
-                <h4>Luxury Villa</h4>
-                <p class="similar-location">
-                  <i class="bi bi-geo-alt"></i>
-                  Sheikh Zayed, Giza
-                </p>
-                <div class="similar-details">
-                  <span><i class="bi bi-door-open"></i> 4</span>
-                  <span><i class="bi bi-droplet"></i> 3</span>
-                  <span><i class="bi bi-arrows-fullscreen"></i> 250</span>
+                <div class="similar-price">
+                  {{ prop.price | currency:'EGP':'symbol':'1.0-0' }}
+                  {{ prop.purpose.toLowerCase() === 'rent' ? '/month' : '' }}
                 </div>
-                <div class="similar-price">15,000 EGP/month</div>
-              </div>
-            </div>
-
-            <!-- Property Card 3 -->
-            <div class="similar-card">
-              <div class="similar-image">
-                <img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400" alt="Property">
-                <span class="similar-badge">For Sale</span>
-              </div>
-              <div class="similar-info">
-                <h4>Cozy House</h4>
-                <p class="similar-location">
-                  <i class="bi bi-geo-alt"></i>
-                  Maadi, Cairo
-                </p>
-                <div class="similar-details">
-                  <span><i class="bi bi-door-open"></i> 2</span>
-                  <span><i class="bi bi-droplet"></i> 2</span>
-                  <span><i class="bi bi-arrows-fullscreen"></i> 120</span>
-                </div>
-                <div class="similar-price">1,800,000 EGP</div>
               </div>
             </div>
           </div>
@@ -294,42 +280,64 @@
           <div class="agent-info">
             <img src="https://i.pravatar.cc/100?img=12" alt="Agent" class="agent-avatar">
             <div class="agent-details">
-              <h3>Ahmed Hassan</h3>
-              <p>Real Estate Agent</p>
-              <div class="agent-rating">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-                <span>4.8 (120 reviews)</span>
-              </div>
+              <h3>{{ property.ownerName || 'salma Esam' }}</h3>
+              <p> Sales</p>
+
             </div>
           </div>
 
           <div class="contact-actions">
-            <a href="tel:+201234567890" class="contact-btn primary">
+            <button type="button" class="contact-btn primary" (click)="callNow()">
               <i class="bi bi-telephone-fill"></i>
               Call Now
-            </a>
-            <a href="mailto:agent@goldenbeit.com" class="contact-btn secondary">
+            </button>
+            <button type="button" class="contact-btn secondary" (click)="sendEmail()">
               <i class="bi bi-envelope-fill"></i>
               Send Email
-            </a>
-            <a href="https://wa.me/201234567890" class="contact-btn whatsapp">
+            </button>
+            <button type="button" class="contact-btn whatsapp" (click)="openWhatsApp()">
               <i class="bi bi-whatsapp"></i>
               WhatsApp
-            </a>
+            </button>
           </div>
 
           <div class="schedule-visit">
             <h4>Schedule a Visit</h4>
-            <form class="visit-form">
-              <input type="text" placeholder="Your Name" class="form-input">
-              <input type="email" placeholder="Your Email" class="form-input">
-              <input type="tel" placeholder="Your Phone" class="form-input">
-              <input type="date" placeholder="Preferred Date" class="form-input">
-              <textarea placeholder="Message (Optional)" class="form-textarea" rows="3"></textarea>
+            <form class="visit-form" (ngSubmit)="submitVisitRequest()">
+              <input
+                type="text"
+                placeholder="Your Name *"
+                class="form-input"
+                [(ngModel)]="visitForm.name"
+                name="name"
+                required>
+              <input
+                type="email"
+                placeholder="Your Email *"
+                class="form-input"
+                [(ngModel)]="visitForm.email"
+                name="email"
+                required>
+              <input
+                type="tel"
+                placeholder="Your Phone *"
+                class="form-input"
+                [(ngModel)]="visitForm.phone"
+                name="phone"
+                required>
+              <input
+                type="date"
+                placeholder="Preferred Date *"
+                class="form-input"
+                [(ngModel)]="visitForm.date"
+                name="date"
+                required>
+              <textarea
+                placeholder="Message (Optional)"
+                class="form-textarea"
+                rows="3"
+                [(ngModel)]="visitForm.message"
+                name="message"></textarea>
               <button type="submit" class="submit-btn">
                 <i class="bi bi-calendar-check"></i>
                 Request Visit
