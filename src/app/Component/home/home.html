@@ -28,6 +28,15 @@
               <i class="bi bi-key"></i>
               Rent
             </button>
+           <button
+  type="button"
+  class="tab-btn-hero"
+  [class.active]="activeTab === ''"
+  (click)="setActiveTab('')">
+  <i class="bi bi-grid"></i>
+  All
+</button>
+
           </div>
 
           <div class="search-fields-wrapper">
@@ -66,7 +75,7 @@
                   <i class="bi bi-house-door"></i>
                   land
                 </div>
-                
+
               </div>
             </div>
 
@@ -179,7 +188,7 @@
               <div class="property-header">
                 <h3 class="property-title">{{ property.title }}</h3>
                  <h3 class="property-title">{{ property.propertyType }}</h3>
-                  
+
                 <p class="property-location">
                   <i class="bi bi-geo-alt-fill"></i>
                   {{ property.area }}, {{ property.city }}
@@ -306,7 +315,7 @@
 <input type="checkbox" value="Land" (change)="onPropertyTypeChange($event)">
               <span>land</span>
             </label>
-          
+
           </div>
         </div>
 
