@@ -12,6 +12,7 @@ import { Router, RouterModule } from '@angular/router';
 export class Navbar implements OnInit {
   isExploreOpen = false;
   isLoggedIn = false;
+  isProfileMenuOpen = false;
   userName: string = '';
   userAvatar: string = 'assets/avatar-default.png';
   userEmail: string = '';
@@ -56,6 +57,10 @@ export class Navbar implements OnInit {
     this.isExploreOpen = !this.isExploreOpen;
   }
 
+  toggleProfileMenu() {
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
   goToFavorites() {
     this.router.navigate(['/favorites']);
   }
@@ -63,7 +68,9 @@ export class Navbar implements OnInit {
   logout() {
     localStorage.removeItem('userProfile');
     localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
     this.isLoggedIn = false;
+    this.isProfileMenuOpen = false;
     this.router.navigate(['/login']);
   }
 
