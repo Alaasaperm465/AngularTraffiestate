@@ -1,5 +1,6 @@
 .edit-profile-page {
   padding: 40px 20px;
+  margin-top: 80px;
   min-height: 100vh;
   background: linear-gradient(135deg, #f5f6fa 0%, #f0f3f7 100%);
   font-family: 'Inter', 'Segoe UI', sans-serif;

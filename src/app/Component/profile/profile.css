@@ -1,5 +1,6 @@
 .profile-page {
   padding: 40px 20px;
+  margin-top: 80px;
   min-height: 100vh;
   background: linear-gradient(135deg, #f5f6fa 0%, #f0f3f7 100%);
   font-family: 'Inter', 'Segoe UI', sans-serif;
@@ -203,7 +204,7 @@
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   margin-bottom: 30px;
 }
@@ -249,9 +250,10 @@
 /* Bio Section */
 .bio-section {
   padding: 20px;
-  background: linear-gradient(135deg, rgba(226, 180, 59, 0.05), rgba(27, 94, 69, 0.05));
+  background: #f9f9f9;
   border-radius: 12px;
   border-left: 3px solid #1b5e45;
+  transition: all 0.3s ease;
 }
 
 .bio-section h3 {
