@@ -241,7 +241,7 @@ export class PropertyDetails implements OnInit {
     window.location.href = `tel:${phoneNumber}`;
   }
 
-  
+
 
   openWhatsApp(): void {
     // استخدم الرقم الافتراضي
@@ -306,7 +306,7 @@ makeCall() {
   window.location.href = `tel:${this.defaultPhone}`;
 }
 sendEmail(): void {
-  const receiverEmail = 'yourgmail@gmail.com'; // غيريه لجيميلك
+  const receiverEmail = 'salmaesam344@gmail.com'; // غيريه لجيميلك
   const subject = 'Property Inquiry';
   const body =
     `Hello,
