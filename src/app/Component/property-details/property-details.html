@@ -280,8 +280,21 @@
           <div class="agent-info">
             <img src="https://i.pravatar.cc/100?img=12" alt="Agent" class="agent-avatar">
             <div class="agent-details">
-              <h3>{{ property.ownerName || 'salma Esam' }}</h3>
+              <h3>{{ property.ownerName || 'Salma Esam' }}</h3>
               <p> Sales</p>
+              <div class="agent-rating" *ngIf="reviewStats">
+  <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+    <i
+      class="bi"
+      [ngClass]="{
+        'bi-star-fill': reviewStats.averageRating > i,
+        'bi-star-half': reviewStats.averageRating > i && reviewStats.averageRating < i + 1,
+        'bi-star': reviewStats.averageRating <= i
+      }">
+    </i>
+  </ng-container>
+  <span>{{ reviewStats.averageRating }} ({{ reviewStats.reviewsCount }} reviews)</span>
+</div>
 
             </div>
           </div>
