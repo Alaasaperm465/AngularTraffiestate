@@ -25,7 +25,6 @@ export class Land implements OnInit {
   favoritesIds: number[] = [];
 
   // فلترة الخيارات الخاصة بالأراضي
-  selectedLandTypes: Set<string> = new Set(['land']); // Default to land
   selectedSizes: Set<string> = new Set();
   selectedPriceRanges: Set<string> = new Set();
   selectedSort: string = '';
@@ -50,14 +49,6 @@ export class Land implements OnInit {
     { label: 'Over 10,000,000 EGP', value: 'over10m' }
   ];
 
-  landTypes = [
-    { label: 'Agricultural Land', value: 'agricultural' },
-    { label: 'Residential Land', value: 'residential' },
-    { label: 'Commercial Land', value: 'commercial' },
-    { label: 'Industrial Land', value: 'industrial' },
-    { label: 'Touristic Land', value: 'touristic' }
-  ];
-
   quickSearchCities = [
     { name: 'Cairo', count: 120 },
     { name: 'Giza', count: 85 },
@@ -74,7 +65,7 @@ export class Land implements OnInit {
   ) {
     this.searchForm = this.fb.group({
       city: [''],
-      propertyType: ['land'], // Default to land
+      propertyType: ['land'],
       minSize: [''],
       maxSize: [''],
       minPrice: [''],
@@ -83,37 +74,29 @@ export class Land implements OnInit {
   }
 
   ngOnInit(): void {
-    // جلب الأراضي
     this.loadLandProperties();
-    
-    // جلب المفضلات
     this.loadFavorites();
   }
 
   loadLandProperties(): void {
     this.buyService.getPropertyForBuy().subscribe({
       next: (data: IProperty[]) => {
-        // Filter to only land properties
-        this.allLandProperties = data.filter(property => 
-          property.propertyType?.toLowerCase().includes('land') || 
+        this.allLandProperties = data.filter(property =>
+          property.propertyType?.toLowerCase().includes('land') ||
           property.propertyType?.toLowerCase() === 'land'
         );
-        
-        // If no land properties, use all properties as fallback
+
         if (this.allLandProperties.length === 0) {
           this.allLandProperties = data;
         }
-        
-        // Set land category for display
-      this.landProperties = this.allLandProperties.map(property => ({
-        ...property,
-        propertyType: 'Land',
-        areaSpace: Number(property.areaSpace) || 1000,
-        price: Number(property.price) || 500000
-      }));
 
+        this.landProperties = this.allLandProperties.map(property => ({
+          ...property,
+          propertyType: 'Land',
+          areaSpace: Number(property.areaSpace) || 1000,
+          price: Number(property.price) || 500000
+        }));
 
-        
         this.landProperties = [...this.allLandProperties];
         this.cdr.detectChanges();
         console.log('Land properties loaded:', this.landProperties);
@@ -150,35 +133,32 @@ export class Land implements OnInit {
       );
     }
 
-    // ✅ فلترة نوع الأرض (دائماً land)
+    // ✅ فلترة نوع الأرض
     filtered = filtered.filter(p =>
       p.propertyType?.toLowerCase().includes('land')
     );
 
-    // ✅ فلترة حجم الأرض
-    if (searchData.minSize) {
+    // ✅ فلترة حجم الأرض - منع الأرقام السالبة
+    if (searchData.minSize && Number(searchData.minSize) >= 0) {
       const minSize = Number(searchData.minSize);
       filtered = filtered.filter(p => (p.areaSpace || 0) >= minSize);
     }
-    if (searchData.maxSize) {
+    if (searchData.maxSize && Number(searchData.maxSize) >= 0) {
       const maxSize = Number(searchData.maxSize);
       filtered = filtered.filter(p => (p.areaSpace || 0) <= maxSize);
     }
 
-    // ✅ فلترة السعر
-    if (searchData.minPrice) {
+    // ✅ فلترة السعر - منع الأرقام السالبة
+    if (searchData.minPrice && Number(searchData.minPrice) >= 0) {
       const minPrice = Number(searchData.minPrice);
       filtered = filtered.filter(p => (p.price || 0) >= minPrice);
     }
-    if (searchData.maxPrice) {
+    if (searchData.maxPrice && Number(searchData.maxPrice) >= 0) {
       const maxPrice = Number(searchData.maxPrice);
       filtered = filtered.filter(p => (p.price || 0) <= maxPrice);
     }
 
-    // تطبيق الفلاترات الإضافية
     filtered = this.applyFilters(filtered);
-
-    // تحديث النتيجة
     this.landProperties = filtered;
     this.cdr.detectChanges();
   }
@@ -186,16 +166,6 @@ export class Land implements OnInit {
   // ===== تطبيق الفلاترات =====
   private applyFilters(properties: IProperty[]): IProperty[] {
     let filtered = [...properties];
-
-    // فلتر نوع الأرض
-    if (this.selectedLandTypes.size > 0) {
-      filtered = filtered.filter(p => {
-        const propType = p.propertyType?.toLowerCase() || '';
-        return Array.from(this.selectedLandTypes).some(type => 
-          propType.includes(type.toLowerCase())
-        );
-      });
-    }
 
     // فلتر حجم الأرض
     if (this.selectedSizes.size > 0) {
@@ -222,19 +192,19 @@ export class Land implements OnInit {
       });
     }
 
-    // فلتر السعر المخصص
-    if (this.minPrice !== null) {
+    // فلتر السعر المخصص - منع الأرقام السالبة
+    if (this.minPrice !== null && this.minPrice >= 0) {
       filtered = filtered.filter(p => (p.price || 0) >= this.minPrice!);
     }
-    if (this.maxPrice !== null) {
+    if (this.maxPrice !== null && this.maxPrice >= 0) {
       filtered = filtered.filter(p => (p.price || 0) <= this.maxPrice!);
     }
 
-    // فلتر الحجم المخصص
-    if (this.minSize !== null) {
+    // فلتر الحجم المخصص - منع الأرقام السالبة
+    if (this.minSize !== null && this.minSize >= 0) {
       filtered = filtered.filter(p => (p.areaSpace || 0) >= this.minSize!);
     }
-    if (this.maxSize !== null) {
+    if (this.maxSize !== null && this.maxSize >= 0) {
       filtered = filtered.filter(p => (p.areaSpace || 0) <= this.maxSize!);
     }
 
@@ -271,9 +241,7 @@ export class Land implements OnInit {
     if (target.type === 'checkbox') {
       let filterSet: Set<string>;
 
-      if (['agricultural', 'residential', 'commercial', 'industrial', 'touristic'].includes(value)) {
-        filterSet = this.selectedLandTypes;
-      } else if (['under1000', '1000-5000', '5000-10000', 'over10000'].includes(value)) {
+      if (['under1000', '1000-5000', '5000-10000', 'over10000'].includes(value)) {
         filterSet = this.selectedSizes;
       } else {
         filterSet = this.selectedPriceRanges;
@@ -308,8 +276,6 @@ export class Land implements OnInit {
 
   // ===== مسح جميع الفلاترات =====
   clearAllFilters(): void {
-    this.selectedLandTypes.clear();
-    this.selectedLandTypes.add('land'); // Keep land selected
     this.selectedSizes.clear();
     this.selectedPriceRanges.clear();
     this.selectedSort = '';
@@ -428,7 +394,7 @@ export class Land implements OnInit {
 
   // ===== الحصول على عدد العقارات في المدينة =====
   getCityCount(cityName: string): number {
-    return this.allLandProperties.filter(p => 
+    return this.allLandProperties.filter(p =>
       p.city?.toLowerCase() === cityName.toLowerCase() ||
       p.location?.toLowerCase().includes(cityName.toLowerCase())
     ).length;
