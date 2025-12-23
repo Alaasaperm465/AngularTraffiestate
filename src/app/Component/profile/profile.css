@@ -1,15 +1,31 @@
 .profile-page {
   padding: 30px;
+  font-family: Arial, sans-serif;
+  background-color: #f5f6fa;
+  min-height: 100vh;
 }
 
+/* Header */
 .profile-header {
   background: linear-gradient(135deg, #0f3d2e, #1b5e45);
   color: white;
   padding: 30px;
   border-radius: 15px;
   margin-bottom: 30px;
+  text-align: center;
 }
 
+.profile-header h1 {
+  margin-bottom: 10px;
+  font-size: 32px;
+}
+
+.profile-header p {
+  font-size: 16px;
+  color: #d4f1e1;
+}
+
+/* Stats Cards */
 .stats-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -22,11 +38,13 @@
   padding: 25px;
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  text-align: center;
 }
 
 .card h3 {
   margin: 0;
   color: #0f3d2e;
+  font-size: 20px;
 }
 
 .card span {
@@ -34,6 +52,7 @@
   font-size: 14px;
 }
 
+/* Profile Details */
 .profile-details {
   background: white;
   padding: 25px;
@@ -41,6 +60,12 @@
   box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
+.profile-details h2 {
+  margin-bottom: 20px;
+  color: #0f3d2e;
+}
+
+/* Detail Rows */
 .detail-row {
   display: flex;
   justify-content: space-between;
@@ -50,4 +75,37 @@
 
 .detail-row:last-child {
   border-bottom: none;
+}
+
+.detail-row span {
+  font-weight: 500;
+  color: #555;
+}
+
+.detail-row strong {
+  color: #0f3d2e;
+}
+
+/* Edit Button */
+.edit-btn-container {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.edit-btn {
+  background-color: #1b5e45;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background-color: #0f3d2e;
+}
+
+.edit-btn .edit-link {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
 }

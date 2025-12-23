@@ -18,6 +18,7 @@ import { SuccessComponent } from './Component/success/success';
 import { OwnerDashboardComponent } from './Component/owner-dashboard/owner-dashboard';
 import { Land } from './land/land';
 import { ProfileComponent } from './Component/profile/profile';
+import { EditProfile } from './Component/edit-profile/edit-profile';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -32,6 +33,7 @@ export const routes: Routes = [
   { path: 'addproperty', component: AddProperty, title: 'Add Property' },
   { path: 'ownerDashboard', component: OwnerDashboardComponent, title: 'Owner Dashboard' },
   { path: 'userProfile', component: ProfileComponent, title: 'User Profile' },
+  { path: 'editProfile', component: EditProfile, title: 'Edit Profile' },
   { path: 'forget-password', component: ForgetPassword },
   { path: 'reset-password', component: ResetPassword },
   { path: 'success', component: SuccessComponent },
