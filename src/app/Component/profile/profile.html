@@ -1,1 +1,130 @@
-<p>profile works!</p>
+<!-- Profile Page -->
+<div class="profile-page">
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="!loading && user" class="profile-container">
+
+    <!-- Header Section -->
+    <div class="profile-header-section">
+      <div class="header-content">
+        <div class="avatar-container">
+          <img
+            [src]="user.avatarUrl || 'assets/avatar-default.png'"
+            [alt]="user.userName"
+            class="avatar"
+          >
+          <div class="avatar-info">
+            <h1>{{ user.userName }}</h1>
+            <p class="role-badge">{{ user.role || 'User' }}</p>
+          </div>
+        </div>
+        <button (click)="goToEditProfile()" class="btn-edit-primary">
+          <i class="fas fa-edit"></i> Edit Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-building"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ user.propertiesCount }}</h3>
+          <p>Properties</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ user.favoritesCount }}</h3>
+          <p>Favorites</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ user.averageRating.toFixed(1) }}</h3>
+          <p>Average Rating</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Details Section -->
+    <div class="details-section">
+      <h2>Profile Information</h2>
+
+      <div class="details-grid">
+        <!-- Email -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-envelope"></i>
+            Email
+          </label>
+          <p class="detail-value">{{ user.email }}</p>
+        </div>
+
+        <!-- Phone -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-phone"></i>
+            Phone Number
+          </label>
+          <p class="detail-value">{{ user.phoneNumber || 'Not provided' }}</p>
+        </div>
+
+        <!-- User ID -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-id-card"></i>
+            User ID
+          </label>
+          <p class="detail-value">{{ user.userId }}</p>
+        </div>
+
+        <!-- Role -->
+        <div class="detail-item">
+          <label>
+            <i class="fas fa-user-tag"></i>
+            Role
+          </label>
+          <p class="detail-value">{{ user.role || 'User' }}</p>
+        </div>
+      </div>
+
+      <!-- Bio Section -->
+      <div *ngIf="user.bio" class="bio-section">
+        <h3>Bio</h3>
+        <p>{{ user.bio }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && !user && error" class="error-container">
+    <div class="error-card">
+      <i class="fas fa-exclamation-circle"></i>
+      <h2>Unable to Load Profile</h2>
+      <p>{{ error }}</p>
+      <button (click)="loadProfile()" class="btn-retry">
+        <i class="fas fa-redo"></i> Try Again
+      </button>
+    </div>
+  </div>
+
+</div>
+

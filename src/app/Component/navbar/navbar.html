@@ -86,9 +86,32 @@
           <button *ngIf="isLoggedIn"
                   class="pf-user-name-btn"
                   type="button"
-                  (click)="goToDashboard()">
+                  (click)="toggleProfileMenu()">
+            <i class="fas fa-user-circle"></i>
             <span class="pf-user-name-text">{{ userName }}</span>
+            <i class="fas fa-chevron-down"></i>
           </button>
+
+          <!-- Profile Dropdown Menu -->
+          <div *ngIf="isLoggedIn && isProfileMenuOpen" class="profile-dropdown-menu">
+            <a routerLink="/profile" class="dropdown-item" (click)="toggleProfileMenu()">
+              <i class="fas fa-user"></i>
+              <span>My Profile</span>
+            </a>
+            <a routerLink="/ownerDashboard" class="dropdown-item" (click)="toggleProfileMenu()">
+              <i class="fas fa-chart-line"></i>
+              <span>Dashboard</span>
+            </a>
+            <a routerLink="/favorites" class="dropdown-item" (click)="toggleProfileMenu()">
+              <i class="fas fa-heart"></i>
+              <span>My Favorites</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <button (click)="logout()" class="dropdown-item logout-btn">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </button>
+          </div>
 
           <!-- Not Logged In - Login Button -->
           <a *ngIf="!isLoggedIn"
