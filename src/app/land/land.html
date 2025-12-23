@@ -45,9 +45,9 @@
             Size (sqm)
           </label>
           <div class="range-inputs">
-            <input type="number" placeholder="Min" formControlName="minSize" />
+            <input type="number" placeholder="Min" formControlName="minSize" min="0" />
             <span>-</span>
-            <input type="number" placeholder="Max" formControlName="maxSize" />
+            <input type="number" placeholder="Max" formControlName="maxSize" min="0" />
           </div>
         </div>
 
@@ -58,16 +58,15 @@
             Price (EGP)
           </label>
           <div class="range-inputs">
-            <input type="number" placeholder="Min" formControlName="minPrice" />
+            <input type="number" placeholder="Min" formControlName="minPrice" min="0" />
             <span>-</span>
-            <input type="number" placeholder="Max" formControlName="maxPrice" />
+            <input type="number" placeholder="Max" formControlName="maxPrice" min="0" />
           </div>
         </div>
 
         <!-- Search Button -->
-        <button class="search-btn" type="submit">
+        <button class="search-btn" type="submit" title="Search">
           <i class="bi bi-search"></i>
-          Search
         </button>
 
       </div>
@@ -97,92 +96,11 @@
   <!-- ================= MAIN CONTENT ================= -->
   <div class="land-content">
 
-    <!-- ========== FILTERS SIDEBAR ========== -->
-    <aside class="filters-sidebar">
-      <div class="filter-section">
-        <h4>
-          <i class="bi bi-funnel"></i>
-          Filters
-        </h4>
-
-        <!-- Land Type -->
-        <div class="filter-group">
-          <h5>
-            <i class="bi bi-tags"></i>
-            Land Type
-          </h5>
-          <div class="filter-options">
-            <div class="filter-option" *ngFor="let type of landTypes">
-              <input
-                type="checkbox"
-                [value]="type.value"
-                (change)="onFilterChange($event)"
-              />
-              <label>{{ type.label }}</label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Land Size -->
-        <div class="filter-group">
-          <h5>
-            <i class="bi bi-aspect-ratio"></i>
-            Size
-          </h5>
-          <div class="filter-options">
-            <div class="filter-option" *ngFor="let size of landSizes">
-              <input
-                type="checkbox"
-                [value]="size.value"
-                (change)="onFilterChange($event)"
-              />
-              <label>{{ size.label }}</label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Price -->
-        <div class="filter-group">
-          <h5>
-            <i class="bi bi-currency-dollar"></i>
-            Price
-          </h5>
-          <div class="filter-options">
-            <div class="filter-option" *ngFor="let price of landPriceRanges">
-              <input
-                type="checkbox"
-                [value]="price.value"
-                (change)="onFilterChange($event)"
-              />
-              <label>{{ price.label }}</label>
-            </div>
-          </div>
-        </div>
-
-        <button class="clear-filters-btn" (click)="clearAllFilters()">
-          <i class="bi bi-x-circle"></i>
-          Clear Filters
-        </button>
-      </div>
-    </aside>
-
     <!-- ========== RESULTS ========== -->
     <section class="lands-grid">
 
       <div class="results-header">
         <h3>{{ landProperties.length }} Lands Found</h3>
-
-        <div class="results-actions">
-          <button class="map-view-btn">
-            <i class="bi bi-map"></i>
-            Map View
-          </button>
-
-          <button class="save-search-btn">
-            <i class="bi bi-bookmark"></i>
-            Save Search
-          </button>
-        </div>
       </div>
 
       <!-- No Results -->
@@ -257,7 +175,7 @@
 
             <div class="land-actions">
               <button class="btn-details">
-                <i class="bi bi-info-circle"></i>
+                <i class="bi bi-info-circle" ></i>
                 Details
               </button>
               <button class="btn-contact">
@@ -271,6 +189,107 @@
       </div>
 
     </section>
+
+    <!-- ========== FILTERS SIDEBAR ========== -->
+    <aside class="filters-sidebar">
+      <div class="filters-header">
+        <h3>Filters</h3>
+        <button type="button" class="clear-filters" (click)="clearAllFilters()">Clear All</button>
+      </div>
+
+      <div class="filter-section">
+
+        <!-- Sort By -->
+        <div class="filter-group">
+          <h5>
+            <i class="bi bi-sort-down"></i>
+            Sort By
+          </h5>
+          <div class="filter-options">
+            <div class="filter-option">
+              <input
+                type="radio"
+                name="sort"
+                value="newest"
+                (change)="onFilterChange($event)"
+              />
+              <label>Newest First</label>
+            </div>
+            <div class="filter-option">
+              <input
+                type="radio"
+                name="sort"
+                value="price-low"
+                (change)="onFilterChange($event)"
+              />
+              <label>Price: Low to High</label>
+            </div>
+            <div class="filter-option">
+              <input
+                type="radio"
+                name="sort"
+                value="price-high"
+                (change)="onFilterChange($event)"
+              />
+              <label>Price: High to Low</label>
+            </div>
+            <div class="filter-option">
+              <input
+                type="radio"
+                name="sort"
+                value="popular"
+                (change)="onFilterChange($event)"
+              />
+              <label>Most Popular</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="filter-divider"></div>
+
+        <!-- Land Size -->
+        <div class="filter-group">
+          <h5>
+            <i class="bi bi-aspect-ratio"></i>
+            Size
+          </h5>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let size of landSizes">
+              <input
+                type="checkbox"
+                [value]="size.value"
+                (change)="onFilterChange($event)"
+              />
+              <label>{{ size.label }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="filter-divider"></div>
+
+        <!-- Price -->
+        <div class="filter-group">
+          <h5>
+            <i class="bi bi-currency-dollar"></i>
+            Price
+          </h5>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let price of landPriceRanges">
+              <input
+                type="checkbox"
+                [value]="price.value"
+                (change)="onFilterChange($event)"
+              />
+              <label>{{ price.label }}</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
   </div>
 
 </div>

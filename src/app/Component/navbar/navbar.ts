@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
@@ -57,10 +58,6 @@ export class Navbar implements OnInit {
 
   goToFavorites() {
     this.router.navigate(['/favorites']);
-  }
-
-  goToAddProperty() {
-    this.router.navigate(['/addproperty']);
   }
 
   logout() {

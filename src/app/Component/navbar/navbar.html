@@ -1,4 +1,3 @@
-
 <header class="pf-header">
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom fixed-top pf-navbar">
     <div class="container-fluid px-3 px-lg-4">
@@ -52,19 +51,12 @@
               Rent
             </a>
           </li>
-                    <li class="nav-item">
+
+          <li class="nav-item">
             <a class="nav-link px-3 py-2 rounded"
                routerLink="/land"
                routerLinkActive="active">
               Land
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded"
-               routerLink="/properties"
-               routerLinkActive="active">
-              Properties
             </a>
           </li>
 
@@ -88,35 +80,20 @@
 
       <!-- Right Actions -->
       <div class="pf-actions d-flex align-items-center gap-2 gap-lg-3 ms-auto">
-        <!-- Add Property Button -->
-        <button class="btn btn-success pf-add-property rounded-pill px-3 py-2 d-flex align-items-center gap-2"
-                (click)="goToAddProperty()">
-          <i class="bi bi-plus-lg"></i>
-          <span>Add Property</span>
-        </button>
-
         <!-- User Avatar / Login -->
         <div class="pf-user-dropdown">
           <!-- Logged In User Profile Button -->
           <button *ngIf="isLoggedIn"
-                  class="btn btn-success pf-user-btn rounded-pill px-3 py-2 d-flex align-items-center gap-2"
+                  class="pf-user-name-btn"
                   type="button"
-                  (click)="goToDashboard()"
-                  style="border: none; background-color: #1a5a40;">
-            <img [src]="userAvatar"
-                 [alt]="userName"
-                 class="pf-user-avatar-small rounded-circle"
-                 width="28"
-                 height="28">
-            <span class="fw-bold">{{ userName }}</span>
-            <i class="bi bi-chevron-down"></i>
+                  (click)="goToDashboard()">
+            <span class="pf-user-name-text">{{ userName }}</span>
           </button>
 
           <!-- Not Logged In - Login Button -->
           <a *ngIf="!isLoggedIn"
-             class="btn btn-success pf-user-btn rounded-pill px-3 py-2 d-flex align-items-center gap-2"
-             routerLink="/login"
-             style="border: none; background-color: #1a5a40;">
+             class="btn btn-success pf-login-btn rounded-pill px-4 py-2"
+             routerLink="/login">
             <span>Sign In</span>
           </a>
         </div>

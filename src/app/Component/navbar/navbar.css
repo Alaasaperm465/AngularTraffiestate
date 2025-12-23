@@ -1,8 +1,8 @@
 /* تحسينات شريط التنقل */
 .pf-navbar {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
   transition: all 0.3s ease;
   z-index: 1030;
 }
@@ -12,9 +12,10 @@
 }
 
 .pf-brand-text {
-  color: #0f5c3a;
+  color: #1a5a45;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
 }
 
 /* تحسين الروابط */
@@ -26,228 +27,133 @@
   border: none;
   background: transparent;
   cursor: pointer;
+  font-size: 0.95rem;
 }
 
 .pf-nav-links .nav-link:hover {
-  color: #0f5c3a;
-  background-color: rgba(15, 92, 58, 0.05);
+  color: #1a5a45;
+  background-color: rgba(26, 90, 69, 0.05);
 }
 
 .pf-nav-links .nav-link.active {
-  color: #0f5c3a;
-  background-color: rgba(15, 92, 58, 0.1);
+  color: #1a5a45;
+  background-color: rgba(26, 90, 69, 0.08);
   font-weight: 600;
 }
 
-/* Add Property Button */
-.pf-add-property {
-  border-color: #0f5c3a;
-  color: #0f5c3a;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.pf-add-property:hover {
-  background-color: #0f5c3a;
-  color: white;
-  border-color: #0f5c3a;
-}
-
-/* User Button Styles */
-.pf-user-btn {
-  background-color: #0f5c3a;
-  color: white;
-  font-weight: 600;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.pf-user-btn:hover {
-  background-color: #0d4a2d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(15, 92, 58, 0.3);
-}
-
-.pf-user-btn.dropdown-toggle::after {
-  display: none;
-}
-
-.pf-user-avatar-small {
-  object-fit: cover;
-  border: 2px solid white;
-}
-
-/* تحسينات للشاشات الصغيرة */
-@media (max-width: 991.98px) {
-  .pf-nav-links {
-    padding: 1rem 0;
-  }
-
-  .pf-nav-links .nav-item {
-    margin-bottom: 0.5rem;
-  }
-
-  .pf-actions {
-    margin-left: auto;
-  }
-
-  .navbar-collapse {
-    order: 3;
-    width: 100%;
-  }
-}
-
-/* تحسين القوائم المنسدلة */
-.pf-dropdown-menu {
-  min-width: 200px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  margin-top: 0.5rem !important;
-  animation: fadeInDown 0.2s ease;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  background-color: white;
-  display: none;
-}
-
-.pf-dropdown-menu.show {
-  display: block;
-}
-
-.pf-dropdown-menu .dropdown-item {
-  transition: all 0.2s ease;
-  color: #333;
-  text-decoration: none;
-  display: block;
-}
-
-.pf-dropdown-menu .dropdown-item:hover {
-  background-color: rgba(58, 134, 255, 0.08);
-  color: #3a86ff;
-  transform: translateX(3px);
-}
-
-/* تأثير السهم عند الفتح */
-.pf-arrow {
-  transition: transform 0.3s ease;
-  display: inline-block;
-}
-
-.rotate-180 {
-  transform: rotate(180deg);
-}
-
-/* تحسين الأزرار */
-.pf-icon-btn {
-  transition: all 0.2s ease;
-  border: none;
-  background: transparent;
+/* User Name Button - احترافي وبسيط */
+.pf-user-name-btn {
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 50px;
   cursor: pointer;
-}
-
-.pf-icon-btn:hover {
-  transform: translateY(-2px);
-  color: #ff006e;
-}
-
-.pf-user-avatar {
-  transition: all 0.2s ease;
-  border: 1px solid #3a86ff !important;
-}
-
-.pf-user-avatar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2);
-  background-color: #3a86ff !important;
-  color: white !important;
-}
-
-/* User Profile Dropdown Styles */
-.pf-user-profile {
-  background-color: #f0f4f8;
-  border: 1px solid #e0e6ed;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pf-user-profile:hover {
-  background-color: #e0e6ed;
-  box-shadow: 0 2px 8px rgba(58, 134, 255, 0.15);
-  transform: translateY(-2px);
-}
-
-.pf-user-avatar-small {
-  object-fit: cover;
-  border: 2px solid #3a86ff;
-}
-
-/* تحسينات للشاشات الصغيرة */
-@media (max-width: 991.98px) {
-  .pf-nav-links {
-    padding: 1rem 0;
-  }
-
-  .pf-nav-links .nav-item {
-    margin-bottom: 0.5rem;
-  }
-
-  .pf-dropdown-menu {
-    position: static;
-    border: none;
-    box-shadow: none;
-    padding-left: 1rem;
-    animation: none;
-  }
-
-  .pf-actions {
-    margin-left: auto;
-  }
-
-  .navbar-collapse {
-    order: 3;
-    width: 100%;
-  }
-}
-
-/* تحسين العنصر العربي */
-.arabic-text {
-  font-family: 'Segoe UI', 'Noto Sans Arabic', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-  direction: rtl;
-}
-
-/* تأثيرات للعناصر النشطة */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* تحسينات للـ dropdown على الشاشات الكبيرة */
-@media (min-width: 992px) {
-  .pf-dropdown:hover .pf-dropdown-menu {
-    display: block;
-    animation: fadeInDown 0.2s ease;
-  }
-
-  .pf-dropdown:hover .pf-arrow {
-    transform: rotate(180deg);
-  }
-}
-
-/* إضافة scroll effect */
-.pf-navbar {
   transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.95rem;
 }
 
-/* تحسين الـ dropdown menu */
-.dropdown-menu {
-  min-width: 200px;
+.pf-user-name-btn:hover {
+  border-color: #1a5a45;
+  background: rgba(26, 90, 69, 0.05);
+  box-shadow: 0 4px 12px rgba(26, 90, 69, 0.15);
+}
+
+.pf-user-name-btn:active {
+  transform: translateY(1px);
+}
+
+/* اسم المستخدم */
+.pf-user-name-text {
+  font-weight: 600;
+  color: #1a5a45;
+  white-space: nowrap;
+  letter-spacing: -0.3px;
+  display: block;
+}
+
+/* Login Button */
+.pf-login-btn {
+  background: linear-gradient(135deg, #1a5a45, #0f382a);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(26, 90, 69, 0.2);
+}
+
+.pf-login-btn:hover {
+  background: linear-gradient(135deg, #0f382a, #1a5a45);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(26, 90, 69, 0.3);
+}
+
+.pf-login-btn:focus {
+  color: white;
+  box-shadow: 0 0 0 0.25rem rgba(26, 90, 69, 0.25);
+}
+
+/* الـ User Dropdown Container */
+.pf-user-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 991.98px) {
+  .pf-nav-links {
+    padding: 1rem 0;
+  }
+
+  .pf-nav-links .nav-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .pf-actions {
+    margin-left: auto;
+  }
+
+  .navbar-collapse {
+    order: 3;
+    width: 100%;
+  }
+
+  .pf-user-name-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* تحسين التركيز للـ Accessibility */
+.pf-user-name-btn:focus-visible {
+  outline: 2px solid #1a5a45;
+  outline-offset: 2px;
+}
+
+.pf-login-btn:focus-visible {
+  outline: 2px solid #1a5a45;
+  outline-offset: 2px;
+}
+
+/* تأثير عند التمرير على الـ nav links */
+.pf-nav-links .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #1a5a45;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.pf-nav-links .nav-link:hover::after {
+  width: 60%;
+}
+
+.pf-nav-links .nav-link.active::after {
+  width: 60%;
 }

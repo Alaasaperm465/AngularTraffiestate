@@ -62,7 +62,7 @@
 .search-section {
   background: white;
   border-radius: 20px;
-  padding: 30px;
+  padding: 20px 30px;
   margin-bottom: 30px;
   box-shadow: var(--shadow-md);
 }
@@ -73,15 +73,15 @@
 
 .search-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  grid-template-columns: 1.5fr 1.2fr 1.2fr 1.2fr auto;
+  gap: 12px;
   align-items: end;
 }
 
 .search-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .search-group label {
@@ -90,7 +90,7 @@
   gap: 8px;
   font-weight: 600;
   color: var(--text-dark);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .search-group label i {
@@ -98,10 +98,10 @@
 }
 
 .search-group input {
-  padding: 14px 16px;
+  padding: 10px 12px;
   border: 2px solid var(--border-color);
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
 }
 
@@ -112,7 +112,7 @@
 }
 
 .type-display {
-  padding: 14px 16px;
+  padding: 10px 12px;
   background: var(--bg-gray);
   border: 2px solid var(--border-color);
   border-radius: 12px;
@@ -121,6 +121,7 @@
   gap: 10px;
   font-weight: 500;
   color: var(--text-dark);
+  font-size: 0.9rem;
 }
 
 .type-display i {
@@ -144,25 +145,25 @@
 }
 
 .search-btn {
-  padding: 14px 20px;
-  background: linear-gradient(135deg, var(--primary-green), var(--primary-dark));
-  color: white;
+  padding: 12px 12px;
+  background: var(--primary-gold);
+  color: var(--primary-dark);
   border: none;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0;
   transition: all 0.3s ease;
-  width: 100%;
+  width: auto;
 }
 
 .search-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(26, 90, 69, 0.3);
+  box-shadow: 0 6px 20px rgba(226, 180, 59, 0.4);
 }
 
 /* Quick Search Section */
@@ -227,7 +228,7 @@
 /* Main Content */
 .land-content {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 1fr 300px;
   gap: 30px;
 }
 
@@ -240,25 +241,52 @@
   height: fit-content;
   position: sticky;
   top: 20px;
+  order: 2;
 }
 
-.filter-section h4 {
+.filters-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.3rem;
+  justify-content: space-between;
   margin-bottom: 25px;
-  color: var(--text-dark);
   padding-bottom: 15px;
   border-bottom: 2px solid var(--border-color);
 }
 
-.filter-section h4 i {
-  color: var(--primary-green);
+.filters-header h3 {
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clear-filters {
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--primary-gold);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.clear-filters:hover {
+  color: var(--primary-dark);
 }
 
 .filter-group {
   margin-bottom: 25px;
+}
+
+.filter-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 20px 0;
 }
 
 .filter-group h5 {
@@ -303,40 +331,18 @@
   flex: 1;
 }
 
-.clear-filters-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--bg-gray);
-  border: 2px solid var(--border-color);
-  color: var(--text-dark);
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-}
-
-.clear-filters-btn:hover {
-  background: var(--primary-green);
-  color: white;
-  border-color: var(--primary-green);
-}
-
 /* Lands Grid */
 .lands-grid {
   background: white;
   border-radius: 20px;
   padding: 30px;
   box-shadow: var(--shadow-md);
+  order: 1;
 }
 
 .results-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
@@ -347,36 +353,6 @@
   font-size: 1.5rem;
   color: var(--text-dark);
   font-weight: 700;
-}
-
-.results-actions {
-  display: flex;
-  gap: 15px;
-}
-
-.map-view-btn,
-.save-search-btn {
-  padding: 10px 20px;
-  border: 2px solid var(--border-color);
-  background: white;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  color: var(--text-dark);
-}
-
-.map-view-btn:hover {
-  border-color: var(--primary-green);
-  color: var(--primary-green);
-}
-
-.save-search-btn:hover {
-  border-color: var(--primary-gold);
-  color: var(--primary-gold);
 }
 
 /* No Results */
@@ -401,8 +377,8 @@
 /* Lands Grid Content */
 .lands-grid-content {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
   margin-bottom: 30px;
 }
 
@@ -423,7 +399,7 @@
 
 .land-image {
   position: relative;
-  height: 220px;
+  height: 180px;
   overflow: hidden;
 }
 
@@ -452,8 +428,8 @@
 }
 
 .land-type {
-  background: rgba(26, 90, 69, 0.9);
-  color: white;
+  background: var(--primary-gold);
+  color: var(--primary-dark);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -489,7 +465,7 @@
 
 /* Land Details */
 .land-details {
-  padding: 20px;
+  padding: 15px;
 }
 
 .land-price {
@@ -500,7 +476,7 @@
 }
 
 .price {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: var(--primary-green);
 }
@@ -514,7 +490,7 @@
 }
 
 .land-title {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 8px;
@@ -713,7 +689,7 @@
   .search-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   .lands-grid-content {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
@@ -723,10 +699,15 @@
   .land-content {
     grid-template-columns: 1fr;
   }
-  
+
   .filters-sidebar {
     position: static;
     margin-bottom: 30px;
+    order: 1;
+  }
+
+  .lands-grid {
+    order: 2;
   }
 }
 
@@ -734,25 +715,25 @@
   .land-hero h1 {
     font-size: 2.5rem;
   }
-  
+
   .search-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .results-header {
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
   }
-  
+
   .lands-grid-content {
     grid-template-columns: 1fr;
   }
-  
+
   .cta-buttons {
     flex-direction: column;
   }
-  
+
   .cta-btn {
     width: 100%;
     justify-content: center;
@@ -763,35 +744,35 @@
   .land-container {
     padding: 15px;
   }
-  
+
   .land-hero {
     height: 300px;
   }
-  
+
   .hero-overlay h1 {
     font-size: 2rem;
   }
-  
+
   .hero-overlay p {
     font-size: 1rem;
   }
-  
+
   .search-section,
   .quick-search-section,
   .lands-grid,
   .filters-sidebar {
     padding: 20px;
   }
-  
+
   .quick-search-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .land-features {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  
+
   .land-actions {
     flex-direction: column;
   }
