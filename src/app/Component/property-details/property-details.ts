@@ -5,6 +5,11 @@ import { PropertyService } from '../../Services/property';
 import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+// import { ReviewStats } from '../../Services/reviw-service';
+// import { ReviewService } from '../../Services/reviw-service';
+// import { ReviewService, ReviewStats } from '../../Services/review-service';
+import { ReviewService, ReviewStats } from '../../Services/reviw-service';
+
 
 @Component({
   selector: 'app-property-details',
@@ -28,6 +33,8 @@ export class PropertyDetails implements OnInit {
   totalRatings: number = 120;
   hoverRating: number = 0;
   hasRated: boolean = false;
+  reviewStats!: ReviewStats;
+
 
   // Visit Form
   visitForm = {
@@ -53,13 +60,25 @@ export class PropertyDetails implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private propertyService: PropertyService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+
+    private ReviewService: ReviewService
   ) {}
 
   ngOnInit(): void {
     this.propertyId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadPropertyDetails();
     this.loadSimilarProperties();
+
+    //********************************** */
+        // جلب إحصائيات التقييم
+          this.ReviewService.getPropertyStats(this.propertyId).subscribe({
+          next: (stats) => {
+            this.reviewStats = stats;
+          },
+          error: (err) => console.error(err),
+        });
+
   }
 
   loadPropertyDetails(): void {
