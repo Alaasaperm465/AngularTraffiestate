@@ -328,14 +328,29 @@
           </div>
 
           <div class="contact-actions">
-            <button type="button" class="contact-btn primary" (click)="callNow()">
-              <i class="bi bi-telephone-fill"></i>
-              Call Now
-            </button>
-            <button type="button" class="contact-btn secondary" (click)="sendEmail()">
-              <i class="bi bi-envelope-fill"></i>
-              Send Email
-            </button>
+           <button type="button" class="contact-btn primary" (click)="openCallModal()">
+  <i class="bi bi-telephone-fill"></i>
+  Call Now
+</button>
+
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModal">
+  <div class="call-modal-content">
+    <h4>Call us at:</h4>
+    <p>{{ defaultPhone }}</p>
+    <button (click)="makeCall()">Call Now</button>
+    <button (click)="closeCallModal()">Close</button>
+  </div>
+</div>
+
+           <button
+  type="button"
+  class="contact-btn secondary"
+  (click)="sendEmail()">
+  <i class="bi bi-envelope-fill"></i>
+  Send Email
+</button>
+
             <button type="button" class="contact-btn whatsapp" (click)="openWhatsApp()">
               <i class="bi bi-whatsapp"></i>
               WhatsApp

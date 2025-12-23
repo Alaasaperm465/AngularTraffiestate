@@ -24,7 +24,7 @@ export class PropertyDetails implements OnInit {
   mainImageUrl!: string;
 
   // استخدم هذه المتغيرات كـ default values
-  defaultPhone = phone;
+  defaultPhone = '+201200003943';
   defaultEmail = email;
 
   // Rating System
@@ -241,13 +241,7 @@ export class PropertyDetails implements OnInit {
     window.location.href = `tel:${phoneNumber}`;
   }
 
-  sendEmail(): void {
-    // استخدم الايميل الافتراضي
-    const emailAddress = this.defaultEmail;
-    const subject = encodeURIComponent(`Inquiry about ${this.property.title}`);
-    const body = encodeURIComponent(`I'm interested in the property: ${this.property.title}\nLocation: ${this.property.area}, ${this.property.city}\nPrice: ${this.property.price}`);
-    window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-  }
+  
 
   openWhatsApp(): void {
     // استخدم الرقم الافتراضي
@@ -297,4 +291,38 @@ submitRating() {
     }
   });
 }
+
+showCallModal: boolean = false;
+
+openCallModal() {
+  this.showCallModal = true;
+}
+
+closeCallModal() {
+  this.showCallModal = false;
+}
+
+makeCall() {
+  window.location.href = `tel:${this.defaultPhone}`;
+}
+sendEmail(): void {
+  const receiverEmail = 'yourgmail@gmail.com'; // غيريه لجيميلك
+  const subject = 'Property Inquiry';
+  const body =
+    `Hello,
+
+I am interested in this property:
+${this.property?.title}
+
+Location: ${this.property?.area}, ${this.property?.city}
+Price: ${this.property?.price}
+
+Thank you.`;
+
+  const gmailUrl =
+    `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(receiverEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  window.open(gmailUrl, '_blank');
+}
+
 }
