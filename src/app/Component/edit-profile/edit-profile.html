@@ -1,1 +1,125 @@
-<p>edit-profile works!</p>
+<!-- Edit Profile Page -->
+<div class="edit-profile-page">
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Edit Profile Form -->
+  <div *ngIf="!loading" class="edit-profile-container">
+
+    <!-- Header -->
+    <div class="edit-header">
+      <button class="btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <h1>Edit Profile</h1>
+      <div></div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-form">
+
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="userName">
+            <i class="fas fa-user"></i>
+            Username
+            <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="userName"
+            formControlName="userName"
+            class="form-input"
+            [class.has-error]="isFieldInvalid('userName')"
+            placeholder="Enter your username"
+          />
+          <div *ngIf="isFieldInvalid('userName')" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Username is required</span>
+          </div>
+        </div>
+
+        <!-- Phone Number Field -->
+        <div class="form-group">
+          <label for="phoneNumber">
+            <i class="fas fa-phone"></i>
+            Phone Number
+            <span class="required">*</span>
+          </label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="form-input"
+            [class.has-error]="isFieldInvalid('phoneNumber')"
+            placeholder="Enter your phone number"
+          />
+          <div *ngIf="isFieldInvalid('phoneNumber')" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Phone number is required</span>
+          </div>
+        </div>
+
+        <!-- Current Info Display -->
+        <div class="info-section">
+          <h3>Account Information</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Email</label>
+              <p class="info-value">{{ currentUser?.email }}</p>
+              <small class="info-note">Email cannot be changed</small>
+            </div>
+            <div class="info-item">
+              <label>Role</label>
+              <p class="info-value">{{ currentUser?.role || 'User' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="success-message">
+          <i class="fas fa-check-circle"></i>
+          <span>{{ successMessage }}</span>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="error-alert">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-cancel"
+            (click)="goBack()"
+            [disabled]="isSubmitting"
+          >
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn-submit"
+            [disabled]="editForm.invalid || isSubmitting"
+          >
+            <span *ngIf="!isSubmitting">
+              <i class="fas fa-save"></i> Save Changes
+            </span>
+            <span *ngIf="isSubmitting">
+              <i class="fas fa-spinner fa-spin"></i> Saving...
+            </span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+</div>
