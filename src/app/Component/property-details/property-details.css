@@ -1,3 +1,15 @@
+/* ============= CSS VARIABLES ============= */
+:root {
+  --primary-dark: #0B3122;
+  --primary-gold: #E2B43B;
+  --text-dark: #2c3e50;
+  --text-light: #6c757d;
+  --bg-gray: #f5f5f5;
+  --border-color: #e0e0e0;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
 /* ============= PROPERTY DETAILS PAGE ============= */
 .property-details-page {
   background: var(--bg-gray);
@@ -41,6 +53,12 @@
 }
 
 /* ============= LAYOUT ============= */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 .details-layout {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -218,10 +236,11 @@
   object-fit: cover;
 }
 
-/* ============= DETAILS SECTION ============= */
+/* ============= SECTIONS ============= */
 .details-section,
 .description-section,
 .features-section,
+.rating-section,
 .location-section,
 .similar-properties-section {
   background: white;
@@ -246,6 +265,7 @@
   font-size: 26px;
 }
 
+/* ============= PROPERTY DETAILS GRID ============= */
 .details-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -319,6 +339,79 @@
 .feature-item i {
   color: var(--primary-gold);
   font-size: 20px;
+}
+
+/* ============= RATING SECTION ============= */
+.rating-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 24px;
+  background: var(--bg-gray);
+  border-radius: 12px;
+}
+
+.rating-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rating-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--primary-gold);
+  line-height: 1;
+}
+
+.rating-stars-display {
+  display: flex;
+  gap: 4px;
+}
+
+.rating-stars-display i {
+  font-size: 24px;
+  color: var(--primary-gold);
+}
+
+.rating-count {
+  font-size: 14px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.rating-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.rating-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.rating-stars {
+  display: flex;
+  gap: 8px;
+}
+
+.rating-star {
+  font-size: 36px;
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rating-star:hover,
+.rating-star.active {
+  color: var(--primary-gold);
+  transform: scale(1.2);
 }
 
 /* ============= LOCATION MAP ============= */
@@ -521,6 +614,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
+  border: none;
 }
 
 .contact-btn i {
@@ -530,7 +624,6 @@
 .contact-btn.primary {
   background: var(--primary-gold);
   color: var(--primary-dark);
-  border: none;
 }
 
 .contact-btn.primary:hover {
@@ -554,7 +647,6 @@
 .contact-btn.whatsapp {
   background: #25D366;
   color: white;
-  border: none;
 }
 
 .contact-btn.whatsapp:hover {
@@ -686,6 +778,11 @@
   .sticky-card {
     position: static;
   }
+
+  .rating-container {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 @media (max-width: 768px) {
@@ -722,9 +819,53 @@
     grid-template-columns: 1fr;
   }
 
+  .rating-stars {
+    gap: 4px;
+  }
+
+  .rating-star {
+    font-size: 28px;
+  }
 }
+
 @media (max-width: 480px) {
   .thumbnail-images {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .rating-number {
+    font-size: 36px;
+  }
+
+  .rating-stars-display i {
+    font-size: 18px;
+  }
 }
+.thumbnail-images {
+  display: flex;           /* يجعل الصور في صف */
+  gap: 10px;               /* مسافة بين الصور */
+  overflow-x: auto;        /* لو الصور كتيرة تقدر تعمل scroll أفقياً */
+  padding: 5px 0;
+}
+
+.thumbnail {
+  flex: 0 0 auto;          /* تمنع الصورة من التمدد */
+  width: 80px;              /* حجم الصورة المصغرة */
+  height: 60px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border 0.3s;
+}
+
+.thumbnail.active {
+  border-color: #007bff;   /* اللون لما الصورة مختارة */
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* تحافظ على aspect ratio */
+  border-radius: 8px;
+}
+
