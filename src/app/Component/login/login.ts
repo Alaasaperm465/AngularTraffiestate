@@ -49,14 +49,24 @@ export class Login {
     this.authService.Login(loginRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
-        // console.log('Login successful', response);
+        console.log('✅ Login successful');
+
+        // Get user profile from localStorage (AuthService already stored it)
+        const userProfile = localStorage.getItem('currentUser');
+
+        // Emit login event immediately for real-time UI updates across all components
+        window.dispatchEvent(new CustomEvent('userLoggedIn', {
+          detail: userProfile ? JSON.parse(userProfile) : null
+        }));
+        console.log('📢 userLoggedIn event emitted');
+
         // Navigate to home or dashboard
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
         this.router.navigateByUrl(returnUrl);
       },
       error: (error) => {
         this.isLoading = false;
-        console.error('Login failed', error);
+        console.error('❌ Login failed', error);
         this.errorMessage = error.error?.message || 'Login failed. Please check your credentials.';
       },
     });

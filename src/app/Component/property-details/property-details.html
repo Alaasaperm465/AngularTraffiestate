@@ -55,7 +55,7 @@
         <div class="image-gallery-section">
           <div class="main-image">
             <img [src]="mainImageUrl" [alt]="property.title">
-            <span class="purpose-badge-details" [class.rent]="property.purpose?.toLowerCase() === 'rent'">
+            <span class="purpose-badge-details" [class.rent]="property.purpose.toLowerCase() === 'rent'">
               {{ getPropertyPurposeLabel() }}
             </span>
           </div>
