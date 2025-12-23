@@ -62,7 +62,7 @@
                   <i class="bi bi-house"></i>
                   Villa
                 </div>
-                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'House'}); showPropertyTypeDropdown = false">
+                <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Land'}); showPropertyTypeDropdown = false">
                   <i class="bi bi-house-door"></i>
                   land
                 </div>
@@ -132,6 +132,9 @@
         <div class="properties-header">
           <h2 class="properties-count">
             <span class="count-number">{{ properties.length }}</span> Properties Found
+            <span class="page-info" *ngIf="displayedProperties.length > 0">
+              (Showing {{ displayedProperties.length }} of {{ properties.length }})
+            </span>
           </h2>
           <div class="view-toggle">
             <button type="button" class="view-btn active" title="Grid View"><i class="bi bi-grid-3x3-gap"></i></button>
@@ -143,7 +146,7 @@
         <div class="properties-grid" *ngIf="properties.length > 0">
           <div
             class="property-card"
-            *ngFor="let property of properties; trackBy: trackById">
+            *ngFor="let property of displayedProperties; trackBy: trackById">
 
             <!-- Property Image -->
             <div class="property-image">
@@ -160,8 +163,8 @@
               </button>
 
               <!-- Purpose Badge -->
-              <span class="purpose-badge" [class.rent]="property.purpose === 'Rent'">
-                {{ property.purpose === 'Buy' ? 'For Sale' : 'For Rent' }}
+              <span class="purpose-badge" >
+                {{ property.purpose  }}
               </span>
 
               <!-- Featured Badge -->
@@ -175,6 +178,8 @@
             <div class="property-info">
               <div class="property-header">
                 <h3 class="property-title">{{ property.title }}</h3>
+                 <h3 class="property-title">{{ property.propertyType }}</h3>
+                  
                 <p class="property-location">
                   <i class="bi bi-geo-alt-fill"></i>
                   {{ property.area }}, {{ property.city }}
@@ -242,19 +247,11 @@
           <!-- <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button> -->
         </div>
 
-        <!-- Pagination -->
-        <div class="pagination" *ngIf="properties.length > 0">
-          <button type="button" class="page-btn prev-btn">
-            <i class="bi bi-chevron-left"></i>
-            Previous
-          </button>
-          <button type="button" class="page-btn active">1</button>
-          <button type="button" class="page-btn">2</button>
-          <button type="button" class="page-btn">3</button>
-          <button type="button" class="page-btn">4</button>
-          <button type="button" class="page-btn next-btn">
-            Next
-            <i class="bi bi-chevron-right"></i>
+        <!-- See More Button -->
+        <div class="see-more-section" *ngIf="hasMoreToLoad()">
+          <button type="button" class="see-more-btn" (click)="loadMore()">
+            See More
+            <i class="bi bi-arrow-down"></i>
           </button>
         </div>
       </div>
@@ -306,13 +303,10 @@
               <span>Villa</span>
             </label>
             <label class="filter-option">
-<input type="checkbox" value="House" (change)="onPropertyTypeChange($event)">
-              <span>House</span>
+<input type="checkbox" value="Land" (change)="onPropertyTypeChange($event)">
+              <span>land</span>
             </label>
-            <label class="filter-option">
-<input type="checkbox" value="Studio" (change)="onPropertyTypeChange($event)">
-              <span>Studio</span>
-            </label>
+          
           </div>
         </div>
 

@@ -1,38 +1,3 @@
-// import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-// import { PropertyService } from '../../Services/property';
-// import { IProperty } from '../../models/iproperty';
-
-// @Component({
-//   selector: 'app-rent',
-//   imports: [],
-//   templateUrl: './rent.html',
-//   styleUrl: './rent.css',
-// })
-// export class Rent implements OnInit
-//  {
-//   rentproperties!:IProperty[];
-//   constructor(private rentserv:PropertyService,private cdn:ChangeDetectorRef)
-//   {
-
-//   }
-//   ngOnInit(): void
-//   {
-//     this.rentserv.getPropertyForRent().subscribe((data)=>
-//     {
-//       console.log(data);
-//       this.rentproperties=data;
-//       this.cdn.detectChanges();
-//     });
-//   }
-
-
-
-// }
-
-
-
-
-
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -46,12 +11,14 @@ import { FavoriteService } from '../../Services/favorite-service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './rent.html',
-  styleUrl: './rent.css',
+  styleUrls: ['./rent.css'],
 })
 export class Rent implements OnInit {
   searchForm: FormGroup;
   rentProperties: IProperty[] = [];
   allRentProperties: IProperty[] = [];
+  displayedProperties: IProperty[] = [];
+  
   showPropertyTypeDropdown = false;
   showBedsAndBathsDropdown = false;
   isScrolled = false;
@@ -59,7 +26,11 @@ export class Rent implements OnInit {
   email = email;
   favoritesIds: number[] = [];
 
-  // فلترة الخيارات
+  // Load More functionality
+  itemsPerLoad = 8; // Number of items to load each time
+  currentLoadedCount = 4; // Start by showing 9 items
+
+  // Filter options
   selectedPropertyTypes: Set<string> = new Set();
   selectedBedrooms: Set<string> = new Set();
   selectedAreas: Set<string> = new Set();
@@ -81,11 +52,12 @@ export class Rent implements OnInit {
   }
 
   ngOnInit(): void {
-    // جلب العقارات للإيجار
+    // Load rent properties
     this.rentService.getPropertyForRent().subscribe({
       next: (data: IProperty[]) => {
         this.allRentProperties = data;
         this.rentProperties = data;
+        this.updateDisplayedProperties();
         this.cdr.detectChanges();
         console.log('Rent properties loaded:', data);
       },
@@ -94,7 +66,7 @@ export class Rent implements OnInit {
       }
     });
 
-    // جلب المفضلات
+    // Load favorites
     this.favoriteService.getMyFavorites().subscribe({
       next: (res: any) => {
         const items = res?.value?.items ?? [];
@@ -106,18 +78,31 @@ export class Rent implements OnInit {
     });
   }
 
-  // ===== تعيين التاب =====
-  setActiveTab(): void {
-    // تعيين تلقائي للـ Rent
-    setTimeout(() => this.onSearch(), 0);
+  // ===== LOAD MORE METHODS =====
+  updateDisplayedProperties(): void {
+    this.displayedProperties = this.rentProperties.slice(0, this.currentLoadedCount);
   }
 
-  // ===== دالة البحث الرئيسية =====
+  loadMore(): void {
+    this.currentLoadedCount += this.itemsPerLoad;
+    this.updateDisplayedProperties();
+    this.cdr.detectChanges();
+  }
+
+  hasMoreToLoad(): boolean {
+    return this.currentLoadedCount < this.rentProperties.length;
+  }
+
+  get remainingCount(): number {
+    return this.rentProperties.length - this.currentLoadedCount;
+  }
+
+  // ===== MAIN SEARCH =====
   onSearch(): void {
     const searchData = this.searchForm.value;
     let filtered = [...this.allRentProperties];
 
-    // ✅ فلترة المدينة / المنطقة
+    // Filter by city/area
     if (searchData.city && searchData.city.trim()) {
       filtered = filtered.filter(p =>
         p.city?.toLowerCase().includes(searchData.city.toLowerCase()) ||
@@ -125,39 +110,40 @@ export class Rent implements OnInit {
       );
     }
 
-    // ✅ فلترة نوع العقار
+    // Filter by property type
     if (searchData.propertyType && searchData.propertyType.trim()) {
       filtered = filtered.filter(p =>
         p.propertyType?.toLowerCase() === searchData.propertyType.toLowerCase()
       );
     }
 
-    // ✅ فلترة عدد الغرف
+    // Filter by rooms
     if (searchData.rooms && searchData.rooms.trim()) {
       const roomsValue = parseInt(searchData.rooms, 10);
       filtered = filtered.filter(p => p.rooms === roomsValue);
     }
 
-    // تطبيق الفلاترات الإضافية
+    // Apply additional filters
     filtered = this.applyFilters(filtered);
 
-    // تحديث النتيجة
     this.rentProperties = filtered;
+    this.currentLoadedCount = this.itemsPerLoad; // Reset to initial load count
+    this.updateDisplayedProperties();
     this.cdr.detectChanges();
   }
 
-  // ===== تطبيق الفلاترات =====
+  // ===== APPLY FILTERS =====
   private applyFilters(properties: IProperty[]): IProperty[] {
     let filtered = [...properties];
 
-    // فلتر نوع العقار
+    // Filter by property type
     if (this.selectedPropertyTypes.size > 0) {
       filtered = filtered.filter(p =>
         this.selectedPropertyTypes.has(p.propertyType?.toLowerCase() || '')
       );
     }
 
-    // فلتر عدد الغرف
+    // Filter by bedrooms
     if (this.selectedBedrooms.size > 0) {
       filtered = filtered.filter(p => {
         const rooms = p.rooms?.toString();
@@ -166,7 +152,7 @@ export class Rent implements OnInit {
       });
     }
 
-    // فلتر المساحة
+    // Filter by area
     if (this.selectedAreas.size > 0) {
       filtered = filtered.filter(p => {
         const area = Number(p.area) || 0;
@@ -178,28 +164,19 @@ export class Rent implements OnInit {
       });
     }
 
-    // فلتر السعر (الإيجار شهري)
-    if (this.minPrice !== null) {
-      filtered = filtered.filter(p => p.price >= this.minPrice!);
-    }
-    if (this.maxPrice !== null) {
-      filtered = filtered.filter(p => p.price <= this.maxPrice!);
-    }
+    // Filter by price
+    if (this.minPrice !== null) filtered = filtered.filter(p => p.price >= this.minPrice!);
+    if (this.maxPrice !== null) filtered = filtered.filter(p => p.price <= this.maxPrice!);
 
-    // ترتيب النتائج
+    // Sort results
     if (this.selectedSort) {
       filtered.sort((a, b) => {
         switch (this.selectedSort) {
-          case 'price-low':
-            return a.price - b.price;
-          case 'price-high':
-            return b.price - a.price;
-          case 'newest':
-            return (b.id || 0) - (a.id || 0);
-          case 'popular':
-            return (b.views || 0) - (a.views || 0);
-          default:
-            return 0;
+          case 'price-low': return a.price - b.price;
+          case 'price-high': return b.price - a.price;
+          case 'newest': return (b.id || 0) - (a.id || 0);
+          case 'popular': return (b.views || 0) - (a.views || 0);
+          default: return 0;
         }
       });
     }
@@ -207,7 +184,7 @@ export class Rent implements OnInit {
     return filtered;
   }
 
-  // ===== معالج تغيير الفلاترات =====
+  // ===== FILTER CHANGE =====
   onFilterChange(event: any): void {
     const target = event.target as HTMLInputElement;
     const value = target.value;
@@ -215,19 +192,11 @@ export class Rent implements OnInit {
     if (target.type === 'checkbox') {
       let filterSet: Set<string>;
 
-      if (['apartment', 'villa', 'house', 'studio'].includes(value)) {
-        filterSet = this.selectedPropertyTypes;
-      } else if (['1', '2', '3', '4plus'].includes(value)) {
-        filterSet = this.selectedBedrooms;
-      } else {
-        filterSet = this.selectedAreas;
-      }
+      if (['apartment', 'villa', 'land'].includes(value)) filterSet = this.selectedPropertyTypes;
+      else if (['1', '2', '3', '4plus'].includes(value)) filterSet = this.selectedBedrooms;
+      else filterSet = this.selectedAreas;
 
-      if (target.checked) {
-        filterSet.add(value);
-      } else {
-        filterSet.delete(value);
-      }
+      target.checked ? filterSet.add(value) : filterSet.delete(value);
     } else if (target.type === 'radio' && target.name === 'sort') {
       this.selectedSort = target.checked ? value : '';
     }
@@ -235,7 +204,7 @@ export class Rent implements OnInit {
     this.onSearch();
   }
 
-  // ===== معالج تغيير السعر =====
+  // ===== PRICE FILTER =====
   onPriceFilterChange(): void {
     const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
     const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
@@ -246,7 +215,7 @@ export class Rent implements OnInit {
     this.onSearch();
   }
 
-  // ===== مسح جميع الفلاترات =====
+  // ===== CLEAR ALL FILTERS =====
   clearAllFilters(): void {
     this.selectedPropertyTypes.clear();
     this.selectedBedrooms.clear();
@@ -255,30 +224,33 @@ export class Rent implements OnInit {
     this.minPrice = null;
     this.maxPrice = null;
 
-    document.querySelectorAll('.filter-options input').forEach((input: any) => {
-      input.checked = false;
-    });
+    // Reset form
+    this.searchForm.reset();
+
+    // Clear all checkboxes and radio buttons
+    document.querySelectorAll('.filter-options input').forEach((input: any) => input.checked = false);
+    
+    // Clear price inputs
+    const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
+    const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
+    if (minEl) minEl.value = '';
+    if (maxEl) maxEl.value = '';
 
     this.onSearch();
   }
 
-  // ===== تبديل حالة القائمة المنسدلة - نوع العقار =====
+  // ===== DROPDOWNS =====
   togglePropertyTypeDropdown(): void {
     this.showPropertyTypeDropdown = !this.showPropertyTypeDropdown;
-    if (this.showPropertyTypeDropdown) {
-      this.showBedsAndBathsDropdown = false;
-    }
+    if (this.showPropertyTypeDropdown) this.showBedsAndBathsDropdown = false;
   }
 
-  // ===== تبديل حالة القائمة المنسدلة - الغرف =====
   toggleBedsAndBathsDropdown(): void {
     this.showBedsAndBathsDropdown = !this.showBedsAndBathsDropdown;
-    if (this.showBedsAndBathsDropdown) {
-      this.showPropertyTypeDropdown = false;
-    }
+    if (this.showBedsAndBathsDropdown) this.showPropertyTypeDropdown = false;
   }
 
-  // ===== تبديل المفضلة =====
+  // ===== FAVORITES =====
   toggleFavorite(propertyId: number): void {
     if (this.favoritesIds.includes(propertyId)) {
       this.favoriteService.removeFromFavorites(propertyId).subscribe({
@@ -286,9 +258,7 @@ export class Rent implements OnInit {
           this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('Error removing favorite:', err);
-        }
+        error: (err) => console.error('Error removing favorite:', err)
       });
     } else {
       this.favoriteService.addToFavorites(propertyId).subscribe({
@@ -296,33 +266,28 @@ export class Rent implements OnInit {
           this.favoritesIds.push(propertyId);
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('Error adding favorite:', err);
-        }
+        error: (err) => console.error('Error adding favorite:', err)
       });
     }
   }
 
-  // ===== التحقق من العقار المفضل =====
   isFavorite(propertyId: number): boolean {
     return this.favoritesIds.includes(propertyId);
   }
 
-  // ===== البحث السريع =====
+  // ===== QUICK SEARCH =====
   setQuickSearch(city: string): void {
-    this.searchForm.patchValue({
-      city: city
-    });
+    this.searchForm.patchValue({ city });
     this.onSearch();
   }
 
-  // ===== الاستماع لحدث التمرير =====
+  // ===== SCROLL EVENT =====
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.isScrolled = window.scrollY > 100;
   }
 
-  // ===== الاستماع لحدث النقر خارج القوائم المنسدلة =====
+  // ===== CLICK OUTSIDE DROPDOWNS =====
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -332,7 +297,7 @@ export class Rent implements OnInit {
     }
   }
 
-  // ===== تتبع العنصر حسب المعرف =====
+  // ===== TRACK BY =====
   trackById(index: number, item: IProperty): number {
     return item.id;
   }
