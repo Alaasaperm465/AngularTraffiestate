@@ -34,6 +34,11 @@ export class PropertyDetails implements OnInit {
   hoverRating: number = 0;
   hasRated: boolean = false;
   reviewStats!: ReviewStats;
+  selectedRating: number = 0;
+  isSubmittingRating = false;
+  userHasRated: boolean = false; // هل المستخدم قيم قبل كده؟
+
+
 
 
   // Visit Form
@@ -72,12 +77,27 @@ export class PropertyDetails implements OnInit {
 
     //********************************** */
         // جلب إحصائيات التقييم
-          this.ReviewService.getPropertyStats(this.propertyId).subscribe({
-          next: (stats) => {
-            this.reviewStats = stats;
-          },
-          error: (err) => console.error(err),
-        });
+        this.propertyId = Number(this.route.snapshot.paramMap.get('id'));
+
+  // جلب Review stats
+  this.ReviewService.getPropertyStats(this.propertyId).subscribe({
+    next: (res) => {
+      if(res) {
+        this.reviewStats = res;
+      }
+    },
+    error: (err) => console.error(err)
+  });
+
+  // جلب الريتينج اللي عمله المستخدم (لو عندك API لذلك)
+   this.ReviewService.getUserPropertyRating(this.propertyId).subscribe(
+    (userRating) => {
+      if(userRating) {
+        this.selectedRating = userRating.rating;
+        this.userHasRated = true;
+      }
+    }
+  );
 
   }
 
@@ -248,4 +268,33 @@ export class PropertyDetails implements OnInit {
   trackById(index: number, item: any): number {
     return item.id;
   }
+//add property review
+submitRating() {
+  if (!this.selectedRating) return;
+
+  this.isSubmittingRating = true;
+
+  const dto = {
+    propertyId: this.propertyId,
+    rating: this.selectedRating
+  };
+
+  this.ReviewService.addReview(dto).subscribe({
+    next: () => {
+      alert('Rating added successfully ⭐');
+      this.isSubmittingRating = false;
+      this.userHasRated = true;  // المستخدم قيم
+      // تحديث متوسط الريتينج
+      this.ReviewService.getPropertyStats(this.propertyId).subscribe(
+        stats => this.reviewStats = stats
+      );
+    },
+    error: (err) => {
+      console.error(err);
+      alert(err.error?.message || 'You already rated this property');
+      this.isSubmittingRating = false;
+      this.userHasRated = true; // لو حاول مرة تانية
+    }
+  });
+}
 }
