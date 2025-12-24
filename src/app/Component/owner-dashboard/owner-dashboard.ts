@@ -396,6 +396,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    * Navigate to property details
    */
   viewPropertyDetails(propertyId: string): void {
+    // navigate to the standardized property details route
     this.router.navigateByUrl(`/property/${propertyId}`);
   }
 

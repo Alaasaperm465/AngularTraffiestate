@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Favorite } from '../../models/favorite';
 import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
-import { IProperty } from '../../models/iproperty';
+import { IProperty, phone, email } from '../../models/iproperty';
 import { RouterModule, Router } from '@angular/router';
 
 @Component({
@@ -14,13 +14,16 @@ import { RouterModule, Router } from '@angular/router';
 })
 export class FaviroteCom implements OnInit {
   favorites: Favorite[] = [];
+  displayedFavorites: Favorite[] = [];
   allProperties: IProperty[] = [];
-  pageNumber: number = 1;
-  pageSize: number = 5;
-  totalItems: number = 0;
-  hasNextPage: boolean = true;
+  // See More pagination
+  itemsPerLoad: number = 8;
+  currentLoadedCount: number = 8;
+
   favoritesIds: number[] = [];
   isLoading: boolean = true; // Add loading state
+  phone = phone;
+  email = email;
 
   constructor(
     private favoriteService: FavoriteService,
@@ -41,25 +44,27 @@ export class FaviroteCom implements OnInit {
       next: (props: IProperty[]) => {
         this.allProperties = props;
         
-        // Then get favorites
-        this.favoriteService.getMyFavorites(this.pageNumber, this.pageSize).subscribe({
+        // Then get favorites (fetch all in one call with large pageSize)
+        this.favoriteService.getMyFavorites(1, 1000).subscribe({
           next: (res: any) => {
             const favs = res?.value?.items ?? [];
-            this.totalItems = res?.value?.totalCount || 0;
-            
+
             // Create favoritesIds array
             this.favoritesIds = favs.map((fav: any) => fav.propertyId);
-            
+
             // Map favorites with their properties
             this.favorites = favs.map((fav: any) => {
               const property = this.allProperties.find(p => p.id === fav.propertyId);
-              return { 
-                ...fav, 
+              return {
+                ...fav,
                 property: property || this.createEmptyProperty(fav.propertyId)
               };
             });
-            
-            this.hasNextPage = this.favorites.length === this.pageSize;
+
+            // Setup See More pagination
+            this.currentLoadedCount = this.itemsPerLoad;
+            this.updateDisplayedFavorites();
+
             this.isLoading = false;
             this.cdn.detectChanges();
           },
@@ -92,16 +97,19 @@ export class FaviroteCom implements OnInit {
     };
   }
 
-  nextPage() {
-    if (!this.hasNextPage) return;
-    this.pageNumber++;
-    this.loadFavorites();
+  // See More helpers
+  private updateDisplayedFavorites(): void {
+    this.displayedFavorites = this.favorites.slice(0, this.currentLoadedCount);
   }
 
-  prevPage() {
-    if (this.pageNumber === 1) return;
-    this.pageNumber--;
-    this.loadFavorites();
+  loadMore(): void {
+    this.currentLoadedCount += this.itemsPerLoad;
+    this.updateDisplayedFavorites();
+    this.cdn.detectChanges();
+  }
+
+  hasMoreToLoad(): boolean {
+    return this.currentLoadedCount < this.favorites.length;
   }
 
   removeFavorite(propertyId: number) {
@@ -112,6 +120,7 @@ export class FaviroteCom implements OnInit {
           this.favorites = this.favorites.filter(f => f.propertyId !== propertyId);
           // Remove from favoritesIds
           this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
+          this.updateDisplayedFavorites();
           this.cdn.detectChanges();
         },
         error: (err) => {
@@ -130,9 +139,9 @@ export class FaviroteCom implements OnInit {
     this.favoriteService.deleteAllFavorites().subscribe({
       next: () => {
         this.favorites = [];
+        this.displayedFavorites = [];
         this.favoritesIds = [];
-        this.hasNextPage = false;
-        this.pageNumber = 1;
+        this.currentLoadedCount = this.itemsPerLoad;
         this.cdn.detectChanges();
       },
       error: err => console.error('Error deleting all favorites', err)
@@ -167,6 +176,7 @@ export class FaviroteCom implements OnInit {
               property: property 
             });
             this.favoritesIds.push(propertyId);
+            this.updateDisplayedFavorites();
           }
           this.cdn.detectChanges();
         },
@@ -194,7 +204,5 @@ export class FaviroteCom implements OnInit {
     window.open('https://wa.me/201200003943', '_blank');
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.totalItems / this.pageSize);
-  }
+
 }

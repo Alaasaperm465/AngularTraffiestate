@@ -57,9 +57,23 @@ getOwnerProperties(): Observable<IProperty[]> {
   // CRUD Operations
   // =============================
 
-  /** Create new property */
-  addProperty(property: any): Observable<any> {
-    return this.http.post<any>(this.baseUrl, property);
+  /** Create new property (supports files via FormData) */
+  addProperty(property: any, mainImage?: File, additionalImages?: File[]): Observable<any> {
+    // If a FormData instance is passed directly, forward it
+    if (property instanceof FormData) {
+      return this.http.post<any>(`${this.baseUrl}/Create`, property);
+    }
+
+    const fd = new FormData();
+    Object.keys(property || {}).forEach(k => {
+      const val = property[k];
+      if (val !== null && val !== undefined) fd.append(k, val);
+    });
+
+    if (mainImage) fd.append('mainImage', mainImage);
+    (additionalImages || []).forEach(file => fd.append('additionalImages', file));
+
+    return this.http.post<any>(`${this.baseUrl}/Create`, fd);
   }
 
   /** Get property by id */
@@ -67,9 +81,23 @@ getOwnerProperties(): Observable<IProperty[]> {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
 
-  /** Update property */
-  updateProperty(id: number, property: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, property);
+  /** Update property (supports files) */
+  updateProperty(id: number, property: any, newMainImage?: File, newAdditionalImages?: File[]): Observable<any> {
+    // Allow passing FormData directly
+    if (property instanceof FormData) {
+      return this.http.put<any>(`${this.baseUrl}/${id}`, property);
+    }
+
+    const fd = new FormData();
+    Object.keys(property || {}).forEach(k => {
+      const val = property[k];
+      if (val !== null && val !== undefined) fd.append(k, val);
+    });
+
+    if (newMainImage) fd.append('newMainImage', newMainImage);
+    (newAdditionalImages || []).forEach(f => fd.append('newAdditionalImages', f));
+
+    return this.http.put<any>(`${this.baseUrl}/${id}`, fd);
   }
 
   /** Delete property */

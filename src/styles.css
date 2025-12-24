@@ -139,3 +139,129 @@ a {
     padding: 0 16px;
   }
 }
+
+/* ============= STANDARDIZE CARD STYLES ============= */
+/* Apply consistent padding/margin/border-radius/box-shadow to common card elements */
+.property-card,
+.form-card,
+.info-card,
+.detail-card,
+.stat-card,
+.land-card,
+.empty-state-card,
+.profile-card,
+.error-card,
+.sticky-card,
+.similar-card,
+.card-content,
+.card-footer {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Ensure consistent spacing inside card footers and action groups */
+.card-footer,
+.property-footer,
+.property-actions,
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Make small action buttons visually consistent */
+.action-btn,
+.view-details-btn,
+.btn-outline,
+.contact-icon-btn {
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+}
+
+/* Keep colors unchanged: just respect existing color variables */
+
+/* Small responsive tweak */
+@media (max-width: 600px) {
+  .card-content,
+  .property-card {
+    padding: 0.75rem;
+  }
+}
+
+/* ============= CANONICAL PROPERTY CARD (based on Home/Buy) ============= */
+.properties-grid,
+.lands-grid-content,
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+  margin-bottom: 32px;
+}
+
+.property-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.35s ease;
+  cursor: pointer;
+}
+.property-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+}
+
+.property-image {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+.property-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.property-card:hover .property-image img { transform: scale(1.1); }
+
+.favorite-btn,
+.favorite-toggle-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.95);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.property-info,
+.property-details { padding: 20px; }
+.property-title { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.property-location { color: var(--text-light); font-size: 14px; display:flex; gap:6px; align-items:center }
+
+.property-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; padding: 0 20px 20px; }
+.property-price { display:flex; flex-direction:column; }
+.price-value { font-size: 1.6rem; font-weight: 800; color: var(--primary-green); }
+.price-period { font-size: 0.9rem; color: var(--text-light); }
+
+.property-contact-actions { display:flex; gap:10px; align-items:center }
+.contact-icon-btn { padding: 0.45rem 0.6rem; border-radius: 6px; border:1px solid var(--border-color); background: transparent; display:inline-flex; align-items:center; justify-content:center }
+.view-details-btn { padding: 0.5rem 0.8rem; border-radius:8px; background:transparent; border:1px solid var(--border-color); }
+
+/* ensure priority: if a component uses its own styles, canonical styles should still be applied */
+

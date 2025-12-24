@@ -48,70 +48,98 @@
     </div>
   </div>
 
-  <!-- Favorites Grid -->
-  <div class="favorites-grid" *ngIf="favorites.length > 0">
-    <div class="property-card" *ngFor="let fav of favorites" (click)="navigateToProperty(fav.property.id)">
+  <!-- Favorites Grid - Match Home/Land Structure -->
+  <div class="favorites-grid" *ngIf="displayedFavorites.length > 0">
+    <div class="property-card" *ngFor="let fav of displayedFavorites" (click)="navigateToProperty(fav.property.id)">
+      
       <!-- Property Image -->
       <div class="property-image">
-        <img [src]="fav.property.imageUrl" alt="Property Image">
-        <div class="image-overlay">
-          <span class="property-type-badge">{{ fav.property.propertyType }}</span>
-          <button class="favorite-toggle-btn" (click)="toggleFavorite(fav.propertyId); $event.stopPropagation()">
-            <i class="fas fa-heart" [class.active]="isFavorite(fav.propertyId)"></i>
-          </button>
-        </div>
+        <img [src]="fav.property.imageUrl" [alt]="fav.property.title">
+        
+        <!-- Favorite Button -->
+        <button
+          type="button"
+          class="favorite-btn"
+          [class.active]="isFavorite(fav.propertyId)"
+          (click)="toggleFavorite(fav.propertyId); $event.stopPropagation()">
+          <i class="bi" [ngClass]="isFavorite(fav.propertyId) ? 'bi-heart-fill' : 'bi-heart'"></i>
+        </button>
+
+        <!-- Purpose Badge -->
+        <span class="purpose-badge">{{ fav.property.purpose }}</span>
+
+        <!-- Featured Badge (if applicable) -->
+        <span class="featured-badge" *ngIf="fav.property.isFeatured">
+          <i class="bi bi-star-fill"></i>
+          Featured
+        </span>
       </div>
 
-      <!-- Property Details -->
-      <div class="property-details">
+      <!-- Property Info -->
+      <div class="property-info">
         <div class="property-header">
           <h3 class="property-title">{{ fav.property.title }}</h3>
           <p class="property-location">
-            <i class="fas fa-map-marker-alt"></i>
-            {{ fav.property.location }}
+            <i class="bi bi-geo-alt-fill"></i>
+            {{ fav.property.area }}, {{ fav.property.city }}
           </p>
         </div>
 
-        <div class="property-price">
-          <span class="price-value">{{ fav.property.price | number }} EGP</span>
-          <span class="price-period">/ month</span>
+        <div class="property-details">
+          <span class="detail-item">
+            <i class="bi bi-door-open-fill"></i>
+            {{ fav.property.rooms }} Beds
+          </span>
+          <span class="detail-item">
+            <i class="bi bi-droplet-fill"></i>
+            {{ fav.property.bathrooms }} Baths
+          </span>
+          <span class="detail-item">
+            <i class="bi bi-arrows-fullscreen"></i>
+            {{ fav.property.area }} m²
+          </span>
         </div>
 
-        <!-- Property Features -->
-        <div class="property-features">
-          <div class="feature">
-            <i class="fas fa-bed"></i>
-            <span>{{ fav.property.rooms }} Bed</span>
-          </div>
-          <div class="feature">
-            <i class="fas fa-bath"></i>
-            <span>{{ fav.property.bathrooms }} Bath</span>
-          </div>
-          <div class="feature">
-            <i class="fas fa-expand"></i>
-            <span>{{ fav.property.area }} sqm</span>
-          </div>
-        </div>
-
-        <!-- Property Footer -->
         <div class="property-footer">
-          <div class="listed-date">
-            <i class="far fa-clock"></i>
-            Listed {{ fav.property.CreatedAt | date:'mediumDate' }}
+          <div class="property-price">
+            <span class="price-value">{{ fav.property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
+            <span class="price-period" *ngIf="fav.property.purpose === 'Rent'">/month</span>
           </div>
           
-          <div class="property-actions">
-            <button class="action-btn call-btn" (click)="callAgent($event)">
-              <i class="fas fa-phone"></i>
-              Call
-            </button>
-            <button class="action-btn email-btn" (click)="emailAgent($event)">
-              <i class="far fa-envelope"></i>
-              Email
-            </button>
-            <button class="action-btn whatsapp-btn" (click)="whatsappAgent($event)">
-              <i class="fab fa-whatsapp"></i>
-              WhatsApp
+          <div class="property-contact-actions">
+            <a
+              class="contact-icon-btn whatsapp-btn"
+              title="Contact on WhatsApp"
+              aria-label="Contact via WhatsApp"
+              [href]="'https://wa.me/' + phone.replace(/\D/g, '')"
+              target="_blank"
+              rel="noopener noreferrer"
+              (click)="$event.stopPropagation()">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+            <a
+              class="contact-icon-btn phone-btn"
+              [href]="'tel:' + phone"
+              title="Call Now"
+              aria-label="Call seller"
+              (click)="$event.stopPropagation()">
+              <i class="bi bi-telephone-fill"></i>
+            </a>
+            <a
+              class="contact-icon-btn email-btn"
+              [href]="'mailto:' + email"
+              title="Email"
+              aria-label="Email seller"
+              (click)="$event.stopPropagation()">
+              <i class="bi bi-envelope-fill"></i>
+            </a>
+            <button
+              type="button"
+              class="view-details-btn"
+              [routerLink]="['/property', fav.property.id]"
+              (click)="$event.stopPropagation()">
+              <i class="bi bi-eye"></i>
+              View
             </button>
           </div>
         </div>
@@ -119,30 +147,12 @@
     </div>
   </div>
 
-  <!-- Pagination & Controls -->
+  <!-- See More Button -->
   <div class="favorites-controls" *ngIf="favorites.length > 0">
-    <!-- Pagination -->
-    <div class="pagination-section">
-      <button 
-        class="pagination-btn prev-btn" 
-        [disabled]="pageNumber === 1" 
-        (click)="prevPage()"
-      >
-        <i class="fas fa-chevron-left"></i>
-        Previous
-      </button>
-      
-      <div class="page-info">
-        <span class="current-page">Page {{ pageNumber }}</span>
-      </div>
-      
-      <button 
-        class="pagination-btn next-btn" 
-        [disabled]="!hasNextPage" 
-        (click)="nextPage()"
-      >
-        Next
-        <i class="fas fa-chevron-right"></i>
+    <div class="see-more-section" *ngIf="hasMoreToLoad()">
+      <button type="button" class="see-more-btn" (click)="loadMore()">
+        See More
+        <i class="bi bi-arrow-down"></i>
       </button>
     </div>
 

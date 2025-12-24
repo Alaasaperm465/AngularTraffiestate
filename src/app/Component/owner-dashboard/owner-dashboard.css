@@ -804,6 +804,16 @@
   z-index: 10;
 }
 
+/* Canonical aliases to apply dashboard styles to the canonical class names */
+.property-image { position: relative; height: 250px; overflow: hidden; }
+.property-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.property-card:hover .property-image img { transform: scale(1.1); }
+
+.property-info { padding: 1.5rem; }
+.property-footer { display:flex; justify-content:space-between; align-items:center; padding: 0 1.5rem 1.5rem; }
+.property-actions { position: absolute; bottom: 1rem; left: 1rem; display:flex; gap:0.5rem; opacity:0; transform: translateY(10px); transition: all 0.3s ease; }
+.property-card:hover .property-actions { opacity: 1; transform: translateY(0); }
+
 .card-checkbox input[type="checkbox"] {
   width: 20px;
   height: 20px;
