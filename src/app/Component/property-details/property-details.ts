@@ -306,7 +306,7 @@ makeCall() {
   window.location.href = `tel:${this.defaultPhone}`;
 }
 sendEmail(): void {
-  const receiverEmail = 'basem.abulgiet@gmail.com'; // غيريه لجيميلك
+  const receiverEmail = 'salmaesam344@gmail.com'; // غيريه لجيميلك
   const subject = 'Property Inquiry';
   const body =
     `Hello,
