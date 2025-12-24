@@ -1,48 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-contact-us',
-  templateUrl: './contact-us.html',
-  styleUrls: ['./contact-us.css']
-})
-export class ContactUs implements OnInit {
-  contactForm: FormGroup;
-  isSubmitting = false;
-  submitSuccess = false;
+import { ContactUs } from './contact-us';
 
-  constructor(private fb: FormBuilder) {
-    this.contactForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      subject: ['', Validators.required],
-      message: ['', Validators.required]
-    });
-  }
+describe('ContactUs', () => {
+  let component: ContactUs;
+  let fixture: ComponentFixture<ContactUs>;
 
-  ngOnInit(): void {}
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ContactUs]
+    })
+    .compileComponents();
 
-  onSubmit(): void {
-    if (this.contactForm.valid) {
-      this.isSubmitting = true;
-      // Simulate API call
-      setTimeout(() => {
-        this.isSubmitting = false;
-        this.submitSuccess = true;
-        this.contactForm.reset();
-        setTimeout(() => {
-          this.submitSuccess = false;
-        }, 3000);
-      }, 1500);
-    } else {
-      Object.keys(this.contactForm.controls).forEach(key => {
-        this.contactForm.get(key)?.markAsTouched();
-      });
-    }
-  }
+    fixture = TestBed.createComponent(ContactUs);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
 
-  scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar implements OnInit {
+export class Navbar implements OnInit, OnDestroy {
   isExploreOpen = false;
   isLoggedIn = false;
   isProfileMenuOpen = false;
@@ -17,19 +17,45 @@ export class Navbar implements OnInit {
   userAvatar: string = 'assets/avatar-default.png';
   userEmail: string = '';
 
+  private loginListener: any;
+  private storageListener: any;
+  private logoutListener: any;
+
   constructor(private router: Router) {}
 
   ngOnInit() {
     this.checkLoginStatus();
+
     // Listen for storage changes (login from other tabs or pages)
-    window.addEventListener('storage', () => this.checkLoginStatus());
-    // Listen for custom login event
-    window.addEventListener('userLoggedIn', () => this.checkLoginStatus());
+    this.storageListener = () => this.checkLoginStatus();
+    window.addEventListener('storage', this.storageListener);
+
+    // Listen for custom login event - instant response
+    this.loginListener = () => {
+      console.log('🔐 Login event detected, updating navbar');
+      // Immediate response - no delay
+      this.checkLoginStatus();
+    };
+    window.addEventListener('userLoggedIn', this.loginListener);
+
+    // Listen for logout event
+    this.logoutListener = () => {
+      this.isLoggedIn = false;
+      this.userName = '';
+    };
+    window.addEventListener('userLoggedOut', this.logoutListener);
+  }
+
+  ngOnDestroy() {
+    // Cleanup listeners
+    window.removeEventListener('storage', this.storageListener);
+    window.removeEventListener('userLoggedIn', this.loginListener);
+    window.removeEventListener('userLoggedOut', this.logoutListener);
   }
 
   checkLoginStatus() {
     // Check if user is logged in from localStorage
-    // First try currentUser (from Auth Service)
+    // First try currentUser (from AuthService)
     let userProfile = localStorage.getItem('currentUser');
     // If not found, try userProfile
     if (!userProfile) {
@@ -43,6 +69,7 @@ export class Navbar implements OnInit {
         this.userName = profile.name || profile.firstName || profile.userName || 'User';
         this.userAvatar = profile.avatar || 'assets/avatar-default.png';
         this.userEmail = profile.email || '';
+        console.log('✅ Navbar updated with user:', this.userName);
       } catch (e) {
         this.isLoggedIn = false;
         this.userName = '';
@@ -80,6 +107,13 @@ export class Navbar implements OnInit {
 
   goToDashboard() {
     this.router.navigate(['/ownerDashboard']);
+  }
+
+  goToHome() {
+    this.router.navigate(['/home']).then(() => {
+      // Dispatch event to load all properties
+      window.dispatchEvent(new CustomEvent('loadAllProperties'));
+    });
   }
 
   // Toggle sidebar in owner-dashboard

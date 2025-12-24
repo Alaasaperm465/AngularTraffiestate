@@ -41,6 +41,7 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPassword },
   { path: 'contact-us', component: ContactUs },
   { path: 'success', component: SuccessComponent },
+  { path: 'contact', component: ContactUs },
   { path: '**', component: NotFound },
 
   //************************************************************************************************************************** */

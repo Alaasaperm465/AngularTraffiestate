@@ -1,11 +1,3 @@
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="hero-content">
-    <h1 class="hero-title">اتصل بنا</h1>
-    <p class="breadcrumb">الصفحة الرئيسية - اتصل بنا</p>
-  </div>
-</section>
-
 <!-- Contact Section -->
 <section class="contact-section">
   <div class="container">
@@ -14,50 +6,50 @@
       <div class="contact-info">
         <h2 class="section-title">تواصل معنا</h2>
         <p class="section-description">
-          يحتاج ويستلزم أو عندك أي استفسار؟ إملأ هذا عنا بإتصالاتك.
+          هل لديك أي استفسار؟ املأ النموذج وسنكون سعداء بالرد عليك.
           <br>
-          فريق جولدن بيلت متاحر على كل استفساراتك ومساعدتك في أي وقت.
+          فريق TraffieState متواجد للرد على كل استفساراتك ومساعدتك في أي وقت.
         </p>
 
         <!-- Address -->
         <div class="info-card">
           <div class="info-icon">
-            <i class="icon-location"></i>
+            <i class="fas fa-map-marker-alt"></i>
           </div>
           <div class="info-content">
             <h3>العنوان</h3>
-            <p>١ أكتوبر - الحزام الدهبي القاهرة</p>
-            <p>أمام مسجد نور الله الرحمن</p>
-            <p>عمارة مكتب الاستشار عبد الفتاح المحمودي - الدور الأرضي</p>
+            <p>سوهاج</p>
+            <p>ادفا</p>
+            <p>مكتب الاستشارات غزالي جروب- الدور الأرضي</p>
           </div>
         </div>
 
         <!-- Phone -->
         <div class="info-card">
           <div class="info-icon">
-            <i class="icon-phone"></i>
+            <i class="fas fa-phone-alt"></i>
           </div>
           <div class="info-content">
             <h3>الهاتف</h3>
-            <p dir="ltr">01060313703</p>
+            <p dir="ltr">01143872859</p>
           </div>
         </div>
 
         <!-- Email -->
         <div class="info-card">
           <div class="info-icon">
-            <i class="icon-email"></i>
+            <i class="fas fa-envelope"></i>
           </div>
           <div class="info-content">
             <h3>البريد الإلكتروني</h3>
-            <p>info@goldenbelt.com</p>
+            <p>mahmoudashrafkhalf@gmail.com</p>
           </div>
         </div>
 
         <!-- Working Hours -->
         <div class="info-card">
           <div class="info-icon">
-            <i class="icon-clock"></i>
+            <i class="fas fa-clock"></i>
           </div>
           <div class="info-content">
             <h3>مواعيد العمل</h3>
@@ -69,14 +61,14 @@
         <!-- Social Media -->
         <div class="info-card">
           <div class="info-icon">
-            <i class="icon-social"></i>
+            <i class="fas fa-share-alt"></i>
           </div>
           <div class="info-content">
             <h3>تابعنا على السوشيال ميديا</h3>
             <div class="social-links">
-              <a href="#" class="social-link"><i class="icon-linkedin"></i></a>
-              <a href="#" class="social-link"><i class="icon-instagram"></i></a>
-              <a href="#" class="social-link"><i class="icon-facebook"></i></a>
+              <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
             </div>
           </div>
         </div>
@@ -85,61 +77,101 @@
       <!-- Contact Form -->
       <div class="contact-form-wrapper">
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+          
+          <!-- Name Field -->
           <div class="form-group">
             <input 
               type="text" 
               formControlName="name" 
               class="form-control" 
-              placeholder="الاسم"
-              [class.invalid]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+              placeholder="الاسم *"
+              [class.invalid]="name?.invalid && name?.touched">
+            <span class="error-text" *ngIf="name?.invalid && name?.touched">
+              <span *ngIf="name?.errors?.['required']">الاسم مطلوب</span>
+              <span *ngIf="name?.errors?.['minlength']">الاسم يجب أن يكون 3 أحرف على الأقل</span>
+            </span>
           </div>
 
+          <!-- Email Field -->
           <div class="form-group">
             <input 
               type="email" 
               formControlName="email" 
               class="form-control" 
-              placeholder="البريد الالكتروني"
-              [class.invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+              placeholder="البريد الإلكتروني *"
+              [class.invalid]="email?.invalid && email?.touched">
+            <span class="error-text" *ngIf="email?.invalid && email?.touched">
+              <span *ngIf="email?.errors?.['required']">البريد الإلكتروني مطلوب</span>
+              <span *ngIf="email?.errors?.['email']">البريد الإلكتروني غير صحيح</span>
+            </span>
           </div>
 
+          <!-- Phone Field -->
           <div class="form-group">
             <input 
               type="tel" 
               formControlName="phone" 
               class="form-control" 
-              placeholder="رقم الهاتف"
-              [class.invalid]="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+              placeholder="رقم الهاتف (11 رقم) *"
+              [class.invalid]="phone?.invalid && phone?.touched"
+              maxlength="11">
+            <span class="error-text" *ngIf="phone?.invalid && phone?.touched">
+              <span *ngIf="phone?.errors?.['required']">رقم الهاتف مطلوب</span>
+              <span *ngIf="phone?.errors?.['pattern']">رقم الهاتف يجب أن يكون 11 رقم</span>
+            </span>
           </div>
 
+          <!-- Subject Field -->
           <div class="form-group">
             <input 
               type="text" 
               formControlName="subject" 
               class="form-control" 
-              placeholder="عنوان الرسالة"
-              [class.invalid]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched">
+              placeholder="عنوان الرسالة *"
+              [class.invalid]="subject?.invalid && subject?.touched">
+            <span class="error-text" *ngIf="subject?.invalid && subject?.touched">
+              <span *ngIf="subject?.errors?.['required']">عنوان الرسالة مطلوب</span>
+              <span *ngIf="subject?.errors?.['minlength']">عنوان الرسالة يجب أن يكون 5 أحرف على الأقل</span>
+            </span>
           </div>
 
+          <!-- Message Field -->
           <div class="form-group">
             <textarea 
               formControlName="message" 
               class="form-control textarea" 
-              placeholder="الرسالة" 
+              placeholder="الرسالة *" 
               rows="6"
-              [class.invalid]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"></textarea>
+              [class.invalid]="message?.invalid && message?.touched"></textarea>
+            <span class="error-text" *ngIf="message?.invalid && message?.touched">
+              <span *ngIf="message?.errors?.['required']">الرسالة مطلوبة</span>
+              <span *ngIf="message?.errors?.['minlength']">الرسالة يجب أن تكون 10 أحرف على الأقل</span>
+            </span>
           </div>
 
+          <!-- Submit Button -->
           <button 
             type="submit" 
             class="btn-submit" 
             [disabled]="isSubmitting">
-            {{ isSubmitting ? 'جاري الإرسال...' : 'إرسال' }}
+            <span *ngIf="!isSubmitting">إرسال</span>
+            <span *ngIf="isSubmitting">
+              <i class="fas fa-spinner fa-spin"></i> جاري الإرسال...
+            </span>
           </button>
 
+          <!-- Success Message -->
           <div *ngIf="submitSuccess" class="success-message">
+            <i class="fas fa-check-circle"></i>
             تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.
           </div>
+
+          <!-- Error Message -->
+          <div *ngIf="submitError" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMessage }}
+          </div>
+
         </form>
       </div>
     </div>
@@ -155,7 +187,8 @@
       height="450" 
       style="border:0;" 
       allowfullscreen="" 
-      loading="lazy">
+      loading="lazy"
+      title="موقع TraffieState على الخريطة">
     </iframe>
   </div>
 </section>
@@ -164,68 +197,11 @@
 <section class="footer-cta">
   <div class="container">
     <div class="cta-content">
-      <p class="cta-text">جولدن بيلت هي منصتك العقارية للمكافأة للبحث عن أفضل العقد والوحدات في مصر</p>
+      <p class="cta-text">TraffieState هي منصتك العقارية للبحث عن أفضل العروض والوحدات في مصر</p>
       <div class="cta-buttons">
-        <button class="btn-cta-primary">ابحق و ميتلك</button>
+        <button class="btn-cta-primary">ابحث وامتلك</button>
         <button class="btn-cta-secondary">اعرض وحدتك الآن</button>
       </div>
     </div>
   </div>
 </section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-column">
-        <img src="assets/images/logo-white.svg" alt="Golden Belt" class="footer-logo">
-        <p class="footer-description">
-          نوفر لأصحاب الوحدات و المطورين في إمكانية استعراض عروضهم العقارية في أماكن تعلى كبيري
-          التطوير. الإيجارات في وحدات ومساع بأفل اسعار عقارية من مالكين، وسطاء يمكن مؤسسات عقارية في
-          السوق العقلي على منصة واحدة، ومشتدد، وآمن من خلال منصة جولدن بيلت. هدفنا بإن نخلى الغملى الترم
-          واسع النعاق على مستوى العالم.
-        </p>
-        <div class="footer-social">
-          <a href="#" class="footer-social-link"><i class="icon-linkedin"></i></a>
-          <a href="#" class="footer-social-link"><i class="icon-instagram"></i></a>
-          <a href="#" class="footer-social-link"><i class="icon-facebook"></i></a>
-        </div>
-      </div>
-
-      <div class="footer-column">
-        <h4 class="footer-title">المحتوى</h4>
-        <ul class="footer-links">
-          <li><a href="#">الشروط والأحكام</a></li>
-          <li><a href="#">أعرض وحدة</a></li>
-          <li><a href="#">احصل على وحدة</a></li>
-          <li><a href="#">الاستثمار العقاري</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h4 class="footer-title">الشركة</h4>
-        <ul class="footer-links">
-          <li><a href="#">من نحن</a></li>
-          <li><a href="#">وظائف</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h4 class="footer-title">قوانين</h4>
-        <ul class="footer-links">
-          <li><a href="#">الخصوصية والأمان</a></li>
-          <li><a href="#">سياسة المجتمعية</a></li>
-          <li><a href="#">ميثاق جولدن بيلت</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>© 2025 جميع الحقوق محفوظة لشركة جولدن بيلت</p>
-    </div>
-  </div>
-
-  <button class="scroll-top" (click)="scrollToTop()">
-    <i class="icon-arrow-up"></i>
-  </button>
-</footer>

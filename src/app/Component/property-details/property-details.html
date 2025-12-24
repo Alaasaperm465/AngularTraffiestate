@@ -55,7 +55,7 @@
         <div class="image-gallery-section">
           <div class="main-image">
             <img [src]="mainImageUrl" [alt]="property.title">
-            <span class="purpose-badge-details" [class.rent]="property.purpose?.toLowerCase() === 'rent'">
+            <span class="purpose-badge-details" [class.rent]="property.purpose.toLowerCase() === 'rent'">
               {{ getPropertyPurposeLabel() }}
             </span>
           </div>
@@ -184,7 +184,7 @@
         </div> -->
 
         <!-- Rating Section -->
-        <div class="rating-section">
+        <!-- <div class="rating-section">
           <h2 class="section-title">
             <i class="bi bi-star"></i>
             Rate This Property
@@ -216,7 +216,35 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
+        <!-- Add Rating -->
+<div class="add-rating-section">
+         <h2 class="section-title">
+            <i class="bi bi-star"></i>
+            Rate This Property
+          </h2>
+
+  <div class="rating-stars">
+    <i *ngFor="let star of [1,2,3,4,5]"
+       class="bi"
+       [ngClass]="star <= selectedRating ? 'bi-star-fill' : 'bi-star'"
+       (click)="!userHasRated && (selectedRating = star)">
+    </i>
+  </div>
+
+  <button
+    class="submit-rating-btn"
+    (click)="submitRating()"
+    [disabled]="!selectedRating || isSubmittingRating || userHasRated">
+    {{ userHasRated ? 'You already rated' : 'Submit Rating' }}
+  </button>
+
+  <div class="average-rating" *ngIf="reviewStats">
+    <span>Average Rating: {{ reviewStats.averageRating | number:'1.1-1' }} ⭐</span>
+    <span>({{ reviewStats.reviewsCount }} reviews)</span>
+  </div>
+</div>
+
 
         <!-- Location Map -->
         <div class="location-section">
@@ -300,14 +328,29 @@
           </div>
 
           <div class="contact-actions">
-            <button type="button" class="contact-btn primary" (click)="callNow()">
-              <i class="bi bi-telephone-fill"></i>
-              Call Now
-            </button>
-            <button type="button" class="contact-btn secondary" (click)="sendEmail()">
-              <i class="bi bi-envelope-fill"></i>
-              Send Email
-            </button>
+           <button type="button" class="contact-btn primary" (click)="openCallModal()">
+  <i class="bi bi-telephone-fill"></i>
+  Call Now
+</button>
+
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModal">
+  <div class="call-modal-content">
+    <h4>Call us at:</h4>
+    <p>{{ defaultPhone }}</p>
+    <button (click)="makeCall()">Call Now</button>
+    <button (click)="closeCallModal()">Close</button>
+  </div>
+</div>
+
+           <button
+  type="button"
+  class="contact-btn secondary"
+  (click)="sendEmail()">
+  <i class="bi bi-envelope-fill"></i>
+  Send Email
+</button>
+
             <button type="button" class="contact-btn whatsapp" (click)="openWhatsApp()">
               <i class="bi bi-whatsapp"></i>
               WhatsApp

@@ -34,10 +34,13 @@ export class Home implements OnInit, OnDestroy {
   selectedSort: string = '';
   minPrice: number | null = null;
   maxPrice: number | null = null;
-  
+
   // See More functionality
   itemsPerLoad: number = 8;
   currentLoadedCount: number = 5;
+
+  // Event listeners for cleanup
+  private loadAllPropertiesListener: any;
 
   constructor(
     private fb: FormBuilder,
@@ -53,8 +56,37 @@ export class Home implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('🚀 Component initialized');
+    console.log('🚀 Home component initialized');
 
+    this.loadAllProperties();
+
+    // Load favorites in parallel
+    this.loadFavorites();
+
+    // Listen for loadAllProperties event from navbar with proper cleanup reference
+    this.loadAllPropertiesListener = () => {
+      console.log('📢 loadAllProperties event received, refreshing properties');
+      this.loadAllProperties();
+    };
+    window.addEventListener('loadAllProperties', this.loadAllPropertiesListener);
+  }
+
+  loadFavorites(): void {
+    this.favoriteService.getMyFavorites().subscribe({
+      next: (res: any) => {
+        const items = res?.value?.items ?? res?.items ?? [];
+        this.favoritesIds = items.map((f: any) => f.propertyId);
+        console.log('❤️ Favorites loaded:', this.favoritesIds.length, 'favorites');
+      },
+      error: (err) => {
+        console.error('Error loading favorites:', err);
+        // Don't fail silently - continue with empty favorites
+        this.favoritesIds = [];
+      }
+    });
+  }
+
+  loadAllProperties(): void {
     this.propertyService.getAllProperties().subscribe({
       next: (data: IProperty[]) => {
         console.log('📊 API Response received');
@@ -71,6 +103,7 @@ export class Home implements OnInit, OnDestroy {
         this.allProperties = data;
         this.properties = [...data];
         this.updateDisplayedProperties();
+        this.activeTab = ''; // Reset active tab to show all
 
         console.log('✅ All properties displayed:', this.properties.length);
       },
@@ -78,20 +111,13 @@ export class Home implements OnInit, OnDestroy {
         console.error('❌ Error loading properties:', err);
       }
     });
-
-    this.favoriteService.getMyFavorites().subscribe({
-      next: (res: any) => {
-        const items = res?.value?.items ?? res?.items ?? [];
-        this.favoritesIds = items.map((f: any) => f.propertyId);
-        console.log('❤️ Favorites loaded:', this.favoritesIds);
-      },
-      error: (err) => {
-        console.error('Error loading favorites:', err);
-      }
-    });
   }
 
   ngOnDestroy(): void {
+    // Cleanup event listener
+    if (this.loadAllPropertiesListener) {
+      window.removeEventListener('loadAllProperties', this.loadAllPropertiesListener);
+    }
   }
 
   setActiveTab(tab: string): void {
@@ -280,23 +306,23 @@ export class Home implements OnInit, OnDestroy {
     this.properties = filtered;
     console.log(`✅ Final result: ${this.properties.length} properties`);
     console.log('🔧 ====== Filter Complete ======');
-    
+
     this.currentLoadedCount = 8;
     this.updateDisplayedProperties();
   }
-  
+
   // Update displayed properties
   private updateDisplayedProperties(): void {
     this.displayedProperties = this.properties.slice(0, this.currentLoadedCount);
   }
-  
+
   // Load more properties
   loadMore(): void {
     this.currentLoadedCount += this.itemsPerLoad;
     this.updateDisplayedProperties();
     console.log(`Loading more... Now showing ${this.currentLoadedCount} items`);
   }
-  
+
   // Check if there are more items to load
   hasMoreToLoad(): boolean {
     return this.currentLoadedCount < this.properties.length;
@@ -384,7 +410,7 @@ export class Home implements OnInit, OnDestroy {
 
     this.properties = [...this.allProperties];
     console.log('✅ All filters cleared, showing all properties:', this.properties.length);
-    
+
     this.currentLoadedCount = 8;
     this.updateDisplayedProperties();
   }

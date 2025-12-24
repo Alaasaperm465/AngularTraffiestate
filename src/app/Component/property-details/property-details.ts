@@ -24,7 +24,7 @@ export class PropertyDetails implements OnInit {
   mainImageUrl!: string;
 
   // استخدم هذه المتغيرات كـ default values
-  defaultPhone = phone;
+  defaultPhone = '+201200003943';
   defaultEmail = email;
 
   // Rating System
@@ -34,6 +34,11 @@ export class PropertyDetails implements OnInit {
   hoverRating: number = 0;
   hasRated: boolean = false;
   reviewStats!: ReviewStats;
+  selectedRating: number = 0;
+  isSubmittingRating = false;
+  userHasRated: boolean = false; // هل المستخدم قيم قبل كده؟
+
+
 
 
   // Visit Form
@@ -72,12 +77,27 @@ export class PropertyDetails implements OnInit {
 
     //********************************** */
         // جلب إحصائيات التقييم
-          this.ReviewService.getPropertyStats(this.propertyId).subscribe({
-          next: (stats) => {
-            this.reviewStats = stats;
-          },
-          error: (err) => console.error(err),
-        });
+        this.propertyId = Number(this.route.snapshot.paramMap.get('id'));
+
+  // جلب Review stats
+  this.ReviewService.getPropertyStats(this.propertyId).subscribe({
+    next: (res) => {
+      if(res) {
+        this.reviewStats = res;
+      }
+    },
+    error: (err) => console.error(err)
+  });
+
+  // جلب الريتينج اللي عمله المستخدم (لو عندك API لذلك)
+   this.ReviewService.getUserPropertyRating(this.propertyId).subscribe(
+    (userRating) => {
+      if(userRating) {
+        this.selectedRating = userRating.rating;
+        this.userHasRated = true;
+      }
+    }
+  );
 
   }
 
@@ -221,13 +241,7 @@ export class PropertyDetails implements OnInit {
     window.location.href = `tel:${phoneNumber}`;
   }
 
-  sendEmail(): void {
-    // استخدم الايميل الافتراضي
-    const emailAddress = this.defaultEmail;
-    const subject = encodeURIComponent(`Inquiry about ${this.property.title}`);
-    const body = encodeURIComponent(`I'm interested in the property: ${this.property.title}\nLocation: ${this.property.area}, ${this.property.city}\nPrice: ${this.property.price}`);
-    window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-  }
+
 
   openWhatsApp(): void {
     // استخدم الرقم الافتراضي
@@ -248,4 +262,67 @@ export class PropertyDetails implements OnInit {
   trackById(index: number, item: any): number {
     return item.id;
   }
+//add property review
+submitRating() {
+  if (!this.selectedRating) return;
+
+  this.isSubmittingRating = true;
+
+  const dto = {
+    propertyId: this.propertyId,
+    rating: this.selectedRating
+  };
+
+  this.ReviewService.addReview(dto).subscribe({
+    next: () => {
+      alert('Rating added successfully ⭐');
+      this.isSubmittingRating = false;
+      this.userHasRated = true;  // المستخدم قيم
+      // تحديث متوسط الريتينج
+      this.ReviewService.getPropertyStats(this.propertyId).subscribe(
+        stats => this.reviewStats = stats
+      );
+    },
+    error: (err) => {
+      console.error(err);
+      alert(err.error?.message || 'You already rated this property');
+      this.isSubmittingRating = false;
+      this.userHasRated = true; // لو حاول مرة تانية
+    }
+  });
+}
+
+showCallModal: boolean = false;
+
+openCallModal() {
+  this.showCallModal = true;
+}
+
+closeCallModal() {
+  this.showCallModal = false;
+}
+
+makeCall() {
+  window.location.href = `tel:${this.defaultPhone}`;
+}
+sendEmail(): void {
+  const receiverEmail = 'salmaesam344@gmail.com'; // غيريه لجيميلك
+  const subject = 'Property Inquiry';
+  const body =
+    `Hello,
+
+I am interested in this property:
+${this.property?.title}
+
+Location: ${this.property?.area}, ${this.property?.city}
+Price: ${this.property?.price}
+
+Thank you.`;
+
+  const gmailUrl =
+    `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(receiverEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  window.open(gmailUrl, '_blank');
+}
+
 }
