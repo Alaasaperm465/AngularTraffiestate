@@ -1,0 +1,231 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-content">
+    <h1 class="hero-title">اتصل بنا</h1>
+    <p class="breadcrumb">الصفحة الرئيسية - اتصل بنا</p>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-grid">
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <h2 class="section-title">تواصل معنا</h2>
+        <p class="section-description">
+          يحتاج ويستلزم أو عندك أي استفسار؟ إملأ هذا عنا بإتصالاتك.
+          <br>
+          فريق جولدن بيلت متاحر على كل استفساراتك ومساعدتك في أي وقت.
+        </p>
+
+        <!-- Address -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="icon-location"></i>
+          </div>
+          <div class="info-content">
+            <h3>العنوان</h3>
+            <p>١ أكتوبر - الحزام الدهبي القاهرة</p>
+            <p>أمام مسجد نور الله الرحمن</p>
+            <p>عمارة مكتب الاستشار عبد الفتاح المحمودي - الدور الأرضي</p>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="icon-phone"></i>
+          </div>
+          <div class="info-content">
+            <h3>الهاتف</h3>
+            <p dir="ltr">01060313703</p>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="icon-email"></i>
+          </div>
+          <div class="info-content">
+            <h3>البريد الإلكتروني</h3>
+            <p>info@goldenbelt.com</p>
+          </div>
+        </div>
+
+        <!-- Working Hours -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="icon-clock"></i>
+          </div>
+          <div class="info-content">
+            <h3>مواعيد العمل</h3>
+            <p>من الأحد إلى الخميس</p>
+            <p>من ٩ صباحاً إلى ٥ مساءً</p>
+          </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="icon-social"></i>
+          </div>
+          <div class="info-content">
+            <h3>تابعنا على السوشيال ميديا</h3>
+            <div class="social-links">
+              <a href="#" class="social-link"><i class="icon-linkedin"></i></a>
+              <a href="#" class="social-link"><i class="icon-instagram"></i></a>
+              <a href="#" class="social-link"><i class="icon-facebook"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-wrapper">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+          <div class="form-group">
+            <input 
+              type="text" 
+              formControlName="name" 
+              class="form-control" 
+              placeholder="الاسم"
+              [class.invalid]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+          </div>
+
+          <div class="form-group">
+            <input 
+              type="email" 
+              formControlName="email" 
+              class="form-control" 
+              placeholder="البريد الالكتروني"
+              [class.invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+          </div>
+
+          <div class="form-group">
+            <input 
+              type="tel" 
+              formControlName="phone" 
+              class="form-control" 
+              placeholder="رقم الهاتف"
+              [class.invalid]="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+          </div>
+
+          <div class="form-group">
+            <input 
+              type="text" 
+              formControlName="subject" 
+              class="form-control" 
+              placeholder="عنوان الرسالة"
+              [class.invalid]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched">
+          </div>
+
+          <div class="form-group">
+            <textarea 
+              formControlName="message" 
+              class="form-control textarea" 
+              placeholder="الرسالة" 
+              rows="6"
+              [class.invalid]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"></textarea>
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-submit" 
+            [disabled]="isSubmitting">
+            {{ isSubmitting ? 'جاري الإرسال...' : 'إرسال' }}
+          </button>
+
+          <div *ngIf="submitSuccess" class="success-message">
+            تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+  <div class="map-container">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.123456789!2d31.123456!3d30.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z2KfZhNit2LLYp9mFINin2YTYsNmH2KjZiQ!5e0!3m2!1sar!2seg!4v1234567890"
+      width="100%" 
+      height="450" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+<!-- Footer CTA -->
+<section class="footer-cta">
+  <div class="container">
+    <div class="cta-content">
+      <p class="cta-text">جولدن بيلت هي منصتك العقارية للمكافأة للبحث عن أفضل العقد والوحدات في مصر</p>
+      <div class="cta-buttons">
+        <button class="btn-cta-primary">ابحق و ميتلك</button>
+        <button class="btn-cta-secondary">اعرض وحدتك الآن</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-column">
+        <img src="assets/images/logo-white.svg" alt="Golden Belt" class="footer-logo">
+        <p class="footer-description">
+          نوفر لأصحاب الوحدات و المطورين في إمكانية استعراض عروضهم العقارية في أماكن تعلى كبيري
+          التطوير. الإيجارات في وحدات ومساع بأفل اسعار عقارية من مالكين، وسطاء يمكن مؤسسات عقارية في
+          السوق العقلي على منصة واحدة، ومشتدد، وآمن من خلال منصة جولدن بيلت. هدفنا بإن نخلى الغملى الترم
+          واسع النعاق على مستوى العالم.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link"><i class="icon-linkedin"></i></a>
+          <a href="#" class="footer-social-link"><i class="icon-instagram"></i></a>
+          <a href="#" class="footer-social-link"><i class="icon-facebook"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4 class="footer-title">المحتوى</h4>
+        <ul class="footer-links">
+          <li><a href="#">الشروط والأحكام</a></li>
+          <li><a href="#">أعرض وحدة</a></li>
+          <li><a href="#">احصل على وحدة</a></li>
+          <li><a href="#">الاستثمار العقاري</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4 class="footer-title">الشركة</h4>
+        <ul class="footer-links">
+          <li><a href="#">من نحن</a></li>
+          <li><a href="#">وظائف</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4 class="footer-title">قوانين</h4>
+        <ul class="footer-links">
+          <li><a href="#">الخصوصية والأمان</a></li>
+          <li><a href="#">سياسة المجتمعية</a></li>
+          <li><a href="#">ميثاق جولدن بيلت</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 جميع الحقوق محفوظة لشركة جولدن بيلت</p>
+    </div>
+  </div>
+
+  <button class="scroll-top" (click)="scrollToTop()">
+    <i class="icon-arrow-up"></i>
+  </button>
+</footer>

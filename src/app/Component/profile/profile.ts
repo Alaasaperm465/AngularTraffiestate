@@ -5,13 +5,25 @@ import { UserService, UserProfile } from '../../Services/users';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './profile.html',
-  styleUrl: './profile.css',
+  styleUrls: ['./profile.css'],
 })
-export class Profile {
+export class ProfileComponent implements OnInit {
 
-  user: UserProfile | null = null;
+  user: UserProfile = {
+    userId: '',
+    userName: '',
+    email: '',
+    phoneNumber: '',
+    role: 'User',
+    bio: '',
+    avatarUrl: 'assets/avatar-default.png',
+    propertiesCount: 0,
+    favoritesCount: 0,
+    averageRating: 0
+  };
   loading = true;
   error: string | null = null;
 

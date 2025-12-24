@@ -19,6 +19,7 @@ import { OwnerDashboardComponent } from './Component/owner-dashboard/owner-dashb
 import { Land } from './land/land';
 import { ProfileComponent } from './Component/profile/profile';
 import { EditProfile } from './Component/edit-profile/edit-profile';
+import { ContactUs } from './Component/contact-us/contact-us';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -38,6 +39,7 @@ export const routes: Routes = [
   { path: 'editProfile', component: EditProfile, title: 'Edit Profile' },
   { path: 'forget-password', component: ForgetPassword },
   { path: 'reset-password', component: ResetPassword },
+  { path: 'contact-us', component: ContactUs },
   { path: 'success', component: SuccessComponent },
   { path: '**', component: NotFound },
 
