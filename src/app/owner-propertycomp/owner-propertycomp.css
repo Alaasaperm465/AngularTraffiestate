@@ -213,6 +213,10 @@
       gap: 0.5rem;
     }
 
+    /* Aliases to canonical classes so unified card styles apply */
+    .property-info { padding: 1.5rem; }
+    .property-footer { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; padding: 0 1.5rem 1.5rem; }
+
     .btn {
       padding: 0.75rem 1.5rem;
       border: none;

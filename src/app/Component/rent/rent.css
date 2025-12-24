@@ -218,7 +218,7 @@
 }
 
 .quick-label {
-  color: rgba(255, 255, 255, 0.9);
+  color: #6c757d;
   font-weight: 700;
   font-size: 14px;
   text-transform: uppercase;
@@ -227,24 +227,24 @@
 
 .quick-btn-hero {
   padding: 10px 24px;
-  background: rgba(255, 255, 255, 0.25);
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  background: rgba(226, 180, 59, 0.1);
+  border: 1.5px solid rgba(226, 180, 59, 0.3);
   border-radius: 24px;
-  color: white;
+  color: #E2B43B;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .quick-btn-hero:hover {
   background: #E2B43B;
   border-color: #E2B43B;
-  color: #0B3122;
+  color: white;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(226, 180, 59, 0.3);
 }
+
 
 /* PROPERTIES SECTION */
 .properties-main-section {

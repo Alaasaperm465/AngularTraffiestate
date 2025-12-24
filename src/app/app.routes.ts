@@ -21,6 +21,7 @@ import { ProfileComponent } from './Component/profile/profile';
 import { EditProfile } from './Component/edit-profile/edit-profile';
 import { ContactUs } from './Component/contact-us/contact-us';
 import { AboutUs } from './Component/about-us/about-us';
+import { EditPropertyComponent } from './Component/edit-property/edit-property';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -44,6 +45,7 @@ export const routes: Routes = [
   { path: 'success', component: SuccessComponent },
   { path: 'contact', component: ContactUs },
   { path: 'about', component: AboutUs },
+  { path: 'editproperty', component: EditPropertyComponent },
   { path: '**', component: NotFound },
 
   //************************************************************************************************************************** */

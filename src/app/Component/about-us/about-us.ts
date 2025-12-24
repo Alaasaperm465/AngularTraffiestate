@@ -9,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutUs implements OnInit {
 
+  phone = '+201098280551';
+  email = 'basem.abulgheit@gmail.com';
+
   team = [
     {
       name: 'Bassem Mohamed',

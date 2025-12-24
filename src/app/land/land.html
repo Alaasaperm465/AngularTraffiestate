@@ -100,7 +100,10 @@
     <section class="lands-grid">
 
       <div class="results-header">
-        <h3>{{ landProperties.length }} Lands Found</h3>
+        <h3>
+          <span class="count-number">{{ displayedProperties.length }}</span> Lands Shown
+          <span class="page-info" *ngIf="displayedProperties.length > 0">(Showing {{ displayedProperties.length }} of {{ landProperties.length }})</span>
+        </h3>
       </div>
 
       <!-- No Results -->
@@ -111,81 +114,110 @@
       </div>
 
       <!-- Cards -->
-      <div class="lands-grid-content" *ngIf="landProperties.length > 0">
+      <div class="lands-grid-content" *ngIf="displayedProperties.length > 0">
         <div
-          class="land-card"
-          *ngFor="let land of landProperties; trackBy: trackById"
+          class="property-card"
+          *ngFor="let land of displayedProperties; trackBy: trackById"
         >
 
-          <!-- Image -->
-          <div class="land-image">
-            <img
-              [src]="land.imageUrl || 'https://via.placeholder.com/400x250'"
-              alt="Land Image"
-            />
-            <div class="image-overlay">
-              <span class="land-type">Land</span>
+          <!-- Property Image -->
+          <div class="property-image">
+            <img [src]="land.imageUrl || 'https://via.placeholder.com/400x250'" [alt]="land.title" />
 
-              <button
-                class="favorite-btn"
-                [class.favorited]="isFavorite(land.id)"
-                (click)="toggleFavorite(land.id)"
-              >
-                <i class="bi bi-heart-fill"></i>
-              </button>
-            </div>
+            <!-- Favorite Button -->
+            <button
+              type="button"
+              class="favorite-btn"
+              [class.active]="isFavorite(land.id)"
+              (click)="toggleFavorite(land.id); $event.stopPropagation()">
+              <i class="bi" [ngClass]="isFavorite(land.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+            </button>
+
+            <!-- Purpose Badge -->
+            <span class="purpose-badge">Land</span>
           </div>
 
-          <!-- Details -->
-          <div class="land-details">
-            <div class="land-price">
-              <span class="price">
-                {{ land.price | number }} EGP
-              </span>
-              <span class="price-per-sqm">
-                {{ (land.price / land.areaSpace) | number:'1.0-0' }} / sqm
-              </span>
+          <!-- Property Info -->
+          <div class="property-info">
+            <div class="property-header">
+              <h3 class="property-title">{{ land.title }}</h3>
+              <p class="property-location">
+                <i class="bi bi-geo-alt-fill"></i>
+                {{ land.area }}, {{ land.city }}
+              </p>
             </div>
 
-            <h4 class="land-title">{{ land.title }}</h4>
-
-            <div class="land-location">
-              <i class="bi bi-geo-alt"></i>
-              {{ land.city }} - {{ land.area }}
-            </div>
-
-            <div class="land-features">
-              <div class="feature">
-                <i class="bi bi-aspect-ratio"></i>
+            <div class="property-details">
+              <span class="detail-item">
+                <i class="bi bi-arrows-fullscreen"></i>
                 {{ land.areaSpace }} sqm
-              </div>
-              <div class="feature">
+              </span>
+              <span class="detail-item">
                 <i class="bi bi-eye"></i>
                 {{ land.views || 0 }} Views
-              </div>
-              <div class="feature">
+              </span>
+              <span class="detail-item">
                 <i class="bi bi-star"></i>
                 {{ land.isFeatured ? 'Featured' : 'Standard' }}
-              </div>
+              </span>
             </div>
 
-            <p class="land-description">
+            <p class="property-description">
               {{ land.description | slice:0:120 }}...
             </p>
 
-            <div class="land-actions">
-              <button class="btn-details">
-                <i class="bi bi-info-circle" ></i>
-                Details
-              </button>
-              <button class="btn-contact">
-                <i class="bi bi-telephone"></i>
-                Contact
-              </button>
+            <div class="property-footer">
+              <div class="property-price">
+                <span class="price-value">{{ land.price | currency:'EGP':'symbol':'1.0-0' }}</span>
+                <span class="price-period">EGP</span>
+              </div>
+              <div class="property-contact-actions">
+                <a
+                  class="contact-icon-btn whatsapp-btn"
+                  title="Contact on WhatsApp"
+                  aria-label="Contact via WhatsApp"
+                  [href]="'https://wa.me/' + phone.replace(/\D/g, '')"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  (click)="$event.stopPropagation()">
+                  <i class="bi bi-whatsapp"></i>
+                </a>
+                <a
+                  class="contact-icon-btn phone-btn"
+                  [href]="'tel:' + phone"
+                  title="Call Now"
+                  aria-label="Call seller"
+                  (click)="$event.stopPropagation()">
+                  <i class="bi bi-telephone-fill"></i>
+                </a>
+                <a
+                  class="contact-icon-btn email-btn"
+                  [href]="'mailto:' + email"
+                  title="Email"
+                  aria-label="Email seller"
+                  (click)="$event.stopPropagation()">
+                  <i class="bi bi-envelope-fill"></i>
+                </a>
+                <button
+                  type="button"
+                  class="view-details-btn"
+                  [routerLink]="['/property', land.id]"
+                  (click)="$event.stopPropagation()">
+                  <i class="bi bi-eye"></i>
+                  View
+                </button>
+              </div>
             </div>
           </div>
-
         </div>
+      </div>
+
+      <!-- See More Button -->
+      <div class="see-more-section" *ngIf="hasMoreToLoad()">
+        <button type="button" class="see-more-btn" (click)="loadMore()">
+          See More
+          <i class="bi bi-arrow-down"></i>
+        </button>
       </div>
 
     </section>

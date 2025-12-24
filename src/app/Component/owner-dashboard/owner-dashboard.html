@@ -210,7 +210,7 @@
           *ngFor="let property of displayedProperties"
           [class.selected]="isPropertySelected(property.id)">
 
-          <!-- Selection Checkbox -->
+          <!-- Selection Checkbox (kept) -->
           <div class="card-checkbox">
             <input
               type="checkbox"
@@ -219,7 +219,7 @@
           </div>
 
           <!-- Property Image -->
-          <div class="card-image">
+          <div class="property-image">
             <img [src]="property.mainImage" [alt]="property.title">
 
             <!-- Status Badge -->
@@ -228,70 +228,59 @@
                  property.status === 'pending' ? 'قيد المراجعة' : 'غير نشط' }}
             </span>
 
-            <!-- Quick Actions -->
-            <div class="card-actions">
-              <button
-                class="action-btn favorite"
-                [class.active]="property.isFavorite"
-                (click)="toggleFavorite(property)">
-                <i class="icon-heart"></i>
-              </button>
-              <button
-                class="action-btn bookmark"
-                [class.active]="property.isBookmarked"
-                (click)="toggleBookmark(property)">
-                <i class="icon-bookmark"></i>
-              </button>
-            </div>
+            <!-- Quick Actions (favorite/bookmark) -->
+            <button
+              class="favorite-btn"
+              [class.active]="property.isFavorite"
+              (click)="toggleFavorite(property); $event.stopPropagation()">
+              <i class="bi" [ngClass]="property.isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+            </button>
           </div>
 
           <!-- Property Info -->
-          <div class="card-content">
-            <h3 class="property-title">{{ property.title }}</h3>
-            <p class="property-description">{{ property.description }}</p>
-
-            <!-- Property Details -->
-            <div class="property-details">
-              <div class="detail-item">
-                <i class="icon-map-pin"></i>
-                <span>{{ property.location }}</span>
-              </div>
-              <div class="detail-item">
-                <i class="icon-maximize"></i>
-                <span>{{ property.areaSpace }} م²</span>
-              </div>
-              <div class="detail-item">
-                <i class="icon-bed"></i>
-                <span>{{ property.rooms }} غرف</span>
-              </div>
-              <div class="detail-item">
-                <i class="icon-bath"></i>
-                <span>{{ property.bathrooms }} حمام</span>
-              </div>
+          <div class="property-info">
+            <div class="property-header">
+              <h3 class="property-title">{{ property.title }}</h3>
+              <p class="property-location">
+                <i class="bi bi-geo-alt-fill"></i>
+                {{ property.location }} - {{ property.areaSpace }} م²
+              </p>
             </div>
 
-            <!-- Price & Actions -->
-            <div class="card-footer">
-              <div class="price">
-                <span class="price-label">السعر</span>
+            <div class="property-details">
+              <span class="detail-item">
+                <i class="bi bi-arrows-fullscreen"></i>
+                {{ property.areaSpace }} م²
+              </span>
+              <span class="detail-item">
+                <i class="bi bi-door-open-fill"></i>
+                {{ property.rooms }} غرف
+              </span>
+              <span class="detail-item">
+                <i class="bi bi-droplet-fill"></i>
+                {{ property.bathrooms }} حمام
+              </span>
+            </div>
+
+            <!-- Footer: price + owner actions (view/edit/delete) -->
+            <div class="property-footer">
+              <div class="property-price">
                 <span class="price-value">{{ formatPrice(property.price) }}</span>
+                <span class="price-period">EGP</span>
               </div>
 
-              <div class="action-buttons">
-                <button
-                  class="btn-outline"
-                  (click)="viewPropertyDetails(property.id)">
-                  عرض
+              <div class="property-contact-actions">
+                <button class="view-details-btn" (click)="viewPropertyDetails(property.id); $event.stopPropagation()">
+                  <i class="bi bi-eye"></i>
+                  View
                 </button>
-                <button
-                  class="btn-outline"
-                  (click)="editProperty(property.id)">
-                  تعديل
+                <button class="view-details-btn" (click)="editProperty(property.id); $event.stopPropagation()">
+                  <i class="bi bi-pencil"></i>
+                  Edit
                 </button>
-                <button
-                  class="btn-danger"
-                  (click)="deleteProperty(property.id)">
-                  حذف
+                <button class="view-details-btn" (click)="deleteProperty(property.id); $event.stopPropagation()">
+                  <i class="bi bi-trash"></i>
+                  Delete
                 </button>
               </div>
             </div>
