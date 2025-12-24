@@ -1,0 +1,207 @@
+<!-- Contact Section -->
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-grid">
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <h2 class="section-title">تواصل معنا</h2>
+        <p class="section-description">
+          هل لديك أي استفسار؟ املأ النموذج وسنكون سعداء بالرد عليك.
+          <br>
+          فريق TraffieState متواجد للرد على كل استفساراتك ومساعدتك في أي وقت.
+        </p>
+
+        <!-- Address -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="info-content">
+            <h3>العنوان</h3>
+            <p>سوهاج</p>
+            <p>ادفا</p>
+            <p>مكتب الاستشارات باسم ابو الغيط - الدور الأرضي</p>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <div class="info-content">
+            <h3>الهاتف</h3>
+            <p dir="ltr">01143872859</p>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="info-content">
+            <h3>البريد الإلكتروني</h3>
+            <p>mahmoudashrafkhalf@gmail.com</p>
+          </div>
+        </div>
+
+        <!-- Working Hours -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="info-content">
+            <h3>مواعيد العمل</h3>
+            <p>من الأحد إلى الخميس</p>
+            <p>من ٩ صباحاً إلى ٥ مساءً</p>
+          </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-share-alt"></i>
+          </div>
+          <div class="info-content">
+            <h3>تابعنا على السوشيال ميديا</h3>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-wrapper">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+          
+          <!-- Name Field -->
+          <div class="form-group">
+            <input 
+              type="text" 
+              formControlName="name" 
+              class="form-control" 
+              placeholder="الاسم *"
+              [class.invalid]="name?.invalid && name?.touched">
+            <span class="error-text" *ngIf="name?.invalid && name?.touched">
+              <span *ngIf="name?.errors?.['required']">الاسم مطلوب</span>
+              <span *ngIf="name?.errors?.['minlength']">الاسم يجب أن يكون 3 أحرف على الأقل</span>
+            </span>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <input 
+              type="email" 
+              formControlName="email" 
+              class="form-control" 
+              placeholder="البريد الإلكتروني *"
+              [class.invalid]="email?.invalid && email?.touched">
+            <span class="error-text" *ngIf="email?.invalid && email?.touched">
+              <span *ngIf="email?.errors?.['required']">البريد الإلكتروني مطلوب</span>
+              <span *ngIf="email?.errors?.['email']">البريد الإلكتروني غير صحيح</span>
+            </span>
+          </div>
+
+          <!-- Phone Field -->
+          <div class="form-group">
+            <input 
+              type="tel" 
+              formControlName="phone" 
+              class="form-control" 
+              placeholder="رقم الهاتف (11 رقم) *"
+              [class.invalid]="phone?.invalid && phone?.touched"
+              maxlength="11">
+            <span class="error-text" *ngIf="phone?.invalid && phone?.touched">
+              <span *ngIf="phone?.errors?.['required']">رقم الهاتف مطلوب</span>
+              <span *ngIf="phone?.errors?.['pattern']">رقم الهاتف يجب أن يكون 11 رقم</span>
+            </span>
+          </div>
+
+          <!-- Subject Field -->
+          <div class="form-group">
+            <input 
+              type="text" 
+              formControlName="subject" 
+              class="form-control" 
+              placeholder="عنوان الرسالة *"
+              [class.invalid]="subject?.invalid && subject?.touched">
+            <span class="error-text" *ngIf="subject?.invalid && subject?.touched">
+              <span *ngIf="subject?.errors?.['required']">عنوان الرسالة مطلوب</span>
+              <span *ngIf="subject?.errors?.['minlength']">عنوان الرسالة يجب أن يكون 5 أحرف على الأقل</span>
+            </span>
+          </div>
+
+          <!-- Message Field -->
+          <div class="form-group">
+            <textarea 
+              formControlName="message" 
+              class="form-control textarea" 
+              placeholder="الرسالة *" 
+              rows="6"
+              [class.invalid]="message?.invalid && message?.touched"></textarea>
+            <span class="error-text" *ngIf="message?.invalid && message?.touched">
+              <span *ngIf="message?.errors?.['required']">الرسالة مطلوبة</span>
+              <span *ngIf="message?.errors?.['minlength']">الرسالة يجب أن تكون 10 أحرف على الأقل</span>
+            </span>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            class="btn-submit" 
+            [disabled]="isSubmitting">
+            <span *ngIf="!isSubmitting">إرسال</span>
+            <span *ngIf="isSubmitting">
+              <i class="fas fa-spinner fa-spin"></i> جاري الإرسال...
+            </span>
+          </button>
+
+          <!-- Success Message -->
+          <div *ngIf="submitSuccess" class="success-message">
+            <i class="fas fa-check-circle"></i>
+            تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="submitError" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMessage }}
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+  <div class="map-container">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.123456789!2d31.123456!3d30.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z2KfZhNit2LLYp9mFINin2YTYsNmH2KjZiQ!5e0!3m2!1sar!2seg!4v1234567890"
+      width="100%" 
+      height="450" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy"
+      title="موقع TraffieState على الخريطة">
+    </iframe>
+  </div>
+</section>
+
+<!-- Footer CTA -->
+<section class="footer-cta">
+  <div class="container">
+    <div class="cta-content">
+      <p class="cta-text">TraffieState هي منصتك العقارية للبحث عن أفضل العروض والوحدات في مصر</p>
+      <div class="cta-buttons">
+        <button class="btn-cta-primary">ابحث وامتلك</button>
+        <button class="btn-cta-secondary">اعرض وحدتك الآن</button>
+      </div>
+    </div>
+  </div>
+</section>
