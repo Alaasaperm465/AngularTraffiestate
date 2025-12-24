@@ -20,6 +20,7 @@ import { Land } from './land/land';
 import { ProfileComponent } from './Component/profile/profile';
 import { EditProfile } from './Component/edit-profile/edit-profile';
 import { ContactUs } from './Component/contact-us/contact-us';
+import { AboutUs } from './Component/about-us/about-us';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -41,6 +42,7 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPassword },
   { path: 'success', component: SuccessComponent },
   { path: 'contact', component: ContactUs },
+  { path: 'about', component: AboutUs },
   { path: '**', component: NotFound },
 
   //************************************************************************************************************************** */
