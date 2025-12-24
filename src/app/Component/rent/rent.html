@@ -185,6 +185,7 @@
                   <a
                     class="contact-icon-btn whatsapp-btn"
                     title="Contact on WhatsApp"
+                    aria-label="Contact via WhatsApp"
                     [href]="'https://wa.me/' + phone.replace(/\D/g, '')"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -195,12 +196,22 @@
                     class="contact-icon-btn phone-btn"
                     [href]="'tel:' + phone"
                     title="Call Now"
+                    aria-label="Call seller"
                     (click)="$event.stopPropagation()">
                     <i class="bi bi-telephone-fill"></i>
                   </a>
+                  <a
+                    class="contact-icon-btn email-btn"
+                    [href]="'mailto:' + email"
+                    title="Email"
+                    aria-label="Email seller"
+                    (click)="$event.stopPropagation()">
+                    <i class="bi bi-envelope-fill"></i>
+                  </a>"
                   <button
                     type="button"
                     class="view-details-btn"
+                    [routerLink]="['/property', property.id]"
                     (click)="$event.stopPropagation()">
                     <i class="bi bi-eye"></i>
                     View

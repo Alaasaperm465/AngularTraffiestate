@@ -229,15 +229,17 @@
           <span class="property-type-badge" [class.sale]="property.propertyType">
             {{ property.propertyType }}
           </span>
+
+          <button class="favorite-btn" (click)="toggleFavorite(property); $event.stopPropagation()">
+            <i class="bi bi-heart"></i>
+          </button>
         </div>
 
-        <div class="property-content">
-          <h3>{{ property.title || 'No Title' }}</h3>
-          <p class="property-location">
-            <!-- 📍 {{ property.location || 'No Location' }} -->
-            @if (property.city) {, {{ property.city }}}
-          </p>
-          <p class="property-price">${{ (property.price || 0).toLocaleString() }}</p>
+        <div class="property-info">
+          <div class="property-header">
+            <h3 class="property-title">{{ property.title || 'No Title' }}</h3>
+            <p class="property-location">@if (property.city) {, {{ property.city }}}</p>
+          </div>
 
           <div class="property-details">
             <span class="detail-item">🛏️ {{ property.rooms || 0 }} Rooms</span>
@@ -246,15 +248,22 @@
           </div>
 
           <p class="property-description">{{ property.description || 'No description available' }}</p>
-          <!-- <p class="property-status">Status: <strong>{{ property.status || 'Unknown' }}</strong></p> -->
 
-          <div class="property-actions">
-            <button class="btn btn-sm btn-edit" (click)="editProperty(property)">
-              Edit
-            </button>
-            <button class="btn btn-sm btn-delete" (click)="deleteProperty(property.id)">
-              Delete
-            </button>
+          <div class="property-footer">
+            <div class="property-price">
+              <span class="price-value">${{ (property.price || 0).toLocaleString() }}</span>
+            </div>
+
+            <div class="property-contact-actions">
+              <button class="view-details-btn" (click)="editProperty(property); $event.stopPropagation()">
+                <i class="bi bi-pencil"></i>
+                Edit
+              </button>
+              <button class="view-details-btn" (click)="deleteProperty(property.id); $event.stopPropagation()">
+                <i class="bi bi-trash"></i>
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>

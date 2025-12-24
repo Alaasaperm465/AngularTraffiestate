@@ -4,6 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { IProperty } from '../models/iproperty';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PropertyOwnerService } from '../Services/propertyOwner';
+import { FavoriteService } from '../Services/favorite-service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-owner-propertycomp',
@@ -25,9 +28,17 @@ export class OwnerPropertycomp {
 
   propertyForm: FormGroup;
 
+  // File inputs and submission state
+  mainImage: File | null = null;
+  additionalImages: File[] = [];
+  isSubmitting = false;
+
   constructor(
     private http: HttpClient,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private ownerService: PropertyOwnerService,
+    private favoriteService: FavoriteService,
+    private cd: ChangeDetectorRef
   ) {
     this.propertyForm = this.fb.group({
       title: ['', Validators.required],
@@ -109,15 +120,31 @@ export class OwnerPropertycomp {
     this.showAddForm.set(false);
     this.editingProperty.set(null);
     this.propertyForm.reset({ status: 'Available', sellerId: 1 });
+    this.mainImage = null;
+    this.additionalImages = [];
+    this.isSubmitting = false;
+  }
+
+  onMainImageChange(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.mainImage = event.target.files[0];
+    }
+  }
+
+  onAdditionalImagesChange(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.additionalImages = Array.from(event.target.files);
+    }
   }
 
   onSubmit() {
     if (this.propertyForm.valid) {
-      const formData = this.propertyForm.value;
-      
+      const form = this.propertyForm.value;
+      this.isSubmitting = true;
+
       if (this.editingProperty()) {
         const id = this.editingProperty()!['id'];
-        this.http.put(`/api/PropertyOwner/${id}`, formData)
+        this.ownerService.updateProperty(id, form, this.mainImage || undefined, this.additionalImages.length ? this.additionalImages : undefined)
           .subscribe({
             next: () => {
               this.loadAllProperties();
@@ -125,10 +152,13 @@ export class OwnerPropertycomp {
               this.loadForRentProperties();
               this.cancelForm();
             },
-            error: (err: any) => console.error('Error updating property:', err)
+            error: (err: any) => {
+              console.error('Error updating property:', err);
+              this.isSubmitting = false;
+            }
           });
       } else {
-        this.http.post('/api/PropertyOwner', formData)
+        this.ownerService.addProperty(form, this.mainImage || undefined, this.additionalImages.length ? this.additionalImages : undefined)
           .subscribe({
             next: () => {
               this.loadAllProperties();
@@ -136,7 +166,10 @@ export class OwnerPropertycomp {
               this.loadForRentProperties();
               this.cancelForm();
             },
-            error: (err: any) => console.error('Error creating property:', err)
+            error: (err: any) => {
+              console.error('Error creating property:', err);
+              this.isSubmitting = false;
+            }
           });
       }
     }
@@ -153,6 +186,27 @@ export class OwnerPropertycomp {
           },
           error: (err: any) => console.error('Error deleting property:', err)
         });
+    }
+  }
+
+  toggleFavorite(property: any) {
+    if (!property || !property.id) return;
+    if (property.isFavorite) {
+      this.favoriteService.removeFromFavorites(property.id).subscribe({
+        next: () => {
+          property.isFavorite = false;
+          this.cd.detectChanges();
+        },
+        error: (err) => console.error('Error removing favorite', err)
+      });
+    } else {
+      this.favoriteService.addToFavorites(property.id).subscribe({
+        next: () => {
+          property.isFavorite = true;
+          this.cd.detectChanges();
+        },
+        error: (err) => console.error('Error adding favorite', err)
+      });
     }
   }
 }

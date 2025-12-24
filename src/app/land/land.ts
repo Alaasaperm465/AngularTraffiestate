@@ -17,6 +17,11 @@ export class Land implements OnInit {
   searchForm: FormGroup;
   landProperties: IProperty[] = [];
   allLandProperties: IProperty[] = [];
+  displayedProperties: IProperty[] = [];
+  // See More pagination
+  itemsPerLoad: number = 8;
+  currentLoadedCount: number = 8;
+
   showPropertyTypeDropdown = false;
   showLandSizeDropdown = false;
   isScrolled = false;
@@ -98,6 +103,10 @@ export class Land implements OnInit {
         }));
 
         this.landProperties = [...this.allLandProperties];
+        // Reset See More pagination and update displayed slice
+        this.currentLoadedCount = this.itemsPerLoad;
+        this.updateDisplayedProperties();
+
         this.cdr.detectChanges();
         console.log('Land properties loaded:', this.landProperties);
       },
@@ -160,6 +169,9 @@ export class Land implements OnInit {
 
     filtered = this.applyFilters(filtered);
     this.landProperties = filtered;
+    // Reset pagination after search
+    this.currentLoadedCount = this.itemsPerLoad;
+    this.updateDisplayedProperties();
     this.cdr.detectChanges();
   }
 
@@ -343,6 +355,20 @@ export class Land implements OnInit {
   // ===== التحقق من العقار المفضل =====
   isFavorite(propertyId: number): boolean {
     return this.favoritesIds.includes(propertyId);
+  }
+
+  // ===== See More pagination helpers =====
+  private updateDisplayedProperties(): void {
+    this.displayedProperties = this.landProperties.slice(0, this.currentLoadedCount);
+  }
+
+  loadMore(): void {
+    this.currentLoadedCount += this.itemsPerLoad;
+    this.updateDisplayedProperties();
+  }
+
+  hasMoreToLoad(): boolean {
+    return this.currentLoadedCount < this.landProperties.length;
   }
 
   // ===== البحث السريع =====
