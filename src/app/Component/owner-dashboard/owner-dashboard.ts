@@ -404,7 +404,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    * Navigate to edit property page
    */
   editProperty(propertyId: string): void {
-    this.router.navigateByUrl(`/edit-property/${propertyId}`);
+    this.router.navigateByUrl(`/editproperty?id=${propertyId}`);
   }
 
   /**
@@ -497,7 +497,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    * Navigate to add property page
    */
   goToAddProperty(): void {
-    this.router.navigateByUrl('/add-property');
+    this.router.navigateByUrl('/addproperty');
   }
 
   /**
@@ -597,5 +597,5 @@ getStatusColor(status: string): string {
     this.applyFilter();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  
+
 }
