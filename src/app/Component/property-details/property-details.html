@@ -218,11 +218,12 @@
           </div>
         </div> -->
         <!-- Add Rating -->
-<div class="add-rating-section">
-         <h2 class="section-title">
-            <i class="bi bi-star"></i>
-            Rate This Property
-          </h2>
+<!-- Add Rating -->
+<div class="add-rating-section" *ngIf="isRentalProperty">
+  <h2 class="section-title">
+    <i class="bi bi-star"></i>
+    Rate This Property
+  </h2>
 
   <div class="rating-stars">
     <i *ngFor="let star of [1,2,3,4,5]"
@@ -244,6 +245,7 @@
     <span>({{ reviewStats.reviewsCount }} reviews)</span>
   </div>
 </div>
+
 
 
         <!-- Location Map -->
@@ -306,11 +308,15 @@
       <aside class="contact-sidebar">
         <div class="contact-card sticky-card">
           <div class="agent-info">
-            <img src="https://i.pravatar.cc/100?img=12" alt="Agent" class="agent-avatar">
+            <!-- <img src="https://i.pravatar.cc/100?img=12" alt="Agent" class="agent-avatar"> -->
             <div class="agent-details">
-              <h3>{{ property.ownerName || 'Salma Esam' }}</h3>
-              <p> Sales</p>
-              <div class="agent-rating" *ngIf="reviewStats">
+              <!-- <h3>{{ property.ownerName || 'Salma Esam' }}</h3> -->
+              <!-- <p> Sales</p> -->
+                <h2 class="section-title">
+    <i class="bi bi-star"></i>
+    Rating
+  </h2>
+<div class="agent-rating" *ngIf="reviewStats && isRentalProperty">
   <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
     <i
       class="bi"
@@ -323,6 +329,7 @@
   </ng-container>
   <span>{{ reviewStats.averageRating }} ({{ reviewStats.reviewsCount }} reviews)</span>
 </div>
+
 
             </div>
           </div>
