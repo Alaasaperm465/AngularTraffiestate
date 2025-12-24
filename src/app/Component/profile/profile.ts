@@ -8,11 +8,22 @@ import { UserService, UserProfile } from '../../Services/users';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './profile.html',
-  styleUrl: './profile.css',
+  styleUrls: ['./profile.css'],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
-  user: UserProfile | null = null;
+  user: UserProfile = {
+    userId: '',
+    userName: '',
+    email: '',
+    phoneNumber: '',
+    role: 'User',
+    bio: '',
+    avatarUrl: 'assets/avatar-default.png',
+    propertiesCount: 0,
+    favoritesCount: 0,
+    averageRating: 0
+  };
   loading = true;
   error: string | null = null;
 

@@ -40,6 +40,7 @@ export const routes: Routes = [
   { path: 'editProfile', component: EditProfile, title: 'Edit Profile' },
   { path: 'forget-password', component: ForgetPassword },
   { path: 'reset-password', component: ResetPassword },
+  { path: 'contact-us', component: ContactUs },
   { path: 'success', component: SuccessComponent },
   { path: 'contact', component: ContactUs },
   { path: 'about', component: AboutUs },
