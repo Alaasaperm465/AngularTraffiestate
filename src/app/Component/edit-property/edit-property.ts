@@ -1,125 +1,19 @@
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule, NgForm } from '@angular/forms';
-// import { Router } from '@angular/router';
-// import { PropertyService } from '../../Services/property';
-// import { LocationService } from '../../Services/location';
-// import { ICreatePropertyDto } from '../../models/icreate-property-dto';
-
-// @Component({
-//   selector: 'app-add-property',
-//   standalone: true,
-//   imports: [CommonModule, FormsModule],
-//   templateUrl: './add-property.html',
-//   styleUrl: './add-property.css',
-// })
-// export class AddProperty implements OnInit {
-//   cities: any[] = [];
-//   areas: any[] = [];
-
-//   property: ICreatePropertyDto = {
-//     title: '',
-//     description: '',
-//     price: 0,
-//     areaSpace: 0,
-//     location: '',
-//     cityId: 0,
-//     areaId: 0,
-//     rooms: 0,
-//     bathrooms: 0,
-//     finishingLevel: '',
-//     propertyType: '',
-//     purpose: '',
-//     status: '0', // Enum as number
-//   };
-
-//   mainImage!: File;
-//   additionalImages: File[] = [];
-//   isSubmitting = false;
-
-//   constructor(
-//     private propertyService: PropertyService,
-//     private locationService: LocationService,
-//     private router: Router
-//   ) {}
-
-//   ngOnInit(): void {
-//     this.loadCities();
-//   }
-
-//   loadCities() {
-//     this.locationService.getCities().subscribe({
-//       next: (res) => (this.cities = res),
-//       error: (err) => console.error('Failed to load cities:', err),
-//     });
-//   }
-
-//   onCityChange() {
-//     if (!this.property.cityId || this.property.cityId === 0) {
-//       this.areas = [];
-//       this.property.areaId = 0;
-//       return;
-//     }
-
-//     this.locationService.getAreasByCity(this.property.cityId).subscribe({
-//       next: (res) => (this.areas = res),
-//       error: (err) => console.error('Failed to load areas:', err),
-//     });
-//   }
-
-//   onMainImageChange(event: any) {
-//     if (event.target.files && event.target.files.length > 0) {
-//       this.mainImage = event.target.files[0];
-//     }
-//   }
-
-//   onAdditionalImagesChange(event: any) {
-//     if (event.target.files && event.target.files.length > 0) {
-//       this.additionalImages = Array.from(event.target.files);
-//     }
-//   }
-
-//   submit(form: NgForm) {
-//     if (form.invalid || !this.mainImage) {
-//       form.control.markAllAsTouched();
-//       alert('Please complete all required fields and select a main image.');
-//       return;
-//     }
-
-//     this.isSubmitting = true;
-
-//     this.propertyService.create(this.property, this.mainImage, this.additionalImages).subscribe({
-//       next: (res: any) => {
-//         alert(res?.message || 'Property added successfully');
-//         this.router.navigate(['/properties']);
-//       },
-//       error: (err) => {
-//         console.error('Add Property Error:', err);
-//         alert(err?.error?.message || 'Something went wrong while adding the property');
-//         this.isSubmitting = false;
-//       },
-//     });
-//   }
-// }
-
-
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
 import { ICreatePropertyDto } from '../../models/icreate-property-dto';
 
 @Component({
-  selector: 'app-add-property',
+  selector: 'app-edit-property',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './add-property.html',
-  styleUrl: './add-property.css',
+  templateUrl: './edit-property.html',
+  styleUrl: './edit-property.css',
 })
-export class AddProperty implements OnInit {
+export class EditPropertyComponent implements OnInit {
   // Step management
   currentStep: number = 1;
   totalSteps: number = 4;
@@ -149,36 +43,115 @@ export class AddProperty implements OnInit {
   // Images
   mainImage!: File;
   mainImagePreview: string | null = null;
+  mainImageUrl: string | null = null; // الصورة الحالية
   additionalImages: File[] = [];
   additionalImagesPreview: (string | null)[] = [];
+  additionalImagesUrls: string[] = []; // الصور الإضافية الحالية
   isSubmitting = false;
 
   // Form tracking
-  step1Form!: NgForm;
-  step2Form!: NgForm;
-  step3Form!: NgForm;
-  step4Form!: NgForm;
-
-  // Validation flags
   showValidationErrors = false;
-
-  // تحسين الأداء
   imagesCompressionInProgress = false;
+  isLoading = false;
+
+  // ID العقار
+  propertyId!: number;
 
   constructor(
     private propertyService: PropertyService,
     private locationService: LocationService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.loadPropertyId();
     this.loadCities();
+  }
+
+  /**
+   * تحميل معرف العقار من الـ URL
+   */
+  loadPropertyId(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.propertyId = +params['id'];
+      if (this.propertyId) {
+        this.loadPropertyData();
+      }
+    });
+  }
+
+  /**
+   * تحميل بيانات العقار الحالية
+   */
+  loadPropertyData(): void {
+    this.isLoading = true;
+    console.log('Loading property with ID:', this.propertyId);
+
+    // Use the correct endpoint: GET /api/PropertyOwner/{id}
+    this.propertyService.getPropertyById(this.propertyId).subscribe({
+      next: (data: any) => {
+        this.populatePropertyData(data);
+      },
+      error: (err) => {
+        console.error('Failed to load property:', err);
+        alert('Failed to load property. Please check the property ID.');
+        this.isLoading = false;
+        this.router.navigate(['/ownerDashboard']);
+      },
+    });
+  }
+
+  /**
+   * Populate property data from API response
+   */
+  private populatePropertyData(data: any): void {
+    console.log('Property data received:', data);
+
+    this.property = {
+      title: data.title || '',
+      description: data.description || '',
+      price: data.price || 0,
+      areaSpace: data.areaSpace || 0,
+      location: data.location || '',
+      cityId: data.cityId || 0,
+      areaId: data.areaId || 0,
+      rooms: data.rooms || 0,
+      bathrooms: data.bathrooms || 0,
+      finishingLevel: data.finishingLevel || '',
+      propertyType: data.propertyType || '',
+      purpose: data.purpose || '',
+      status: data.status || 0,
+    };
+
+    // Handle image from API response (ImageUrl property)
+    if (data.imageUrl) {
+      this.mainImageUrl = data.imageUrl;
+    }
+
+    // Handle additional images from API (AdditionalImages property)
+    if (data.additionalImages) {
+      if (typeof data.additionalImages === 'string') {
+        // If it's comma-separated string
+        this.additionalImagesUrls = data.additionalImages.split(',').filter((img: string) => img.trim());
+      } else if (Array.isArray(data.additionalImages)) {
+        // If it's already an array
+        this.additionalImagesUrls = data.additionalImages;
+      }
+    }
+
+    // Load areas for the selected city
+    if (this.property.cityId > 0) {
+      this.loadAreas(this.property.cityId);
+    }
+
+    this.isLoading = false;
   }
 
   /**
    * Load cities
    */
-  loadCities() {
+  loadCities(): void {
     this.locationService.getCities().subscribe({
       next: (res) => (this.cities = res),
       error: (err) => console.error('Failed to load cities:', err),
@@ -186,19 +159,26 @@ export class AddProperty implements OnInit {
   }
 
   /**
-   * Load areas when city changes
+   * Load areas
    */
-  onCityChange() {
-    if (!this.property.cityId || this.property.cityId === 0) {
+  loadAreas(cityId: number): void {
+    if (!cityId || cityId === 0) {
       this.areas = [];
       this.property.areaId = 0;
       return;
     }
 
-    this.locationService.getAreasByCity(this.property.cityId).subscribe({
+    this.locationService.getAreasByCity(cityId).subscribe({
       next: (res) => (this.areas = res),
       error: (err) => console.error('Failed to load areas:', err),
     });
+  }
+
+  /**
+   * Load areas when city changes
+   */
+  onCityChange(): void {
+    this.loadAreas(this.property.cityId);
   }
 
   /**
@@ -249,7 +229,7 @@ export class AddProperty implements OnInit {
   /**
    * معالجة الصورة الرئيسية مع ضغط محسّن
    */
-  async onMainImageChange(event: any) {
+  async onMainImageChange(event: any): Promise<void> {
     if (event.target.files && event.target.files.length > 0) {
       const originalFile = event.target.files[0];
       this.mainImage = await this.compressImage(originalFile, 800, 0.75);
@@ -260,9 +240,9 @@ export class AddProperty implements OnInit {
   }
 
   /**
-   * معالجة الصور الإضافية مع ضغط محسّن وتوازي
+   * معالجة الصور الإضافية مع ضغط محسّن
    */
-  async onAdditionalImagesChange(event: any) {
+  async onAdditionalImagesChange(event: any): Promise<void> {
     if (event.target.files && event.target.files.length > 0) {
       this.additionalImages = [];
       this.additionalImagesPreview = [];
@@ -281,7 +261,7 @@ export class AddProperty implements OnInit {
         );
       }
 
-      // انتظر جميع العمليات بشكل متوازي
+      // انتظر جميع العمليات
       await Promise.all(uploadPromises);
     }
   }
@@ -289,7 +269,10 @@ export class AddProperty implements OnInit {
   /**
    * Generate image preview
    */
-  private generateImagePreview(file: File, callback: (preview: string) => void) {
+  private generateImagePreview(
+    file: File,
+    callback: (preview: string) => void
+  ): void {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       callback(e.target.result);
@@ -300,17 +283,28 @@ export class AddProperty implements OnInit {
   /**
    * Remove main image
    */
-  removeMainImage() {
+  removeMainImage(): void {
     this.mainImage = null!;
     this.mainImagePreview = null;
+    // إذا كنا نحذف الصورة الحالية
+    if (this.mainImageUrl) {
+      this.mainImageUrl = null;
+    }
   }
 
   /**
    * Remove additional image
    */
-  removeAdditionalImage(index: number) {
-    this.additionalImages.splice(index, 1);
-    this.additionalImagesPreview.splice(index, 1);
+  removeAdditionalImage(index: number): void {
+    // إذا كان index من الصور الجديدة
+    if (index < this.additionalImagesPreview.length) {
+      this.additionalImages.splice(index, 1);
+      this.additionalImagesPreview.splice(index, 1);
+    } else {
+      // إذا كان من الصور الموجودة
+      const urlIndex = index - this.additionalImagesPreview.length;
+      this.additionalImagesUrls.splice(urlIndex, 1);
+    }
   }
 
   /**
@@ -350,19 +344,18 @@ export class AddProperty implements OnInit {
   }
 
   /**
-   * Validate Step 4 - Images
+   * Validate Step 4 - Images (optional for edit)
    */
   validateStep4(): boolean {
-    return this.mainImage !== null && this.mainImage !== undefined;
+    return true; // الصور اختيارية في التحديث
   }
 
   /**
    * Go to next step
    */
-  nextStep() {
+  nextStep(): void {
     this.showValidationErrors = false;
 
-    // Validate current step
     let isValid = false;
     switch (this.currentStep) {
       case 1:
@@ -381,14 +374,12 @@ export class AddProperty implements OnInit {
 
     if (!isValid) {
       this.showValidationErrors = true;
-      alert('Please complete all required fields before proceeding');
+      alert('الرجاء ملء جميع الحقول المطلوبة');
       return;
     }
 
-    // Mark step as completed
     this.stepsCompleted.add(this.currentStep);
 
-    // Move to next step
     if (this.currentStep < this.totalSteps) {
       this.currentStep++;
       this.showValidationErrors = false;
@@ -399,7 +390,7 @@ export class AddProperty implements OnInit {
   /**
    * Go to previous step
    */
-  previousStep() {
+  previousStep(): void {
     if (this.currentStep > 1) {
       this.currentStep--;
       this.showValidationErrors = false;
@@ -410,9 +401,12 @@ export class AddProperty implements OnInit {
   /**
    * Go to specific step
    */
-  goToStep(step: number) {
-    // Can only go to completed steps or next step
-    if (step < this.currentStep || step === this.currentStep + 1 || this.stepsCompleted.has(step - 1)) {
+  goToStep(step: number): void {
+    if (
+      step < this.currentStep ||
+      step === this.currentStep + 1 ||
+      this.stepsCompleted.has(step - 1)
+    ) {
       this.currentStep = step;
       this.showValidationErrors = false;
       window.scrollTo(0, 0);
@@ -434,44 +428,49 @@ export class AddProperty implements OnInit {
   }
 
   /**
-   * Submit form - Navigate to Success Page (محسّن للسرعة)
+   * Submit form - Update Property
    */
-  submit() {
-    // Final validation
-    if (!this.validateStep4()) {
-      alert('Please select a main image');
+  submit(): void {
+    // Validate all steps
+    if (!this.validateStep1() || !this.validateStep2() || !this.validateStep3()) {
+      alert('Please complete all required fields');
       return;
-    }
-
-    // Mark all steps as completed
-    for (let i = 1; i <= this.totalSteps; i++) {
-      this.stepsCompleted.add(i);
     }
 
     this.isSubmitting = true;
 
-    // عرض رسالة النجاح بسرعة ثم الانتقال
-    const successMessageTimeout = setTimeout(() => {
-      this.router.navigate(['/success']);
-    }, 300);
+    // Call service with property data and optional images
+    // Backend now supports FormData with newMainImage and newAdditionalImages
+    this.propertyService
+      .update(
+        this.propertyId,
+        this.property,
+        this.mainImage || undefined,
+        this.additionalImages.length > 0 ? this.additionalImages : undefined
+      )
+      .subscribe({
+        next: (res: any) => {
+          console.log('Property updated successfully:', res);
+          alert('✓ Property updated successfully');
 
-    this.propertyService.create(this.property, this.mainImage, this.additionalImages).subscribe({
-      next: (res: any) => {
-        console.log('Property added successfully:', res);
-        clearTimeout(successMessageTimeout);
-        // انتقل فوراً إلى صفحة النجاح
-        this.router.navigate(['/success']);
-      },
-      error: (err) => {
-        console.error('Add Property Error:', err);
-        clearTimeout(successMessageTimeout);
-        alert(err?.error?.message || 'Something went wrong while adding the property');
-        this.isSubmitting = false;
-      },
-      complete: () => {
-        this.isSubmitting = false;
-      }
-    });
+          // Fast redirect
+          setTimeout(() => {
+            this.router.navigate(['/ownerDashboard']);
+          }, 300);
+        },
+        error: (err) => {
+          console.error('Update error:', err);
+          this.isSubmitting = false;
+
+          const errorMessage = err?.error?.message ||
+                              err?.error?.detail ||
+                              'Error updating property';
+          alert(errorMessage);
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        }
+      });
   }
 
   /**

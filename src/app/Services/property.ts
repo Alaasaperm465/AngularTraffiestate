@@ -1,41 +1,69 @@
-// import { Property } from './property';
-
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IProperty } from '../models/iproperty';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth-service';
+import { HttpClient } from '@angular/common/http';
 import { ICreatePropertyDto } from '../models/icreate-property-dto';
-// import { PagedResponse } from '../models/page-respones';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PropertyService {
- 
   private baseUrl = 'https://localhost:7030/api/PropertyOwner';
+  private clientBaseUrl = 'https://localhost:7030/api/Client';
 
   constructor(private http: HttpClient) {}
-  getPropertyForRent(): Observable<IProperty[]>
-  {
-      return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForRent`);
-  }
-   getPropertyForBuy(): Observable<IProperty[]>
-  {
-      return this.http.get<IProperty[]>(`https://localhost:7030/api/Client/properties/ForSale`);
-  }
-  getPropertyById(id: number): Observable<IProperty> {
-    return this.http.get<IProperty>(`https://localhost:7030/api/Client/properties/${id}`);
-  }
-  getOwnerProperties(): Observable<IProperty[]> {
-  return this.http.get<IProperty[]>(
-    `https://localhost:7030/api/PropertyOwner/owner-properties`);
-}
 
+  /**
+   * Get all properties for rent (from Client endpoint)
+   */
+  getPropertyForRent(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${this.clientBaseUrl}/properties/ForRent`);
+  }
+
+  /**
+   * Get all properties for sale (from Client endpoint)
+   */
+  getPropertyForBuy(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${this.clientBaseUrl}/properties/ForSale`);
+  }
+
+  /**
+   * Get property by ID (from PropertyOwner endpoint)
+   */
+  getPropertyById(id: number): Observable<IProperty> {
+    return this.http.get<IProperty>(`${this.baseUrl}/${id}`);
+  }
+
+  /**
+   * Get owner's properties
+   */
+  getOwnerProperties(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${this.baseUrl}/owner-properties`);
+  }
+
+  /**
+   * Get form data (cities and areas)
+   */
+  getFormData(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/FormData`);
+  }
+
+  /**
+   * Get all properties with pagination
+   */
+  getAll(page: number = 1, pageSize: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}?page=${page}&pageSize=${pageSize}`);
+  }
+
+  /**
+   * Create new property
+   * Endpoint: POST /api/PropertyOwner/Create
+   * Uses FormData for images
+   */
   create(property: ICreatePropertyDto, mainImage: File, additionalImages: File[]): Observable<any> {
     const formData = new FormData();
 
-    // بيانات العقار
+    // Property data
     formData.append('Title', property.title);
     formData.append('Description', property.description);
     formData.append('Price', property.price.toString());
@@ -50,13 +78,79 @@ export class PropertyService {
     formData.append('Purpose', property.purpose);
     formData.append('Status', property.status.toString());
 
-    // الصور داخل DTO
-    formData.append('mainImage', mainImage); // الصورة الرئيسية
+    // Images
+    formData.append('mainImage', mainImage);
     additionalImages.forEach(img => formData.append('AdditionalImages', img));
 
     return this.http.post(`${this.baseUrl}/Create`, formData);
   }
 
-  
+  /**
+   * Update property
+   * Endpoint: PUT /api/PropertyOwner/{id}
+   * Now supports FormData with images!
+   */
+  update(
+    id: number,
+    property: ICreatePropertyDto,
+    mainImage?: File,
+    additionalImages?: File[]
+  ): Observable<any> {
+    const formData = new FormData();
+
+    // Property data
+    formData.append('Title', property.title);
+    formData.append('Description', property.description);
+    formData.append('Price', property.price.toString());
+    formData.append('AreaSpace', property.areaSpace.toString());
+    formData.append('Location', property.location);
+    formData.append('CityId', property.cityId.toString());
+    formData.append('AreaId', property.areaId.toString());
+    formData.append('Rooms', property.rooms.toString());
+    formData.append('Bathrooms', property.bathrooms.toString());
+    formData.append('FinishingLevel', property.finishingLevel);
+    formData.append('PropertyType', property.propertyType);
+    formData.append('Purpose', property.purpose);
+    formData.append('Status', property.status.toString());
+
+    // Add ApprovalStatus (will be reset to Pending on update)
+    formData.append('ApprovalStatus', '0'); // 0 = Pending
+
+    // Add new main image if provided
+    if (mainImage) {
+      formData.append('newMainImage', mainImage);
+    }
+
+    // Add new additional images if provided
+    if (additionalImages && additionalImages.length > 0) {
+      additionalImages.forEach(img => formData.append('newAdditionalImages', img));
+    }
+
+    return this.http.put(`${this.baseUrl}/${id}`, formData);
   }
+
+  /**
+   * Delete property
+   * Endpoint: DELETE /api/PropertyOwner/{id}
+   */
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+
+  /**
+   * Get owner properties for sale
+   * Endpoint: GET /api/PropertyOwner/ForSale
+   */
+  getOwnerPropertiesForSale(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${this.baseUrl}/ForSale`);
+  }
+
+  /**
+   * Get owner properties for rent
+   * Endpoint: GET /api/PropertyOwner/ForRent
+   */
+  getOwnerPropertiesForRent(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${this.baseUrl}/ForRent`);
+  }
+}
 
