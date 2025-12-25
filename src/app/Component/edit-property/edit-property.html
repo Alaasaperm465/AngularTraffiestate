@@ -25,7 +25,7 @@
         <!-- Step Indicator -->
         <div class="steps-indicator" *ngIf="!isLoading">
           <div class="steps-wrapper">
-            <div *ngFor="let step of [1, 2, 3, 4]" 
+            <div *ngFor="let step of [1, 2, 3, 4]"
               class="step-item"
               [class.active]="isStepActive(step)"
               [class.completed]="isStepCompleted(step)"
@@ -51,9 +51,9 @@
 
             <div class="form-group">
               <label for="title">Property Title <span class="required">*</span></label>
-              <input 
-                type="text" 
-                id="title" 
+              <input
+                type="text"
+                id="title"
                 [(ngModel)]="property.title"
                 name="title"
                 placeholder="Enter property title..."
@@ -83,6 +83,7 @@
                 <select
                   id="propertyType"
                   [(ngModel)]="property.propertyType"
+                  (change)="onPropertyTypeChange()"
                   name="propertyType"
                   [class.error]="showValidationErrors && property.propertyType === ''">
                   <option value="">Select Type</option>
@@ -105,13 +106,18 @@
                   id="purpose"
                   [(ngModel)]="property.purpose"
                   name="purpose"
+                  [disabled]="property.propertyType === 'Land'"
                   [class.error]="showValidationErrors && property.purpose === ''">
                   <option value="">Select Purpose</option>
                   <option value="Sale">For Sale</option>
-                  <option value="Rent">For Rent</option>
+                  <option value="Rent" *ngIf="property.propertyType !== 'Land'">For Rent</option>
+                  <option value="Sale" *ngIf="property.propertyType === 'Land'">For Sale</option>
                 </select>
                 <small class="error-message" *ngIf="showValidationErrors && property.purpose === ''">
                   Purpose is required
+                </small>
+                <small class="info-message" *ngIf="property.propertyType === 'Land'">
+                  Land properties are only available for sale
                 </small>
               </div>
             </div>
@@ -280,11 +286,16 @@
               </small>
             </div>
 
-            
+
           </div>
         }
-        
-      </div>
+
+          <!-- Form Actions for Step 3 -->
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="previousStep()">← Previous</button>
+            <button type="button" class="btn-primary" (click)="nextStep()">Next →</button>
+          </div>
+        </div>
 
           <!-- Step 4: Images -->
           <div *ngSwitchCase="4" class="form-step">

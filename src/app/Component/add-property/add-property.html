@@ -6,7 +6,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1 class="hero-title">Add Your Property</h1>
-      <p class="hero-subtitle">أضف عقارك وابدأ في الكسب</p>
+      <p class="hero-subtitle"> Add your property and start earning</p>
     </div>
   </section>
 
@@ -82,6 +82,7 @@
                 id="propertyType"
                 class="form-control"
                 [(ngModel)]="property.propertyType"
+                (change)="onPropertyTypeChange()"
                 name="propertyType"
                 [class.error]="showValidationErrors && property.propertyType === ''">
                 <option value="">Select Type</option>
@@ -91,7 +92,7 @@
                 <option value="Studio">Studio</option>
                 <option value="Townhouse">Townhouse</option>
                 <option value="Land">Land</option>
-                
+
 
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.propertyType === ''">
@@ -106,13 +107,18 @@
                 class="form-control"
                 [(ngModel)]="property.purpose"
                 name="purpose"
+                [disabled]="property.propertyType === 'Land'"
                 [class.error]="showValidationErrors && property.purpose === ''">
                 <option value="">Select Purpose</option>
                 <option value="Buy">For Sale</option>
-                <option value="Rent">For Rent</option>
+                <option value="Rent" *ngIf="property.propertyType !== 'Land'">For Rent</option>
+                <option value="Sale" *ngIf="property.propertyType === 'Land'">For Sale</option>
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.purpose === ''">
                 Purpose is required
+              </small>
+              <small class="info-text" *ngIf="property.propertyType === 'Land'">
+                Land properties are only available for sale
               </small>
             </div>
           </div>
@@ -275,12 +281,12 @@
               </small>
             </div>
 
-            
+
           </div>
         }
-        
+
       </div>
-         
+
         <!-- STEP 4: IMAGES -->
         <div *ngSwitchCase="4" class="form-step">
           <div class="step-header">

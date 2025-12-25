@@ -125,7 +125,7 @@
           <div
             class="property-card"
             *ngFor="let property of displayedProperties; trackBy: trackById">
-            
+
             <!-- Property Image -->
             <div class="property-image">
               <img [src]="property.imageUrl || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'"
@@ -356,46 +356,6 @@
           </div>
         </div>
       </aside>
-    </div>
-  </div>
-</section>
-
-<!-- Contact CTA Section -->
-<section class="contact-cta-section">
-  <div class="container">
-    <div class="cta-content">
-      <div class="cta-text">
-        <h2>Looking for a Rental Property?</h2>
-        <p>Our expert team is here to help you find your perfect property to rent</p>
-      </div>
-      <div class="cta-buttons">
-        <a [href]="'https://wa.me/' + phone.replace(/\D/g, '')" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
-          <i class="bi bi-whatsapp"></i>
-          WhatsApp Us
-        </a>
-        <a [href]="'tel:' + phone" class="cta-btn secondary">
-          <i class="bi bi-telephone-fill"></i>
-          Call Us
-        </a>
-      </div>
-    </div>
-    <div class="contact-info">
-      <div class="contact-item">
-        <i class="bi bi-whatsapp"></i>
-        <span>{{ phone }}</span>
-      </div>
-      <div class="contact-item">
-        <i class="bi bi-telephone-fill"></i>
-        <span>{{ phone }}</span>
-      </div>
-      <div class="contact-item">
-        <i class="bi bi-envelope-fill"></i>
-        <span>{{ email }}</span>
-      </div>
-      <div class="contact-item">
-        <i class="bi bi-geo-alt-fill"></i>
-        <span>Cairo, Egypt</span>
-      </div>
     </div>
   </div>
 </section>
