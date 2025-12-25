@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IloginRequest } from '../../models/ilogin-request';
 import { AuthService } from '../../Services/auth-service';
 import { finalize } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -27,16 +28,43 @@ export class Login {
   successMessage = '';
   showPassword = false;
   submitted = false;
+  sessionExpired = false;
 
   constructor() {
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    // تحقق من reason query parameter
+    this.route.snapshot.queryParams['reason'] === 'session-expired' ? this.sessionExpired = true : this.sessionExpired = false;
+    if (this.sessionExpired) {
+      this.showSessionExpiredAlert();
+    }
   }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
+  }
+
+  showSessionExpiredAlert(): void {
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'warning',
+      title: 'Session Expired',
+      text: 'Your session has expired. Please log in again.',
+      showConfirmButton: false,
+      timer: 4000,
+      timerProgressBar: true,
+      background: '#fff',
+      color: '#2c3e50',
+      iconColor: '#E2B43B',
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
   }
 
   onSubmit() {
@@ -47,6 +75,23 @@ export class Login {
 
     if (this.loginForm.invalid) {
       this.errorMessage = 'Please fill all fields correctly';
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Validation Error',
+        text: 'Please fill all fields correctly',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       this.cd.detectChanges();
       return;
     }
@@ -67,6 +112,23 @@ export class Login {
           this.successMessage = 'Login successful! Redirecting...';
           console.log('✅ Login successful');
 
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Login Successful',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            background: '#fff',
+            color: '#2c3e50',
+            iconColor: '#E2B43B',
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
           const userProfile = localStorage.getItem('currentUser');
           window.dispatchEvent(new CustomEvent('userLoggedIn', {
             detail: userProfile ? JSON.parse(userProfile) : null
@@ -80,15 +142,37 @@ export class Login {
         },
         error: (error) => {
           console.error('❌ Login failed', error);
+          let errorMsg = 'Login failed. Please try again';
+
           if (error.status === 401) {
-            this.errorMessage = 'Invalid email/username or password';
+            errorMsg = 'Invalid email/username or password';
           } else if (error.status === 400) {
-            this.errorMessage = error.error?.message || 'Invalid request';
+            errorMsg = error.error?.message || 'Invalid request';
           } else if (error.status === 0) {
-            this.errorMessage = 'Connection error. Please check your internet connection';
+            errorMsg = 'Connection error. Please check your internet connection';
           } else {
-            this.errorMessage = error.error?.message || 'Login failed. Please try again';
+            errorMsg = error.error?.message || 'Login failed. Please try again';
           }
+
+          this.errorMessage = errorMsg;
+
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: errorMsg,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: '#fff',
+            color: '#2c3e50',
+            iconColor: '#E2B43B',
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
           this.cd.detectChanges();
         },
       });
