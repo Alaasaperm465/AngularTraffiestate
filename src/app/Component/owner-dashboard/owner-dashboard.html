@@ -7,56 +7,8 @@
       <div class="hero-overlay"></div>
       <div class="container">
         <div class="hero-content">
-          <h1>Dashboard</h1>
+          <h1>My Dashboard</h1>
           <p>Manage your properties, track statistics, and interact with clients</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Statistics Section -->
-    <section class="statistics-section">
-      <div class="container">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon total">
-              <i class="bi bi-building"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ totalProperties }}</h3>
-              <p>Total Properties</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon active">
-              <i class="bi bi-check-circle"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ ApprovedProperties }}</h3>
-              <p>Approved</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon pending">
-              <i class="bi bi-clock"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ pendingProperties }}</h3>
-              <p>Pending Review</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon rejected" style="color: #e74c3c;">
-              <i class="bi bi-x-circle"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ rejectedProperties }}</h3>
-              <p>Rejected</p>
-            </div>
-          </div>
-
         </div>
       </div>
     </section>
@@ -74,26 +26,8 @@
               (click)="switchTab('my-properties')">
               My Properties ({{ getTabCount('my-properties') }})
             </button>
-            <button
-              class="tab-button"
-              [class.active]="isTabActive('favorites')"
-              (click)="switchTab('favorites')">
-              Favorites ({{ getTabCount('favorites') }})
-            </button>
-            <button
-              class="tab-button"
-              [class.active]="isTabActive('bookmarks')"
-              (click)="switchTab('bookmarks')">
-              Saved ({{ getTabCount('bookmarks') }})
-            </button>
-            <button
-              class="tab-button"
-              [class.active]="isTabActive('submitted')"
-              (click)="switchTab('submitted')">
-              Submitted ({{ getTabCount('submitted') }})
-            </button>
           </div>
-          <button class="btn-add-property-main" (click)="goToAddProperty()">
+          <button class="btn-add-property-main btn-gold" (click)="goToAddProperty()">
             <i class="bi bi-plus-lg"></i>
             Add New Property
           </button>
@@ -116,7 +50,7 @@
               (change)="onStatusChange(filters.status)"
               class="filter-select">
               <option value="all">All Status</option>
-              <option value="approved">approved</option>
+              <option value="approved">Approved</option>
               <option value="pending">Pending Review</option>
               <option value="rejected">Rejected</option>
             </select>
@@ -140,31 +74,31 @@
         <!-- Bulk Actions -->
         <div class="bulk-actions" *ngIf="getTotalSelected() > 0">
           <span>{{ getTotalSelected() }} property selected</span>
-        <button (click)="deselectAllProperties()">إلغاء التحديد</button>
-        <button class="btn-delete">حذف المحدد</button>
+        <button (click)="deselectAllProperties()">Deselect All</button>
+        <button class="btn-delete">Delete Selected</button>
       </div>
 
       <!-- Loading State -->
       <div class="loading-state" *ngIf="isLoading">
         <div class="spinner"></div>
-        <p>جاري تحميل العقارات...</p>
+        <p>Loading properties...</p>
       </div>
 
       <!-- Error State -->
       <div class="error-state" *ngIf="error && !isLoading">
         <i class="icon-alert-circle"></i>
         <p>{{ error }}</p>
-        <button (click)="loadProperties()">إعادة المحاولة</button>
+        <button (click)="loadProperties()">Retry</button>
       </div>
 
       <!-- Empty State -->
       <div class="empty-state" *ngIf="hasNoProperties()">
         <i class="icon-home"></i>
-        <h3>لا توجد عقارات حالياً</h3>
-        <p>ابدأ بإضافة عقارك الأول للظهور هنا</p>
+        <h3>No Properties Available</h3>
+        <p>Start by adding your first property to display here</p>
         <button class="btn-primary" (click)="goToAddProperty()">
           <i class="icon-plus"></i>
-          أضف عقار جديد
+          Add New Property
         </button>
       </div>
 
@@ -189,8 +123,8 @@
 
             <!-- Status Badge -->
             <span class="status-badge" [ngClass]="getStatusColor(property.status)">
-              {{ property.status === 'approved' ? 'موافق عليه' :
-                 property.status === 'pending' ? 'قيد المراجعة' : 'غير نشط' }}
+              {{ property.status === 'approved' ? 'Approved' :
+                 property.status === 'pending' ? 'Pending Review' : 'Rejected' }}
             </span>
 
             <!-- Quick Actions (favorite/bookmark) -->
@@ -208,22 +142,22 @@
               <h3 class="property-title">{{ property.title }}</h3>
               <p class="property-location">
                 <i class="bi bi-geo-alt-fill"></i>
-                {{ property.location }} - {{ property.areaSpace }} م²
+                {{ property.location }} - {{ property.areaSpace }} m²
               </p>
             </div>
 
             <div class="property-details">
               <span class="detail-item">
                 <i class="bi bi-arrows-fullscreen"></i>
-                {{ property.areaSpace }} م²
+                {{ property.areaSpace }} m²
               </span>
               <span class="detail-item">
                 <i class="bi bi-door-open-fill"></i>
-                {{ property.rooms }} غرف
+                {{ property.rooms }} Rooms
               </span>
               <span class="detail-item">
                 <i class="bi bi-droplet-fill"></i>
-                {{ property.bathrooms }} حمام
+                {{ property.bathrooms }} Baths
               </span>
             </div>
 
@@ -253,68 +187,15 @@
         </div>
       </div>
 
-      <!-- Pagination -->
-      <div class="pagination" *ngIf="getTotalPages() > 1">
-        <button
-          class="page-btn"
-          [disabled]="currentPage === 1"
-          (click)="goToPage(currentPage - 1)">
-          Previous
-        </button>
-
-        <div class="page-numbers">
-          <button
-            *ngFor="let page of [].constructor(getTotalPages()); let i = index"
-            class="page-number"
-            [class.active]="currentPage === i + 1"
-            (click)="goToPage(i + 1)">
-            {{ i + 1 }}
-          </button>
-        </div>
-
-        <button
-          class="page-btn"
-          [disabled]="currentPage === getTotalPages()"
-          (click)="goToPage(currentPage + 1)">
-          Next
+      <!-- See More Button -->
+      <div class="see-more-section" *ngIf="hasMoreToLoad()">
+        <button type="button" class="see-more-btn" (click)="loadMore()">
+          See More
+          <i class="bi bi-arrow-down"></i>
         </button>
       </div>
 
         </div>
       </section>
-
-      <!-- Footer -->
-      <footer class="dashboard-footer">
-        <div class="container">
-          <div class="footer-content">
-            <div class="footer-section">
-              <h4>Golden Bay</h4>
-          <p>منصتك الموثوقة للعقارات في مصر</p>
-        </div>
-
-        <div class="footer-section">
-          <h4>روابط سريعة</h4>
-          <a href="/about">عن الشركة</a>
-          <a href="/contact">اتصل بنا</a>
-          <a href="/terms">الشروط والأحكام</a>
-          <a href="/privacy">سياسة الخصوصية</a>
-        </div>
-
-        <div class="footer-section">
-          <h4>تابعنا</h4>
-          <div class="social-links">
-            <a href="#"><i class="bi bi-facebook"></i></a>
-            <a href="#"><i class="bi bi-twitter"></i></a>
-            <a href="#"><i class="bi bi-instagram"></i></a>
-            <a href="#"><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>© 2024 Golden Bay. All rights reserved.</p>
-      </div>
-        </div>
-      </footer>
     </main>
   </div>

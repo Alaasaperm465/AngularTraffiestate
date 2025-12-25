@@ -111,6 +111,7 @@ import { Router } from '@angular/router';
 import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
 import { ICreatePropertyDto } from '../../models/icreate-property-dto';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-property',
@@ -183,6 +184,23 @@ export class AddProperty implements OnInit {
       next: (res) => (this.cities = res),
       error: (err) => console.error('Failed to load cities:', err),
     });
+  }
+
+  /**
+   * Handle property type change
+   */
+  onPropertyTypeChange() {
+    if (this.property.propertyType === 'Land') {
+      // إذا اختار Land، اجعل Purpose تلقائياً Sale
+      this.property.purpose = 'Sale';
+      // صفّر الغرف والحمامات لأن Land لا يحتاج لها
+      this.property.rooms = 0;
+      this.property.bathrooms = 0;
+      this.property.finishingLevel = '';
+    } else {
+      // للعقارات الأخرى، امسح Purpose لكي يختار من جديد
+      this.property.purpose = '';
+    }
   }
 
   /**
@@ -340,14 +358,25 @@ export class AddProperty implements OnInit {
    * Validate Step 3 - Details
    */
   validateStep3(): boolean {
-    return (
-      this.property.price > 0 &&
-      this.property.areaSpace > 0 &&
-      this.property.rooms > 0 &&
-      this.property.bathrooms > 0 &&
-      this.property.finishingLevel !== ''
-    );
+  // Base validation for all property types
+  const baseValid = (
+    this.property.price > 0 &&
+    this.property.areaSpace > 0
+  );
+
+  // If Land, only base validation is required
+  if (this.property.propertyType === 'Land') {
+    return baseValid;
   }
+
+  // For other property types, validate all fields
+  return (
+    baseValid &&
+    this.property.rooms > 0 &&
+    this.property.bathrooms > 0 &&
+    this.property.finishingLevel !== ''
+  );
+}
 
   /**
    * Validate Step 4 - Images
@@ -381,7 +410,23 @@ export class AddProperty implements OnInit {
 
     if (!isValid) {
       this.showValidationErrors = true;
-      alert('Please complete all required fields before proceeding');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Validation Error',
+        text: 'Please complete all required fields before proceeding',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       return;
     }
 
@@ -439,7 +484,23 @@ export class AddProperty implements OnInit {
   submit() {
     // Final validation
     if (!this.validateStep4()) {
-      alert('Please select a main image');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Missing Image',
+        text: 'Please select a main image',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       return;
     }
 
@@ -450,22 +511,63 @@ export class AddProperty implements OnInit {
 
     this.isSubmitting = true;
 
-    // عرض رسالة النجاح بسرعة ثم الانتقال
-    const successMessageTimeout = setTimeout(() => {
-      this.router.navigate(['/success']);
-    }, 300);
+    // Show loading alert
+    Swal.fire({
+      title: 'Adding Property',
+      html: 'Please wait while we save your property...',
+      allowOutsideClick: false,
+      didOpen: async () => {
+        Swal.showLoading();
+      }
+    });
 
     this.propertyService.create(this.property, this.mainImage, this.additionalImages).subscribe({
       next: (res: any) => {
         console.log('Property added successfully:', res);
-        clearTimeout(successMessageTimeout);
-        // انتقل فوراً إلى صفحة النجاح
-        this.router.navigate(['/success']);
+
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: res?.message || 'Property added successfully!',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          background: '#fff',
+          color: '#2c3e50',
+          iconColor: '#E2B43B',
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          }
+        });
+
+        // الانتقال إلى صفحة النجاح بعد ثانيتين
+        setTimeout(() => {
+          this.router.navigate(['/ownerDashboard']);
+        }, 2000);
       },
       error: (err) => {
         console.error('Add Property Error:', err);
-        clearTimeout(successMessageTimeout);
-        alert(err?.error?.message || 'Something went wrong while adding the property');
+
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error',
+          text: err?.error?.message || 'Something went wrong while adding the property',
+          showConfirmButton: false,
+          timer: 4000,
+          timerProgressBar: true,
+          background: '#fff',
+          color: '#2c3e50',
+          iconColor: '#E2B43B',
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          }
+        });
+
         this.isSubmitting = false;
       },
       complete: () => {

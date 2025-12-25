@@ -102,7 +102,7 @@
               <i class="fas fa-user"></i>
               <span>My Profile</span>
             </a>
-            <a routerLink="/ownerDashboard" class="dropdown-item" (click)="toggleProfileMenu()">
+            <a *ngIf="isOwner()" routerLink="/ownerDashboard" class="dropdown-item" (click)="toggleProfileMenu()">
               <i class="fas fa-chart-line"></i>
               <span>Dashboard</span>
             </a>

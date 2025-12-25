@@ -14,7 +14,6 @@ import { PropertyDetails } from './Component/property-details/property-details';
 import { ForgetPassword } from './Component/forget-password/forget-password';
 import { ResetPassword } from './Component/reset-password/reset-password';
 import { FaviroteCom } from './Component/favirote-com/favirote-com';
-import { SuccessComponent } from './Component/success/success';
 import { OwnerDashboardComponent } from './Component/owner-dashboard/owner-dashboard';
 import { Land } from './land/land';
 import { ProfileComponent } from './Component/profile/profile';
@@ -42,7 +41,6 @@ export const routes: Routes = [
   { path: 'forget-password', component: ForgetPassword },
   { path: 'reset-password', component: ResetPassword },
   { path: 'contact-us', component: ContactUs },
-  { path: 'success', component: SuccessComponent },
   { path: 'contact', component: ContactUs },
   { path: 'about', component: AboutUs },
   { path: 'editproperty', component: EditPropertyComponent },
