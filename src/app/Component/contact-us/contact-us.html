@@ -4,11 +4,11 @@
     <div class="contact-grid">
       <!-- Contact Info -->
       <div class="contact-info">
-        <h2 class="section-title">تواصل معنا</h2>
+        <h2 class="section-title">Contact Us</h2>
         <p class="section-description">
-          هل لديك أي استفسار؟ املأ النموذج وسنكون سعداء بالرد عليك.
-          <br>
-          فريق TraffieState متواجد للرد على كل استفساراتك ومساعدتك في أي وقت.
+          Do you have any questions? Fill out the form and we'll be happy to respond.
+          
+          TraffieState team is available to answer all your inquiries and help you anytime.
         </p>
 
         <!-- Address -->
@@ -17,10 +17,10 @@
             <i class="fas fa-map-marker-alt"></i>
           </div>
           <div class="info-content">
-            <h3>العنوان</h3>
-            <p>سوهاج</p>
-            <p>ادفا</p>
-            <p>مكتب الاستشارات غزالي جروب- الدور الأرضي</p>
+            <h3>Address</h3>
+            <p>Sohag</p>
+            <p>Adfa</p>
+            <p>Ghazali Group Consulting Office - Ground Floor</p>
           </div>
         </div>
 
@@ -30,7 +30,7 @@
             <i class="fas fa-phone-alt"></i>
           </div>
           <div class="info-content">
-            <h3>الهاتف</h3>
+            <h3>Phone</h3>
             <p dir="ltr">01143872859</p>
           </div>
         </div>
@@ -41,7 +41,7 @@
             <i class="fas fa-envelope"></i>
           </div>
           <div class="info-content">
-            <h3>البريد الإلكتروني</h3>
+            <h3>Email</h3>
             <p>mahmoudashrafkhalf@gmail.com</p>
           </div>
         </div>
@@ -52,9 +52,9 @@
             <i class="fas fa-clock"></i>
           </div>
           <div class="info-content">
-            <h3>مواعيد العمل</h3>
-            <p>من الأحد إلى الخميس</p>
-            <p>من ٩ صباحاً إلى ٥ مساءً</p>
+            <h3>Working Hours</h3>
+            <p>Sunday to Thursday</p>
+            <p>9:00 AM to 5:00 PM</p>
           </div>
         </div>
 
@@ -64,7 +64,7 @@
             <i class="fas fa-share-alt"></i>
           </div>
           <div class="info-content">
-            <h3>تابعنا على السوشيال ميديا</h3>
+            <h3>Follow Us on Social Media</h3>
             <div class="social-links">
               <a href="https://www.linkedin.com/in/mahmoud-ashraf-526602228/" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
               <a href="https://www.instagram.com/" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -84,11 +84,11 @@
               type="text" 
               formControlName="name" 
               class="form-control" 
-              placeholder="الاسم *"
+              placeholder="Name *"
               [class.invalid]="name?.invalid && name?.touched">
             <span class="error-text" *ngIf="name?.invalid && name?.touched">
-              <span *ngIf="name?.errors?.['required']">الاسم مطلوب</span>
-              <span *ngIf="name?.errors?.['minlength']">الاسم يجب أن يكون 3 أحرف على الأقل</span>
+              <span *ngIf="name?.errors?.['required']">Name is required</span>
+              <span *ngIf="name?.errors?.['minlength']">Name must be at least 3 characters</span>
             </span>
           </div>
 
@@ -98,11 +98,11 @@
               type="email" 
               formControlName="email" 
               class="form-control" 
-              placeholder="البريد الإلكتروني *"
+              placeholder="Email *"
               [class.invalid]="email?.invalid && email?.touched">
             <span class="error-text" *ngIf="email?.invalid && email?.touched">
-              <span *ngIf="email?.errors?.['required']">البريد الإلكتروني مطلوب</span>
-              <span *ngIf="email?.errors?.['email']">البريد الإلكتروني غير صحيح</span>
+              <span *ngIf="email?.errors?.['required']">Email is required</span>
+              <span *ngIf="email?.errors?.['email']">Invalid email address</span>
             </span>
           </div>
 
@@ -112,12 +112,12 @@
               type="tel" 
               formControlName="phone" 
               class="form-control" 
-              placeholder="رقم الهاتف (11 رقم) *"
+              placeholder="Phone Number (11 digits) *"
               [class.invalid]="phone?.invalid && phone?.touched"
               maxlength="11">
             <span class="error-text" *ngIf="phone?.invalid && phone?.touched">
-              <span *ngIf="phone?.errors?.['required']">رقم الهاتف مطلوب</span>
-              <span *ngIf="phone?.errors?.['pattern']">رقم الهاتف يجب أن يكون 11 رقم</span>
+              <span *ngIf="phone?.errors?.['required']">Phone number is required</span>
+              <span *ngIf="phone?.errors?.['pattern']">Phone number must be 11 digits</span>
             </span>
           </div>
 
@@ -127,11 +127,11 @@
               type="text" 
               formControlName="subject" 
               class="form-control" 
-              placeholder="عنوان الرسالة *"
+              placeholder="Subject *"
               [class.invalid]="subject?.invalid && subject?.touched">
             <span class="error-text" *ngIf="subject?.invalid && subject?.touched">
-              <span *ngIf="subject?.errors?.['required']">عنوان الرسالة مطلوب</span>
-              <span *ngIf="subject?.errors?.['minlength']">عنوان الرسالة يجب أن يكون 5 أحرف على الأقل</span>
+              <span *ngIf="subject?.errors?.['required']">Subject is required</span>
+              <span *ngIf="subject?.errors?.['minlength']">Subject must be at least 5 characters</span>
             </span>
           </div>
 
@@ -140,12 +140,12 @@
             <textarea 
               formControlName="message" 
               class="form-control textarea" 
-              placeholder="الرسالة *" 
+              placeholder="Message *" 
               rows="6"
               [class.invalid]="message?.invalid && message?.touched"></textarea>
             <span class="error-text" *ngIf="message?.invalid && message?.touched">
-              <span *ngIf="message?.errors?.['required']">الرسالة مطلوبة</span>
-              <span *ngIf="message?.errors?.['minlength']">الرسالة يجب أن تكون 10 أحرف على الأقل</span>
+              <span *ngIf="message?.errors?.['required']">Message is required</span>
+              <span *ngIf="message?.errors?.['minlength']">Message must be at least 10 characters</span>
             </span>
           </div>
 
@@ -154,16 +154,16 @@
             type="submit" 
             class="btn-submit" 
             [disabled]="isSubmitting">
-            <span *ngIf="!isSubmitting">إرسال</span>
+            <span *ngIf="!isSubmitting">Send Message</span>
             <span *ngIf="isSubmitting">
-              <i class="fas fa-spinner fa-spin"></i> جاري الإرسال...
+              <i class="fas fa-spinner fa-spin"></i> Sending...
             </span>
           </button>
 
           <!-- Success Message -->
           <div *ngIf="submitSuccess" class="success-message">
             <i class="fas fa-check-circle"></i>
-            تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.
+            Your message has been sent successfully! We'll contact you soon.
           </div>
 
           <!-- Error Message -->
@@ -188,19 +188,46 @@
       style="border:0;" 
       allowfullscreen="" 
       loading="lazy"
-      title="موقع TraffieState على الخريطة">
+      title="TraffieState Location on Map">
     </iframe>
   </div>
 </section>
 
-<!-- Footer CTA -->
-<section class="footer-cta">
+<!-- Contact CTA Section -->
+<section class="contact-cta-section">
   <div class="container">
     <div class="cta-content">
-      <p class="cta-text">TraffieState هي منصتك العقارية للبحث عن أفضل العروض والوحدات في مصر</p>
+      <div class="cta-text">
+        <h2>Can't Find What You're Looking For?</h2>
+        <p>Our expert team is here to help you find your perfect property</p>
+      </div>
       <div class="cta-buttons">
-        <button class="btn-cta-primary">ابحث وامتلك</button>
-        <button class="btn-cta-secondary">اعرض وحدتك الآن</button>
+        <a href="https://wa.me/201143872859" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-whatsapp"></i>
+          WhatsApp Us
+        </a>
+        <a href="tel:01143872859" class="cta-btn secondary">
+          <i class="bi bi-telephone-fill"></i>
+          Call Us
+        </a>
+      </div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item">
+        <i class="bi bi-whatsapp"></i>
+        <span>01158519532</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-telephone-fill"></i>
+        <span>01158519532</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-envelope-fill"></i>
+        <span>abrarbadr02@gmail.com</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-geo-alt-fill"></i>
+        <span>Cairo, Egypt</span>
       </div>
     </div>
   </div>
