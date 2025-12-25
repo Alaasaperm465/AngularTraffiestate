@@ -1,40 +1,5 @@
 <!-- Owner Dashboard Template - English Design with Fixed Sidebar -->
 <div class="dashboard-container">
-
-  <!-- Fixed Sidebar -->
-  <aside class="sidebar" [class.active]="isProfileMenuOpen">
-    <nav class="profile-menu">
-      <a class="menu-item" (click)="goToProfile(); closeProfileMenu()">
-        <i class="bi bi-person"></i>
-        <span>Profile</span>
-      </a>
-      <a class="menu-item" (click)="switchTab('my-properties'); closeProfileMenu()">
-        <i class="bi bi-house"></i>
-        <span>Dashboard</span>
-      </a>
-      <a class="menu-item" (click)="switchTab('favorites'); closeProfileMenu()">
-        <i class="bi bi-heart"></i>
-        <span>Favorites</span>
-      </a>
-      <a class="menu-item" (click)="goToAddProperty(); closeProfileMenu()">
-        <i class="bi bi-plus-circle"></i>
-        <span>Add Property</span>
-      </a>
-      <a class="menu-item" (click)="goToAnalytics(); closeProfileMenu()">
-        <i class="bi bi-graph-up"></i>
-        <span>Analytics</span>
-      </a>
-      <hr class="menu-divider">
-      <a class="menu-item logout" (click)="logout()">
-        <i class="bi bi-box-arrow-left"></i>
-        <span>Logout</span>
-      </a>
-    </nav>
-  </aside>
-
-  <!-- Overlay for mobile when sidebar is open -->
-  <div class="sidebar-overlay" [class.active]="isProfileMenuOpen" (click)="closeProfileMenu()"></div>
-
   <!-- Main Content -->
   <main class="main-content">
     <!-- Hero Section -->
