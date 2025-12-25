@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 // import { ReviewService } from '../../Services/reviw-service';
 // import { ReviewService, ReviewStats } from '../../Services/review-service';
 import { ReviewService, ReviewStats } from '../../Services/reviw-service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -202,7 +203,6 @@ export class PropertyDetails implements OnInit {
     return 'bi-star';
   }
 
-  // ===== SHARE PROPERTY =====
   shareProperty(): void {
     const url = window.location.href;
     if (navigator.share) {
@@ -213,7 +213,22 @@ export class PropertyDetails implements OnInit {
       }).catch((err: any) => console.log('Error sharing:', err));
     } else {
       navigator.clipboard.writeText(url).then(() => {
-        alert('Link copied to clipboard!');
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Link copied to clipboard!',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#fff',
+          color: '#2c3e50',
+          iconColor: '#E2B43B',
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          }
+        });
       });
     }
   }
@@ -221,12 +236,43 @@ export class PropertyDetails implements OnInit {
   // ===== VISIT FORM =====
   submitVisitRequest(): void {
     if (!this.visitForm.name || !this.visitForm.email || !this.visitForm.phone || !this.visitForm.date) {
-      alert('Please fill in all required fields');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Required Fields',
+        text: 'Please fill in all required fields',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       return;
     }
 
     console.log('Visit request submitted:', this.visitForm);
-    alert('Visit request submitted successfully! We will contact you soon.');
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Visit request submitted successfully! We will contact you soon.',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      background: '#fff',
+      color: '#2c3e50',
+      iconColor: '#E2B43B',
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
 
     this.visitForm = {
       name: '',
@@ -278,7 +324,22 @@ submitRating() {
 
   this.ReviewService.addReview(dto).subscribe({
     next: () => {
-      alert('Rating added successfully ⭐');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Rating added successfully ⭐',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       this.isSubmittingRating = false;
       this.userHasRated = true;  // المستخدم قيم
       // تحديث متوسط الريتينج
@@ -288,7 +349,22 @@ submitRating() {
     },
     error: (err) => {
       console.error(err);
-      alert(err.error?.message || 'You already rated this property');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: err.error?.message || 'You already rated this property',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       this.isSubmittingRating = false;
       this.userHasRated = true; // لو حاول مرة تانية
     }
