@@ -39,6 +39,9 @@ export class Home implements OnInit, OnDestroy {
   itemsPerLoad: number = 8;
   currentLoadedCount: number = 5;
 
+  // Modal state
+  showCallModalFlag: boolean = false;
+
   // Event listeners for cleanup
   private loadAllPropertiesListener: any;
 
@@ -379,8 +382,22 @@ export class Home implements OnInit, OnDestroy {
     const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
     const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
 
-    this.minPrice = minEl?.value ? parseInt(minEl.value, 10) : null;
-    this.maxPrice = maxEl?.value ? parseInt(maxEl.value, 10) : null;
+    // Parse values
+    let minValue = minEl?.value ? parseInt(minEl.value, 10) : null;
+    let maxValue = maxEl?.value ? parseInt(maxEl.value, 10) : null;
+
+    // Prevent negative values - set to null if negative or zero
+    if (minValue !== null && minValue <= 0) {
+      minEl.value = '';
+      minValue = null;
+    }
+    if (maxValue !== null && maxValue <= 0) {
+      maxEl.value = '';
+      maxValue = null;
+    }
+
+    this.minPrice = minValue;
+    this.maxPrice = maxValue;
 
     console.log('💰 Price filter changed:', { min: this.minPrice, max: this.maxPrice });
 
@@ -501,10 +518,6 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  trackById(index: number, item: IProperty): number {
-    return item.id;
-  }
-
   getWhatsAppLink(phoneNumber: string): string {
     let cleanPhone = phoneNumber.replace(/\D/g, '');
 
@@ -519,5 +532,25 @@ export class Home implements OnInit, OnDestroy {
     console.log('📱 WhatsApp Link:', `https://wa.me/${cleanPhone}`);
 
     return `https://wa.me/${cleanPhone}`;
+  }
+
+  openCallModal(): void {
+    this.showCallModalFlag = true;
+  }
+
+  closeCallModal(): void {
+    this.showCallModalFlag = false;
+  }
+
+  makeCall(): void {
+    window.location.href = `tel:${this.phone}`;
+  }
+
+  showCallModal(): void {
+    this.openCallModal();
+  }
+
+  trackById(index: number, item: IProperty): number {
+    return item.id;
   }
 }

@@ -32,6 +32,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
 import { IProperty, phone, email } from '../../models/iproperty';
+import Swal from 'sweetalert2';
 
 interface PropertyCard {
   id: string;
@@ -406,13 +407,44 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    * Delete property
    */
   deleteProperty(propertyId: string): void {
-    if (confirm('Are you sure you want to delete this property?')) {
-      // TODO: Implement delete via API when method is available
-      this.allProperties = this.allProperties.filter(
-        (p) => p.id !== propertyId
-      );
-      this.applyFilter();
-    }
+    Swal.fire({
+      title: 'Delete Property',
+      text: 'Are you sure you want to delete this property? This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d9534f',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, Delete',
+      cancelButtonText: 'Cancel',
+      background: '#fff',
+      color: '#2c3e50',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // TODO: Implement delete via API when method is available
+        this.allProperties = this.allProperties.filter(
+          (p) => p.id !== propertyId
+        );
+        this.applyFilter();
+
+        // Show success message
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Property deleted successfully!',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#fff',
+          color: '#2c3e50',
+          iconColor: '#28a745',
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          }
+        });
+      }
+    });
   }
 
   /**

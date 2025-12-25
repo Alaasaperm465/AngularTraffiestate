@@ -37,3 +37,12 @@
     </div>
   </div>
 </section>
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModal">
+  <div class="call-modal-content">
+    <h4>Call us at:</h4>
+    <p>{{ phone }}</p>
+    <button (click)="makeCall()">Call Now</button>
+    <button (click)="closeCallModal()">Close</button>
+  </div>
+</div>

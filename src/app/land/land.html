@@ -45,9 +45,9 @@
             Size (sqm)
           </label>
           <div class="range-inputs">
-            <input type="number" placeholder="Min" formControlName="minSize" min="0" />
+            <input type="number" placeholder="Min" formControlName="minSize" min="0" (change)="onPriceFilterChange()" />
             <span>-</span>
-            <input type="number" placeholder="Max" formControlName="maxSize" min="0" />
+            <input type="number" placeholder="Max" formControlName="maxSize" min="0" (change)="onPriceFilterChange()" />
           </div>
         </div>
 
@@ -58,15 +58,20 @@
             Price (EGP)
           </label>
           <div class="range-inputs">
-            <input type="number" placeholder="Min" formControlName="minPrice" min="0" />
+            <input type="number" placeholder="Min" formControlName="minPrice" min="0" (change)="onPriceFilterChange()" />
             <span>-</span>
-            <input type="number" placeholder="Max" formControlName="maxPrice" min="0" />
+            <input type="number" placeholder="Max" formControlName="maxPrice" min="0" (change)="onPriceFilterChange()" />
           </div>
         </div>
 
         <!-- Search Button -->
         <button class="search-btn" type="submit" title="Search">
           <i class="bi bi-search"></i>
+        </button>
+
+        <!-- Clear Button -->
+        <button class="search-btn clear-btn" type="button" title="Clear all filters" (click)="clearAllFilters()">
+          Clear Search
         </button>
 
       </div>
@@ -79,7 +84,7 @@
     <div class="quick-search-grid">
       <div
         class="quick-search-item"
-        *ngFor="let city of quickSearchCities"
+        *ngFor="let city of quickSearchCities; trackBy: trackByCity"
         (click)="setQuickSearch(city.name)"
       >
         <div class="city-name">
@@ -87,7 +92,7 @@
           {{ city.name }}
         </div>
         <span class="city-count">
-          {{ getCityCount(city.name) }}
+          {{ city.count }}
         </span>
       </div>
     </div>
@@ -182,14 +187,14 @@
                   (click)="$event.stopPropagation()">
                   <i class="bi bi-whatsapp"></i>
                 </a>
-                <a
+                <button
+                  type="button"
                   class="contact-icon-btn phone-btn"
-                  [href]="'tel:' + phone"
                   title="Call Now"
                   aria-label="Call seller"
-                  (click)="$event.stopPropagation()">
+                  (click)="showCallModal(); $event.stopPropagation()">
                   <i class="bi bi-telephone-fill"></i>
-                </a>
+                </button>
                 <a
                   class="contact-icon-btn email-btn"
                   [href]="'mailto:' + email"
@@ -324,4 +329,13 @@
 
   </div>
 
+</div>
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModalFlag">
+  <div class="call-modal-content">
+    <h4>Call us at:</h4>
+    <p>{{ phone }}</p>
+    <button (click)="makeCall()">Call Now</button>
+    <button (click)="closeCallModal()">Close</button>
+  </div>
 </div>
