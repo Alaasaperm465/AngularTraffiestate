@@ -37,6 +37,7 @@ export class PropertyDetails implements OnInit {
   selectedRating: number = 0;
   isSubmittingRating = false;
   userHasRated: boolean = false; // هل المستخدم قيم قبل كده؟
+ isRentalProperty: boolean = false; // افتراضي false
 
 
 
@@ -106,6 +107,8 @@ export class PropertyDetails implements OnInit {
       next: (res: IProperty) => {
         this.property = res;
         this.mainImageUrl = this.property.imageUrl || this.galleryImages[0];
+       this.isRentalProperty = this.property.purpose.toLowerCase() === 'rent';
+
         console.log('Property loaded:', this.property);
       },
       error: (err: any) => {
