@@ -37,20 +37,23 @@
             </a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded"
-               routerLink="/buy"
-               routerLinkActive="active">
-              Buy
+          <li class="nav-item dropdown">
+            <a class="nav-link px-3 py-2 rounded dropdown-toggle"
+               (click)="togglePropertiesMenu()"
+               style="cursor: pointer;">
+              Properties
+              <i class="fas fa-chevron-down ms-1"></i>
             </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link px-3 py-2 rounded"
-               routerLink="/rent"
-               routerLinkActive="active">
-              Rent
-            </a>
+            <div *ngIf="isPropertiesMenuOpen" class="properties-dropdown-menu">
+              <a routerLink="/buy" class="dropdown-item" (click)="togglePropertiesMenu()">
+                <i class="fas fa-shopping-cart me-2"></i>
+                <span>Buy</span>
+              </a>
+              <a routerLink="/rent" class="dropdown-item" (click)="togglePropertiesMenu()">
+                <i class="fas fa-home me-2"></i>
+                <span>Rent</span>
+              </a>
+            </div>
           </li>
 
           <li class="nav-item">

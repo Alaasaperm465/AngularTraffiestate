@@ -19,7 +19,7 @@
 .favorites-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 100px 20px 30px 20px;
   background: var(--bg-gray);
   min-height: 100vh;
 }
@@ -225,8 +225,24 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
+}
+
+.property-card.removing {
+  animation: fadeOutScale 0.3s ease forwards;
+}
+
+@keyframes fadeOutScale {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+    margin: 0;
+  }
 }
 
 .property-card:hover {
@@ -329,11 +345,14 @@
 
 /* Property Info - Match Home */
 .property-info {
-  padding: 20px;
+  padding: 16px 18px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .property-header {
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 .property-title {
@@ -362,9 +381,9 @@
 /* Property Details - Match Home */
 .property-details {
   display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
   border-bottom: 1px solid #e0e0e0;
   flex-wrap: wrap;
 }
@@ -383,12 +402,11 @@
   font-size: 16px;
 }
 
-/* Property Footer - Match Home */
 .property-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .property-price {
@@ -414,22 +432,22 @@
 /* Contact Actions - Match Home */
 .property-contact-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   flex-shrink: 0;
 }
 
 .contact-icon-btn {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 16px;
+  transition: all 0.2s ease;
+  font-size: 14px;
   text-decoration: none;
   padding: 0;
 }
@@ -587,42 +605,42 @@
   .favorites-container {
     padding: 20px 15px;
   }
-  
+
   .favorites-header {
     padding: 20px;
   }
-  
+
   .header-content {
     flex-direction: column;
     gap: 20px;
   }
-  
+
   .favorites-title {
     font-size: 2rem;
   }
-  
+
   .favorites-tabs {
     flex-direction: column;
   }
-  
+
   .favorites-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .property-card {
     max-width: 400px;
     margin: 0 auto;
   }
-  
+
   .favorites-controls {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .property-footer {
     flex-wrap: wrap;
   }
-  
+
   .property-contact-actions {
     width: 100%;
   }

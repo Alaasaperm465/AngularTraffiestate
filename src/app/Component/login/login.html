@@ -1,180 +1,116 @@
-<div class="login-container">
-  <div class="login-card split-layout">
-    
-    <!-- LEFT SIDE: Form Section -->
-    <div class="form-section">
-     
+<div class="forget-password-container">
+  <div class="forget-password-card">
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Sign in to your account to continue</p>
 
-      <!-- Login Header -->
-      <div class="login-header">
-        <!--  -->
-        <h2>Welcome Back</h2>
-        <p class="login-subtitle">Sign in to your account to continue</p>
-      </div>
-
-      <!-- Error Message -->
-      <div *ngIf="errorMessage" class="error-message">
-        <i class="fas fa-exclamation-circle"></i>
-        <div class="error-content">
-          <strong>Login Failed</strong>
-          <span>{{ errorMessage }}</span>
-        </div>
-      </div>
-
-      <!-- Login Form -->
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <!-- Username Field -->
-        <div class="form-group">
-          <label for="userName">
-            <i class="fas fa-user"></i>
-            Username or Email
-          </label>
-          <div class="input-wrapper">
-            <input
-              type="text"
-              id="userName"
-              formControlName="userName"
-              placeholder="Enter your username or email"
-              class="form-input"
-              [class.error]="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
-            />
-            <div class="input-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
-          </div>
-          <div
-            *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
-            class="error-text"
-          >
-            <i class="fas fa-exclamation-triangle"></i>
-            {{ getErrorMessage('userName') }}
-          </div>
-        </div>
-
-        <!-- Password Field -->
-        <div class="form-group">
-          <label for="password">
-            <i class="fas fa-lock"></i>
-            Password
-          </label>
-          <div class="input-wrapper">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="password"
-              formControlName="password"
-              placeholder="Enter your password"
-              class="form-input"
-              [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-            />
-            <div class="input-icon">
-              <i class="fas fa-key"></i>
-            </div>
-            <button
-              type="button"
-              class="toggle-password"
-              (click)="togglePasswordVisibility()"
-              tabindex="-1"
-              [class.active]="showPassword"
-            >
-              <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-            </button>
-          </div>
-          <div
-            *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-            class="error-text"
-          >
-            <i class="fas fa-exclamation-triangle"></i>
-            {{ getErrorMessage('password') }}
-          </div>
-        </div>
-
-        <!-- Forget Password Link -->
-        <div class="form-options">
-          <div class="remember-me">
-            <input type="checkbox" id="remember" />
-            <label for="remember">Remember me</label>
-          </div>
-          <a routerLink="/forget-password" class="forget-password-link">
-            <i class="fas fa-question-circle"></i>
-            Forgot password?
-          </a>
-        </div>
-
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          class="btn-login"
-          [disabled]="isLoading || loginForm.invalid"
-          [class.loading]="isLoading"
-        >
-          <span class="btn-content">
-            <i class="fas fa-sign-in-alt"></i>
-            {{ isLoading ? 'Authenticating...' : 'Sign In' }}
-          </span>
-          <span class="btn-loader" *ngIf="isLoading">
-            <div class="loader-spinner"></div>
-          </span>
-        </button>
-
-       
-      </form>
-
-      <!-- Register Link -->
-      <div class="register-link">
-        <p>Don't have an account?</p>
-        <a routerLink="/register" class="btn-register">
-          <i class="fas fa-user-plus"></i>
-          Create New Account
-        </a>
-      </div>
-
-      <!-- Footer -->
-      <div class="login-footer">
-        <p>By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
-      </div>
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="success-message">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2"/>
+        <path d="M6 10L9 13L14 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      {{ successMessage }}
     </div>
 
-    <!-- RIGHT SIDE: Property Image Section -->
-    <div class="property-section">
-      <div class="property-image-container">
-        <img 
-          src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-          alt="Luxury Property" 
-          class="property-main-image"
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="userName">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Email or Username
+        </label>
+        <input
+          type="text"
+          id="userName"
+          formControlName="userName"
+          placeholder="Enter your email or username"
+          class="form-input"
+          (blur)="markFieldAsTouched('userName')"
+          [class.error]="isFieldInvalid('userName')"
         />
-        <div class="property-overlay">
-          <div class="property-content">
-            <div class="property-badge">
-              <i class="fas fa-crown"></i>
-              <span>Premium Property</span>
-            </div>
-            <div class="property-info">
-              <h2>Discover Your Dream Home</h2>
-              <!-- <p class="property-description">
-                Access exclusive listings, virtual tours, and personalized property recommendations.
-                Join thousands of satisfied homeowners who found their perfect match with PropertyHub.
-              </p> -->
-              <div class="property-features">
-                <div class="feature">
-                  <i class="fas fa-home"></i>
-                  <span>5000+ Properties</span>
-                </div>
-                <div class="feature">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>25+ Locations</span>
-                </div>
-                <div class="feature">
-                  <i class="fas fa-star"></i>
-                  <span>Premium Quality</span>
-                </div>
-              </div>
-            </div>
-           
-              
-          
-          </div>
-        </div>
+        <span *ngIf="isFieldInvalid('userName')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('userName') }}
+        </span>
       </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          Password
+        </label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            class="form-input"
+            (blur)="markFieldAsTouched('password')"
+            [class.error]="isFieldInvalid('password')"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+          >
+            <svg *ngIf="!showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <svg *ngIf="showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <span *ngIf="isFieldInvalid('password')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('password') }}
+        </span>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="isLoading"
+      >
+        <svg *ngIf="isLoading" class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+        </svg>
+        {{ isLoading ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+
+    <!-- Links -->
+    <div class="back-to-login">
+      <p><a routerLink="/forget-password">Forgot password?</a></p>
+      <p>Don't have an account? <a routerLink="/register">Create one</a></p>
     </div>
   </div>
 </div>
