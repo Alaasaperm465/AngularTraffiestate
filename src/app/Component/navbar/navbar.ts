@@ -13,6 +13,7 @@ export class Navbar implements OnInit, OnDestroy {
   isExploreOpen = false;
   isLoggedIn = false;
   isProfileMenuOpen = false;
+  isPropertiesMenuOpen = false;
   userName: string = '';
   userAvatar: string = 'assets/avatar-default.png';
   userEmail: string = '';
@@ -86,6 +87,10 @@ export class Navbar implements OnInit, OnDestroy {
 
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  togglePropertiesMenu() {
+    this.isPropertiesMenuOpen = !this.isPropertiesMenuOpen;
   }
 
   goToFavorites() {

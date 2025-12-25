@@ -22,14 +22,6 @@
         Saved Properties
         <span class="tab-badge">{{ favorites.length }}</span>
       </div>
-      <div class="tab">
-        <i class="fas fa-history"></i>
-        Recently Viewed
-      </div>
-      <div class="tab">
-        <i class="fas fa-bell"></i>
-        Price Alerts
-      </div>
     </div>
   </div>
 
@@ -50,12 +42,15 @@
 
   <!-- Favorites Grid - Match Home/Land Structure -->
   <div class="favorites-grid" *ngIf="displayedFavorites.length > 0">
-    <div class="property-card" *ngFor="let fav of displayedFavorites" (click)="navigateToProperty(fav.property.id)">
-      
+    <div class="property-card"
+         *ngFor="let fav of displayedFavorites"
+         (click)="navigateToProperty(fav.property.id)"
+         [class.removing]="removingIds.has(fav.propertyId)">
+
       <!-- Property Image -->
       <div class="property-image">
         <img [src]="fav.property.imageUrl" [alt]="fav.property.title">
-        
+
         <!-- Favorite Button -->
         <button
           type="button"
@@ -105,7 +100,7 @@
             <span class="price-value">{{ fav.property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
             <span class="price-period" *ngIf="fav.property.purpose === 'Rent'">/month</span>
           </div>
-          
+
           <div class="property-contact-actions">
             <a
               class="contact-icon-btn whatsapp-btn"
