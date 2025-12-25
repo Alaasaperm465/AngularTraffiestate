@@ -10,22 +10,20 @@ import { IProperty } from '../../models/iproperty';
 export class PropertyService {
 
   private readonly clientApiUrl = 'https://localhost:7030/api/Client';
-  private readonly ownerApiUrl  = 'https://localhost:7030/api/PropertyOwner';
+  private readonly ownerApiUrl = 'https://localhost:7030/api/PropertyOwner';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /* =====================================================
      🔹 MAIN – Get All Properties (Client → Owner fallback)
      ===================================================== */
   getAllProperties(): Observable<IProperty[]> {
-    return this.http.get<any>(`${this.clientApiUrl}/properties`).pipe(
-      map(res => this.normalizeProperties(res)),
-      catchError(err => {
-        console.warn(' Client API failed, switching to Owner API', err);
-        return this.getAllPropertiesFromOwner();
-      })
-    );
-  }
+  return this.http.get<IProperty[]>(
+    `${this.clientApiUrl}/properties`
+  )
+}
+
+
 
   private getAllPropertiesFromOwner(): Observable<IProperty[]> {
     return this.http.get<any>(`${this.ownerApiUrl}/owner-properties`).pipe(
