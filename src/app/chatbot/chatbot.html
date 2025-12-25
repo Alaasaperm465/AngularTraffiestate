@@ -1,0 +1,43 @@
+<div class="chatbot-container">
+  <div class="chat-header">
+    <h2>🏠 مساعد البحث عن العقارات</h2>
+    <div class="header-actions" *ngIf="!embeddingsReady">
+      <button class="btn-small" (click)="initEmbeddings()" [disabled]="isBusy">
+        🔄 إعادة محاولة
+      </button>
+      <button class="btn-small" (click)="checkStatus()" [disabled]="isBusy">
+        🔍 تحقق من الحالة
+      </button>
+    </div>
+  </div>
+
+  <div class="messages-container">
+    <div *ngFor="let message of messages" 
+         [class]="message.isUser ? 'message user-message' : 'message bot-message'">
+      <div class="message-content">
+        <p>{{ message.text }}</p>
+        <span class="timestamp">{{ message.timestamp | date: 'short' }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="message bot-message">
+      <div class="message-content">
+        <p>جاري البحث...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-container">
+    <input 
+      #messageInput
+      type="text" 
+      name="userInput"
+      [(ngModel)]="userInput" 
+      (keyup.enter)="sendMessage()"
+      placeholder="اكتب رسالتك هنا... مثال: شقة 3 غرف في القاهرة"
+      autocomplete="off">
+    <button (click)="sendMessage()" [disabled]="isLoading">
+      إرسال
+    </button>
+  </div>
+</div>
