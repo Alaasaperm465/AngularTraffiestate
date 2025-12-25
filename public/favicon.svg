@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Background circle -->
+  <circle cx="128" cy="128" r="128" fill="#1a5a45"/>
+  
+  <!-- Gold accent circle -->
+  <circle cx="128" cy="128" r="112" fill="none" stroke="#E2B43B" stroke-width="8"/>
+  
+  <!-- House/Building icon -->
+  <g transform="translate(128, 128)">
+    <!-- Roof -->
+    <polygon points="0,-56 -48,0 48,0" fill="#E2B43B"/>
+    
+    <!-- Main building -->
+    <rect x="-40" y="0" width="80" height="56" fill="#ffffff" stroke="#E2B43B" stroke-width="6"/>
+    
+    <!-- Door -->
+    <rect x="-12" y="32" width="24" height="32" fill="#1a5a45" stroke="#E2B43B" stroke-width="4"/>
+    <circle cx="8" cy="48" r="4" fill="#E2B43B"/>
+    
+    <!-- Windows -->
+    <rect x="-32" y="8" width="16" height="16" fill="#E2B43B"/>
+    <rect x="16" y="8" width="16" height="16" fill="#E2B43B"/>
+    <rect x="-32" y="32" width="16" height="16" fill="#E2B43B"/>
+    <rect x="16" y="32" width="16" height="16" fill="#E2B43B"/>
+  </g>
+</svg>

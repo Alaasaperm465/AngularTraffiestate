@@ -28,15 +28,14 @@
               <i class="bi bi-key"></i>
               Rent
             </button>
-           <button
-  type="button"
-  class="tab-btn-hero"
-  [class.active]="activeTab === ''"
-  (click)="setActiveTab('')">
-  <i class="bi bi-grid"></i>
-  All
-</button>
-
+            <button
+              type="button"
+              class="tab-btn-hero"
+              [class.active]="activeTab === ''"
+              (click)="setActiveTab('')">
+              <i class="bi bi-grid"></i>
+              All
+            </button>
           </div>
 
           <div class="search-fields-wrapper">
@@ -73,9 +72,8 @@
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Land'}); showPropertyTypeDropdown = false">
                   <i class="bi bi-house-door"></i>
-                  land
+                  Land
                 </div>
-
               </div>
             </div>
 
@@ -172,8 +170,8 @@
               </button>
 
               <!-- Purpose Badge -->
-              <span class="purpose-badge" >
-                {{ property.purpose  }}
+              <span class="purpose-badge">
+                {{ property.purpose }}
               </span>
 
               <!-- Featured Badge -->
@@ -187,7 +185,7 @@
             <div class="property-info">
               <div class="property-header">
                 <h3 class="property-title">{{ property.title }}</h3>
-                 <h3 class="property-title">{{ property.propertyType }}</h3>
+                <h3 class="property-title">{{ property.propertyType }}</h3>
 
                 <p class="property-location">
                   <i class="bi bi-geo-alt-fill"></i>
@@ -241,7 +239,7 @@
                     aria-label="Email seller"
                     (click)="$event.stopPropagation()">
                     <i class="bi bi-envelope-fill"></i>
-                  </a>"
+                  </a>
                   <button
                     type="button"
                     class="view-details-btn"
@@ -263,7 +261,6 @@
           </div>
           <h3>No Properties Found</h3>
           <p>Try adjusting your search filters or explore different areas</p>
-          <!-- <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button> -->
         </div>
 
         <!-- See More Button -->
@@ -314,18 +311,17 @@
           </h4>
           <div class="filter-options">
             <label class="filter-option">
-<input type="checkbox" value="Apartment" (change)="onPropertyTypeChange($event)">
+              <input type="checkbox" value="Apartment" (change)="onPropertyTypeChange($event)">
               <span>Apartment</span>
             </label>
             <label class="filter-option">
-<input type="checkbox" value="Villa" (change)="onPropertyTypeChange($event)">
+              <input type="checkbox" value="Villa" (change)="onPropertyTypeChange($event)">
               <span>Villa</span>
             </label>
             <label class="filter-option">
-<input type="checkbox" value="Land" (change)="onPropertyTypeChange($event)">
-              <span>land</span>
+              <input type="checkbox" value="Land" (change)="onPropertyTypeChange($event)">
+              <span>Land</span>
             </label>
-
           </div>
         </div>
 
