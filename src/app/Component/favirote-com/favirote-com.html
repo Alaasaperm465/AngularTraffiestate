@@ -5,13 +5,13 @@
       <div class="header-title-section">
         <h1 class="favorites-title">
           <i class="fas fa-heart"></i>
-          My Favorites
+          {{ 'dashboard.favorites.title' | translate }}
         </h1>
-        <p class="favorites-subtitle">Your saved properties collection</p>
+        <p class="favorites-subtitle">{{ 'dashboard.favorites.subtitle' | translate }}</p>
       </div>
       <div class="favorites-count-badge">
         <span class="count-number">{{ favorites.length }}</span>
-        <span class="count-label">Properties</span>
+        <span class="count-label">{{ 'dashboard.favorites.properties' | translate }}</span>
       </div>
     </div>
 
@@ -19,7 +19,7 @@
     <div class="favorites-tabs">
       <div class="tab active">
         <i class="fas fa-bookmark"></i>
-        Saved Properties
+        {{ 'dashboard.favorites.saved_properties' | translate }}
         <span class="tab-badge">{{ favorites.length }}</span>
       </div>
     </div>
@@ -31,11 +31,11 @@
       <div class="empty-icon">
         <i class="fas fa-heart-broken"></i>
       </div>
-      <h3>Your favorites list is empty</h3>
-      <p>Start exploring and add properties you love to your collection</p>
+      <h3>{{ 'dashboard.favorites.empty_title' | translate }}</h3>
+      <p>{{ 'dashboard.favorites.empty_description' | translate }}</p>
       <button class="btn-explore" routerLink="/properties">
         <i class="fas fa-search"></i>
-        Explore Properties
+        {{ 'dashboard.favorites.explore_properties' | translate }}
       </button>
     </div>
   </div>
@@ -83,11 +83,11 @@
         <div class="property-details">
           <span class="detail-item">
             <i class="bi bi-door-open-fill"></i>
-            {{ fav.property.rooms }} Beds
+            {{ fav.property.rooms }} {{ 'property.beds' | translate }}
           </span>
           <span class="detail-item">
             <i class="bi bi-droplet-fill"></i>
-            {{ fav.property.bathrooms }} Baths
+            {{ fav.property.bathrooms }} {{ 'property.baths' | translate }}
           </span>
           <span class="detail-item">
             <i class="bi bi-arrows-fullscreen"></i>
@@ -98,7 +98,7 @@
         <div class="property-footer">
           <div class="property-price">
             <span class="price-value">{{ fav.property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
-            <span class="price-period" *ngIf="fav.property.purpose === 'Rent'">/month</span>
+            <span class="price-period" *ngIf="fav.property.purpose === 'Rent'">{{ 'dashboard.favorites.month' | translate }}</span>
           </div>
 
           <div class="property-contact-actions">
@@ -146,7 +146,7 @@
   <div class="favorites-controls" *ngIf="favorites.length > 0">
     <div class="see-more-section" *ngIf="hasMoreToLoad()">
       <button type="button" class="see-more-btn" (click)="loadMore()">
-        See More
+        {{ 'common.see_more' | translate }}
         <i class="bi bi-arrow-down"></i>
       </button>
     </div>
@@ -155,7 +155,7 @@
     <div class="delete-all-section">
       <button class="delete-all-btn" (click)="deleteAll()">
         <i class="fas fa-trash-alt"></i>
-        Clear All Favorites
+        {{ 'dashboard.favorites.clear_all_favorites' | translate }}
       </button>
     </div>
   </div>

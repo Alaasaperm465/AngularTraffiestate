@@ -28,6 +28,7 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
@@ -60,7 +61,7 @@ interface DashboardFilter {
 @Component({
   selector: 'app-owner-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './owner-dashboard.html',
   styleUrl: './owner-dashboard.css',
 })

@@ -4,11 +4,9 @@
     <div class="contact-grid">
       <!-- Contact Info -->
       <div class="contact-info">
-        <h2 class="section-title">Contact Us</h2>
+        <h2 class="section-title">{{ 'contact.section.title' | translate }}</h2>
         <p class="section-description">
-          Do you have any questions? Fill out the form and we'll be happy to respond.
-          
-          TraffieState team is available to answer all your inquiries and help you anytime.
+          {{ 'contact.section.description' | translate }}
         </p>
 
         <!-- Address -->
@@ -17,10 +15,10 @@
             <i class="fas fa-map-marker-alt"></i>
           </div>
           <div class="info-content">
-            <h3>Address</h3>
-            <p>Sohag</p>
-            <p>Adfa</p>
-            <p>Ghazali Group Consulting Office - Ground Floor</p>
+            <h3>{{ 'contact.address.title' | translate }}</h3>
+            <p>{{ 'contact.address.city' | translate }}</p>
+            <p>{{ 'contact.address.area' | translate }}</p>
+            <p>{{ 'contact.address.office' | translate }}</p>
           </div>
         </div>
 
@@ -30,8 +28,8 @@
             <i class="fas fa-phone-alt"></i>
           </div>
           <div class="info-content">
-            <h3>Phone</h3>
-            <p dir="ltr">01143872859</p>
+            <h3>{{ 'contact.phone.title' | translate }}</h3>
+            <p dir="ltr">{{ 'contact.phone.number' | translate }}</p>
           </div>
         </div>
 
@@ -41,8 +39,8 @@
             <i class="fas fa-envelope"></i>
           </div>
           <div class="info-content">
-            <h3>Email</h3>
-            <p>mahmoudashrafkhalf@gmail.com</p>
+            <h3>{{ 'contact.email.title' | translate }}</h3>
+            <p>{{ 'contact.email.address' | translate }}</p>
           </div>
         </div>
 
@@ -52,9 +50,9 @@
             <i class="fas fa-clock"></i>
           </div>
           <div class="info-content">
-            <h3>Working Hours</h3>
-            <p>Sunday to Thursday</p>
-            <p>9:00 AM to 5:00 PM</p>
+            <h3>{{ 'contact.working_hours.title' | translate }}</h3>
+            <p>{{ 'contact.working_hours.days' | translate }}</p>
+            <p>{{ 'contact.working_hours.hours' | translate }}</p>
           </div>
         </div>
 
@@ -64,11 +62,11 @@
             <i class="fas fa-share-alt"></i>
           </div>
           <div class="info-content">
-            <h3>Follow Us on Social Media</h3>
+            <h3>{{ 'contact.social.title' | translate }}</h3>
             <div class="social-links">
-              <a href="https://www.linkedin.com/in/mahmoud-ashraf-526602228/" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-              <a href="https://www.instagram.com/" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-              <a href="https://www.facebook.com/share/1A664HExJP/" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://www.linkedin.com/in/mahmoud-ashraf-526602228/" class="social-link" [aria-label]="'contact.social.linkedin' | translate"><i class="fab fa-linkedin-in"></i></a>
+              <a href="https://www.instagram.com/" class="social-link" [aria-label]="'contact.social.instagram' | translate"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.facebook.com/share/1A664HExJP/" class="social-link" [aria-label]="'contact.social.facebook' | translate"><i class="fab fa-facebook-f"></i></a>
             </div>
           </div>
         </div>
@@ -84,11 +82,11 @@
               type="text" 
               formControlName="name" 
               class="form-control" 
-              placeholder="Name *"
+              [placeholder]="'contact.form.name' | translate"
               [class.invalid]="name?.invalid && name?.touched">
             <span class="error-text" *ngIf="name?.invalid && name?.touched">
-              <span *ngIf="name?.errors?.['required']">Name is required</span>
-              <span *ngIf="name?.errors?.['minlength']">Name must be at least 3 characters</span>
+              <span *ngIf="name?.errors?.['required']">{{ 'forms.validation.name_required' | translate }}</span>
+              <span *ngIf="name?.errors?.['minlength']">{{ 'forms.validation.name_minlength' | translate }}</span>
             </span>
           </div>
 
@@ -98,11 +96,11 @@
               type="email" 
               formControlName="email" 
               class="form-control" 
-              placeholder="Email *"
+              [placeholder]="'contact.form.email' | translate"
               [class.invalid]="email?.invalid && email?.touched">
             <span class="error-text" *ngIf="email?.invalid && email?.touched">
-              <span *ngIf="email?.errors?.['required']">Email is required</span>
-              <span *ngIf="email?.errors?.['email']">Invalid email address</span>
+              <span *ngIf="email?.errors?.['required']">{{ 'forms.validation.email_required' | translate }}</span>
+              <span *ngIf="email?.errors?.['email']">{{ 'forms.validation.email_invalid' | translate }}</span>
             </span>
           </div>
 
@@ -112,12 +110,12 @@
               type="tel" 
               formControlName="phone" 
               class="form-control" 
-              placeholder="Phone Number (11 digits) *"
+              [placeholder]="'contact.form.phone' | translate"
               [class.invalid]="phone?.invalid && phone?.touched"
               maxlength="11">
             <span class="error-text" *ngIf="phone?.invalid && phone?.touched">
-              <span *ngIf="phone?.errors?.['required']">Phone number is required</span>
-              <span *ngIf="phone?.errors?.['pattern']">Phone number must be 11 digits</span>
+              <span *ngIf="phone?.errors?.['required']">{{ 'forms.validation.phone_required' | translate }}</span>
+              <span *ngIf="phone?.errors?.['pattern']">{{ 'forms.validation.phone_pattern' | translate }}</span>
             </span>
           </div>
 
@@ -127,11 +125,11 @@
               type="text" 
               formControlName="subject" 
               class="form-control" 
-              placeholder="Subject *"
+              [placeholder]="'contact.form.subject' | translate"
               [class.invalid]="subject?.invalid && subject?.touched">
             <span class="error-text" *ngIf="subject?.invalid && subject?.touched">
-              <span *ngIf="subject?.errors?.['required']">Subject is required</span>
-              <span *ngIf="subject?.errors?.['minlength']">Subject must be at least 5 characters</span>
+              <span *ngIf="subject?.errors?.['required']">{{ 'forms.validation.subject_required' | translate }}</span>
+              <span *ngIf="subject?.errors?.['minlength']">{{ 'forms.validation.subject_minlength' | translate }}</span>
             </span>
           </div>
 
@@ -140,12 +138,12 @@
             <textarea 
               formControlName="message" 
               class="form-control textarea" 
-              placeholder="Message *" 
+              [placeholder]="'contact.form.message' | translate"
               rows="6"
               [class.invalid]="message?.invalid && message?.touched"></textarea>
             <span class="error-text" *ngIf="message?.invalid && message?.touched">
-              <span *ngIf="message?.errors?.['required']">Message is required</span>
-              <span *ngIf="message?.errors?.['minlength']">Message must be at least 10 characters</span>
+              <span *ngIf="message?.errors?.['required']">{{ 'forms.validation.message_required' | translate }}</span>
+              <span *ngIf="message?.errors?.['minlength']">{{ 'forms.validation.message_minlength' | translate }}</span>
             </span>
           </div>
 
@@ -154,16 +152,16 @@
             type="submit" 
             class="btn-submit" 
             [disabled]="isSubmitting">
-            <span *ngIf="!isSubmitting">Send Message</span>
+            <span *ngIf="!isSubmitting">{{ 'contact.form.send' | translate }}</span>
             <span *ngIf="isSubmitting">
-              <i class="fas fa-spinner fa-spin"></i> Sending...
+              <i class="fas fa-spinner fa-spin"></i> {{ 'contact.form.sending' | translate }}
             </span>
           </button>
 
           <!-- Success Message -->
           <div *ngIf="submitSuccess" class="success-message">
             <i class="fas fa-check-circle"></i>
-            Your message has been sent successfully! We'll contact you soon.
+            {{ 'contact.form.success' | translate }}
           </div>
 
           <!-- Error Message -->
@@ -198,17 +196,17 @@
   <div class="container">
     <div class="cta-content">
       <div class="cta-text">
-        <h2>Can't Find What You're Looking For?</h2>
-        <p>Our expert team is here to help you find your perfect property</p>
+        <h2>{{ 'contact.cta.title' | translate }}</h2>
+        <p>{{ 'contact.cta.description' | translate }}</p>
       </div>
       <div class="cta-buttons">
         <a href="https://wa.me/201143872859" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
           <i class="bi bi-whatsapp"></i>
-          WhatsApp Us
+          {{ 'contact.cta.whatsapp' | translate }}
         </a>
         <a href="tel:01143872859" class="cta-btn secondary">
           <i class="bi bi-telephone-fill"></i>
-          Call Us
+          {{ 'contact.cta.call' | translate }}
         </a>
       </div>
     </div>
@@ -227,7 +225,7 @@
       </div>
       <div class="contact-item">
         <i class="bi bi-geo-alt-fill"></i>
-        <span>Cairo, Egypt</span>
+        <span>{{ 'contact.contact_info.cairo_egypt' | translate }}</span>
       </div>
     </div>
   </div>

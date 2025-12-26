@@ -76,14 +76,14 @@
         <div class="details-section">
           <h2 class="section-title">
             <i class="bi bi-info-circle"></i>
-            Property Details
+            {{ 'property_details.details_title' | translate }}
           </h2>
 
           <div class="details-grid">
             <div class="detail-card">
               <i class="bi bi-door-open-fill"></i>
               <div class="detail-info">
-                <span class="detail-label">Bedrooms</span>
+                <span class="detail-label">{{ 'property_details.bedrooms' | translate }}</span>
                 <span class="detail-value">{{ property.rooms || 'N/A' }}</span>
               </div>
             </div>
@@ -91,7 +91,7 @@
             <div class="detail-card">
               <i class="bi bi-droplet-fill"></i>
               <div class="detail-info">
-                <span class="detail-label">Bathrooms</span>
+                <span class="detail-label">{{ 'property_details.bathrooms' | translate }}</span>
                 <span class="detail-value">{{ property.bathrooms || 'N/A' }}</span>
               </div>
             </div>
@@ -99,7 +99,7 @@
             <div class="detail-card">
               <i class="bi bi-arrows-fullscreen"></i>
               <div class="detail-info">
-                <span class="detail-label">Area</span>
+                <span class="detail-label">{{ 'property_details.area' | translate }}</span>
                 <span class="detail-value">{{ property.areaSpace || property.area || 'N/A' }} m²</span>
               </div>
             </div>
@@ -107,7 +107,7 @@
             <div class="detail-card">
               <i class="bi bi-house"></i>
               <div class="detail-info">
-                <span class="detail-label">Type</span>
+                <span class="detail-label">{{ 'property_details.type' | translate }}</span>
                 <span class="detail-value">{{ property.propertyType || 'N/A' }}</span>
               </div>
             </div>
@@ -115,7 +115,7 @@
             <div class="detail-card">
               <i class="bi bi-paint-bucket"></i>
               <div class="detail-info">
-                <span class="detail-label">Finishing</span>
+                <span class="detail-label">{{ 'property_details.finishing' | translate }}</span>
                 <span class="detail-value">{{ property.finishingLevel || 'N/A' }}</span>
               </div>
             </div>
@@ -123,7 +123,7 @@
             <div class="detail-card">
               <i class="bi bi-eye-fill"></i>
               <div class="detail-info">
-                <span class="detail-label">Views</span>
+                <span class="detail-label">{{ 'property_details.views' | translate }}</span>
                 <span class="detail-value">{{ property.views || 0 }}</span>
               </div>
             </div>
@@ -134,7 +134,7 @@
         <div class="description-section">
           <h2 class="section-title">
             <i class="bi bi-file-text"></i>
-            Description
+            {{ 'property_details.description' | translate }}
           </h2>
           <p class="description-text">
             {{ property.description || 'This stunning property offers modern living at its finest. With spacious rooms, contemporary finishes, and prime location, this home is perfect for families looking for comfort and convenience. The property features high-quality materials throughout, ample natural light, and easy access to local amenities.' }}
@@ -252,7 +252,7 @@
         <div class="location-section">
           <h2 class="section-title">
             <i class="bi bi-geo-alt"></i>
-            Location
+            {{ 'property_details.location' | translate }}
           </h2>
           <div class="map-container">
             <iframe
@@ -270,7 +270,7 @@
         <div class="similar-properties-section" *ngIf="similarProperties.length > 0">
           <h2 class="section-title">
             <i class="bi bi-houses"></i>
-            Similar Properties
+            {{ 'property_details.similar_properties' | translate }}
           </h2>
           <div class="similar-grid">
             <div
@@ -280,7 +280,7 @@
               <div class="similar-image">
                 <img [src]="prop.imageUrl || galleryImages[0]" [alt]="prop.title">
                 <span class="similar-badge" [class.rent]="prop.purpose.toLowerCase() === 'rent'">
-                  {{ prop.purpose.toLowerCase() === 'rent' ? 'For Rent' : 'For Sale' }}
+                  {{ prop.purpose.toLowerCase() === 'rent' ? ('property_details.for_rent' | translate) : ('property_details.for_sale' | translate) }}
                 </span>
               </div>
               <div class="similar-info">
@@ -416,5 +416,5 @@
 <!-- Loading State -->
 <div class="loading-state" *ngIf="!property">
   <div class="spinner"></div>
-  <p>Loading property details...</p>
+  <p>{{ 'property_details.loading' | translate }}</p>
 </div>

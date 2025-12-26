@@ -3,8 +3,8 @@
   <div class="hero-overlay"></div>
   <div class="hero-content-wrapper">
     <div class="hero-text-content">
-      <h1 class="hero-main-title">Find Your Perfect Property to Buy</h1>
-      <p class="hero-description">Browse our extensive collection of properties for sale and find your dream home</p>
+      <h1 class="hero-main-title">{{ 'home.buy.hero_title' | translate }}</h1>
+      <p class="hero-description">{{ 'home.buy.hero_description' | translate }}</p>
 
       <!-- Search Box in Hero -->
       <div class="hero-search-box">
@@ -16,7 +16,7 @@
               <input
                 type="text"
                 formControlName="city"
-                placeholder="City, Area or Neighborhood"
+                [placeholder]="'home.buy.city_placeholder' | translate"
                 class="search-input-hero">
             </div>
 
@@ -26,7 +26,7 @@
               <input
                 type="text"
                 formControlName="propertyType"
-                placeholder="Property Type"
+                [placeholder]="'home.buy.property_type_placeholder' | translate"
                 class="search-input-hero"
                 readonly
                 (click)="togglePropertyTypeDropdown()">
@@ -35,15 +35,15 @@
               <div class="dropdown-menu-hero" *ngIf="showPropertyTypeDropdown">
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Apartment'}); showPropertyTypeDropdown = false">
                   <i class="bi bi-building"></i>
-                  Apartment
+                  {{ 'property.apartment' | translate }}
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Villa'}); showPropertyTypeDropdown = false">
                   <i class="bi bi-house"></i>
-                  Villa
+                  {{ 'property.villa' | translate }}
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({propertyType: 'Land'}); showPropertyTypeDropdown = false">
                   <i class="bi bi-house-door"></i>
-                  Land
+                  {{ 'property.land' | translate }}
                 </div>
               </div>
             </div>
@@ -54,7 +54,7 @@
               <input
                 type="text"
                 formControlName="rooms"
-                placeholder="Bedrooms"
+                [placeholder]="'property.bedrooms' | translate"
                 class="search-input-hero"
                 readonly
                 (click)="toggleBedsAndBathsDropdown()">
@@ -63,19 +63,19 @@
               <div class="dropdown-menu-hero" *ngIf="showBedsAndBathsDropdown">
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '1'}); showBedsAndBathsDropdown = false">
                   <i class="bi bi-1-circle"></i>
-                  1 Bedroom
+                  {{ '1' }} {{ 'property.bedroom' | translate }}
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '2'}); showBedsAndBathsDropdown = false">
                   <i class="bi bi-2-circle"></i>
-                  2 Bedrooms
+                  {{ '2' }} {{ 'property.bedrooms' | translate }}
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '3'}); showBedsAndBathsDropdown = false">
                   <i class="bi bi-3-circle"></i>
-                  3 Bedrooms
+                  {{ '3' }} {{ 'property.bedrooms' | translate }}
                 </div>
                 <div class="dropdown-item-hero" (click)="searchForm.patchValue({rooms: '4'}); showBedsAndBathsDropdown = false">
                   <i class="bi bi-4-circle"></i>
-                  4+ Bedrooms
+                  {{ '4+' }} {{ 'property.bedrooms' | translate }}
                 </div>
               </div>
             </div>
@@ -89,11 +89,11 @@
 
         <!-- Quick Search -->
         <div class="quick-search-hero">
-          <span class="quick-label">Popular: </span>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Cairo')">Cairo</button>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Alexandria')">Alexandria</button>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Giza')">Giza</button>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('New Cairo')">New Cairo</button>
+          <span class="quick-label">{{ 'home.buy.popular' | translate }}: </span>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Cairo')">{{ 'home.buy.cairo' | translate }}</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Alexandria')">{{ 'home.buy.alexandria' | translate }}</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Giza')">{{ 'home.buy.giza' | translate }}</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('New Cairo')">{{ 'home.buy.new_cairo' | translate }}</button>
         </div>
       </div>
     </div>
@@ -109,9 +109,9 @@
       <div class="properties-content">
         <div class="properties-header">
           <h2 class="properties-count">
-            <span class="count-number">{{ buyProperties.length }}</span> Properties Found
+            <span class="count-number">{{ buyProperties.length }}</span> {{ 'home.buy.properties_found' | translate }}
             <span class="page-info" *ngIf="displayedProperties.length > 0">
-              (Showing {{ displayedProperties.length }} of {{ buyProperties.length }})
+              ({{ 'home.buy.showing' | translate }} {{ displayedProperties.length }} {{ 'home.buy.of' | translate }} {{ buyProperties.length }})
             </span>
           </h2>
           <div class="view-toggle">
@@ -141,12 +141,12 @@
               </button>
 
               <!-- Purpose Badge -->
-              <span class="purpose-badge">For Sale</span>
+              <span class="purpose-badge buy">{{ 'property.for_sale' | translate }}</span>
 
               <!-- Featured Badge -->
               <span class="featured-badge" *ngIf="property.isFeatured">
                 <i class="bi bi-star-fill"></i>
-                Featured
+                {{ 'property.featured' | translate }}
               </span>
             </div>
 
@@ -164,11 +164,11 @@
               <div class="property-details">
                 <span class="detail-item">
                   <i class="bi bi-door-open-fill"></i>
-                  {{ property.rooms }} Beds
+                  {{ property.rooms }} {{ 'property.beds' | translate }}
                 </span>
                 <span class="detail-item">
                   <i class="bi bi-droplet-fill"></i>
-                  {{ property.bathrooms }} Baths
+                  {{ property.bathrooms }} {{ 'property.baths' | translate }}
                 </span>
                 <span class="detail-item">
                   <i class="bi bi-arrows-fullscreen"></i>
@@ -227,15 +227,15 @@
           <div class="no-results-icon">
             <i class="bi bi-search"></i>
           </div>
-          <h3>No Properties Found</h3>
-          <p>Try adjusting your search filters or explore different areas</p>
-          <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">Reset Filters</button>
+          <h3>{{ 'home.buy.no_properties_found' | translate }}</h3>
+          <p>{{ 'home.buy.try_adjusting_filters' | translate }}</p>
+          <button type="button" class="reset-filters-btn" (click)="clearAllFilters()">{{ 'home.buy.reset_filters' | translate }}</button>
         </div>
 
         <!-- See More Button -->
         <div class="see-more-section" *ngIf="hasMoreToLoad()">
           <button type="button" class="see-more-btn" (click)="loadMore()">
-            See More
+            {{ 'common.see_more' | translate }}
             <i class="bi bi-arrow-down"></i>
           </button>
         </div>
@@ -244,31 +244,31 @@
       <!-- Sidebar Filters -->
       <aside class="filters-sidebar">
         <div class="filters-header">
-          <h3>Filters</h3>
-          <button type="button" class="clear-filters" (click)="clearAllFilters()">Clear All</button>
+          <h3>{{ 'home.buy.filters' | translate }}</h3>
+          <button type="button" class="clear-filters" (click)="clearAllFilters()">{{ 'home.buy.clear_all' | translate }}</button>
         </div>
 
         <div class="filter-group">
           <h4 class="filter-title">
             <i class="bi bi-sort-down"></i>
-            Sort By
+            {{ 'home.buy.sort_by' | translate }}
           </h4>
           <div class="filter-options">
             <label class="filter-option">
               <input type="radio" name="sort" value="newest" (change)="onFilterChange($event)">
-              <span>Newest First</span>
+              <span>{{ 'home.buy.newest_first' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="radio" name="sort" value="price-low" (change)="onFilterChange($event)">
-              <span>Price: Low to High</span>
+              <span>{{ 'home.buy.price_low_to_high' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="radio" name="sort" value="price-high" (change)="onFilterChange($event)">
-              <span>Price: High to Low</span>
+              <span>{{ 'home.buy.price_high_to_low' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="radio" name="sort" value="popular" (change)="onFilterChange($event)">
-              <span>Most Popular</span>
+              <span>{{ 'home.buy.most_popular' | translate }}</span>
             </label>
           </div>
         </div>
@@ -276,20 +276,20 @@
         <div class="filter-group">
           <h4 class="filter-title">
             <i class="bi bi-house"></i>
-            Property Type
+            {{ 'property.property_type' | translate }}
           </h4>
           <div class="filter-options">
             <label class="filter-option">
               <input type="checkbox" value="apartment" (change)="onFilterChange($event)">
-              <span>Apartment</span>
+              <span>{{ 'property.apartment' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="villa" (change)="onFilterChange($event)">
-              <span>Villa</span>
+              <span>{{ 'property.villa' | translate }}</span>
             </label>
             <label class="filter-option">
-              <input type="checkbox" value="Land" (change)="onFilterChange($event)">
-              <span>Land</span>
+              <input type="checkbox" value="land" (change)="onFilterChange($event)">
+              <span>{{ 'property.land' | translate }}</span>
             </label>
           </div>
         </div>
@@ -297,36 +297,36 @@
         <div class="filter-group">
           <h4 class="filter-title">
             <i class="bi bi-currency-dollar"></i>
-            Price Range
+            {{ 'home.buy.price_range' | translate }}
           </h4>
           <div class="price-inputs">
-            <input type="number" placeholder="Min" class="price-input" #minPrice (change)="onPriceFilterChange()">
+            <input type="number" [placeholder]="'home.buy.min' | translate" class="price-input" #minPrice (change)="onPriceFilterChange()">
             <span class="price-separator">-</span>
-            <input type="number" placeholder="Max" class="price-input" #maxPrice (change)="onPriceFilterChange()">
+            <input type="number" [placeholder]="'home.buy.max' | translate" class="price-input" #maxPrice (change)="onPriceFilterChange()">
           </div>
         </div>
 
         <div class="filter-group">
           <h4 class="filter-title">
             <i class="bi bi-arrows-fullscreen"></i>
-            Area (m²)
+            {{ 'home.buy.area' | translate }}
           </h4>
           <div class="filter-options">
             <label class="filter-option">
               <input type="checkbox" value="under100" (change)="onFilterChange($event)">
-              <span>Under 100</span>
+              <span>{{ 'home.buy.under_100' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="100-200" (change)="onFilterChange($event)">
-              <span>100 - 200</span>
+              <span>{{ 'home.buy.range_100_200' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="200-300" (change)="onFilterChange($event)">
-              <span>200 - 300</span>
+              <span>{{ 'home.buy.range_200_300' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="300plus" (change)="onFilterChange($event)">
-              <span>300+</span>
+              <span>{{ 'home.buy.range_300_plus' | translate }}</span>
             </label>
           </div>
         </div>
@@ -334,24 +334,24 @@
         <div class="filter-group">
           <h4 class="filter-title">
             <i class="bi bi-door-open"></i>
-            Bedrooms
+            {{ 'property.bedrooms' | translate }}
           </h4>
           <div class="filter-options">
             <label class="filter-option">
               <input type="checkbox" value="1" (change)="onFilterChange($event)">
-              <span>1 Bedroom</span>
+              <span>{{ '1' }} {{ 'property.bedroom' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="2" (change)="onFilterChange($event)">
-              <span>2 Bedrooms</span>
+              <span>{{ '2' }} {{ 'property.bedrooms' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="3" (change)="onFilterChange($event)">
-              <span>3 Bedrooms</span>
+              <span>{{ '3' }} {{ 'property.bedrooms' | translate }}</span>
             </label>
             <label class="filter-option">
               <input type="checkbox" value="4plus" (change)="onFilterChange($event)">
-              <span>4+ Bedrooms</span>
+              <span>{{ '4+' }} {{ 'property.bedrooms' | translate }}</span>
             </label>
           </div>
         </div>

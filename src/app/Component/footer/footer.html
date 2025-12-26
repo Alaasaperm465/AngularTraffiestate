@@ -3,17 +3,17 @@
   <div class="container">
     <div class="cta-content">
       <div class="cta-text">
-        <h2>Can't Find What You're Looking For?</h2>
-        <p>Our expert team is here to help you find your perfect property</p>
+        <h2>{{ 'home.contact_cta.title' | translate }}</h2>
+        <p>{{ 'home.contact_cta.description' | translate }}</p>
       </div>
       <div class="cta-buttons">
         <a [href]="'https://wa.me/' + phone.replace(/\D/g, '')" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
           <i class="bi bi-whatsapp"></i>
-          WhatsApp Us
+          {{ 'home.contact_cta.whatsapp' | translate }}
         </a>
         <button type="button" class="cta-btn secondary" (click)="callNow()">
           <i class="bi bi-telephone-fill"></i>
-          Call Us
+          {{ 'home.contact_cta.call_us' | translate }}
         </button>
       </div>
     </div>
@@ -32,7 +32,7 @@
       </div>
       <div class="contact-item">
         <i class="bi bi-geo-alt-fill"></i>
-        <span>Cairo, Egypt</span>
+        <span>{{ 'contact_info.cairo_egypt' | translate }}</span>
       </div>
     </div>
   </div>

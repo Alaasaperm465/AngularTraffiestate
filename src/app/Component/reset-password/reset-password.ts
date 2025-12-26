@@ -10,11 +10,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../Services/auth-service';
+import { TranslateModule } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslateModule],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.css',
 })

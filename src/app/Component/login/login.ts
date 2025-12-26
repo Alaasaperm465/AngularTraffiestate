@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { IloginRequest } from '../../models/ilogin-request';
 import { AuthService } from '../../Services/auth-service';
 import { finalize } from 'rxjs';
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslateModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

@@ -5,6 +5,7 @@ import { PropertyService } from '../../Services/property';
 import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 // import { ReviewStats } from '../../Services/reviw-service';
 // import { ReviewService } from '../../Services/reviw-service';
 // import { ReviewService, ReviewStats } from '../../Services/review-service';
@@ -15,7 +16,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-property-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, TranslateModule],
   templateUrl: './property-details.html',
   styleUrl: './property-details.css',
 })

@@ -18,10 +18,14 @@ export class PropertyService {
      🔹 MAIN – Get All Properties (Client → Owner fallback)
      ===================================================== */
   getAllProperties(): Observable<IProperty[]> {
-  return this.http.get<IProperty[]>(
-    `${this.clientApiUrl}/properties`
-  )
-}
+    return this.http.get<any>(`${this.clientApiUrl}/properties`).pipe(
+      map(res => this.normalizeProperties(res)),
+      catchError(err => {
+        console.error('❌ Error loading properties:', err);
+        return of([]);
+      })
+    );
+  }
 
 
 

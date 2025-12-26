@@ -108,6 +108,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
 import { ICreatePropertyDto } from '../../models/icreate-property-dto';
@@ -116,7 +117,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-add-property',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './add-property.html',
   styleUrl: './add-property.css',
 })

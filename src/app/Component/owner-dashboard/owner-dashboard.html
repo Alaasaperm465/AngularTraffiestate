@@ -7,8 +7,8 @@
       <div class="hero-overlay"></div>
       <div class="container">
         <div class="hero-content">
-          <h1>My Dashboard</h1>
-          <p>Manage your properties, track statistics, and interact with clients</p>
+          <h1>{{ 'dashboard.title' | translate }}</h1>
+          <p>{{ 'dashboard.subtitle' | translate }}</p>
         </div>
       </div>
     </section>
@@ -24,12 +24,12 @@
               class="tab-button"
               [class.active]="isTabActive('my-properties')"
               (click)="switchTab('my-properties')">
-              My Properties ({{ getTabCount('my-properties') }})
+              {{ 'dashboard.tabs.my_properties' | translate }} ({{ getTabCount('my-properties') }})
             </button>
           </div>
           <button class="btn-add-property-main btn-gold" (click)="goToAddProperty()">
             <i class="bi bi-plus-lg"></i>
-            Add New Property
+            {{ 'dashboard.add_new_property' | translate }}
           </button>
         </div>
 
@@ -38,7 +38,7 @@
           <div class="search-bar">
             <input
               type="text"
-              placeholder="Search your properties..."
+              [placeholder]="'dashboard.search_properties' | translate"
               [(ngModel)]="filters.searchTerm"
               (input)="onSearch(filters.searchTerm)">
             <i class="bi bi-search"></i>
@@ -49,55 +49,56 @@
               [(ngModel)]="filters.status"
               (change)="onStatusChange(filters.status)"
               class="filter-select">
-              <option value="all">All Status</option>
-              <option value="approved">Approved</option>
-              <option value="pending">Pending Review</option>
-              <option value="rejected">Rejected</option>
+              <option value="all">{{ 'dashboard.all_status' | translate }}</option>
+              <option value="approved">{{ 'dashboard.approved' | translate }}</option>
+              <option value="pending">{{ 'dashboard.pending_review' | translate }}</option>
+              <option value="rejected">{{ 'dashboard.rejected' | translate }}</option>
             </select>
 
             <select
               [(ngModel)]="filters.sortBy"
               (change)="onSortChange(filters.sortBy)"
               class="filter-select">
-              <option value="recent">Recent</option>
-              <option value="price-high">Price (High)</option>
-              <option value="price-low">Price (Low)</option>
-              <option value="views">Most Viewed</option>
+              <option value="recent">{{ 'dashboard.recent' | translate }}</option>
+              <option value="price-high">{{ 'dashboard.price_high' | translate }}</option>
+              <option value="price-low">{{ 'dashboard.price_low' | translate }}</option>
+              <option value="views">{{ 'dashboard.most_viewed' | translate }}</option>
             </select>
 
             <button class="btn-reset" (click)="resetFilters()">
-              Reset
+              {{ 'dashboard.reset' | translate }}
             </button>
           </div>
         </div>
 
         <!-- Bulk Actions -->
         <div class="bulk-actions" *ngIf="getTotalSelected() > 0">
-          <span>{{ getTotalSelected() }} property selected</span>
-        <button (click)="deselectAllProperties()">Deselect All</button>
-        <button class="btn-delete">Delete Selected</button>
+          <span>{{ getTotalSelected() }} {{ 'dashboard.property_selected' | translate }}</span>
+        <button (click)="deselectAllProperties()">{{ 'dashboard.deselect_all' | translate }}</button>
+        <button class="btn-delete">{{ 'dashboard.delete_selected' | translate }}</button>
       </div>
 
       <!-- Loading State -->
       <div class="loading-state" *ngIf="isLoading">
         <div class="spinner"></div>
-        <p>Loading properties...</p>
+        <p>{{ 'dashboard.loading_properties' | translate }}</p>
       </div>
 
       <!-- Error State -->
       <div class="error-state" *ngIf="error && !isLoading">
         <i class="icon-alert-circle"></i>
         <p>{{ error }}</p>
-        <button (click)="loadProperties()">Retry</button>
+        <button (click)="loadProperties()">{{ 'dashboard.general.retry' | translate }}</button>
       </div>
 
       <!-- Empty State -->
       <div class="empty-state" *ngIf="hasNoProperties()">
         <i class="icon-home"></i>
-        <h3>No Properties Available</h3>
-        <p>Start by adding your first property to display here</p>
+        <h3>{{ 'dashboard.no_properties' | translate }}</h3>
+        <p>{{ 'dashboard.add_first_property' | translate }}</p>
         <button class="btn-primary" (click)="goToAddProperty()">
           <i class="icon-plus"></i>
+          {{ 'dashboard.add_new' | translate }}
           Add New Property
         </button>
       </div>
