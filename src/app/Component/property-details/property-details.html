@@ -362,6 +362,13 @@
               <i class="bi bi-whatsapp"></i>
               WhatsApp
             </button>
+<button
+  *ngIf="isRentalProperty"
+  (click)="payNow(propertyId)"
+  class="contact-btn payment">
+  <i class="bi bi-credit-card-fill"></i>
+  Pay now
+</button>
           </div>
 
           <div class="schedule-visit">

@@ -5,11 +5,18 @@ import { PropertyService } from '../../Services/property';
 import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+// import { loadStripe, Stripe } from '@stripe/stripe-js';
+
+
 // import { ReviewStats } from '../../Services/reviw-service';
 // import { ReviewService } from '../../Services/reviw-service';
 // import { ReviewService, ReviewStats } from '../../Services/review-service';
 import { ReviewService, ReviewStats } from '../../Services/reviw-service';
 import Swal from 'sweetalert2';
+import { PaymentService } from '../../Services/payment-service';
+// declare var Stripe: any; // هنا نستخدم Stripe كـ any
+
+import { loadStripe } from '@stripe/stripe-js';
 
 
 @Component({
@@ -40,6 +47,10 @@ export class PropertyDetails implements OnInit {
   userHasRated: boolean = false; // هل المستخدم قيم قبل كده؟
  isRentalProperty: boolean = false; // افتراضي false
 
+//paymment
+// private stripePromise: Promise<any>; // أي شيء يسمح لنا باستعمال redirectToCheckout
+  // private stripe: any;
+
 
 
 
@@ -69,8 +80,12 @@ export class PropertyDetails implements OnInit {
     private propertyService: PropertyService,
     private favoriteService: FavoriteService,
 
-    private ReviewService: ReviewService
-  ) {}
+    private ReviewService: ReviewService,
+    private paymentService: PaymentService
+  )
+  {
+    // this.stripePromise = loadStripe('pk_test_51Si3QQDbqOF4TUI3uDFSl1T4YZPwcEyIhtuj0mO4zBdHgrnNM4I91ZWKpvbtIPFXKsFCis7xtlOT3Wfr17l3LAxg00psroH3d5');
+  }
 
   ngOnInit(): void {
     this.propertyId = Number(this.route.snapshot.paramMap.get('id'));
@@ -403,5 +418,31 @@ Thank you.`;
 
   window.open(gmailUrl, '_blank');
 }
+//payment
+// في Angular - property-details.ts
+async payNow(propertyId: number) {
+  try {
+    const session = await this.paymentService.createPaymentSession(propertyId);
+
+    if (!session?.url) {
+      alert('حدث خطأ أثناء إنشاء جلسة الدفع');
+      return;
+    }
+
+    // تحويل مباشر لصفحة Stripe
+    window.location.href = session.url;
+
+  } catch (error) {
+    console.error(error);
+    alert('حدث خطأ أثناء الاتصال بالسيرفر');
+  }
+}
+
+
+
+
+
+
+
 
 }
