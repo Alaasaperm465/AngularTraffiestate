@@ -4,10 +4,10 @@
   <div class="breadcrumb-section">
     <div class="container">
       <nav class="breadcrumb">
-        <a routerLink="/">Home</a>
+        <a routerLink="/">{{ 'common.home' | translate }}</a>
         <i class="bi bi-chevron-left"></i>
         <a [routerLink]="property.purpose.toLowerCase() === 'rent' ? '/rent' : '/buy'">
-          {{ property.purpose.toLowerCase() === 'rent' ? 'Rent' : 'Buy' }}
+          {{ property.purpose.toLowerCase() === 'rent' ? ('property.details.for_rent' | translate) : ('property.details.for_sale' | translate) }}
         </a>
         <i class="bi bi-chevron-left"></i>
         <span>{{ property.title }}</span>
@@ -76,14 +76,14 @@
         <div class="details-section">
           <h2 class="section-title">
             <i class="bi bi-info-circle"></i>
-            {{ 'property_details.details_title' | translate }}
+            {{ 'property.details.details_title' | translate }}
           </h2>
 
           <div class="details-grid">
             <div class="detail-card">
               <i class="bi bi-door-open-fill"></i>
               <div class="detail-info">
-                <span class="detail-label">{{ 'property_details.bedrooms' | translate }}</span>
+                <span class="detail-label">{{ 'property.details.bedrooms' | translate }}</span>
                 <span class="detail-value">{{ property.rooms || 'N/A' }}</span>
               </div>
             </div>
@@ -91,7 +91,7 @@
             <div class="detail-card">
               <i class="bi bi-droplet-fill"></i>
               <div class="detail-info">
-                <span class="detail-label">{{ 'property_details.bathrooms' | translate }}</span>
+                <span class="detail-label">{{ 'property.details.bathrooms' | translate }}</span>
                 <span class="detail-value">{{ property.bathrooms || 'N/A' }}</span>
               </div>
             </div>
@@ -99,7 +99,7 @@
             <div class="detail-card">
               <i class="bi bi-arrows-fullscreen"></i>
               <div class="detail-info">
-                <span class="detail-label">{{ 'property_details.area' | translate }}</span>
+                <span class="detail-label">{{ 'property.details.area' | translate }}</span>
                 <span class="detail-value">{{ property.areaSpace || property.area || 'N/A' }} m²</span>
               </div>
             </div>
@@ -107,23 +107,23 @@
             <div class="detail-card">
               <i class="bi bi-house"></i>
               <div class="detail-info">
-                <span class="detail-label">{{ 'property_details.type' | translate }}</span>
-                <span class="detail-value">{{ property.propertyType || 'N/A' }}</span>
+                <span class="detail-label">{{ 'property.details.type' | translate }}</span>
+                <span class="detail-value">{{ ('property.' + (property.propertyType || 'apartment').toLowerCase()) | translate }}</span>
               </div>
             </div>
 
             <div class="detail-card">
               <i class="bi bi-paint-bucket"></i>
               <div class="detail-info">
-                <span class="detail-label">{{ 'property_details.finishing' | translate }}</span>
-                <span class="detail-value">{{ property.finishingLevel || 'N/A' }}</span>
+                <span class="detail-label">{{ 'property.details.finishing' | translate }}</span>
+                <span class="detail-value">{{ ('forms.add_property.' + (property.finishingLevel || 'standard').toLowerCase()) | translate }}</span>
               </div>
             </div>
 
             <div class="detail-card">
               <i class="bi bi-eye-fill"></i>
               <div class="detail-info">
-                <span class="detail-label">{{ 'property_details.views' | translate }}</span>
+                <span class="detail-label">{{ 'property.details.views' | translate }}</span>
                 <span class="detail-value">{{ property.views || 0 }}</span>
               </div>
             </div>
@@ -134,7 +134,7 @@
         <div class="description-section">
           <h2 class="section-title">
             <i class="bi bi-file-text"></i>
-            {{ 'property_details.description' | translate }}
+            {{ 'property.details.description' | translate }}
           </h2>
           <p class="description-text">
             {{ property.description || 'This stunning property offers modern living at its finest. With spacious rooms, contemporary finishes, and prime location, this home is perfect for families looking for comfort and convenience. The property features high-quality materials throughout, ample natural light, and easy access to local amenities.' }}
@@ -222,7 +222,7 @@
 <div class="add-rating-section" *ngIf="isRentalProperty">
   <h2 class="section-title">
     <i class="bi bi-star"></i>
-    Rate This Property
+    {{ 'property.details.rate_property' | translate }}
   </h2>
 
   <div class="rating-stars">
@@ -237,12 +237,12 @@
     class="submit-rating-btn"
     (click)="submitRating()"
     [disabled]="!selectedRating || isSubmittingRating || userHasRated">
-    {{ userHasRated ? 'You already rated' : 'Submit Rating' }}
+    {{ userHasRated ? ('property.details.you_already_rated' | translate) : ('property.details.submit_rating' | translate) }}
   </button>
 
   <div class="average-rating" *ngIf="reviewStats">
-    <span>Average Rating: {{ reviewStats.averageRating | number:'1.1-1' }} ⭐</span>
-    <span>({{ reviewStats.reviewsCount }} reviews)</span>
+    <span>{{ 'property.details.average_rating' | translate }}: {{ reviewStats.averageRating | number:'1.1-1' }} ⭐</span>
+    <span>({{ reviewStats.reviewsCount }} {{ 'property.details.reviews' | translate }})</span>
   </div>
 </div>
 
@@ -252,7 +252,7 @@
         <div class="location-section">
           <h2 class="section-title">
             <i class="bi bi-geo-alt"></i>
-            {{ 'property_details.location' | translate }}
+            {{ 'property.details.location' | translate }}
           </h2>
           <div class="map-container">
             <iframe
@@ -270,7 +270,7 @@
         <div class="similar-properties-section" *ngIf="similarProperties.length > 0">
           <h2 class="section-title">
             <i class="bi bi-houses"></i>
-            {{ 'property_details.similar_properties' | translate }}
+            {{ 'property.details.similar_properties' | translate }}
           </h2>
           <div class="similar-grid">
             <div
@@ -280,7 +280,7 @@
               <div class="similar-image">
                 <img [src]="prop.imageUrl || galleryImages[0]" [alt]="prop.title">
                 <span class="similar-badge" [class.rent]="prop.purpose.toLowerCase() === 'rent'">
-                  {{ prop.purpose.toLowerCase() === 'rent' ? ('property_details.for_rent' | translate) : ('property_details.for_sale' | translate) }}
+                  {{ prop.purpose.toLowerCase() === 'rent' ? ('property.details.for_rent' | translate) : ('property.details.for_sale' | translate) }}
                 </span>
               </div>
               <div class="similar-info">
@@ -296,7 +296,7 @@
                 </div>
                 <div class="similar-price">
                   {{ prop.price | currency:'EGP':'symbol':'1.0-0' }}
-                  {{ prop.purpose.toLowerCase() === 'rent' ? '/month' : '' }}
+                  {{ prop.purpose.toLowerCase() === 'rent' ? ('property.details.per_month' | translate) : '' }}
                 </div>
               </div>
             </div>
@@ -314,7 +314,7 @@
               <!-- <p> Sales</p> -->
                 <h2 class="section-title">
     <i class="bi bi-star"></i>
-    Rating
+    {{ 'property.details.rating' | translate }}
   </h2>
 <div class="agent-rating" *ngIf="reviewStats && isRentalProperty">
   <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
@@ -327,7 +327,7 @@
       }">
     </i>
   </ng-container>
-  <span>{{ reviewStats.averageRating }} ({{ reviewStats.reviewsCount }} reviews)</span>
+  <span>{{ reviewStats.averageRating }} ({{ reviewStats.reviewsCount }} {{ 'property.details.reviews' | translate }})</span>
 </div>
 
 
@@ -337,16 +337,16 @@
           <div class="contact-actions">
            <button type="button" class="contact-btn primary" (click)="openCallModal()">
   <i class="bi bi-telephone-fill"></i>
-  Call Now
+  {{ 'common.call_now' | translate }}
 </button>
 
 <!-- Call Modal -->
 <div class="call-modal" *ngIf="showCallModal">
   <div class="call-modal-content">
-    <h4>Call us at:</h4>
+    <h4>{{ 'property.call_us' | translate }}</h4>
     <p>{{ defaultPhone }}</p>
-    <button (click)="makeCall()">Call Now</button>
-    <button (click)="closeCallModal()">Close</button>
+    <button (click)="makeCall()">{{ 'common.call_now' | translate }}</button>
+    <button (click)="closeCallModal()">{{ 'common.close' | translate }}</button>
   </div>
 </div>
 
@@ -355,55 +355,62 @@
   class="contact-btn secondary"
   (click)="sendEmail()">
   <i class="bi bi-envelope-fill"></i>
-  Send Email
+  {{ 'property.details.send_email' | translate }}
 </button>
 
             <button type="button" class="contact-btn whatsapp" (click)="openWhatsApp()">
               <i class="bi bi-whatsapp"></i>
               WhatsApp
             </button>
+<button
+  *ngIf="isRentalProperty"
+  (click)="payNow(propertyId)"
+  class="contact-btn payment">
+  <i class="bi bi-credit-card-fill"></i>
+  {{ 'common.cancel' | translate }}
+</button>
           </div>
 
           <div class="schedule-visit">
-            <h4>Schedule a Visit</h4>
+            <h4>{{ 'property.details.schedule_visit' | translate }}</h4>
             <form class="visit-form" (ngSubmit)="submitVisitRequest()">
               <input
                 type="text"
-                placeholder="Your Name *"
+                placeholder="{{ 'forms.visit_form.name' | translate }}"
                 class="form-input"
                 [(ngModel)]="visitForm.name"
                 name="name"
                 required>
               <input
                 type="email"
-                placeholder="Your Email *"
+                placeholder="{{ 'property.details.your_email' | translate }}"
                 class="form-input"
                 [(ngModel)]="visitForm.email"
                 name="email"
                 required>
               <input
                 type="tel"
-                placeholder="Your Phone *"
+                placeholder="{{ 'property.details.your_phone' | translate }}"
                 class="form-input"
                 [(ngModel)]="visitForm.phone"
                 name="phone"
                 required>
               <input
                 type="date"
-                placeholder="Preferred Date *"
+                placeholder="{{ 'property.details.preferred_date' | translate }}"
                 class="form-input"
                 [(ngModel)]="visitForm.date"
                 name="date"
                 required>
               <textarea
-                placeholder="Message (Optional)"
+                placeholder="{{ 'property.details.message_optional' | translate }}"
                 class="form-textarea"
                 rows="3"
                 [(ngModel)]="visitForm.message"
                 name="message"></textarea>
               <button type="submit" class="submit-btn">
                 <i class="bi bi-calendar-check"></i>
-                Request Visit
+                {{ 'property.details.request_visit' | translate }}
               </button>
             </form>
           </div>
@@ -416,5 +423,5 @@
 <!-- Loading State -->
 <div class="loading-state" *ngIf="!property">
   <div class="spinner"></div>
-  <p>{{ 'property_details.loading' | translate }}</p>
+  <p>{{ 'property.details.loading' | translate }}</p>
 </div>

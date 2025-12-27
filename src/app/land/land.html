@@ -45,9 +45,9 @@
             {{ 'land.search.size_sqm' | translate }}
           </label>
           <div class="range-inputs">
-            <input type="number" [placeholder]="'land.search.min_size' | translate" formControlName="minSize" min="0" />
+            <input type="number" placeholder="Min" formControlName="minSize" min="0" />
             <span>-</span>
-            <input type="number" [placeholder]="'land.search.max_size' | translate" formControlName="maxSize" min="0" />
+            <input type="number" placeholder="Max" formControlName="maxSize" min="0" />
           </div>
         </div>
 
@@ -58,15 +58,20 @@
             {{ 'land.search.price_egp' | translate }}
           </label>
           <div class="range-inputs">
-            <input type="number" [placeholder]="'land.search.min_price' | translate" formControlName="minPrice" min="0" />
+            <input type="number" placeholder="Min" formControlName="minPrice" min="0" />
             <span>-</span>
-            <input type="number" [placeholder]="'land.search.max_price' | translate" formControlName="maxPrice" min="0" />
+            <input type="number" placeholder="Max" formControlName="maxPrice" min="0" />
           </div>
         </div>
 
         <!-- Search Button -->
         <button class="search-btn" type="submit" [title]="'land.search.search_button' | translate">
           <i class="bi bi-search"></i>
+        </button>
+
+        <!-- Clear Button -->
+        <button class="search-btn clear-btn" type="button" [title]="'common.cancel' | translate" (click)="clearAllFilters()">
+          {{ 'common.cancel' | translate }}
         </button>
 
       </div>
@@ -79,7 +84,7 @@
     <div class="quick-search-grid">
       <div
         class="quick-search-item"
-        *ngFor="let city of quickSearchCities"
+        *ngFor="let city of quickSearchCities; trackBy: trackByCity"
         (click)="setQuickSearch(city.name)"
       >
         <div class="city-name">
@@ -87,7 +92,7 @@
           {{ city.name }}
         </div>
         <span class="city-count">
-          {{ getCityCount(city.name) }}
+          {{ city.count }}
         </span>
       </div>
     </div>
@@ -170,7 +175,7 @@
             <div class="property-footer">
               <div class="property-price">
                 <span class="price-value">{{ land.price | currency:'EGP':'symbol':'1.0-0' }}</span>
-                <span class="price-period">EGP</span>
+                <span class="price-period">{{ 'common.currency' | translate }}</span>
               </div>
               <div class="property-contact-actions">
                 <a
@@ -183,14 +188,14 @@
                   (click)="$event.stopPropagation()">
                   <i class="bi bi-whatsapp"></i>
                 </a>
-                <a
+                <button
+                  type="button"
                   class="contact-icon-btn phone-btn"
-                  [href]="'tel:' + phone"
                   title="Call Now"
                   aria-label="Call seller"
-                  (click)="$event.stopPropagation()">
+                  (click)="showCallModal(); $event.stopPropagation()">
                   <i class="bi bi-telephone-fill"></i>
-                </a>
+                </button>
                 <a
                   class="contact-icon-btn email-btn"
                   [href]="'mailto:' + email"
@@ -325,4 +330,13 @@
 
   </div>
 
+</div>
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModalFlag">
+  <div class="call-modal-content">
+    <h4>{{ 'property.call_us' | translate }}</h4>
+    <p>{{ phone }}</p>
+    <button (click)="makeCall()">{{ 'common.call_now' | translate }}</button>
+    <button (click)="closeCallModal()">{{ 'common.close' | translate }}</button>
+  </div>
 </div>

@@ -19,7 +19,7 @@ export class Rent implements OnInit {
   rentProperties: IProperty[] = [];
   allRentProperties: IProperty[] = [];
   displayedProperties: IProperty[] = [];
-  
+
   showPropertyTypeDropdown = false;
   showBedsAndBathsDropdown = false;
   isScrolled = false;
@@ -38,6 +38,9 @@ export class Rent implements OnInit {
   selectedSort: string = '';
   minPrice: number | null = null;
   maxPrice: number | null = null;
+
+  // Modal state
+  showCallModalFlag: boolean = false;
 
   constructor(
     private rentService: PropertyService,
@@ -210,8 +213,22 @@ export class Rent implements OnInit {
     const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
     const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
 
-    this.minPrice = minEl?.value ? parseInt(minEl.value, 10) : null;
-    this.maxPrice = maxEl?.value ? parseInt(maxEl.value, 10) : null;
+    // Parse values
+    let minValue = minEl?.value ? parseInt(minEl.value, 10) : null;
+    let maxValue = maxEl?.value ? parseInt(maxEl.value, 10) : null;
+
+    // Prevent negative values - set to null if negative or zero
+    if (minValue !== null && minValue <= 0) {
+      minEl.value = '';
+      minValue = null;
+    }
+    if (maxValue !== null && maxValue <= 0) {
+      maxEl.value = '';
+      maxValue = null;
+    }
+
+    this.minPrice = minValue;
+    this.maxPrice = maxValue;
 
     this.onSearch();
   }
@@ -230,7 +247,7 @@ export class Rent implements OnInit {
 
     // Clear all checkboxes and radio buttons
     document.querySelectorAll('.filter-options input').forEach((input: any) => input.checked = false);
-    
+
     // Clear price inputs
     const minEl = document.querySelector('.price-input[placeholder="Min"]') as HTMLInputElement;
     const maxEl = document.querySelector('.price-input[placeholder="Max"]') as HTMLInputElement;
@@ -301,5 +318,21 @@ export class Rent implements OnInit {
   // ===== TRACK BY =====
   trackById(index: number, item: IProperty): number {
     return item.id;
+  }
+
+  openCallModal(): void {
+    this.showCallModalFlag = true;
+  }
+
+  closeCallModal(): void {
+    this.showCallModalFlag = false;
+  }
+
+  makeCall(): void {
+    window.location.href = `tel:${this.phone}`;
+  }
+
+  showCallModal(): void {
+    this.openCallModal();
   }
 }

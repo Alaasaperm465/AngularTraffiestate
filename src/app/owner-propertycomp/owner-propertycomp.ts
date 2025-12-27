@@ -7,11 +7,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PropertyOwnerService } from '../Services/propertyOwner';
 import { FavoriteService } from '../Services/favorite-service';
 import { ChangeDetectorRef } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-owner-propertycomp',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './owner-propertycomp.html',
   styleUrl: './owner-propertycomp.css',
 })

@@ -6,8 +6,7 @@ import { IProperty, phone, email } from '../../models/iproperty';
 import { HttpClient } from '@angular/common/http';
 import { PropertyService } from '../../Services/PropertyService/property';
 import { FavoriteService } from '../../Services/favorite-service';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageSwitcherComponent } from '../switcher/switcher';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -18,8 +17,7 @@ import { LanguageSwitcherComponent } from '../switcher/switcher';
     CommonModule, 
     ReactiveFormsModule, 
     RouterModule,
-    TranslateModule,
-    LanguageSwitcherComponent
+    TranslateModule
   ],
 })
 export class Home implements OnInit, OnDestroy {
@@ -28,6 +26,7 @@ export class Home implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   private favoriteService = inject(FavoriteService);
   private propertyService = inject(PropertyService);
+  private translate = inject(TranslateService);
 
   // Form
   searchForm: FormGroup;
@@ -55,7 +54,10 @@ export class Home implements OnInit, OnDestroy {
 
   // Pagination
   itemsPerLoad: number = 8;
-  currentLoadedCount: number = 8;
+  currentLoadedCount: number = 5;
+
+  // Modal state
+  showCallModalFlag: boolean = false;
 
   // Event listener cleanup
   private loadAllPropertiesListener: any;
@@ -357,6 +359,8 @@ export class Home implements OnInit, OnDestroy {
     this.minPrice = minEl?.value ? parseInt(minEl.value, 10) : null;
     this.maxPrice = maxEl?.value ? parseInt(maxEl.value, 10) : null;
 
+    console.log('💰 Price filter changed:', { min: this.minPrice, max: this.maxPrice });
+
     this.applyAllFilters();
   }
 
@@ -425,10 +429,6 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  trackById(index: number, item: IProperty): number {
-    return item.id;
-  }
-
   getWhatsAppLink(phoneNumber: string): string {
     let cleanPhone = phoneNumber.replace(/\D/g, '');
 
@@ -441,5 +441,32 @@ export class Home implements OnInit, OnDestroy {
     }
 
     return `https://wa.me/${cleanPhone}`;
+  }
+
+  openCallModal(): void {
+    this.showCallModalFlag = true;
+  }
+
+  closeCallModal(): void {
+    this.showCallModalFlag = false;
+  }
+
+  makeCall(): void {
+    window.location.href = `tel:${this.phone}`;
+  }
+
+  showCallModal(): void {
+    this.openCallModal();
+  }
+
+  trackById(index: number, item: IProperty): number {
+    return item.id;
+  }
+
+  getPurposeLabel(purpose: string): string {
+    const key = purpose.toLowerCase() === 'rent' 
+      ? 'property.details.for_rent' 
+      : 'property.details.for_sale';
+    return this.translate.instant(key);
   }
 }

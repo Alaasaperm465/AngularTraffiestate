@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { IProperty, phone, email } from '../../models/iproperty';
 import { PropertyService } from '../../Services/property';
 import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 // import { ReviewStats } from '../../Services/reviw-service';
 // import { ReviewService } from '../../Services/reviw-service';
 // import { ReviewService, ReviewStats } from '../../Services/review-service';
 import { ReviewService, ReviewStats } from '../../Services/reviw-service';
 import Swal from 'sweetalert2';
+import { PaymentService } from '../../Services/payment-service';
+// import { loadStripe } from '@stripe/stripe-js';
 
 
 @Component({
@@ -24,6 +26,7 @@ export class PropertyDetails implements OnInit {
   propertyId!: number;
   property!: IProperty;
   mainImageUrl!: string;
+  private translate = inject(TranslateService);
 
   // استخدم هذه المتغيرات كـ default values
   defaultPhone = '+201200003943';
@@ -40,6 +43,10 @@ export class PropertyDetails implements OnInit {
   isSubmittingRating = false;
   userHasRated: boolean = false; // هل المستخدم قيم قبل كده؟
  isRentalProperty: boolean = false; // افتراضي false
+
+//paymment
+// private stripePromise: Promise<any>; // أي شيء يسمح لنا باستعمال redirectToCheckout
+  // private stripe: any;
 
 
 
@@ -70,8 +77,12 @@ export class PropertyDetails implements OnInit {
     private propertyService: PropertyService,
     private favoriteService: FavoriteService,
 
-    private ReviewService: ReviewService
-  ) {}
+    private ReviewService: ReviewService,
+    private paymentService: PaymentService
+  )
+  {
+    // this.stripePromise = loadStripe('pk_test_51Si3QQDbqOF4TUI3uDFSl1T4YZPwcEyIhtuj0mO4zBdHgrnNM4I91ZWKpvbtIPFXKsFCis7xtlOT3Wfr17l3LAxg00psroH3d5');
+  }
 
   ngOnInit(): void {
     this.propertyId = Number(this.route.snapshot.paramMap.get('id'));
@@ -302,11 +313,15 @@ export class PropertyDetails implements OnInit {
 
   // ===== UTILITIES =====
   getPropertyPurposeLabel(): string {
-    return this.property.purpose.toLowerCase() === 'rent' ? 'For Rent' : 'For Sale';
+    if (!this.property) return '';
+    const key = this.property.purpose.toLowerCase() === 'rent' ? 'property.details.for_rent' : 'property.details.for_sale';
+    return this.translate.instant(key);
   }
 
   getPriceLabel(): string {
-    return this.property.purpose.toLowerCase() === 'rent' ? 'Per Month' : 'Total Price';
+    if (!this.property) return '';
+    const key = this.property.purpose.toLowerCase() === 'rent' ? 'property.details.per_month' : 'property.details.total_price';
+    return this.translate.instant(key);
   }
 
   trackById(index: number, item: any): number {
@@ -404,5 +419,31 @@ Thank you.`;
 
   window.open(gmailUrl, '_blank');
 }
+//payment
+// في Angular - property-details.ts
+async payNow(propertyId: number) {
+  try {
+    const session = await this.paymentService.createPaymentSession(propertyId);
+
+    if (!session?.url) {
+      alert('حدث خطأ أثناء إنشاء جلسة الدفع');
+      return;
+    }
+
+    // تحويل مباشر لصفحة Stripe
+    window.location.href = session.url;
+
+  } catch (error) {
+    console.error(error);
+    alert('حدث خطأ أثناء الاتصال بالسيرفر');
+  }
+}
+
+
+
+
+
+
+
 
 }

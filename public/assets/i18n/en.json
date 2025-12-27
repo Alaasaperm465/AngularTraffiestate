@@ -10,7 +10,14 @@
     "back": "Back",
     "cancel": "Cancel",
     "save": "Save",
-    "see_more": "See More"
+    "see_more": "See More",
+    "call_now": "Call Now",
+    "close": "Close",
+    "currency": "EGP",
+    "home": "Home",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
   },
   "header": {
     "title": "TraffiEstate",
@@ -258,6 +265,19 @@
       "for_sale": "For Sale",
       "for_rent": "For Rent"
     },
+    "amenities": {
+      "air_conditioning": "Air Conditioning",
+      "swimming_pool": "Swimming Pool",
+      "garden": "Garden",
+      "security_system": "Security System",
+      "balcony": "Balcony",
+      "modern_kitchen": "Modern Kitchen",
+      "storage_room": "Storage Room",
+      "elevator": "Elevator"
+    },
+    "call_us": "Call us at:",
+    "for_sale": "For Sale",
+    "for_rent": "For Rent",
     "card": {
       "view": "View",
       "favorite": "Favorite",
@@ -271,7 +291,8 @@
       "bedroom": "Bedroom",
       "bedrooms": "Bedrooms",
       "for_rent": "For Rent",
-      "month": "/month"
+      "month": "/month",
+      "no_image": "No Image"
     }
   },
   "forms": {
@@ -301,6 +322,7 @@
       "standard": "Standard",
       "semi_furnished": "Semi-Furnished",
       "luxury": "Luxury",
+      "high": "High",
       "status": "Status",
       "active": "Active",
       "inactive": "Inactive",
@@ -323,37 +345,6 @@
       "studio": "Studio",
       "townhouse": "Townhouse",
       "land": "Land"
-    },
-    "property_details": {
-      "details_title": "Property Details",
-      "breadcrumb_home": "Home",
-      "bedrooms": "Bedrooms",
-      "bathrooms": "Bathrooms",
-      "area": "Area",
-      "type": "Type",
-      "finishing": "Finishing",
-      "views": "Views",
-      "description": "Description",
-      "location": "Location",
-      "similar_properties": "Similar Properties",
-      "rate_property": "Rate This Property",
-      "average_rating": "Average Rating",
-      "reviews": "reviews",
-      "you_already_rated": "You already rated",
-      "submit_rating": "Submit Rating",
-      "schedule_visit": "Schedule a Visit",
-      "your_name": "Your Name *",
-      "your_email": "Your Email *",
-      "your_phone": "Your Phone *",
-      "preferred_date": "Preferred Date *",
-      "message_optional": "Message (Optional)",
-      "request_visit": "Request Visit",
-      "call_now": "Call Now",
-      "send_email": "Send Email",
-      "whatsapp": "WhatsApp",
-      "for_rent": "For Rent",
-      "for_sale": "For Sale",
-      "loading": "Loading property details..."
     },
     "editProperty": {
       "hero": {
@@ -571,6 +562,16 @@
         "invalid_phone": "Invalid phone number"
       }
     },
+    "edit_profile": {
+      "edit_profile": "Edit Profile",
+      "account_information": "Account Information",
+      "cannot_be_changed": "Email cannot be changed",
+      "save_changes": "Save Changes",
+      "saving": "Saving...",
+      "success": "Profile updated successfully!",
+      "error": "Failed to update profile",
+      "load_error": "Failed to load profile"
+    },
     "contact_info": {
       "cairo_egypt": "Cairo, Egypt"
     },
@@ -718,5 +719,35 @@
       "location": "Location",
       "cairo_egypt": "Cairo, Egypt"
     }
+  },
+  "owner_dashboard": {
+    "title": "Property Owner Dashboard",
+    "total_properties": "Total Properties",
+    "for_sale": "For Sale",
+    "for_rent": "For Rent",
+    "no_properties": "No properties found. Add your first property to get started!",
+    "no_image": "No Image"
+  },
+  "property_forms": {
+    "property_title": "Title",
+    "location": "Location",
+    "city": "City",
+    "area": "Area",
+    "price": "Price",
+    "purpose": "Purpose",
+    "property_type": "Property Type",
+    "status": "Status",
+    "rooms": "Rooms Count",
+    "bathrooms": "Bathrooms Count",
+    "finishing": "Finish Level",
+    "image_url": "Image URL",
+    "description": "Description",
+    "select_type": "Select type",
+    "select_purpose": "Select purpose",
+    "for_sale": "For Sale",
+    "for_rent": "For Rent",
+    "select_city": "Select City",
+    "select_area": "Select Area",
+    "submit": "Submit"
   }
 }

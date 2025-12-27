@@ -10,7 +10,14 @@
     "back": "رجوع",
     "cancel": "إلغاء",
     "save": "حفظ",
-    "see_more": "عرض المزيد"
+    "see_more": "عرض المزيد",
+    "call_now": "اتصل الآن",
+    "close": "إغلاق",
+    "currency": "جنيه مصري",
+    "home": "الرئيسية",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح"
   },
   "header": {
     "title": "TraffiEstate",
@@ -258,6 +265,19 @@
       "for_sale": "للبيع",
       "for_rent": "للإيجار"
     },
+    "amenities": {
+      "air_conditioning": "تكييف الهواء",
+      "swimming_pool": "حمام السباحة",
+      "garden": "حديقة",
+      "security_system": "نظام الأمان",
+      "balcony": "شرفة",
+      "modern_kitchen": "مطبخ حديث",
+      "storage_room": "غرفة تخزين",
+      "elevator": "مصعد"
+    },
+    "call_us": "اتصل بنا على:",
+    "for_sale": "للبيع",
+    "for_rent": "للإيجار",
     "card": {
       "view": "عرض",
       "favorite": "مفضل",
@@ -271,7 +291,8 @@
       "bedroom": "غرفة نوم",
       "bedrooms": "غرف نوم",
       "for_rent": "للإيجار",
-      "month": "/شهر"
+      "month": "/شهر",
+      "no_image": "لا توجد صورة"
     }
   },
   "forms": {
@@ -306,6 +327,7 @@
       "standard": "عادي",
       "semi_furnished": "شبه مفروش",
       "luxury": "فاخر",
+      "high": "عالي",
       "status": "الحالة",
       "active": "نشط",
       "inactive": "غير نشط",
@@ -328,36 +350,6 @@
       "studio": "استوديو",
       "townhouse": "مجمع سكني",
       "land": "أرض"
-    },    "property_details": {
-      "details_title": "تفاصيل العقار",
-      "breadcrumb_home": "الرئيسية",
-      "bedrooms": "غرف النوم",
-      "bathrooms": "الحمامات",
-      "area": "المساحة",
-      "type": "النوع",
-      "finishing": "مستوى الإنهاء",
-      "views": "المناظر",
-      "description": "الوصف",
-      "location": "الموقع",
-      "similar_properties": "عقارات مشابهة",
-      "rate_property": "قيم هذا العقار",
-      "average_rating": "متوسط التقييم",
-      "reviews": "تقييمات",
-      "you_already_rated": "لقد قيمت بالفعل",
-      "submit_rating": "إرسال التقييم",
-      "schedule_visit": "جدولة زيارة",
-      "your_name": "اسمك *",
-      "your_email": "بريدك الإلكتروني *",
-      "your_phone": "رقم هاتفك *",
-      "preferred_date": "التاريخ المفضل *",
-      "message_optional": "الرسالة (اختيارية)",
-      "request_visit": "طلب زيارة",
-      "call_now": "اتصل الآن",
-      "send_email": "أرسل بريد إلكتروني",
-      "whatsapp": "واتس آب",
-      "for_rent": "للإيجار",
-      "for_sale": "للبيع",
-      "loading": "جاري تحميل تفاصيل العقار..."
     },
     "editProperty": {
       "hero": {
@@ -398,7 +390,8 @@
       },
       "update": "تحديث العقار",
       "updating": "جاري التحديث..."
-    },    "edit_property": {
+    },
+    "edit_property": {
       "title": "تعديل عقارك",
       "subtitle": "قم بتحديث تفاصيل عقارك وصوره بسهولة"
     },
@@ -574,6 +567,16 @@
         "invalid_phone": "رقم هاتف غير صحيح"
       }
     },
+    "edit_profile": {
+      "edit_profile": "تعديل الملف الشخصي",
+      "account_information": "معلومات الحساب",
+      "cannot_be_changed": "لا يمكن تغيير البريد الإلكتروني",
+      "save_changes": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "success": "تم تحديث الملف الشخصي بنجاح!",
+      "error": "فشل تحديث الملف الشخصي",
+      "load_error": "فشل تحميل الملف الشخصي"
+    },
     "contact_info": {
       "cairo_egypt": "القاهرة، مصر",
       "email": "البريد الإلكتروني",
@@ -722,5 +725,35 @@
       "location": "الموقع",
       "cairo_egypt": "القاهرة، مصر"
     }
+  },
+  "owner_dashboard": {
+    "title": "لوحة تحكم مالك العقار",
+    "total_properties": "إجمالي العقارات",
+    "for_sale": "للبيع",
+    "for_rent": "للإيجار",
+    "no_properties": "لم يتم العثور على عقارات. ابدأ بإضافة عقارك الأول!",
+    "no_image": "لا توجد صورة"
+  },
+  "property_forms": {
+    "property_title": "العنوان",
+    "location": "الموقع",
+    "city": "المدينة",
+    "area": "المنطقة",
+    "price": "السعر",
+    "purpose": "الغرض",
+    "property_type": "نوع العقار",
+    "status": "الحالة",
+    "rooms": "عدد الغرف",
+    "bathrooms": "عدد الحمامات",
+    "finishing": "مستوى التشطيب",
+    "image_url": "رابط الصورة",
+    "description": "الوصف",
+    "select_type": "اختر النوع",
+    "select_purpose": "اختر الغرض",
+    "for_sale": "للبيع",
+    "for_rent": "للإيجار",
+    "select_city": "اختر المدينة",
+    "select_area": "اختر المنطقة",
+    "submit": "إرسال"
   }
 }

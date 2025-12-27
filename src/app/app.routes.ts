@@ -21,6 +21,8 @@ import { EditProfile } from './Component/edit-profile/edit-profile';
 import { ContactUs } from './Component/contact-us/contact-us';
 import { AboutUs } from './Component/about-us/about-us';
 import { EditPropertyComponent } from './Component/edit-property/edit-property';
+import { ChatbotComponent } from './chatbot/chatbot';
+import { SuccessComponent } from './Component/success-component/success-component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -44,6 +46,9 @@ export const routes: Routes = [
   { path: 'contact', component: ContactUs },
   { path: 'about', component: AboutUs },
   { path: 'editproperty', component: EditPropertyComponent },
+  { path: 'inquiries', component: ChatbotComponent, title: 'Inquiries with Farida' },
+      { path: 'success', component: SuccessComponent, title: 'Payment Success' },
+
   { path: '**', component: NotFound },
 
   //************************************************************************************************************************** */

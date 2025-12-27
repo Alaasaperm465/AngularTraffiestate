@@ -84,6 +84,11 @@
             <button type="submit" class="search-btn-hero" title="Search">
               <i class="bi bi-search"></i>
             </button>
+
+            <!-- Clear Button -->
+            <button type="button" class="search-btn-hero clear-btn" title="Clear all filters" (click)="clearAllFilters()">
+              Clear Search
+            </button>
           </div>
         </form>
 
@@ -164,22 +169,22 @@
               <div class="property-details">
                 <span class="detail-item">
                   <i class="bi bi-door-open-fill"></i>
-                  {{ property.rooms }} {{ 'property.beds' | translate }}
+                  {{ property.rooms }} {{ 'property.card.beds' | translate }}
                 </span>
                 <span class="detail-item">
                   <i class="bi bi-droplet-fill"></i>
-                  {{ property.bathrooms }} {{ 'property.baths' | translate }}
+                  {{ property.bathrooms }} {{ 'property.card.baths' | translate }}
                 </span>
                 <span class="detail-item">
                   <i class="bi bi-arrows-fullscreen"></i>
-                  {{ property.area }} m²
+                  {{ property.areaSpace }} m²
                 </span>
               </div>
 
               <div class="property-footer">
                 <div class="property-price">
                   <span class="price-value">{{ property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
-                  <span class="price-period">EGP</span>
+                  <span class="price-period">{{ 'common.currency' | translate }}</span>
                 </div>
                 <div class="property-contact-actions">
                   <a
@@ -192,14 +197,14 @@
                     (click)="$event.stopPropagation()">
                     <i class="bi bi-whatsapp"></i>
                   </a>
-                  <a
+                  <button
+                    type="button"
                     class="contact-icon-btn phone-btn"
-                    [href]="'tel:' + phone"
                     title="Call Now"
                     aria-label="Call seller"
-                    (click)="$event.stopPropagation()">
+                    (click)="showCallModal(); $event.stopPropagation()">
                     <i class="bi bi-telephone-fill"></i>
-                  </a>
+                  </button>
                   <a
                     class="contact-icon-btn email-btn"
                     [href]="'mailto:' + email"
@@ -300,9 +305,9 @@
             {{ 'home.buy.price_range' | translate }}
           </h4>
           <div class="price-inputs">
-            <input type="number" [placeholder]="'home.buy.min' | translate" class="price-input" #minPrice (change)="onPriceFilterChange()">
+            <input type="number" placeholder="Min" class="price-input" #minPrice (change)="onPriceFilterChange()">
             <span class="price-separator">-</span>
-            <input type="number" [placeholder]="'home.buy.max' | translate" class="price-input" #maxPrice (change)="onPriceFilterChange()">
+            <input type="number" placeholder="Max" class="price-input" #maxPrice (change)="onPriceFilterChange()">
           </div>
         </div>
 
@@ -359,3 +364,10 @@
     </div>
   </div>
 </section>
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModalFlag">
+  <div class="call-modal-content">
+    <h4>{{ 'property.call_us' | translate }}</h4>
+    <p>{{ phone }}</p>
+    <button (click)="makeCall()">{{ 'common.call_now' | translate }}</button>
+    <button (click)="closeCallModal()">{{ 'common.close' | translate }}</button>

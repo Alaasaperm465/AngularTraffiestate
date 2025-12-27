@@ -3,11 +3,6 @@
   <div class="hero-overlay"></div>
   <div class="hero-content-wrapper">
     
-    <!-- Language Switcher -->
-    <div style="position: absolute; top: 20px; right: 20px; z-index: 100;">
-      <app-language-switcher></app-language-switcher>
-    </div>
-    
     <div class="hero-text-content">
       <h1 class="hero-main-title">{{ 'home.hero.main_title' | translate }}</h1>
       <p class="hero-description">{{ 'home.hero.description' | translate }}</p>
@@ -119,16 +114,21 @@
             <button type="submit" class="search-btn-hero" [title]="'home.hero.search' | translate">
               <i class="bi bi-search"></i>
             </button>
+
+            <!-- Clear Button -->
+            <button type="button" class="search-btn-hero clear-btn" [title]="'common.cancel' | translate" (click)="clearAllFilters()">
+              {{ 'common.cancel' | translate }}
+            </button>
           </div>
         </form>
 
         <!-- Quick Search -->
         <div class="quick-search-hero">
           <span class="quick-label">{{ 'home.hero.popular' | translate }} </span>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Cairo')">Cairo</button>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Alexandria')">Alexandria</button>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Giza')">Giza</button>
-          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('New Cairo')">New Cairo</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Cairo')">{{ 'home.buy.cairo' | translate }}</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Alexandria')">{{ 'home.buy.alexandria' | translate }}</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('Giza')">{{ 'home.buy.giza' | translate }}</button>
+          <button type="button" class="quick-btn-hero" (click)="setQuickSearch('New Cairo')">{{ 'home.buy.new_cairo' | translate }}</button>
         </div>
       </div>
     </div>
@@ -181,7 +181,7 @@
 
               <!-- Purpose Badge -->
               <span class="purpose-badge">
-                {{ property.purpose }}
+                {{ getPurposeLabel(property.purpose) }}
               </span>
 
               <!-- Featured Badge -->
@@ -234,14 +234,14 @@
                     (click)="$event.stopPropagation()">
                     <i class="bi bi-whatsapp"></i>
                   </a>
-                  <a
+                  <button
+                    type="button"
                     class="contact-icon-btn phone-btn"
-                    [href]="'tel:' + phone"
                     [title]="'property.details.call_now' | translate"
                     [attr.aria-label]="'property.details.call_now' | translate"
-                    (click)="$event.stopPropagation()">
+                    (click)="openCallModal(); $event.stopPropagation()">
                     <i class="bi bi-telephone-fill"></i>
-                  </a>
+                  </button>
                   <a
                     class="contact-icon-btn email-btn"
                     [href]="'mailto:' + email"
@@ -343,19 +343,9 @@
             {{ 'home.filters.price_range' | translate }}
           </h4>
           <div class="price-inputs">
-            <input 
-              type="number" 
-              [placeholder]="'home.filters.min' | translate" 
-              class="price-input" 
-              #minPrice 
-              (change)="onPriceFilterChange()">
+            <input type="number" [placeholder]="'home.filters.min' | translate" class="price-input" #minPrice (change)="onPriceFilterChange()">
             <span class="price-separator">-</span>
-            <input 
-              type="number" 
-              [placeholder]="'home.filters.max' | translate" 
-              class="price-input" 
-              #maxPrice 
-              (change)="onPriceFilterChange()">
+            <input type="number" [placeholder]="'home.filters.max' | translate" class="price-input" #maxPrice (change)="onPriceFilterChange()">
           </div>
         </div>
 
@@ -412,4 +402,3 @@
     </div>
   </div>
 </section>
-<!-- End of Home Component -->
