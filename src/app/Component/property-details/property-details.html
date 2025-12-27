@@ -362,12 +362,17 @@
               <i class="bi bi-whatsapp"></i>
               WhatsApp
             </button>
-<button
+<!-- <button
   *ngIf="isRentalProperty"
   (click)="payNow(propertyId)"
   class="contact-btn payment">
   <i class="bi bi-credit-card-fill"></i>
   {{ 'common.cancel' | translate }}
+</button> -->
+
+<button type="button" class="contact-btn booking" style="background-color: #0066cc; border: none; cursor: pointer;" (click)="openBookingDialog(property.id)">
+  <i class="bi bi-calendar-check-fill"></i>
+  Book Now
 </button>
           </div>
 

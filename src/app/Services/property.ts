@@ -152,5 +152,27 @@ export class PropertyService {
   getOwnerPropertiesForRent(): Observable<IProperty[]> {
     return this.http.get<IProperty[]>(`${this.baseUrl}/ForRent`);
   }
+
+  /**
+   * Get booked dates for a property
+   * Endpoint: GET /api/Booking/booked-dates/{propertyId}
+   */
+  getBookedDates(propertyId: number): Observable<string[]> {
+    return this.http.get<string[]>(`https://localhost:7030/api/Booking/booked-dates/${propertyId}`);
+  }
+
+  /**
+   * Check if property is available for a date range
+   * Endpoint: GET /api/Booking/check-availability
+   */
+  checkAvailability(propertyId: number, startDate: Date, endDate: Date): Observable<{ isAvailable: boolean }> {
+    return this.http.get<{ isAvailable: boolean }>(`https://localhost:7030/api/Booking/check-availability`, {
+      params: {
+        propertyId: propertyId.toString(),
+        startDate: startDate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0]
+      }
+    });
+  }
 }
 

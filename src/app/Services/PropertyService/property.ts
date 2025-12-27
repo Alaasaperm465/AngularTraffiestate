@@ -136,6 +136,24 @@ export class PropertyService {
   }
 
   /* =====================================================
+     🔹 BOOKED DATES
+     ===================================================== */
+  getBookedDates(propertyId: number): Observable<string[]> {
+    return this.http.get<string[]>(
+      `https://localhost:7030/api/booking/booked-dates/${propertyId}`
+    );
+  }
+
+  checkAvailability(propertyId: number, startDate: string, endDate: string): Observable<{ isAvailable: boolean }> {
+    return this.http.get<{ isAvailable: boolean }>(
+      `https://localhost:7030/api/booking/check-availability`,
+      {
+        params: { propertyId: propertyId.toString(), startDate, endDate }
+      }
+    );
+  }
+
+  /* =====================================================
      🔹 NORMALIZATION (IMPORTANT)
      ===================================================== */
   private normalizeProperties(response: any): IProperty[] {
