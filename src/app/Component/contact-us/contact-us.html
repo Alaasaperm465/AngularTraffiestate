@@ -78,10 +78,10 @@
 
           <!-- Name Field -->
           <div class="form-group">
-            <input 
-              type="text" 
-              formControlName="name" 
-              class="form-control" 
+            <input
+              type="text"
+              formControlName="name"
+              class="form-control"
               placeholder="Name *"
               [class.invalid]="name?.invalid && name?.touched">
             <span class="error-text" *ngIf="name?.invalid && name?.touched">
@@ -92,10 +92,10 @@
 
           <!-- Email Field -->
           <div class="form-group">
-            <input 
-              type="email" 
-              formControlName="email" 
-              class="form-control" 
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
               placeholder="Email *"
               [class.invalid]="email?.invalid && email?.touched">
             <span class="error-text" *ngIf="email?.invalid && email?.touched">
@@ -106,10 +106,10 @@
 
           <!-- Phone Field -->
           <div class="form-group">
-            <input 
-              type="tel" 
-              formControlName="phone" 
-              class="form-control" 
+            <input
+              type="tel"
+              formControlName="phone"
+              class="form-control"
               placeholder="Phone Number (11 digits) *"
               [class.invalid]="phone?.invalid && phone?.touched"
               maxlength="11">
@@ -121,10 +121,10 @@
 
           <!-- Subject Field -->
           <div class="form-group">
-            <input 
-              type="text" 
-              formControlName="subject" 
-              class="form-control" 
+            <input
+              type="text"
+              formControlName="subject"
+              class="form-control"
               placeholder="Subject *"
               [class.invalid]="subject?.invalid && subject?.touched">
             <span class="error-text" *ngIf="subject?.invalid && subject?.touched">
@@ -135,10 +135,10 @@
 
           <!-- Message Field -->
           <div class="form-group">
-            <textarea 
-              formControlName="message" 
-              class="form-control textarea" 
-              placeholder="Message *" 
+            <textarea
+              formControlName="message"
+              class="form-control textarea"
+              placeholder="Message *"
               rows="6"
               [class.invalid]="message?.invalid && message?.touched"></textarea>
             <span class="error-text" *ngIf="message?.invalid && message?.touched">
@@ -188,45 +188,5 @@
       loading="lazy"
       title="TraffieState Location on Map">
     </iframe>
-  </div>
-</section>
-
-<!-- Contact CTA Section -->
-<section class="contact-cta-section">
-  <div class="container">
-    <div class="cta-content">
-      <div class="cta-text">
-        <h2>Can't Find What You're Looking For?</h2>
-        <p>Our expert team is here to help you find your perfect property</p>
-      </div>
-      <div class="cta-buttons">
-        <a href="https://wa.me/201143872859" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
-          <i class="bi bi-whatsapp"></i>
-          WhatsApp Us
-        </a>
-        <a href="tel:01143872859" class="cta-btn secondary">
-          <i class="bi bi-telephone-fill"></i>
-          Call Us
-        </a>
-      </div>
-    </div>
-    <div class="contact-info">
-      <div class="contact-item">
-        <i class="bi bi-whatsapp"></i>
-        <span>01158519532</span>
-      </div>
-      <div class="contact-item">
-        <i class="bi bi-telephone-fill"></i>
-        <span>01158519532</span>
-      </div>
-      <div class="contact-item">
-        <i class="bi bi-envelope-fill"></i>
-        <span>abrarbadr02@gmail.com</span>
-      </div>
-      <div class="contact-item">
-        <i class="bi bi-geo-alt-fill"></i>
-        <span>Cairo, Egypt</span>
-      </div>
-    </div>
   </div>
 </section>
