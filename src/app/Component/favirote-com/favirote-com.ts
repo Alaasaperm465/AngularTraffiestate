@@ -5,10 +5,11 @@ import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
 import { IProperty, phone, email } from '../../models/iproperty';
 import { RouterModule, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-favirote-com',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './favirote-com.html',
   styleUrl: './favirote-com.css',
 })

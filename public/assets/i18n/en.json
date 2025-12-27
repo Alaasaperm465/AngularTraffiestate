@@ -1,0 +1,753 @@
+{
+  "form": {
+    "username": "Username",
+    "enter_username": "Enter your username",
+    "username_required": "Username is required",
+    "enter_phone": "Enter your phone number",
+    "phone_required": "Phone number is required"
+  },
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "see_more": "See More",
+    "call_now": "Call Now",
+    "close": "Close",
+    "currency": "EGP",
+    "home": "Home",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "header": {
+    "title": "TraffiEstate",
+    "home": "Home",
+    "properties": "Properties",
+    "buy": "Buy",
+    "rent": "Rent",
+    "land": "Land",
+    "about": "About",
+    "contact": "Contact",
+    "sign_in": "Sign In",
+    "profile": "My Profile",
+    "dashboard": "Dashboard",
+    "favorites": "My Favorites",
+    "logout": "Logout"
+  },
+  "home": {
+    "hero": {
+      "main_title": "Find Your Dream Property",
+      "description": "Discover the perfect place to call home from our extensive collection of properties",
+      "search_placeholder": "City, Area or Neighborhood",
+      "property_type": "Property Type",
+      "bedrooms": "Bedrooms",
+      "search": "Search",
+      "popular": "Popular:",
+      "tabs": {
+        "buy": "Buy",
+        "rent": "Rent",
+        "all": "All"
+      },
+      "1_bedroom": "1 Bedroom",
+      "2_bedrooms": "2 Bedrooms",
+      "3_bedrooms": "3 Bedrooms",
+      "4_plus_bedrooms": "4+ Bedrooms",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "land": "Land"
+    },
+    "properties": {
+      "found": "Properties Found",
+      "showing": "Showing",
+      "of": "of",
+      "grid_view": "Grid View",
+      "list_view": "List View",
+      "no_results": "No Properties Found",
+      "try_adjusting": "Try adjusting your search filters or explore different areas",
+      "reset_filters": "Reset Filters",
+      "see_more": "See More",
+      "page_info": "Showing {showing} of {total}"
+    },
+    "filters": {
+      "title": "Filters",
+      "clear_all": "Clear All",
+      "sort_by": "Sort By",
+      "newest_first": "Newest First",
+      "price_low_high": "Price: Low to High",
+      "price_high_low": "Price: High to Low",
+      "most_popular": "Most Popular",
+      "property_type": "Property Type",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "land": "Land",
+      "price_range": "Price Range",
+      "min": "Min",
+      "max": "Max",
+      "area": "Area (m²)",
+      "under_100": "Under 100",
+      "100_200": "100 - 200",
+      "200_300": "200 - 300",
+      "300_plus": "300+",
+      "bedrooms": "Bedrooms",
+      "1_bedroom": "1 Bedroom",
+      "2_bedrooms": "2 Bedrooms",
+      "3_bedrooms": "3 Bedrooms",
+      "4_plus_bedrooms": "4+ Bedrooms"
+    },
+    "contact_cta": {
+      "title": "Can't Find What You're Looking For?",
+      "description": "Our expert team is here to help you find your perfect property",
+      "whatsapp": "WhatsApp Us",
+      "call_us": "Call Us"
+    },
+    "rent": {
+      "hero_title": "Find Your Perfect Rental Home",
+      "hero_description": "Browse our extensive collection of properties for rent and find your ideal home",
+      "city_placeholder": "City, Area or Neighborhood",
+      "property_type_placeholder": "Property Type",
+      "popular": "Popular",
+      "cairo": "Cairo",
+      "alexandria": "Alexandria",
+      "giza": "Giza",
+      "new_cairo": "New Cairo",
+      "properties_found": "Properties Found",
+      "showing": "Showing",
+      "of": "of",
+      "no_properties_found": "No Properties Found",
+      "try_adjusting_filters": "Try adjusting your search filters or explore different areas",
+      "reset_filters": "Reset Filters",
+      "filters": "Filters",
+      "clear_all": "Clear All",
+      "sort_by": "Sort By",
+      "newest_first": "Newest First",
+      "price_low_to_high": "Price: Low to High",
+      "price_high_to_low": "Price: High to Low",
+      "most_popular": "Most Popular",
+      "price_range": "Price Range (Monthly)",
+      "min": "Min",
+      "max": "Max",
+      "area": "Area (m²)",
+      "under_100": "Under 100",
+      "range_100_200": "100 - 200",
+      "range_200_300": "200 - 300",
+      "range_300_plus": "300+"
+    },
+    "buy": {
+      "hero_title": "Find Your Dream Property to Buy",
+      "hero_description": "Browse our extensive collection of properties for sale and find your ideal home",
+      "city_placeholder": "City, Area or Neighborhood",
+      "property_type_placeholder": "Property Type",
+      "popular": "Popular",
+      "cairo": "Cairo",
+      "alexandria": "Alexandria",
+      "giza": "Giza",
+      "new_cairo": "New Cairo",
+      "properties_found": "Properties Found",
+      "showing": "Showing",
+      "of": "of",
+      "no_properties_found": "No Properties Found",
+      "try_adjusting_filters": "Try adjusting your search filters or explore different areas",
+      "reset_filters": "Reset Filters",
+      "filters": "Filters",
+      "clear_all": "Clear All",
+      "sort_by": "Sort By",
+      "newest_first": "Newest First",
+      "price_low_to_high": "Price: Low to High",
+      "price_high_to_low": "Price: High to Low",
+      "most_popular": "Most Popular",
+      "price_range": "Price Range",
+      "min": "Min",
+      "max": "Max",
+      "area": "Area (m²)",
+      "under_100": "Under 100",
+      "range_100_200": "100 - 200",
+      "range_200_300": "200 - 300",
+      "range_300_plus": "300+"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "form_title": "Send us a message",
+      "form_subtitle": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+      "name": "Your Name",
+      "email": "Your Email",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success_message": "Thank you for your message! We'll get back to you soon.",
+      "error_message": "Error sending message. Please try again.",
+      "required_field": "This field is required",
+      "invalid_email": "Please enter a valid email"
+    }
+  },
+  "about": {
+    "section_subtitle": "Who We Are",
+    "section_title": "About Us",
+    "mission": {
+      "title": "Our Mission",
+      "text": "Welcome to TraffiEstate - Established in 2025, we are a dedicated real estate platform committed to revolutionizing the way people buy, sell, and rent properties. Our mission is to create a seamless, transparent, and trustworthy ecosystem for all real estate transactions."
+    },
+    "services": {
+      "title": "What We Offer",
+      "property_sales": {
+        "title": "Property Sales",
+        "description": "Buy and sell properties with confidence through our verified listing platform and expert guidance."
+      },
+      "rental_services": {
+        "title": "Rental Services",
+        "description": "Find the perfect rental property or list your property to reach qualified tenants efficiently."
+      },
+      "land_trading": {
+        "title": "Land Trading",
+        "description": "Invest in prime land opportunities with transparent pricing and comprehensive market analysis."
+      },
+      "client_support": {
+        "title": "Client Support",
+        "description": "Dedicated support for both buyers and sellers throughout the entire transaction process."
+      },
+      "deal_completion": {
+        "title": "Deal Completion",
+        "description": "We ensure smooth and successful completion of every transaction with legal documentation support."
+      },
+      "trust_security": {
+        "title": "Trust & Security",
+        "description": "Your security and trust are our priority. All transactions are verified and legally protected."
+      }
+    },
+    "commitment": {
+      "title": "Our Commitment",
+      "text1": "At TraffiEstate, we believe that real estate transactions should be transparent, efficient, and stress-free. Whether you're a first-time buyer, an experienced investor, or a property owner looking to rent or sell, we're here to guide you every step of the way. Our dedicated team works tirelessly to match buyers with sellers and renters with landlords, ensuring that every transaction is completed successfully and legally.",
+      "text2": "We combine cutting-edge technology with personal attention to deliver a service that truly cares about your real estate goals. Trust TraffiEstate to make your property journey smooth and successful."
+    },
+    "team": {
+      "section_subtitle": "Our Team",
+      "section_title": "Meet Our Experts",
+      "description": "We are a passionate team of developers working together to deliver modern, scalable, and high-quality web applications. Each member brings unique skills and expertise to make our projects successful.",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "cv": "CV"
+    }
+  },
+  "property": {
+    "property_type": "Property Type",
+    "apartment": "Apartment",
+    "villa": "Villa",
+    "land": "Land",
+    "bedrooms": "Bedrooms",
+    "bedroom": "Bedroom",
+    "details": {
+      "title": "Property Details",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "area": "Area",
+      "type": "Type",
+      "finishing": "Finishing",
+      "views": "Views",
+      "description": "Description",
+      "features_amenities": "Features & Amenities",
+      "location": "Location",
+      "similar_properties": "Similar Properties",
+      "call_now": "Call Now",
+      "send_email": "Send Email",
+      "whatsapp": "WhatsApp",
+      "schedule_visit": "Schedule a Visit",
+      "your_name": "Your Name *",
+      "your_email": "Your Email *",
+      "your_phone": "Your Phone *",
+      "preferred_date": "Preferred Date *",
+      "message_optional": "Message (Optional)",
+      "request_visit": "Request Visit",
+      "rate_property": "Rate This Property",
+      "average_rating": "Average Rating:",
+      "reviews": "reviews",
+      "you_already_rated": "You already rated",
+      "submit_rating": "Submit Rating",
+      "for_sale": "For Sale",
+      "for_rent": "For Rent"
+    },
+    "amenities": {
+      "air_conditioning": "Air Conditioning",
+      "swimming_pool": "Swimming Pool",
+      "garden": "Garden",
+      "security_system": "Security System",
+      "balcony": "Balcony",
+      "modern_kitchen": "Modern Kitchen",
+      "storage_room": "Storage Room",
+      "elevator": "Elevator"
+    },
+    "call_us": "Call us at:",
+    "for_sale": "For Sale",
+    "for_rent": "For Rent",
+    "card": {
+      "view": "View",
+      "favorite": "Favorite",
+      "featured": "Featured",
+      "beds": "Beds",
+      "baths": "Baths",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "land": "Land",
+      "property_type": "Property Type",
+      "bedroom": "Bedroom",
+      "bedrooms": "Bedrooms",
+      "for_rent": "For Rent",
+      "month": "/month",
+      "no_image": "No Image"
+    }
+  },
+  "forms": {
+    "add_property": {
+      "title": "Add Your Property",
+      "subtitle": "Add your property and start earning",
+      "step_titles": ["Basic Information", "Location", "Property Details", "Images"],
+      "property_title": "Property Title *",
+      "description": "Description *",
+      "property_type": "Property Type *",
+      "select_type": "Select Type",
+      "purpose": "Purpose *",
+      "select_purpose": "Select Purpose",
+      "for_sale": "For Sale",
+      "for_rent": "For Rent",
+      "city": "City *",
+      "select_city": "Select City",
+      "area": "Area *",
+      "select_area": "Select Area",
+      "street_address": "Street Address *",
+      "price": "Price *",
+      "area_space": "Area Space (m²) *",
+      "rooms": "Bedrooms *",
+      "bathrooms": "Bathrooms *",
+      "finishing_level": "Finishing Level *",
+      "select_level": "Select Level",
+      "standard": "Standard",
+      "semi_furnished": "Semi-Furnished",
+      "luxury": "Luxury",
+      "high": "High",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "main_image": "Main Image *",
+      "additional_images": "Additional Images",
+      "upload_placeholder": "Click or drag main image here",
+      "upload_placeholder_additional": "Click or drag additional images here",
+      "file_types": "JPG, PNG (Max 5MB)",
+      "multiple_files": "Multiple files allowed",
+      "previous": "Previous",
+      "next": "Next",
+      "submit_property": "Submit Property",
+      "submitting": "Submitting...",
+      "step": "Step",
+      "of": "of",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "house": "House",
+      "studio": "Studio",
+      "townhouse": "Townhouse",
+      "land": "Land"
+    },
+    "editProperty": {
+      "hero": {
+        "title": "Edit Property",
+        "subtitle": "Update your property details and images easily"
+      },
+      "loading": "Loading property...",
+      "step_basic": "Basic Information",
+      "step_location": "Location",
+      "step_details": "Property Details",
+      "step_images": "Images",
+      "step_basic_description": "Enter basic property information",
+      "step_location_description": "Select location details",
+      "step_details_description": "Add property specifications",
+      "step_images_description": "Upload property images",
+      "fields": {
+        "title": "Property Title",
+        "description": "Description",
+        "city": "City",
+        "area": "Area",
+        "street": "Street Address",
+        "price": "Price",
+        "area_space": "Area Space (m²)",
+        "rooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "finishing": "Finishing Level",
+        "purpose": "Purpose",
+        "type": "Property Type"
+      },
+      "placeholders": {
+        "title": "Enter property title",
+        "description": "Enter property description",
+        "price": "Enter price",
+        "area": "Enter area"
+      },
+      "validation": {
+        "required": "This field is required"
+      },
+      "update": "Update Property",
+      "updating": "Updating..."
+    },
+    "edit_property": {
+      "title": "Edit Your Property",
+      "subtitle": "Update your property details and images easily"
+    },
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account to continue",
+      "email_username": "Email or Username",
+      "password": "Password",
+      "sign_in": "Sign In",
+      "signing_in": "Signing in...",
+      "forgot_password": "Forgot password?",
+      "create_account": "Don't have an account? Create one"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join us to find your perfect property",
+      "full_name": "Full Name",
+      "phone_number": "Phone Number",
+      "email_address": "Email Address",
+      "account_type": "Account Type",
+      "select_account_type": "Select account type",
+      "password": "Password",
+      "confirm_password": "Confirm Password",
+      "create_account": "Create Account",
+      "creating_account": "Creating Account...",
+      "already_have_account": "Already have an account? Sign In",
+      "password_requirements": {
+        "length": "✓ At least 6 characters",
+        "uppercase": "✓ One uppercase letter",
+        "number": "✓ One number"
+      }
+    },
+    "forgot_password": {
+      "title": "Forget Password",
+      "subtitle": "Enter your email address and we'll send you a link to reset your password",
+      "send_reset_link": "Send Reset Link",
+      "sending": "Sending...",
+      "back_to_login": "Back to Login"
+    },
+    "reset_password": {
+      "title": "Reset Password",
+      "subtitle": "Enter your new password below",
+      "new_password": "New Password",
+      "confirm_password": "Confirm Password",
+      "reset_password": "Reset Password",
+      "resetting": "Resetting...",
+      "back_to_login": "Back to Login"
+    },
+    "edit_profile": {
+      "title": "Edit Profile",
+      "edit_profile": "Edit Profile",
+      "back": "Back",
+      "username": "Username",
+      "phone_number": "Phone Number",
+      "account_information": "Account Information",
+      "email": "Email",
+      "cannot_be_changed": "Email cannot be changed",
+      "role": "Role",
+      "save_changes": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "success": "Profile updated successfully!",
+      "error": "Failed to update profile",
+      "load_error": "Failed to load profile"
+    },
+    "visit_form": {
+      "name": "Your Name *",
+      "email": "Your Email *",
+      "phone": "Your Phone *",
+      "date": "Preferred Date *",
+      "message": "Message (Optional)"
+    },
+    "validation": {
+      "name_required": "Name is required",
+      "name_minlength": "Name must be at least 3 characters",
+      "email_required": "Email is required",
+      "email_invalid": "Invalid email address",
+      "phone_required": "Phone number is required",
+      "phone_pattern": "Phone number must be 11 digits",
+      "subject_required": "Subject is required",
+      "subject_minlength": "Subject must be at least 5 characters",
+      "message_required": "Message is required",
+      "message_minlength": "Message must be at least 10 characters"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Manage your properties, track statistics, and interact with clients",
+    "total_properties": "Total Properties",
+    "approved": "Approved",
+    "pending_review": "Pending Review",
+    "rejected": "Rejected",
+    "tabs": {
+      "my_properties": "My Properties",
+      "favorites": "Favorites",
+      "saved": "Saved",
+      "submitted": "Submitted"
+    },
+    "add_new_property": "Add New Property",
+    "search_properties": "Search your properties...",
+    "all_status": "All Status",
+    "recent": "Recent",
+    "price_high": "Price (High)",
+    "price_low": "Price (Low)",
+    "most_viewed": "Most Viewed",
+    "reset": "Reset",
+    "property_selected": "property selected",
+    "deselect_all": "Deselect All",
+    "delete_selected": "Delete Selected",
+    "loading_properties": "Loading properties...",
+    "no_properties": "No properties currently",
+    "add_first_property": "Add your first property to appear here",
+    "add_new": "Add New",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "previous": "Previous",
+    "next": "Next",
+    "sidebar": {
+      "profile": "Profile",
+      "dashboard": "Dashboard",
+      "favorites": "Favorites",
+      "add_property": "Add Property",
+      "analytics": "Analytics",
+      "logout": "Logout"
+    },
+    "profile": {
+      "edit_profile": "Edit Profile",
+      "properties": "Properties",
+      "favorites": "Favorites",
+      "average_rating": "Average Rating",
+      "profile_information": "Profile Information",
+      "phone_number": "Phone Number",
+      "not_provided": "Not provided",
+      "bio": "Bio",
+      "loading_profile": "Loading profile...",
+      "unable_to_load": "Unable to Load Profile",
+      "try_again": "Try Again"
+    },
+    "favorites": {
+      "title": "My Favorites",
+      "subtitle": "Your saved properties collection",
+      "properties": "Properties",
+      "saved_properties": "Saved Properties",
+      "empty_title": "Your favorites list is empty",
+      "empty_description": "Start exploring and add properties you love to your collection",
+      "explore_properties": "Explore Properties",
+      "clear_all_favorites": "Clear All Favorites",
+      "month": "/month"
+    },
+    "success": {
+      "title": "Congratulations!",
+      "subtitle": "Your property has been registered successfully",
+      "message": "Our team will review your property and approve it soon. We will confirm the details and activate your property listing.",
+      "view_my_properties": "View My Properties",
+      "add_another_property": "Add Another Property",
+      "back_to_home": "✓ Back to Home",
+      "redirecting": "Redirecting to properties in",
+      "seconds": "seconds..."
+    },
+    "error": {
+      "404": {
+        "title": "404",
+        "subtitle": "Page not found!",
+        "message": "are you sure you want to be here?",
+        "go_home": "Go to Home"
+      },
+      "validation": {
+        "required": "is required",
+        "invalid_email": "Invalid email address",
+        "password_mismatch": "Passwords do not match",
+        "min_length": "Must be at least {length} characters",
+        "invalid_phone": "Invalid phone number"
+      }
+    },
+    "edit_profile": {
+      "edit_profile": "Edit Profile",
+      "account_information": "Account Information",
+      "cannot_be_changed": "Email cannot be changed",
+      "save_changes": "Save Changes",
+      "saving": "Saving...",
+      "success": "Profile updated successfully!",
+      "error": "Failed to update profile",
+      "load_error": "Failed to load profile"
+    },
+    "contact_info": {
+      "cairo_egypt": "Cairo, Egypt"
+    },
+    "general": {
+      "loading": "Loading...",
+      "saving": "Saving...",
+      "submitting": "Submitting...",
+      "success": "Success!",
+      "error": "Error!",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "view": "View",
+      "save": "Save",
+      "close": "Close",
+      "yes": "Yes",
+      "no": "No",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "working_hours": "Working Hours",
+      "sunday_thursday": "Sunday to Thursday",
+      "working_time": "9:00 AM to 5:00 PM",
+      "follow_us": "Follow Us on Social Media",
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "retry": "Retry"
+    }
+  },
+  "land": {
+    "hero": {
+      "title": "Find Your Perfect Land",
+      "description": "Discover premium land opportunities across Egypt"
+    },
+    "search": {
+      "city_area": "City / Area",
+      "city_placeholder": "Cairo, Giza, New Cairo...",
+      "property_type": "Property Type",
+      "land": "Land",
+      "size_sqm": "Size (sqm)",
+      "min_size": "Min",
+      "max_size": "Max",
+      "price_egp": "Price (EGP)",
+      "min_price": "Min",
+      "max_price": "Max",
+      "search_button": "Search"
+    },
+    "quick_search": {
+      "title": "Popular Locations",
+      "select_location": "Select Location"
+    },
+    "results": {
+      "lands_shown": "Lands Shown",
+      "showing": "Showing",
+      "of": "of",
+      "no_results": "No lands found",
+      "try_adjusting": "Try adjusting your filters",
+      "sqm": "sqm",
+      "views": "Views",
+      "featured": "Featured",
+      "standard": "Standard",
+      "view": "View",
+      "see_more": "See More"
+    },
+    "filters": {
+      "title": "Filters",
+      "clear_all": "Clear All",
+      "sort_by": "Sort By",
+      "newest": "Newest First",
+      "price_low": "Price: Low to High",
+      "price_high": "Price: High to Low",
+      "popular": "Most Popular",
+      "size": "Size",
+      "price": "Price",
+      "small": "Small (< 1000 sqm)",
+      "medium": "Medium (1000-5000 sqm)",
+      "large": "Large (5000-10000 sqm)",
+      "extra_large": "Extra Large (> 10000 sqm)",
+      "under_500k": "Under 500,000 EGP",
+      "range_500k_1m": "500,000 - 1,000,000 EGP",
+      "range_1m_5m": "1,000,000 - 5,000,000 EGP",
+      "range_5m_10m": "5,000,000 - 10,000,000 EGP",
+      "over_10m": "Over 10,000,000 EGP"
+    }
+  },
+  "contact": {
+    "section": {
+      "title": "Get in Touch",
+      "description": "Have any questions? We'd love to hear from you. Please fill out the form below and we'll get back to you as soon as possible."
+    },
+    "address": {
+      "title": "Address",
+      "city": "Sohag",
+      "area": "Adfa",
+      "office": "Ghazali Group Consulting Office - Ground Floor"
+    },
+    "phone": {
+      "title": "Phone",
+      "number": "01143872859"
+    },
+    "email": {
+      "title": "Email",
+      "address": "mahmoudashrafkhalf@gmail.com"
+    },
+    "working_hours": {
+      "title": "Working Hours",
+      "days": "Sunday to Thursday",
+      "hours": "9:00 AM to 5:00 PM"
+    },
+    "social": {
+      "title": "Follow Us on Social Media",
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook"
+    },
+    "form": {
+      "name": "Name *",
+      "email": "Email *",
+      "phone": "Phone Number (11 digits) *",
+      "subject": "Subject *",
+      "message": "Message *",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Your message has been sent successfully! We'll contact you soon.",
+      "error": "An error occurred while sending your message. Please try again.",
+      "username": "Username",
+      "enter_username": "Enter your username",
+      "username_required": "Username is required",
+      "enter_phone": "Enter your phone number",
+      "phone_required": "Phone number is required"
+    },
+    "cta": {
+      "title": "Can't Find What You're Looking For?",
+      "description": "Our expert team is here to help you find your perfect property",
+      "whatsapp": "WhatsApp Us",
+      "call": "Call Us"
+    },
+    "contact_info": {
+      "whatsapp": "WhatsApp",
+      "phone": "Phone",
+      "email": "Email",
+      "role": "Role",
+      "location": "Location",
+      "cairo_egypt": "Cairo, Egypt"
+    }
+  },
+  "owner_dashboard": {
+    "title": "Property Owner Dashboard",
+    "total_properties": "Total Properties",
+    "for_sale": "For Sale",
+    "for_rent": "For Rent",
+    "no_properties": "No properties found. Add your first property to get started!",
+    "no_image": "No Image"
+  },
+  "property_forms": {
+    "property_title": "Title",
+    "location": "Location",
+    "city": "City",
+    "area": "Area",
+    "price": "Price",
+    "purpose": "Purpose",
+    "property_type": "Property Type",
+    "status": "Status",
+    "rooms": "Rooms Count",
+    "bathrooms": "Bathrooms Count",
+    "finishing": "Finish Level",
+    "image_url": "Image URL",
+    "description": "Description",
+    "select_type": "Select type",
+    "select_purpose": "Select purpose",
+    "for_sale": "For Sale",
+    "for_rent": "For Rent",
+    "select_city": "Select City",
+    "select_area": "Select Area",
+    "submit": "Submit"
+  }
+}

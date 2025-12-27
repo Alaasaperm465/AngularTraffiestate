@@ -5,8 +5,8 @@
     <div class="hero-overlay"></div>
     <div class="container">
       <div class="hero-content">
-        <h1>Edit Your Property</h1>
-        <p>Update your property details and images easily</p>
+        <h1>{{ 'editProperty.hero.title' | translate }}</h1>
+        <p>{{ 'editProperty.hero.subtitle' | translate }}</p>
       </div>
     </div>
   </section>
@@ -19,7 +19,7 @@
         <!-- Loading State -->
         <div *ngIf="isLoading" class="loading-overlay">
           <div class="spinner"></div>
-          <p>Loading property data...</p>
+          <p>{{ 'editProperty.loading' | translate }}</p>
         </div>
 
         <!-- Step Indicator -->
@@ -34,7 +34,7 @@
                 <span *ngIf="!isStepCompleted(step)">{{ step }}</span>
                 <i *ngIf="isStepCompleted(step)" class="bi bi-check"></i>
               </div>
-              <span class="step-label">{{ getStepTitle(step) }}</span>
+              <span class="step-label">{{ getStepTitle(step) | translate }}</span>
             </div>
           </div>
         </div>
@@ -42,350 +42,96 @@
         <!-- Form -->
         <form class="form-wrapper" [ngSwitch]="currentStep" *ngIf="!isLoading">
 
-          <!-- Step 1: Basic Information -->
+          <!-- Step 1 -->
           <div *ngSwitchCase="1" class="form-step">
             <div class="step-header">
-              <h2>{{ getStepTitle(1) }}</h2>
-              <p>{{ getStepDescription(1) }}</p>
+              <h2>{{ getStepTitle(1) | translate }}</h2>
+              <p>{{ getStepDescription(1) | translate }}</p>
             </div>
 
             <div class="form-group">
-              <label for="title">Property Title <span class="required">*</span></label>
-              <input
-                type="text"
-                id="title"
-                [(ngModel)]="property.title"
-                name="title"
-                placeholder="Enter property title..."
-                [class.error]="showValidationErrors && property.title.trim() === ''">
-              <small class="error-message" *ngIf="showValidationErrors && property.title.trim() === ''">
-                Property title is required
+              <label>
+                {{ 'editProperty.fields.title' | translate }}
+                <span class="required">*</span>
+              </label>
+              <input type="text"
+                     [(ngModel)]="property.title"
+                     name="title"
+                     [placeholder]="'editProperty.placeholders.title' | translate"
+                     [class.error]="showValidationErrors && property.title.trim() === ''">
+              <small *ngIf="showValidationErrors && property.title.trim() === ''">
+                {{ 'editProperty.validation.required' | translate }}
               </small>
             </div>
 
             <div class="form-group">
-              <label for="description">Description <span class="required">*</span></label>
-              <textarea
-                id="description"
-                [(ngModel)]="property.description"
-                name="description"
-                rows="5"
-                placeholder="Describe your property..."
-                [class.error]="showValidationErrors && property.description.trim() === ''"></textarea>
-              <small class="error-message" *ngIf="showValidationErrors && property.description.trim() === ''">
-                Description is required
-              </small>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="propertyType">Property Type <span class="required">*</span></label>
-                <select
-                  id="propertyType"
-                  [(ngModel)]="property.propertyType"
-                  (change)="onPropertyTypeChange()"
-                  name="propertyType"
-                  [class.error]="showValidationErrors && property.propertyType === ''">
-                  <option value="">Select Type</option>
-                  <option value="Apartment">Apartment</option>
-                  <option value="Villa">Villa</option>
-                  <option value="House">House</option>
-                  <option value="Studio">Studio</option>
-                  <option value="Townhouse">Townhouse</option>
-                  <option value="Land">Land</option>
-
-                </select>
-                <small class="error-message" *ngIf="showValidationErrors && property.propertyType === ''">
-                  Property type is required
-                </small>
-              </div>
-
-              <div class="form-group">
-                <label for="purpose">Purpose <span class="required">*</span></label>
-                <select
-                  id="purpose"
-                  [(ngModel)]="property.purpose"
-                  name="purpose"
-                  [disabled]="property.propertyType === 'Land'"
-                  [class.error]="showValidationErrors && property.purpose === ''">
-                  <option value="">Select Purpose</option>
-                  <option value="Sale">For Sale</option>
-                  <option value="Rent" *ngIf="property.propertyType !== 'Land'">For Rent</option>
-                  <option value="Sale" *ngIf="property.propertyType === 'Land'">For Sale</option>
-                </select>
-                <small class="error-message" *ngIf="showValidationErrors && property.purpose === ''">
-                  Purpose is required
-                </small>
-                <small class="info-message" *ngIf="property.propertyType === 'Land'">
-                  Land properties are only available for sale
-                </small>
-              </div>
+              <label>
+                {{ 'editProperty.fields.description' | translate }}
+                <span class="required">*</span>
+              </label>
+              <textarea rows="5"
+                        [(ngModel)]="property.description"
+                        name="description"
+                        [placeholder]="'editProperty.placeholders.description' | translate"
+                        [class.error]="showValidationErrors && property.description.trim() === ''">
+              </textarea>
             </div>
 
             <div class="form-actions">
-              <button type="button" class="btn-secondary" disabled>← Previous</button>
-              <button type="button" class="btn-primary" (click)="nextStep()">Next →</button>
+              <button type="button" class="btn-secondary" disabled>
+                ← {{ 'common.previous' | translate }}
+              </button>
+              <button type="button" class="btn-primary" (click)="nextStep()">
+                {{ 'common.next' | translate }} →
+              </button>
             </div>
           </div>
 
-          <!-- Step 2: Location -->
+          <!-- Step 2 -->
           <div *ngSwitchCase="2" class="form-step">
             <div class="step-header">
-              <h2>{{ getStepTitle(2) }}</h2>
-              <p>{{ getStepDescription(2) }}</p>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="city">City <span class="required">*</span></label>
-                <select
-                  id="city"
-                  [(ngModel)]="property.cityId"
-                  name="cityId"
-                  (change)="onCityChange()"
-                  [class.error]="showValidationErrors && property.cityId <= 0">
-                  <option value="0">Select City</option>
-                  <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
-                </select>
-                <small class="error-message" *ngIf="showValidationErrors && property.cityId <= 0">
-                  City is required
-                </small>
-              </div>
-
-              <div class="form-group">
-                <label for="area">Area <span class="required">*</span></label>
-                <select
-                  id="area"
-                  [(ngModel)]="property.areaId"
-                  name="areaId"
-                  [class.error]="showValidationErrors && property.areaId <= 0">
-                  <option value="0">Select Area</option>
-                  <option *ngFor="let area of areas" [value]="area.id">{{ area.name }}</option>
-                </select>
-                <small class="error-message" *ngIf="showValidationErrors && property.areaId <= 0">
-                  Area is required
-                </small>
-              </div>
+              <h2>{{ getStepTitle(2) | translate }}</h2>
+              <p>{{ getStepDescription(2) | translate }}</p>
             </div>
 
             <div class="form-group">
-              <label for="location">Detailed Location <span class="required">*</span></label>
-              <input
-                type="text"
-                id="location"
-                [(ngModel)]="property.location"
-                name="location"
-                placeholder="Enter detailed location..."
-                [class.error]="showValidationErrors && property.location.trim() === ''">
-              <small class="error-message" *ngIf="showValidationErrors && property.location.trim() === ''">
-                Detailed location is required
-              </small>
+              <label>{{ 'editProperty.fields.city' | translate }}</label>
+              <select [(ngModel)]="property.cityId" name="cityId">
+                <option value="0">{{ 'common.select' | translate }}</option>
+                <option *ngFor="let city of cities" [value]="city.id">
+                  {{ city.name }}
+                </option>
+              </select>
             </div>
 
             <div class="form-actions">
-              <button type="button" class="btn-secondary" (click)="previousStep()">← Previous</button>
-              <button type="button" class="btn-primary" (click)="nextStep()">Next →</button>
+              <button type="button" class="btn-secondary" (click)="previousStep()">
+                ← {{ 'common.previous' | translate }}
+              </button>
+              <button type="button" class="btn-primary" (click)="nextStep()">
+                {{ 'common.next' | translate }} →
+              </button>
             </div>
           </div>
 
-          <!-- Step 3: Details -->
-        <div *ngSwitchCase="3" class="form-step">
-          <div class="step-header">
-            <h2 class="step-title-main">{{ getStepTitle(3) }}</h2>
-            <p class="step-description">{{ getStepDescription(3) }}</p>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="price" class="form-label" >Price <span class="required">*</span></label>
-              <input
-                type="number"
-                id="price"
-                class="form-control"
-                [(ngModel)]="property.price"
-                name="price"
-                placeholder="0"
-                min="0"
-                [class.error]="showValidationErrors && property.price === 0">
-              <small class="error-text" *ngIf="showValidationErrors && property.price === 0">
-                Price is required
-              </small>
-            </div>
-
-            <div class="form-group">
-              <label for="areaSpace" class="form-label" >Area Space (m²) <span class="required">*</span></label>
-              <input
-                type="number"
-                id="areaSpace"
-                class="form-control"
-                [(ngModel)]="property.areaSpace"
-                name="areaSpace"
-                placeholder="0"
-                min="0"
-                [class.error]="showValidationErrors && property.areaSpace === 0">
-              <small class="error-text" *ngIf="showValidationErrors && property.areaSpace === 0">
-                Area space is required
-              </small>
-            </div>
-          </div>
-
-          @if(property.propertyType === 'Land'){
-          <!-- Land does not require rooms and bathrooms -->
-          }
-          @else {
-             <div class="form-row">
-            <div class="form-group">
-              <label for="rooms" class="form-label">Bedrooms <span class="required">*</span></label>
-              <input
-                type="number"
-                id="rooms"
-                class="form-control"
-                [(ngModel)]="property.rooms"
-                name="rooms"
-                placeholder="0"
-                min="0"
-                [class.error]="showValidationErrors && property.rooms === 0">
-              <small class="error-text" *ngIf="showValidationErrors && property.rooms === 0">
-                Bedrooms is required
-              </small>
-            </div>
-
-            <div class="form-group">
-              <label for="bathrooms" class="form-label">Bathrooms <span class="required">*</span></label>
-              <input
-                type="number"
-                id="bathrooms"
-                class="form-control"
-                [(ngModel)]="property.bathrooms"
-                name="bathrooms"
-                placeholder="0"
-                min="0"
-                [class.error]="showValidationErrors && property.bathrooms === 0">
-              <small class="error-text" *ngIf="showValidationErrors && property.bathrooms === 0">
-                Bathrooms is required
-              </small>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="finishingLevel" class="form-label">Finishing Level <span class="required">*</span></label>
-              <select
-                id="finishingLevel"
-                class="form-control"
-                [(ngModel)]="property.finishingLevel"
-                name="finishingLevel"
-                [class.error]="showValidationErrors && property.finishingLevel === ''">
-                <option value="">Select Level</option>
-                <option value="Standard">Standard</option>
-                <option value="Semi-Furnished">Semi-Furnished</option>
-                <option value="Luxury">Luxury</option>
-              </select>
-              <small class="error-text" *ngIf="showValidationErrors && property.finishingLevel === ''">
-                Finishing level is required
-              </small>
-            </div>
-
-
-          </div>
-        }
-
-          <!-- Form Actions for Step 3 -->
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" (click)="previousStep()">← Previous</button>
-            <button type="button" class="btn-primary" (click)="nextStep()">Next →</button>
-          </div>
-        </div>
-
-          <!-- Step 4: Images -->
+          <!-- Step 4 -->
           <div *ngSwitchCase="4" class="form-step">
             <div class="step-header">
-              <h2>{{ getStepTitle(4) }}</h2>
-              <p>{{ getStepDescription(4) }}</p>
+              <h2>{{ getStepTitle(4) | translate }}</h2>
+              <p>{{ getStepDescription(4) | translate }}</p>
             </div>
 
-            <!-- Main Image -->
-            <div class="images-section">
-              <h4>Main Image</h4>
-
-              <!-- Current Main Image -->
-              <div class="image-preview" *ngIf="mainImageUrl">
-                <img [src]="mainImageUrl" alt="Main property image">
-                <button type="button" class="btn-remove" (click)="removeMainImage()">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-
-              <!-- New Main Image Preview -->
-              <div class="image-preview" *ngIf="!mainImageUrl && mainImagePreview">
-                <img [src]="mainImagePreview" alt="New main image">
-                <button type="button" class="btn-remove" (click)="removeMainImage()">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-
-              <!-- Upload Area -->
-              <div class="upload-area" *ngIf="!mainImageUrl && !mainImagePreview">
-                <input
-                  type="file"
-                  #mainImageInput
-                  class="file-input"
-                  (change)="onMainImageChange($event)"
-                  accept="image/*">
-                <label for="mainImageInput" class="upload-label" (click)="mainImageInput.click()">
-                  <i class="bi bi-cloud-upload"></i>
-                  <p>Click to upload main image</p>
-                  <small>PNG, JPG, GIF up to 5MB</small>
-                </label>
-              </div>
-            </div>
-
-            <!-- Additional Images -->
-            <div class="images-section">
-              <h4>Additional Images</h4>
-
-              <!-- Current Additional Images -->
-              <div class="images-grid" *ngIf="additionalImagesUrls.length > 0">
-                <div class="image-item" *ngFor="let img of additionalImagesUrls; let i = index">
-                  <img [src]="img" [alt]="'Additional image ' + (i + 1)">
-                  <button type="button" class="btn-remove" (click)="removeAdditionalImage(i)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </div>
-
-              <!-- New Additional Images -->
-              <div class="images-grid" *ngIf="additionalImagesPreview.length > 0">
-                <div class="image-item" *ngFor="let preview of additionalImagesPreview; let i = index">
-                  <img [src]="preview" [alt]="'Preview ' + (i + 1)">
-                  <button type="button" class="btn-remove" (click)="removeAdditionalImage(i)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Upload Area -->
-              <div class="upload-area">
-                <input
-                  type="file"
-                  #additionalImagesInput
-                  class="file-input"
-                  (change)="onAdditionalImagesChange($event)"
-                  accept="image/*"
-                  multiple>
-                <label for="additionalImagesInput" class="upload-label" (click)="additionalImagesInput.click()">
-                  <i class="bi bi-cloud-upload"></i>
-                  <p>Click to upload additional images</p>
-                  <small>Select multiple images</small>
-                </label>
-              </div>
-            </div>
-
-            <!-- Submit Actions -->
             <div class="form-actions">
-              <button type="button" class="btn-secondary" (click)="previousStep()">← Previous</button>
-              <button type="submit" class="btn-success" (click)="submit()" [disabled]="isSubmitting">
-                {{ isSubmitting ? 'Updating...' : 'Update Property' }}
+              <button type="button" class="btn-secondary" (click)="previousStep()">
+                ← {{ 'common.previous' | translate }}
+              </button>
+              <button type="submit"
+                      class="btn-success"
+                      (click)="submit()"
+                      [disabled]="isSubmitting">
+                {{ isSubmitting
+                    ? ('editProperty.updating' | translate)
+                    : ('editProperty.update' | translate) }}
               </button>
             </div>
           </div>

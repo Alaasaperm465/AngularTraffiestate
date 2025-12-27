@@ -11,11 +11,12 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, RouterLink, TranslateModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })

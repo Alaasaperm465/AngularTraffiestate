@@ -1,95 +1,87 @@
 <section class="about" id="about">
   <div class="container">
-    <span class="section-subtitle">Who We Are</span>
-    <h2 class="section-title">About Us</h2>
+    <span class="section-subtitle">{{ 'about.section_subtitle' | translate }}</span>
+    <h2 class="section-title">{{ 'about.section_title' | translate }}</h2>
 
     <!-- About Website Section -->
     <div class="about__content">
       <div class="about__intro">
-        <h3 class="about__subtitle">Our Mission</h3>
+        <h3 class="about__subtitle">{{ 'about.mission.title' | translate }}</h3>
         <p class="about__text">
-          Welcome to <strong>A TraffiEstate</strong> - Established in 2025, we are a dedicated real estate platform
-          committed to revolutionizing the way people buy, sell, and rent properties. Our mission is to create a
-          seamless, transparent, and trustworthy ecosystem for all real estate transactions.
+          {{ 'about.mission.text' | translate }}
         </p>
       </div>
 
       <div class="about__services">
-        <h3 class="about__subtitle">What We Offer</h3>
+        <h3 class="about__subtitle">{{ 'about.services.title' | translate }}</h3>
         <div class="services__grid">
           <div class="service__card">
             <div class="service__icon">
               <i class="bx bxs-home"></i>
             </div>
-            <h4>Property Sales</h4>
-            <p>Buy and sell properties with confidence through our verified listing platform and expert guidance.</p>
+            <h4>{{ 'about.services.property_sales.title' | translate }}</h4>
+            <p>{{ 'about.services.property_sales.description' | translate }}</p>
           </div>
 
           <div class="service__card">
             <div class="service__icon">
               <i class="bx bxs-key"></i>
             </div>
-            <h4>Rental Services</h4>
-            <p>Find the perfect rental property or list your property to reach qualified tenants efficiently.</p>
+            <h4>{{ 'about.services.rental_services.title' | translate }}</h4>
+            <p>{{ 'about.services.rental_services.description' | translate }}</p>
           </div>
 
           <div class="service__card">
             <div class="service__icon">
               <i class="bx bxs-map"></i>
             </div>
-            <h4>Land Trading</h4>
-            <p>Invest in prime land opportunities with transparent pricing and comprehensive market analysis.</p>
+            <h4>{{ 'about.services.land_trading.title' | translate }}</h4>
+            <p>{{ 'about.services.land_trading.description' | translate }}</p>
           </div>
 
           <div class="service__card">
             <div class="service__icon">
               <i class="bx bxs-user-check"></i>
             </div>
-            <h4>Client Support</h4>
-            <p>Dedicated support for both buyers and sellers throughout the entire transaction process.</p>
+            <h4>{{ 'about.services.client_support.title' | translate }}</h4>
+            <p>{{ 'about.services.client_support.description' | translate }}</p>
           </div>
 
           <div class="service__card">
             <div class="service__icon">
               <i class="bx bxs-hand"></i>
             </div>
-            <h4>Deal Completion</h4>
-            <p>We ensure smooth and successful completion of every transaction with legal documentation support.</p>
+            <h4>{{ 'about.services.deal_completion.title' | translate }}</h4>
+            <p>{{ 'about.services.deal_completion.description' | translate }}</p>
           </div>
 
           <div class="service__card">
             <div class="service__icon">
               <i class="bx bxs-shield-check"></i>
             </div>
-            <h4>Trust & Security</h4>
-            <p>Your security and trust are our priority. All transactions are verified and legally protected.</p>
+            <h4>{{ 'about.services.trust_security.title' | translate }}</h4>
+            <p>{{ 'about.services.trust_security.description' | translate }}</p>
           </div>
         </div>
       </div>
 
       <div class="about__commitment">
-        <h3 class="about__subtitle">Our Commitment</h3>
+        <h3 class="about__subtitle">{{ 'about.commitment.title' | translate }}</h3>
         <p class="about__text">
-          At A TraffiEstate, we believe that real estate transactions should be transparent, efficient, and stress-free.
-          Whether you're a first-time buyer, an experienced investor, or a property owner looking to rent or sell,
-          we're here to guide you every step of the way. Our dedicated team works tirelessly to match buyers with sellers
-          and renters with landlords, ensuring that every transaction is completed successfully and legally.
+          {{ 'about.commitment.text1' | translate }}
         </p>
         <p class="about__text">
-          We combine cutting-edge technology with personal attention to deliver a service that truly cares about your
-          real estate goals. Trust An Mamduma to make your property journey smooth and successful.
+          {{ 'about.commitment.text2' | translate }}
         </p>
       </div>
     </div>
 
     <!-- Team Section -->
     <div class="team__section">
-      <span class="section-subtitle">Our Team</span>
-      <h3 class="section-title">Meet Our Experts</h3>
+      <span class="section-subtitle">{{ 'about.team.section_subtitle' | translate }}</span>
+      <h3 class="section-title">{{ 'about.team.section_title' | translate }}</h3>
       <p class="about__description">
-        We are a passionate team of developers working together to deliver modern, scalable,
-        and high-quality web applications. Each member brings unique skills and expertise
-        to make our projects successful.
+        {{ 'about.team.description' | translate }}
       </p>
 
       <div class="team__container">
@@ -113,16 +105,56 @@
           <span class="team__role">{{ member.role }}</span>
           <div class="team__buttons">
             <a class="btn btn-primary" [href]="member.linkedin" target="_blank" rel="noopener noreferrer">
-              <i class="bx bxl-linkedin"></i> LinkedIn
+              <i class="bx bxl-linkedin"></i> {{ 'about.team.linkedin' | translate }}
             </a>
             <a class="btn btn-secondary" [href]="member.github" target="_blank" rel="noopener noreferrer">
-              <i class="bx bxl-github"></i> GitHub
+              <i class="bx bxl-github"></i> {{ 'about.team.github' | translate }}
             </a>
             <a class="btn btn-gold" [href]="member.cv" target="_blank" rel="noopener noreferrer">
-              <i class="bx bxs-file-pdf"></i> CV
+              <i class="bx bxs-file-pdf"></i> {{ 'about.team.cv' | translate }}
             </a>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact CTA Section -->
+<section class="contact-cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-text">
+        <h2>{{ 'home.contact_cta.title' | translate }}</h2>
+        <p>{{ 'home.contact_cta.description' | translate }}</p>
+      </div>
+      <div class="cta-buttons">
+        <a [href]="'https://wa.me/' + phone.replace(/\D/g, '')" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-whatsapp"></i>
+          {{ 'home.contact_cta.whatsapp' | translate }}
+        </a>
+        <a [href]="'tel:' + phone" class="cta-btn secondary">
+          <i class="bi bi-telephone-fill"></i>
+          {{ 'home.contact_cta.call_us' | translate }}
+        </a>
+      </div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item">
+        <i class="bi bi-whatsapp"></i>
+        <span>{{ phone }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-telephone-fill"></i>
+        <span>{{ phone }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-envelope-fill"></i>
+        <span>{{ email }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-geo-alt-fill"></i>
+        <span>{{ 'contact_info.cairo_egypt' | translate }}</span>
       </div>
     </div>
   </div>

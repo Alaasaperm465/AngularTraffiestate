@@ -1,24 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { IProperty, phone, email } from '../../models/iproperty';
 import { PropertyService } from '../../Services/property';
 import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// import { loadStripe, Stripe } from '@stripe/stripe-js';
-
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 // import { ReviewStats } from '../../Services/reviw-service';
 // import { ReviewService } from '../../Services/reviw-service';
 // import { ReviewService, ReviewStats } from '../../Services/review-service';
 import { ReviewService, ReviewStats } from '../../Services/reviw-service';
 import Swal from 'sweetalert2';
 import { PaymentService } from '../../Services/payment-service';
-// declare var Stripe: any; // هنا نستخدم Stripe كـ any
+// import { loadStripe } from '@stripe/stripe-js';
+
 
 @Component({
   selector: 'app-property-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, TranslateModule],
   templateUrl: './property-details.html',
   styleUrl: './property-details.css',
 })
@@ -27,6 +27,7 @@ export class PropertyDetails implements OnInit {
   property!: IProperty;
   mainImageUrl!: string;
   bookedDates: string[] = []; // Array of booked dates (YYYY-MM-DD format)
+  private translate = inject(TranslateService);
 
   // استخدم هذه المتغيرات كـ default values
   defaultPhone = '+201200003943';
@@ -355,11 +356,15 @@ export class PropertyDetails implements OnInit {
 
   // ===== UTILITIES =====
   getPropertyPurposeLabel(): string {
-    return this.property.purpose.toLowerCase() === 'rent' ? 'For Rent' : 'For Sale';
+    if (!this.property) return '';
+    const key = this.property.purpose.toLowerCase() === 'rent' ? 'property.details.for_rent' : 'property.details.for_sale';
+    return this.translate.instant(key);
   }
 
   getPriceLabel(): string {
-    return this.property.purpose.toLowerCase() === 'rent' ? 'Per Month' : 'Total Price';
+    if (!this.property) return '';
+    const key = this.property.purpose.toLowerCase() === 'rent' ? 'property.details.per_month' : 'property.details.total_price';
+    return this.translate.instant(key);
   }
 
   trackById(index: number, item: any): number {

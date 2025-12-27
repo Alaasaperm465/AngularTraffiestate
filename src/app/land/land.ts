@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/cor
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IProperty, phone, email } from '../models/iproperty';
 import { FavoriteService } from '../Services/favorite-service';
 import { PropertyService } from '../Services/property';
@@ -9,7 +10,7 @@ import { PropertyService } from '../Services/property';
 @Component({
   selector: 'app-land',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslateModule],
   templateUrl: './land.html',
   styleUrl: './land.css',
 })
@@ -43,18 +44,18 @@ export class Land implements OnInit {
 
   // Land-specific filter options
   landSizes = [
-    { label: 'Small (< 1000 sqm)', value: 'under1000' },
-    { label: 'Medium (1000-5000 sqm)', value: '1000-5000' },
-    { label: 'Large (5000-10000 sqm)', value: '5000-10000' },
-    { label: 'Extra Large (> 10000 sqm)', value: 'over10000' }
+    { label: 'land.filters.small', value: 'under1000' },
+    { label: 'land.filters.medium', value: '1000-5000' },
+    { label: 'land.filters.large', value: '5000-10000' },
+    { label: 'land.filters.extra_large', value: 'over10000' }
   ];
 
   landPriceRanges = [
-    { label: 'Under 500,000 EGP', value: 'under500k' },
-    { label: '500,000 - 1,000,000 EGP', value: '500k-1m' },
-    { label: '1,000,000 - 5,000,000 EGP', value: '1m-5m' },
-    { label: '5,000,000 - 10,000,000 EGP', value: '5m-10m' },
-    { label: 'Over 10,000,000 EGP', value: 'over10m' }
+    { label: 'land.filters.under_500k', value: 'under500k' },
+    { label: 'land.filters.range_500k_1m', value: '500k-1m' },
+    { label: 'land.filters.range_1m_5m', value: '1m-5m' },
+    { label: 'land.filters.range_5m_10m', value: '5m-10m' },
+    { label: 'land.filters.over_10m', value: 'over10m' }
   ];
 
   quickSearchCities = [
