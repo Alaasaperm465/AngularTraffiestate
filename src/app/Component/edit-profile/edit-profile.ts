@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserService, UserProfile, UpdateUserDto } from '../../Services/users';
 
 @Component({
   selector: 'app-edit-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './edit-profile.html',
   styleUrl: './edit-profile.css',
 })
@@ -25,7 +26,8 @@ export class EditProfile implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -87,7 +89,8 @@ export class EditProfile implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error('❌ Profile error', err);
-        this.errorMessage = err.error?.message || 'Failed to load profile';
+        const errorMessage = err.error?.message || this.translate.instant('dashboard.edit_profile.load_error');
+        this.errorMessage = errorMessage;
         this.loading = false;
 
         // If API fails but we have cached data, keep showing it
@@ -127,7 +130,7 @@ export class EditProfile implements OnInit, OnDestroy {
     this.userService.updateProfile(updateDto).subscribe({
       next: (res) => {
         this.isSubmitting = false;
-        this.successMessage = 'Profile updated successfully!';
+        this.successMessage = this.translate.instant('dashboard.edit_profile.success');
 
         // Update current user and cache
         if (res.value) {
@@ -147,7 +150,8 @@ export class EditProfile implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.isSubmitting = false;
-        this.errorMessage = err.error?.message || err.error?.errors?.[0] || 'Failed to update profile';
+        const errorMessage = err.error?.message || err.error?.errors?.[0] || this.translate.instant('dashboard.edit_profile.error');
+        this.errorMessage = errorMessage;
         console.error('❌ Update error', err);
       }
     });

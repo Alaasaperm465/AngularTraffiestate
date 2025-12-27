@@ -1,28 +1,51 @@
 <div class="chatbot-container">
   <div class="chat-header">
-    <h2>🏠 مساعد البحث عن العقارات</h2>
+    <div class="header-content">
+      <div class="header-icon"></div>
+      <div>
+        <h2>مساعد البحث عن العقارات</h2>
+        <p class="header-subtitle">ابحث عن عقارك المثالي بسهولة</p>
+      </div>
+    </div>
     <div class="header-actions" *ngIf="!embeddingsReady">
-      <button class="btn-small" (click)="initEmbeddings()" [disabled]="isBusy">
-        🔄 إعادة محاولة
+      <button class="btn-small" (click)="initEmbeddings()" [disabled]="isBusy" title="إعادة محاولة التهيئة">
+        <span class="btn-icon">⚙️</span> إعادة محاولة
       </button>
-      <button class="btn-small" (click)="checkStatus()" [disabled]="isBusy">
-        🔍 تحقق من الحالة
+      <button class="btn-small" (click)="checkStatus()" [disabled]="isBusy" title="التحقق من حالة النظام">
+        <span class="btn-icon">📊</span> الحالة
       </button>
+    </div>
+    <div class="header-status" *ngIf="embeddingsReady" [class.ready]="embeddingsReady">
+      <span class="status-dot"></span>
+      <span>جاهز للبحث</span>
     </div>
   </div>
 
-  <div class="messages-container">
-    <div *ngFor="let message of messages" 
-         [class]="message.isUser ? 'message user-message' : 'message bot-message'">
-      <div class="message-content">
-        <p>{{ message.text }}</p>
-        <span class="timestamp">{{ message.timestamp | date: 'short' }}</span>
+  <div class="messages-container" #messagesContainer>
+    <div *ngIf="messages.length === 0" class="welcome-message">
+      <div class="welcome-icon">🏠</div>
+      <h3>مرحباً بك!</h3>
+      <p>أنا مساعدك في البحث عن العقارات المناسبة</p>
+      <div class="welcome-tips">
+        <div class="tip">📍 حدد الموقع الذي تفضله</div>
+        <div class="tip">💰 حدد السعر المناسب</div>
+        <div class="tip">🏢 اختر نوع العقار</div>
       </div>
+    </div>
+
+    <div *ngFor="let message of messages; let i = index" 
+         [class]="message.isUser ? 'message user-message' : 'message bot-message'">
+      <div class="message-content" [innerHTML]="formatMessage(message.text, message.isUser)"></div>
+      <span class="message-time">{{ message.timestamp | date: 'HH:mm' }}</span>
     </div>
 
     <div *ngIf="isLoading" class="message bot-message">
       <div class="message-content">
-        <p>جاري البحث...</p>
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </div>
   </div>
@@ -34,10 +57,11 @@
       name="userInput"
       [(ngModel)]="userInput" 
       (keyup.enter)="sendMessage()"
-      placeholder="اكتب رسالتك هنا... مثال: شقة 3 غرف في القاهرة"
-      autocomplete="off">
-    <button (click)="sendMessage()" [disabled]="isLoading">
-      إرسال
+      placeholder="ابحث عن عقارك... (مثال: شقة 3 غرف في القاهرة)"
+      autocomplete="off"
+      [disabled]="isLoading">
+    <button class="send-btn" (click)="sendMessage()" [disabled]="!userInput.trim() || isLoading" title="إرسال الرسالة">
+      <span class="send-icon">⬎</span>
     </button>
   </div>
 </div>

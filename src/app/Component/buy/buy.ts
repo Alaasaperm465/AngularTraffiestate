@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/cor
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { IProperty, phone, email } from '../../models/iproperty';
 import { PropertyService } from '../../Services/property';
 import { FavoriteService } from '../../Services/favorite-service';
@@ -9,7 +10,7 @@ import { FavoriteService } from '../../Services/favorite-service';
 @Component({
   selector: 'app-buy',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslateModule],
   templateUrl: './buy.html',
   styleUrl: './buy.css',
 })

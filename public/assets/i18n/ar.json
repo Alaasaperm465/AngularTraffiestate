@@ -1,0 +1,759 @@
+{
+  "form": {
+    "username": "اسم المستخدم",
+    "enter_username": "أدخل اسم المستخدم",
+    "username_required": "اسم المستخدم مطلوب",
+    "enter_phone": "أدخل رقم هاتفك",
+    "phone_required": "رقم الهاتف مطلوب"
+  },
+  "common": {
+    "back": "رجوع",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "see_more": "عرض المزيد",
+    "call_now": "اتصل الآن",
+    "close": "إغلاق",
+    "currency": "جنيه مصري",
+    "home": "الرئيسية",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح"
+  },
+  "header": {
+    "title": "TraffiEstate",
+    "home": "الرئيسية",
+    "properties": "العقارات",
+    "buy": "شراء",
+    "rent": "إيجار",
+    "land": "أراضي",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "sign_in": "تسجيل الدخول",
+    "profile": "ملفي",
+    "dashboard": "لوحة التحكم",
+    "favorites": "المفضلة",
+    "logout": "تسجيل الخروج"
+  },
+  "home": {
+    "hero": {
+      "main_title": "ابحث عن عقارك المثالي",
+      "description": "اكتشف المكان المثالي للعيش من مجموعتنا الواسعة من العقارات",
+      "search_placeholder": "المدينة، المنطقة أو الحي",
+      "property_type": "نوع العقار",
+      "bedrooms": "غرف النوم",
+      "search": "بحث",
+      "popular": "الشهيرة:",
+      "tabs": {
+        "buy": "شراء",
+        "rent": "إيجار",
+        "all": "الكل"
+      },
+      "1_bedroom": "غرفة واحدة",
+      "2_bedrooms": "غرفتان",
+      "3_bedrooms": "3 غرف",
+      "4_plus_bedrooms": "4+ غرف",
+      "apartment": "شقة",
+      "villa": "فيلا",
+      "land": "أرض"
+    },
+    "properties": {
+      "found": "عقارات موجودة",
+      "showing": "عرض",
+      "of": "من",
+      "grid_view": "عرض شبكة",
+      "list_view": "عرض قائمة",
+      "no_results": "لم يتم العثور على عقارات",
+      "try_adjusting": "حاول تعديل عوامل البحث أو استكشاف مناطق مختلفة",
+      "reset_filters": "إعادة تعيين الفلاتر",
+      "see_more": "المزيد",
+      "page_info": "عرض {showing} من {total}"
+    },
+    "filters": {
+      "title": "الفلاتر",
+      "clear_all": "مسح الكل",
+      "sort_by": "الترتيب حسب",
+      "newest_first": "الأحدث أولاً",
+      "price_low_high": "السعر: من الأقل للأعلى",
+      "price_high_low": "السعر: من الأعلى للأقل",
+      "most_popular": "الأكثر شيوعاً",
+      "property_type": "نوع العقار",
+      "apartment": "شقة",
+      "villa": "فيلا",
+      "land": "أرض",
+      "price_range": "نطاق السعر",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "area": "المساحة (م²)",
+      "under_100": "أقل من 100",
+      "100_200": "100 - 200",
+      "200_300": "200 - 300",
+      "300_plus": "300+",
+      "bedrooms": "غرف النوم",
+      "1_bedroom": "غرفة واحدة",
+      "2_bedrooms": "غرفتان",
+      "3_bedrooms": "3 غرف",
+      "4_plus_bedrooms": "4+ غرف"
+    },
+    "contact_cta": {
+      "title": "لا تجد ما تبحث عنه؟",
+      "description": "فريقنا الخبير هنا لمساعدتك في العثور على عقارك المثالي",
+      "whatsapp": "واتساب",
+      "call_us": "اتصل بنا"
+    },
+    "rent": {
+      "hero_title": "ابحث عن بيت إيجاري مثالي",
+      "hero_description": "استكشف مجموعتنا الواسعة من العقارات للإيجار واعثر على بيتك المثالي",
+      "city_placeholder": "المدينة أو المنطقة",
+      "property_type_placeholder": "نوع العقار",
+      "popular": "الشهير",
+      "cairo": "القاهرة",
+      "alexandria": "الإسكندرية",
+      "giza": "الجيزة",
+      "new_cairo": "مدينة نصر",
+      "properties_found": "عقار تم العثور عليه",
+      "showing": "عرض",
+      "of": "من",
+      "no_properties_found": "لم يتم العثور على عقارات",
+      "try_adjusting_filters": "حاول تعديل معايير البحث أو استكشاف مناطق أخرى",
+      "reset_filters": "إعادة تعيين الفلاتر",
+      "filters": "الفلاتر",
+      "clear_all": "مسح الكل",
+      "sort_by": "ترتيب حسب",
+      "newest_first": "الأحدث أولاً",
+      "price_low_to_high": "السعر: من الأقل إلى الأعلى",
+      "price_high_to_low": "السعر: من الأعلى إلى الأقل",
+      "most_popular": "الأكثر شيوعاً",
+      "price_range": "نطاق السعر (شهري)",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "area": "المساحة (م²)",
+      "under_100": "أقل من 100",
+      "range_100_200": "100 - 200",
+      "range_200_300": "200 - 300",
+      "range_300_plus": "300+"
+    },
+    "buy": {
+      "hero_title": "ابحث عن عقارك المثالي للشراء",
+      "hero_description": "استكشف مجموعتنا الواسعة من العقارات للبيع واعثر على بيتك المثالي",
+      "city_placeholder": "المدينة أو المنطقة",
+      "property_type_placeholder": "نوع العقار",
+      "popular": "مناطق مشهوره",
+      "cairo": "القاهرة",
+      "alexandria": "الإسكندرية",
+      "giza": "الجيزة",
+      "new_cairo": "مدينة نصر",
+      "properties_found": "عقار تم العثور عليه",
+      "showing": "عرض",
+      "of": "من",
+      "no_properties_found": "لم يتم العثور على عقارات",
+      "try_adjusting_filters": "حاول تعديل معايير البحث أو استكشاف مناطق أخرى",
+      "reset_filters": "إعادة تعيين الفلاتر",
+      "filters": "الفلاتر",
+      "clear_all": "مسح الكل",
+      "sort_by": "ترتيب حسب",
+      "newest_first": "الأحدث أولاً",
+      "price_low_to_high": "السعر: من الأقل إلى الأعلى",
+      "price_high_to_low": "السعر: من الأعلى إلى الأقل",
+      "most_popular": "الأكثر شيوعاً",
+      "price_range": "نطاق السعر",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "area": "المساحة (م²)",
+      "under_100": "أقل من 100",
+      "range_100_200": "100 - 200",
+      "range_200_300": "200 - 300",
+      "range_300_plus": "300+"
+    },
+    "contact": {
+      "title": "اتصل بنا",
+      "form_title": "أرسل لنا رسالة",
+      "form_subtitle": "نود سماع منك. أرسل لنا رسالة وسنرد عليك في أقرب وقت ممكن.",
+      "name": "اسمك",
+      "email": "بريدك الإلكتروني",
+      "subject": "الموضوع",
+      "message": "الرسالة",
+      "send": "أرسل الرسالة",
+      "sending": "جاري الإرسال...",
+      "success_message": "شكراً على رسالتك! سنعود إليك قريباً.",
+      "error_message": "حدث خطأ في الإرسال. حاول مرة أخرى.",
+      "required_field": "هذا الحقل مطلوب",
+      "invalid_email": "يرجى إدخال بريد إلكتروني صحيح"
+    }
+  },
+  "about": {
+    "section_subtitle": "من نحن",
+    "section_title": "عن الشركة",
+    "mission": {
+      "title": "رسالتنا",
+      "text": "مرحبًا بكم في ترافي إستيت - تأسست في عام 2025، نحن منصة عقارية مخصصة ملتزمة بإحداث ثورة في طريقة شراء وبيع وتأجير العقارات. مهمتنا هي خلق نظام بيئي سلس وشفاف وموثوق لجميع المعاملات العقارية."
+    },
+    "services": {
+      "title": "ما نقدمه",
+      "property_sales": {
+        "title": "بيع العقارات",
+        "description": "اشترِ وبيع العقارات بثقة من خلال منصة القوائم المتحققة وإرشادات الخبراء."
+      },
+      "rental_services": {
+        "title": "خدمات الإيجار",
+        "description": "ابحث عن العقار الإيجاري المثالي أو ضع عقارك للوصول إلى المستأجرين المؤهلين بكفاءة."
+      },
+      "land_trading": {
+        "title": "تداول الأراضي",
+        "description": "استثمر في فرص الأراضي المتميزة بتسعير شفاف وتحليل سوقي شامل."
+      },
+      "client_support": {
+        "title": "دعم العملاء",
+        "description": "دعم مخصص لكل من المشترين والبائعين طوال عملية المعاملة بأكملها."
+      },
+      "deal_completion": {
+        "title": "إكمال الصفقة",
+        "description": "نضمن سلاسة وإتمام كل معاملة بنجاح مع دعم التوثيق القانوني."
+      },
+      "trust_security": {
+        "title": "الثقة والأمان",
+        "description": "الأمان والثقة هما أولويتنا. جميع المعاملات محققة وحماية قانونية."
+      }
+    },
+    "commitment": {
+      "title": "التزامنا",
+      "text1": "في TraffiEstate، نعتقد أن معاملات العقارات يجب أن تكون شفافة وفعالة وخالية من الإجهاد. سواء كنت مشترياً لأول مرة أو مستثماراً متمرساً أو مالك عقار يتطلع إلى الإيجار أو البيع، نحن هنا لإرشادك في كل خطوة. يعمل فريقنا المخصص بجد لربط المشترين بالبائعين والمستأجرين بالملاك، مما يضمن أن كل معاملة يتم إكمالها بنجاح وقانونياً.",
+      "text2": "نجمع بين التكنولوجيا المتطورة والاهتمام الشخصي لتقديم خدمة حقاً تهتم بأهدافك العقارية. ثق بـ TraffiEstate لجعل رحلتك العقارية سلسة وناجحة."
+    },
+    "team": {
+      "section_subtitle": "فريقنا",
+      "section_title": "قابل خبراءنا",
+      "description": "نحن فريق متحمس من المطورين يعملون معاً لتقديم تطبيقات ويب حديثة وقابلة للتوسع وعالية الجودة. كل عضو يجلب مهارات وخبرات فريدة لجعل مشاريعنا ناجحة.",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "cv": "السيرة الذاتية"
+    }
+  },
+  "property": {
+    "property_type": "نوع العقار",
+    "apartment": "شقة",
+    "villa": "فيلا",
+    "land": "أرض",
+    "bedrooms": "غرف النوم",
+    "bedroom": "غرفة نوم",
+    "details": {
+      "title": "تفاصيل العقار",
+      "bedrooms": "غرف النوم",
+      "bathrooms": "الحمامات",
+      "area": "المساحة",
+      "type": "النوع",
+      "finishing": "التشطيب",
+      "views": "المشاهدات",
+      "description": "الوصف",
+      "features_amenities": "المميزات والمرافق",
+      "location": "الموقع",
+      "similar_properties": "عقارات مشابهة",
+      "call_now": "اتصل الآن",
+      "send_email": "إرسال بريد إلكتروني",
+      "whatsapp": "واتساب",
+      "schedule_visit": "جدولة زيارة",
+      "your_name": "اسمك *",
+      "your_email": "بريدك الإلكتروني *",
+      "your_phone": "هاتفك *",
+      "preferred_date": "التاريخ المفضل *",
+      "message_optional": "الرسالة (اختياري)",
+      "request_visit": "طلب زيارة",
+      "rate_property": "قيم هذا العقار",
+      "average_rating": "متوسط التقييم:",
+      "reviews": "تقييمات",
+      "you_already_rated": "لقد قيمت بالفعل",
+      "submit_rating": "إرسال التقييم",
+      "for_sale": "للبيع",
+      "for_rent": "للإيجار"
+    },
+    "amenities": {
+      "air_conditioning": "تكييف الهواء",
+      "swimming_pool": "حمام السباحة",
+      "garden": "حديقة",
+      "security_system": "نظام الأمان",
+      "balcony": "شرفة",
+      "modern_kitchen": "مطبخ حديث",
+      "storage_room": "غرفة تخزين",
+      "elevator": "مصعد"
+    },
+    "call_us": "اتصل بنا على:",
+    "for_sale": "للبيع",
+    "for_rent": "للإيجار",
+    "card": {
+      "view": "عرض",
+      "favorite": "مفضل",
+      "featured": "مميز",
+      "beds": "غرف",
+      "baths": "حمام",
+      "apartment": "شقة",
+      "villa": "فيلا",
+      "land": "أرض",
+      "property_type": "نوع العقار",
+      "bedroom": "غرفة نوم",
+      "bedrooms": "غرف نوم",
+      "for_rent": "للإيجار",
+      "month": "/شهر",
+      "no_image": "لا توجد صورة"
+    }
+  },
+  "forms": {
+    "add_property": {
+      "title": "أضف عقارك",
+      "subtitle": "أضف عقارك وابدأ في الكسب",
+      "step_titles": [
+        "المعلومات الأساسية",
+        "الموقع",
+        "تفاصيل العقار",
+        "الصور"
+      ],
+      "property_title": "عنوان العقار *",
+      "description": "الوصف *",
+      "property_type": "نوع العقار *",
+      "select_type": "اختر النوع",
+      "purpose": "الغرض *",
+      "select_purpose": "اختر الغرض",
+      "for_sale": "للبيع",
+      "for_rent": "للإيجار",
+      "city": "المدينة *",
+      "select_city": "اختر المدينة",
+      "area": "المنطقة *",
+      "select_area": "اختر المنطقة",
+      "street_address": "العنوان التفصيلي *",
+      "price": "السعر *",
+      "area_space": "المساحة (م²) *",
+      "rooms": "غرف النوم *",
+      "bathrooms": "الحمامات *",
+      "finishing_level": "مستوى التشطيب *",
+      "select_level": "اختر المستوى",
+      "standard": "عادي",
+      "semi_furnished": "شبه مفروش",
+      "luxury": "فاخر",
+      "high": "عالي",
+      "status": "الحالة",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "pending": "قيد المراجعة",
+      "main_image": "الصورة الرئيسية *",
+      "additional_images": "صور إضافية",
+      "upload_placeholder": "انقر أو اسحب الصورة الرئيسية هنا",
+      "upload_placeholder_additional": "انقر أو اسحب الصور الإضافية هنا",
+      "file_types": "JPG، PNG (بحد أقصى 5 ميجابايت)",
+      "multiple_files": "يسمح بملفات متعددة",
+      "previous": "السابق",
+      "next": "التالي",
+      "submit_property": "إرسال العقار",
+      "submitting": "جاري الإرسال...",
+      "step": "خطوة",
+      "of": "من",
+      "apartment": "شقة",
+      "villa": "فيلا",
+      "house": "منزل",
+      "studio": "استوديو",
+      "townhouse": "مجمع سكني",
+      "land": "أرض"
+    },
+    "editProperty": {
+      "hero": {
+        "title": "تحرير العقار",
+        "subtitle": "حدث تفاصيل عقارك والصور بسهولة"
+      },
+      "loading": "جاري تحميل العقار...",
+      "step_basic": "المعلومات الأساسية",
+      "step_location": "الموقع",
+      "step_details": "تفاصيل العقار",
+      "step_images": "الصور",
+      "step_basic_description": "أدخل المعلومات الأساسية للعقار",
+      "step_location_description": "حدد تفاصيل الموقع",
+      "step_details_description": "أضف مواصفات العقار",
+      "step_images_description": "حمل صور العقار",
+      "fields": {
+        "title": "عنوان العقار",
+        "description": "الوصف",
+        "city": "المدينة",
+        "area": "المنطقة",
+        "street": "عنوان الشارع",
+        "price": "السعر",
+        "area_space": "مساحة العقار (م²)",
+        "rooms": "غرف النوم",
+        "bathrooms": "الحمامات",
+        "finishing": "مستوى الإنهاء",
+        "purpose": "الغرض",
+        "type": "نوع العقار"
+      },
+      "placeholders": {
+        "title": "أدخل عنوان العقار",
+        "description": "أدخل وصف العقار",
+        "price": "أدخل السعر",
+        "area": "أدخل المنطقة"
+      },
+      "validation": {
+        "required": "هذا الحقل مطلوب"
+      },
+      "update": "تحديث العقار",
+      "updating": "جاري التحديث..."
+    },
+    "edit_property": {
+      "title": "تعديل عقارك",
+      "subtitle": "قم بتحديث تفاصيل عقارك وصوره بسهولة"
+    },
+    "login": {
+      "title": "مرحبًا بعودتك",
+      "subtitle": "سجل الدخول إلى حسابك للمتابعة",
+      "email_username": "البريد الإلكتروني أو اسم المستخدم",
+      "password": "كلمة المرور",
+      "sign_in": "تسجيل الدخول",
+      "signing_in": "جاري تسجيل الدخول...",
+      "forgot_password": "نسيت كلمة المرور؟",
+      "create_account": "ليس لديك حساب؟ أنشئ حسابًا"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "انضم إلينا للعثور على عقارك المثالي",
+      "full_name": "الاسم الكامل",
+      "phone_number": "رقم الهاتف",
+      "email_address": "البريد الإلكتروني",
+      "account_type": "نوع الحساب",
+      "select_account_type": "اختر نوع الحساب",
+      "password": "كلمة المرور",
+      "confirm_password": "تأكيد كلمة المرور",
+      "create_account": "إنشاء حساب",
+      "creating_account": "جاري إنشاء الحساب...",
+      "already_have_account": "لديك حساب بالفعل؟ سجل الدخول",
+      "password_requirements": {
+        "length": "✓ 6 أحرف على الأقل",
+        "uppercase": "✓ حرف كبير واحد على الأقل",
+        "number": "✓ رقم واحد على الأقل"
+      }
+    },
+    "forgot_password": {
+      "title": "نسيت كلمة المرور",
+      "subtitle": "أدخل عنوان بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور",
+      "send_reset_link": "أرسل رابط الإعادة",
+      "sending": "جاري الإرسال...",
+      "back_to_login": "العودة للدخول"
+    },
+    "reset_password": {
+      "title": "إعادة تعيين كلمة المرور",
+      "subtitle": "أدخل كلمة المرور الجديدة أدناه",
+      "new_password": "كلمة المرور الجديدة",
+      "confirm_password": "تأكيد كلمة المرور",
+      "reset_password": "إعادة تعيين",
+      "resetting": "جاري الإعادة...",
+      "back_to_login": "العودة للدخول"
+    },
+    "edit_profile": {
+      "title": "تعديل الملف الشخصي",
+      "edit_profile": "تعديل الملف الشخصي",
+      "back": "رجوع",
+      "username": "اسم المستخدم",
+      "phone_number": "رقم الهاتف",
+      "account_information": "معلومات الحساب",
+      "email": "البريد الإلكتروني",
+      "cannot_be_changed": "لا يمكن تغيير البريد الإلكتروني",
+      "role": "الدور",
+      "save_changes": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "cancel": "إلغاء",
+      "success": "تم تحديث الملف الشخصي بنجاح!",
+      "error": "فشل تحديث الملف الشخصي",
+      "load_error": "فشل تحميل الملف الشخصي"
+    },
+    "visit_form": {
+      "name": "اسمك *",
+      "email": "بريدك الإلكتروني *",
+      "phone": "هاتفك *",
+      "date": "التاريخ المفضل *",
+      "message": "الرسالة (اختيارية)"
+    },
+    "validation": {
+      "name_required": "الاسم مطلوب",
+      "name_minlength": "يجب أن يكون الاسم 3 أحرف على الأقل",
+      "email_required": "البريد الإلكتروني مطلوب",
+      "email_invalid": "عنوان بريد إلكتروني غير صحيح",
+      "phone_required": "رقم الهاتف مطلوب",
+      "phone_pattern": "يجب أن يكون رقم الهاتف 11 رقماً",
+      "subject_required": "الموضوع مطلوب",
+      "subject_minlength": "يجب أن يكون الموضوع 5 أحرف على الأقل",
+      "message_required": "الرسالة مطلوبة",
+      "message_minlength": "يجب أن تكون الرسالة 10 أحرف على الأقل"
+    }
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "subtitle": "إدارة عقاراتك، تتبع الإحصائيات، والتفاعل مع العملاء",
+    "total_properties": "إجمالي العقارات",
+    "approved": "موافق عليه",
+    "pending_review": "قيد المراجعة",
+    "rejected": "مرفوض",
+    "tabs": {
+      "my_properties": "عقاراتي",
+      "favorites": "المفضلة",
+      "saved": "المحفوظات",
+      "submitted": "المقدمة"
+    },
+    "add_new_property": "إضافة عقار جديد",
+    "search_properties": "ابحث في عقاراتك...",
+    "all_status": "جميع الحالات",
+    "recent": "الأحدث",
+    "price_high": "السعر (مرتفع)",
+    "price_low": "السعر (منخفض)",
+    "most_viewed": "الأكثر مشاهدة",
+    "reset": "إعادة تعيين",
+    "property_selected": "عقار محدد",
+    "deselect_all": "إلغاء تحديد الكل",
+    "delete_selected": "حذف المحدد",
+    "loading_properties": "جاري تحميل العقارات...",
+    "no_properties": "لا توجد عقارات حالياً",
+    "add_first_property": "ابدأ بإضافة عقارك الأول للظهور هنا",
+    "add_new": "إضافة جديد",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "previous": "السابق",
+    "next": "التالي",
+    "sidebar": {
+      "profile": "الملف الشخصي",
+      "dashboard": "لوحة التحكم",
+      "favorites": "المفضلة",
+      "add_property": "إضافة عقار",
+      "analytics": "التحليلات",
+      "logout": "تسجيل الخروج"
+    },
+    "profile": {
+      "edit_profile": "تعديل الملف الشخصي",
+      "properties": "العقارات",
+      "favorites": "المفضلة",
+      "average_rating": "التقييم المتوسط",
+      "profile_information": "معلومات الملف الشخصي",
+      "phone_number": "رقم الهاتف",
+      "not_provided": "غير موفر",
+      "bio": "السيرة الذاتية",
+      "loading_profile": "جاري تحميل الملف الشخصي...",
+      "unable_to_load": "تعذر تحميل الملف الشخصي",
+      "try_again": "حاول مرة أخرى"
+    },
+    "favorites": {
+      "title": "المفضلة",
+      "subtitle": "مجموعة العقارات المحفوظة",
+      "properties": "العقارات",
+      "saved_properties": "العقارات المحفوظة",
+      "empty_title": "قائمتك المفضلة فارغة",
+      "empty_description": "ابدأ في الاستكشاف وأضف العقارات التي تحبها إلى مجموعتك",
+      "explore_properties": "استكشف العقارات",
+      "clear_all_favorites": "مسح جميع المفضلة",
+      "month": "/شهر"
+    },
+    "success": {
+      "title": "تهانينا!",
+      "subtitle": "تم تسجيل عقارك بنجاح",
+      "message": "فريقنا سيقوم بمراجعة عقارك وموافقته قريباً. سنؤكد التفاصيل وتفعيل قائمة عقارك.",
+      "view_my_properties": "عرض عقاراتي",
+      "add_another_property": "إضافة عقار آخر",
+      "back_to_home": "✓ العودة للرئيسية",
+      "redirecting": "إعادة التوجيه إلى العقارات في",
+      "seconds": "ثواني..."
+    },
+    "error": {
+      "404": {
+        "title": "404",
+        "subtitle": "الصفحة غير موجودة!",
+        "message": "هل أنت متأكد أنك تريد أن تكون هنا؟",
+        "go_home": "انذهب للرئيسية"
+      },
+      "validation": {
+        "required": "مطلوب",
+        "invalid_email": "عنوان بريد إلكتروني غير صحيح",
+        "password_mismatch": "كلمات المرور غير متطابقة",
+        "min_length": "يجب أن يكون على الأقل {length} أحرف",
+        "invalid_phone": "رقم هاتف غير صحيح"
+      }
+    },
+    "edit_profile": {
+      "edit_profile": "تعديل الملف الشخصي",
+      "account_information": "معلومات الحساب",
+      "cannot_be_changed": "لا يمكن تغيير البريد الإلكتروني",
+      "save_changes": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "success": "تم تحديث الملف الشخصي بنجاح!",
+      "error": "فشل تحديث الملف الشخصي",
+      "load_error": "فشل تحميل الملف الشخصي"
+    },
+    "contact_info": {
+      "cairo_egypt": "القاهرة، مصر",
+      "email": "البريد الإلكتروني",
+      "role": "الدور"
+    },
+    "general": {
+      "loading": "جاري التحميل...",
+      "saving": "جاري الحفظ...",
+      "submitting": "جاري الإرسال...",
+      "success": "نجح!",
+      "error": "خطأ!",
+      "confirm": "تأكيد",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "view": "عرض",
+      "save": "حفظ",
+      "close": "إغلاق",
+      "yes": "نعم",
+      "no": "لا",
+      "address": "العنوان",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "working_hours": "ساعات العمل",
+      "sunday_thursday": "الأحد إلى الخميس",
+      "working_time": "9:00 صباحاً - 5:00 مساءً",
+      "follow_us": "تابعنا على وسائل التواصل",
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "retry": "حاول مرة أخرى"
+    }
+  },
+  "land": {
+    "hero": {
+      "title": "ابحث عن أرضك المثالية",
+      "description": "اكتشف فرص شراء أراضي "
+    },
+    "search": {
+      "city_area": "المدينة / المنطقة",
+      "city_placeholder": "القاهرة، الجيزة، القاهرة الجديدة...",
+      "property_type": "نوع العقار",
+      "land": "أرض",
+      "size_sqm": "الحجم (م²)",
+      "min_size": "أقل",
+      "max_size": "أكثر",
+      "price_egp": "السعر (جنيه مصري)",
+      "min_price": "أقل",
+      "max_price": "أكثر",
+      "search_button": "بحث"
+    },
+    "quick_search": {
+      "title": "المواقع الشهيرة",
+      "select_location": "اختر الموقع"
+    },
+    "results": {
+      "lands_shown": "أراضي معروضة",
+      "showing": "عرض",
+      "of": "من",
+      "no_results": "لم يتم العثور على أراضي",
+      "try_adjusting": "حاول تعديل المرشحات الخاصة بك",
+      "sqm": "م²",
+      "views": "مشاهدات",
+      "featured": "مميزة",
+      "standard": "عادية",
+      "view": "عرض",
+      "see_more": "عرض المزيد"
+    },
+    "filters": {
+      "title": "الفلاتر",
+      "clear_all": "مسح الكل",
+      "sort_by": "الترتيب حسب",
+      "newest": "الأحدث أولاً",
+      "price_low": "السعر: من الأقل إلى الأعلى",
+      "price_high": "السعر: من الأعلى إلى الأقل",
+      "popular": "الأكثر شهرة",
+      "size": "الحجم",
+      "price": "السعر",
+      "small": "صغيرة (< 1000 م²)",
+      "medium": "متوسطة (1000-5000 م²)",
+      "large": "كبيرة (5000-10000 م²)",
+      "extra_large": "كبيرة جداً (> 10000 م²)",
+      "under_500k": "أقل من 500,000 جنيه",
+      "range_500k_1m": "500,000 - 1,000,000 جنيه",
+      "range_1m_5m": "1,000,000 - 5,000,000 جنيه",
+      "range_5m_10m": "5,000,000 - 10,000,000 جنيه",
+      "over_10m": "أكثر من 10,000,000 جنيه"
+    }
+  },
+  "contact": {
+    "section": {
+      "title": "تواصل معنا",
+      "description": "هل لديك أي أسئلة؟ نود سماع منك. يرجى ملء النموذج أدناه وسنعود إليك في أقرب وقت ممكن."
+    },
+    "address": {
+      "title": "العنوان",
+      "city": "سوهاج",
+      "area": "أدفا",
+      "office": "مكتب الغزالي جروب للاستشارات - الطابق الأرضي"
+    },
+    "phone": {
+      "title": "الهاتف",
+      "number": "01143872859"
+    },
+    "email": {
+      "title": "البريد الإلكتروني",
+      "address": "mahmoudashrafkhalf@gmail.com"
+    },
+    "working_hours": {
+      "title": "ساعات العمل",
+      "days": "الأحد إلى الخميس",
+      "hours": "9:00 صباحاً إلى 5:00 مساءً"
+    },
+    "social": {
+      "title": "تابعنا على وسائل التواصل الاجتماعي",
+      "linkedin": "لينكد إن",
+      "instagram": "إنستجرام",
+      "facebook": "فيسبوك"
+    },
+    "form": {
+      "name": "الاسم *",
+      "email": "البريد الإلكتروني *",
+      "phone": "رقم الهاتف (11 رقم) *",
+      "subject": "الموضوع *",
+      "message": "الرسالة *",
+      "send": "إرسال الرسالة",
+      "sending": "جاري الإرسال...",
+      "success": "تم إرسال رسالتك بنجاح! سنتواصل معك قريبًا.",
+      "error": "حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى.",
+      "username": "اسم المستخدم",
+      "enter_username": "أدخل اسم المستخدم",
+      "username_required": "اسم المستخدم مطلوب",
+      "enter_phone": "أدخل رقم هاتفك",
+      "phone_required": "رقم الهاتف مطلوب"
+    },
+    "cta": {
+      "title": "لا تجد ما تبحث عنه؟",
+      "description": "فريقنا الخبير هنا لمساعدتك في العثور على عقارك المثالي",
+      "whatsapp": "واتساب",
+      "call": "اتصل بنا"
+    },
+    "contact_info": {
+      "whatsapp": "واتساب",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "location": "الموقع",
+      "cairo_egypt": "القاهرة، مصر"
+    }
+  },
+  "owner_dashboard": {
+    "title": "لوحة تحكم مالك العقار",
+    "total_properties": "إجمالي العقارات",
+    "for_sale": "للبيع",
+    "for_rent": "للإيجار",
+    "no_properties": "لم يتم العثور على عقارات. ابدأ بإضافة عقارك الأول!",
+    "no_image": "لا توجد صورة"
+  },
+  "property_forms": {
+    "property_title": "العنوان",
+    "location": "الموقع",
+    "city": "المدينة",
+    "area": "المنطقة",
+    "price": "السعر",
+    "purpose": "الغرض",
+    "property_type": "نوع العقار",
+    "status": "الحالة",
+    "rooms": "عدد الغرف",
+    "bathrooms": "عدد الحمامات",
+    "finishing": "مستوى التشطيب",
+    "image_url": "رابط الصورة",
+    "description": "الوصف",
+    "select_type": "اختر النوع",
+    "select_purpose": "اختر الغرض",
+    "for_sale": "للبيع",
+    "for_rent": "للإيجار",
+    "select_city": "اختر المدينة",
+    "select_area": "اختر المنطقة",
+    "submit": "إرسال"
+  }
+}

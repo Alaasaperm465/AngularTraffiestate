@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../Services/language';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -23,7 +25,12 @@ export class Navbar implements OnInit, OnDestroy {
   private storageListener: any;
   private logoutListener: any;
 
-  constructor(private router: Router) {}
+  get currentLang(): 'ar' | 'en' {
+    return this.languageService.currentLang as 'ar' | 'en';
+  }
+
+  constructor(private router: Router, private languageService: LanguageService) {
+  }
 
   ngOnInit() {
     this.checkLoginStatus();
@@ -140,5 +147,9 @@ export class Navbar implements OnInit, OnDestroy {
   // Toggle sidebar in owner-dashboard
   toggleSidebar() {
     window.dispatchEvent(new CustomEvent('toggleProfileMenu'));
+  }
+
+  toggleLanguage() {
+    this.languageService.toggleLanguage();
   }
 }

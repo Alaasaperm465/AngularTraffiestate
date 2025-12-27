@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { UserService, UserProfile } from '../../Services/users';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
 })

@@ -33,7 +33,7 @@
                (click)="goToHome()"
                style="cursor: pointer;"
                routerLinkActive="active">
-              Home
+              {{ 'header.home' | translate }}
             </a>
           </li>
 
@@ -41,17 +41,17 @@
             <a class="nav-link px-3 py-2 rounded dropdown-toggle"
                (click)="togglePropertiesMenu()"
                style="cursor: pointer;">
-              Properties
+              {{ 'header.properties' | translate }}
               <i class="fas fa-chevron-down ms-1"></i>
             </a>
             <div *ngIf="isPropertiesMenuOpen" class="properties-dropdown-menu">
               <a routerLink="/buy" class="dropdown-item" (click)="togglePropertiesMenu()">
                 <i class="fas fa-shopping-cart me-2"></i>
-                <span>Buy</span>
+                <span>{{ 'header.buy' | translate }}</span>
               </a>
               <a routerLink="/rent" class="dropdown-item" (click)="togglePropertiesMenu()">
                 <i class="fas fa-home me-2"></i>
-                <span>Rent</span>
+                <span>{{ 'header.rent' | translate }}</span>
               </a>
             </div>
           </li>
@@ -60,7 +60,7 @@
             <a class="nav-link px-3 py-2 rounded"
                routerLink="/land"
                routerLinkActive="active">
-              Land
+              {{ 'header.land' | translate }}
             </a>
           </li>
 
@@ -68,7 +68,7 @@
             <a class="nav-link px-3 py-2 rounded"
                routerLink="/about"
                routerLinkActive="active">
-              About
+              {{ 'header.about' | translate }}
             </a>
           </li>
 
@@ -76,7 +76,7 @@
             <a class="nav-link px-3 py-2 rounded"
                routerLink="/contact-us"
                routerLinkActive="active">
-              Contact
+              {{ 'header.contact' | translate }}
             </a>
           </li>
 
@@ -92,6 +92,14 @@
 
       <!-- Right Actions -->
       <div class="pf-actions d-flex align-items-center gap-2 gap-lg-3 ms-auto">
+        <!-- Language Toggle Button -->
+        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-2"
+                (click)="toggleLanguage()"
+                type="button">
+          <i class="fas fa-globe me-2"></i>
+          <span>{{ currentLang === 'ar' ? 'EN' : 'AR' }}</span>
+        </button>
+
         <!-- User Avatar / Login -->
         <div class="pf-user-dropdown">
           <!-- Logged In User Profile Button -->
@@ -108,20 +116,20 @@
           <div *ngIf="isLoggedIn && isProfileMenuOpen" class="profile-dropdown-menu">
             <a routerLink="/profile" class="dropdown-item" (click)="toggleProfileMenu()">
               <i class="fas fa-user"></i>
-              <span>My Profile</span>
+              <span>{{ 'header.profile' | translate }}</span>
             </a>
             <a *ngIf="isOwner()" routerLink="/ownerDashboard" class="dropdown-item" (click)="toggleProfileMenu()">
               <i class="fas fa-chart-line"></i>
-              <span>Dashboard</span>
+              <span>{{ 'header.dashboard' | translate }}</span>
             </a>
             <a routerLink="/favorites" class="dropdown-item" (click)="toggleProfileMenu()">
               <i class="fas fa-heart"></i>
-              <span>My Favorites</span>
+              <span>{{ 'header.favorites' | translate }}</span>
             </a>
             <div class="dropdown-divider"></div>
             <button (click)="logout()" class="dropdown-item logout-btn">
               <i class="fas fa-sign-out-alt"></i>
-              <span>Logout</span>
+              <span>{{ 'header.logout' | translate }}</span>
             </button>
           </div>
 
@@ -129,7 +137,7 @@
           <a *ngIf="!isLoggedIn"
              class="btn btn-success pf-login-btn rounded-pill px-4 py-2"
              routerLink="/login">
-            <span>Sign In</span>
+            <span>{{ 'header.sign_in' | translate }}</span>
           </a>
         </div>
       </div>

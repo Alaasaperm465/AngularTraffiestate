@@ -5,8 +5,8 @@
   <section class="add-property-hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Add Your Property</h1>
-      <p class="hero-subtitle"> Add your property and start earning</p>
+      <h1 class="hero-title">{{ 'forms.add_property.title' | translate }}</h1>
+      <p class="hero-subtitle">{{ 'forms.add_property.subtitle' | translate }}</p>
     </div>
   </section>
 
@@ -28,7 +28,7 @@
               <i *ngIf="isStepCompleted(step)" class="bi bi-check-lg"></i>
             </div>
             <div class="step-info">
-              <span class="step-label">Step {{ step }}</span>
+              <span class="step-label">{{ 'forms.add_property.step' | translate }} {{ step }}</span>
               <span class="step-title">{{ getStepTitle(step) }}</span>
             </div>
           </div>
@@ -46,7 +46,7 @@
           </div>
 
           <div class="form-group">
-            <label for="title" class="form-label">Property Title <span class="required">*</span></label>
+            <label for="title" class="form-label">{{ 'forms.add_property.property_title' | translate }} <span class="required">*</span></label>
             <input
               type="text"
               id="title"
@@ -61,7 +61,7 @@
           </div>
 
           <div class="form-group">
-            <label for="description" class="form-label">Description <span class="required">*</span></label>
+            <label for="description" class="form-label">{{ 'forms.add_property.description' | translate }} <span class="required">*</span></label>
             <textarea
               id="description"
               class="form-control textarea"
@@ -77,7 +77,7 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="propertyType" class="form-label">Property Type <span class="required">*</span></label>
+              <label for="propertyType" class="form-label">{{ 'forms.add_property.property_type' | translate }} <span class="required">*</span></label>
               <select
                 id="propertyType"
                 class="form-control"
@@ -85,15 +85,13 @@
                 (change)="onPropertyTypeChange()"
                 name="propertyType"
                 [class.error]="showValidationErrors && property.propertyType === ''">
-                <option value="">Select Type</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Villa">Villa</option>
-                <option value="House">House</option>
-                <option value="Studio">Studio</option>
-                <option value="Townhouse">Townhouse</option>
-                <option value="Land">Land</option>
-
-
+                <option value="">{{ 'forms.add_property.select_type' | translate }}</option>
+                <option value="Apartment">{{ 'forms.add_property.apartment' | translate }}</option>
+                <option value="Villa">{{ 'forms.add_property.villa' | translate }}</option>
+                <option value="House">{{ 'forms.add_property.house' | translate }}</option>
+                <option value="Studio">{{ 'forms.add_property.studio' | translate }}</option>
+                <option value="Townhouse">{{ 'forms.add_property.townhouse' | translate }}</option>
+                <option value="Land">{{ 'forms.add_property.land' | translate }}</option>
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.propertyType === ''">
                 Property type is required

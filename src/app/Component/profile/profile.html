@@ -4,7 +4,7 @@
   <!-- Loading State -->
   <div *ngIf="loading" class="loading-spinner">
     <div class="spinner"></div>
-    <p>Loading profile...</p>
+    <p>{{ 'dashboard.profile.loading_profile' | translate }}</p>
   </div>
 
   <!-- Profile Content -->
@@ -21,7 +21,7 @@
           </div>
         </div>
         <button (click)="goToEditProfile()" class="btn-edit-primary">
-          <i class="fas fa-edit"></i> Edit Profile
+          <i class="fas fa-edit"></i> {{ 'dashboard.profile.edit_profile' | translate }}
         </button>
       </div>
     </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="stat-content">
           <h3>{{ user.propertiesCount }}</h3>
-          <p>Properties</p>
+          <p>{{ 'dashboard.profile.properties' | translate }}</p>
         </div>
       </div>
 
@@ -44,7 +44,7 @@
         </div>
         <div class="stat-content">
           <h3>{{ user.favoritesCount }}</h3>
-          <p>Favorites</p>
+          <p>{{ 'dashboard.profile.favorites' | translate }}</p>
         </div>
       </div>
 
@@ -54,21 +54,21 @@
         </div>
         <div class="stat-content">
           <h3>{{ user.averageRating.toFixed(1) }}</h3>
-          <p>Average Rating</p>
+          <p>{{ 'dashboard.profile.average_rating' | translate }}</p>
         </div>
       </div>
     </div>
 
     <!-- Profile Details Section -->
     <div class="details-section">
-      <h2>Profile Information</h2>
+      <h2>{{ 'dashboard.profile.profile_information' | translate }}</h2>
 
       <div class="details-grid">
         <!-- Email -->
         <div class="detail-item">
           <label>
             <i class="fas fa-envelope"></i>
-            Email
+            {{ 'dashboard.contact_info.email' | translate }}
           </label>
           <p class="detail-value">{{ user.email }}</p>
         </div>
@@ -77,23 +77,23 @@
         <div class="detail-item">
           <label>
             <i class="fas fa-phone"></i>
-            Phone Number
+            {{ 'dashboard.profile.phone_number' | translate }}
           </label>
-          <p class="detail-value">{{ user.phoneNumber || 'Not provided' }}</p>
+          <p class="detail-value">{{ user.phoneNumber || ('dashboard.profile.not_provided' | translate) }}</p>
         </div>
 
         <!-- Role -->
         <div class="detail-item">
           <label>
             <i class="fas fa-user-tag"></i>
-            Role
+            {{ 'dashboard.contact_info.role' | translate }}
           </label>
           <p class="detail-value">{{ user.role || 'User' }}</p>
         </div>
 
         <!-- Bio Section -->
         <div *ngIf="user.bio" class="bio-section">
-          <h3>Bio</h3>
+          <h3>{{ 'dashboard.profile.bio' | translate }}</h3>
           <p>{{ user.bio }}</p>
         </div>
       </div>
@@ -105,10 +105,10 @@
   <div *ngIf="!loading && !user && error" class="error-container">
     <div class="error-card">
       <i class="fas fa-exclamation-circle"></i>
-      <h2>Unable to Load Profile</h2>
+      <h2>{{ 'dashboard.profile.unable_to_load' | translate }}</h2>
       <p>{{ error }}</p>
       <button (click)="loadProfile()" class="btn-retry">
-        <i class="fas fa-redo"></i> Try Again
+        <i class="fas fa-redo"></i> {{ 'dashboard.profile.try_again' | translate }}
       </button>
     </div>
   </div>

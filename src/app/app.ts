@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './Component/navbar/navbar';
 import { Footer } from "./Component/footer/footer";
+import { LanguageService } from './Services/language';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,9 @@ import { Footer } from "./Component/footer/footer";
 })
 export class App {
   protected readonly title = signal('AngularTraffieEstate');
+  private languageService = inject(LanguageService);
+
+  constructor() {
+    console.log('🌍 Language service initialized');
+  }
 }
