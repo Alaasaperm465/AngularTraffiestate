@@ -4,9 +4,9 @@
 .hero-section {
   position: relative;
   min-height: 600px;
-  background: linear-gradient(135deg, rgba(11, 49, 34, 0.75) 0%, rgba(26, 90, 69, 0.75) 100%),
-              url('https://images.unsplash.com/photo-1560448204-e02f7cbb8f0c?w=1600&h=600&fit=crop')
-              center/cover fixed no-repeat;
+  background: url('https://homepress.stylemixthemes.com/main/wp-content/uploads/sites/3/2021/03/property-img-2.jpg')
+            center/cover fixed no-repeat;
+
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,0 +1,82 @@
+<div class="cancel-page">
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Processing cancellation...</p>
+  </div>
+
+  <!-- Cancellation Success -->
+  <div class="cancel-container" *ngIf="!isLoading && bookingCancelled">
+    <div class="cancel-card">
+      <!-- Icon -->
+      <div class="cancel-icon">
+        <i class="bi bi-x-circle"></i>
+      </div>
+
+      <!-- Title -->
+      <h1 class="cancel-title">Payment Cancelled</h1>
+
+      <!-- Message -->
+      <p class="cancel-message">
+        Your payment was cancelled and no charges were made to your account.
+        The booking has been removed from the system.
+      </p>
+
+      <!-- Info Box -->
+      <div class="info-box">
+        <i class="bi bi-info-circle"></i>
+        <div class="info-text">
+          <h4>What happened?</h4>
+          <p>You cancelled the payment process before completing it. No charges were made to your payment method.</p>
+        </div>
+      </div>
+
+      <!-- Reasons Section -->
+      <div class="reasons-section">
+        <h3>Common reasons for cancellation:</h3>
+        <ul>
+          <li><i class="bi bi-chevron-right"></i> Changed your mind about the booking</li>
+          <li><i class="bi bi-chevron-right"></i> Found a better option</li>
+          <li><i class="bi bi-chevron-right"></i> Payment method issues</li>
+          <li><i class="bi bi-chevron-right"></i> Need to review dates again</li>
+        </ul>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="tryAgain()">
+          <i class="bi bi-arrow-repeat"></i>
+          Try Another Booking
+        </button>
+        <button class="btn btn-secondary" (click)="goToProperties()">
+          <i class="bi bi-houses"></i>
+          Browse Properties
+        </button>
+        <button class="btn btn-outline" (click)="goToHome()">
+          <i class="bi bi-house"></i>
+          Go to Home
+        </button>
+      </div>
+
+      <!-- Support Section -->
+      <div class="support-section">
+        <p>Need help? <a href="/contact">Contact our support team</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="!isLoading && !bookingCancelled">
+    <div class="error-card">
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+      <h2>Something went wrong</h2>
+      <p class="error-message">{{ errorMessage }}</p>
+      <button class="btn btn-primary" (click)="goToHome()">
+        <i class="bi bi-house"></i>
+        Go to Home
+      </button>
+    </div>
+  </div>
+</div>
