@@ -53,10 +53,10 @@
               class="form-control"
               [(ngModel)]="property.title"
               name="title"
-              placeholder="e.g., Modern Apartment in Downtown Cairo"
+              [placeholder]="'forms.add_property.title_placeholder' | translate"
               [class.error]="showValidationErrors && property.title.trim() === ''">
             <small class="error-text" *ngIf="showValidationErrors && property.title.trim() === ''">
-              Title is required
+              {{ 'forms.add_property.title_required' | translate }}
             </small>
           </div>
 
@@ -68,10 +68,10 @@
               [(ngModel)]="property.description"
               name="description"
               rows="5"
-              placeholder="Describe your property in detail..."
+              [placeholder]="'forms.add_property.description_placeholder' | translate"
               [class.error]="showValidationErrors && property.description.trim() === ''"></textarea>
             <small class="error-text" *ngIf="showValidationErrors && property.description.trim() === ''">
-              Description is required
+              {{ 'forms.add_property.description_required' | translate }}
             </small>
           </div>
 
@@ -94,12 +94,12 @@
                 <option value="Land">{{ 'forms.add_property.land' | translate }}</option>
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.propertyType === ''">
-                Property type is required
+                {{ 'forms.add_property.property_type_required' | translate }}
               </small>
             </div>
 
             <div class="form-group">
-              <label for="purpose" class="form-label">Purpose <span class="required">*</span></label>
+              <label for="purpose" class="form-label">{{ 'forms.add_property.purpose' | translate }} <span class="required">*</span></label>
               <select
                 id="purpose"
                 class="form-control"
@@ -107,16 +107,16 @@
                 name="purpose"
                 [disabled]="property.propertyType === 'Land'"
                 [class.error]="showValidationErrors && property.purpose === ''">
-                <option value="">Select Purpose</option>
-                <option value="Buy">For Sale</option>
-                <option value="Rent" *ngIf="property.propertyType !== 'Land'">For Rent</option>
-                <option value="Sale" *ngIf="property.propertyType === 'Land'">For Sale</option>
+                <option value="">{{ 'forms.add_property.select_purpose' | translate }}</option>
+                <option value="Buy">{{ 'forms.add_property.for_sale' | translate }}</option>
+                <option value="Rent" *ngIf="property.propertyType !== 'Land'">{{ 'forms.add_property.for_rent' | translate }}</option>
+                <option value="Sale" *ngIf="property.propertyType === 'Land'">{{ 'forms.add_property.for_sale' | translate }}</option>
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.purpose === ''">
-                Purpose is required
+                {{ 'forms.add_property.purpose_required' | translate }}
               </small>
               <small class="info-text" *ngIf="property.propertyType === 'Land'">
-                Land properties are only available for sale
+                {{ 'forms.add_property.land_only_sale' | translate }}
               </small>
             </div>
           </div>
@@ -131,7 +131,7 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="city" class="form-label">City <span class="required">*</span></label>
+              <label for="city" class="form-label">{{ 'forms.add_property.city' | translate }} <span class="required">*</span></label>
               <select
                 id="city"
                 class="form-control"
@@ -139,16 +139,16 @@
                 name="cityId"
                 (change)="onCityChange()"
                 [class.error]="showValidationErrors && property.cityId === 0">
-                <option value="0">Select City</option>
+                <option value="0">{{ 'forms.add_property.select_city' | translate }}</option>
                 <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.cityId === 0">
-                City is required
+                {{ 'forms.add_property.city_required' | translate }}
               </small>
             </div>
 
             <div class="form-group">
-              <label for="area" class="form-label">Area <span class="required">*</span></label>
+              <label for="area" class="form-label">{{ 'forms.add_property.area' | translate }} <span class="required">*</span></label>
               <select
                 id="area"
                 class="form-control"
@@ -156,27 +156,27 @@
                 name="areaId"
                 [disabled]="areas.length === 0"
                 [class.error]="showValidationErrors && property.areaId === 0">
-                <option value="0">Select Area</option>
+                <option value="0">{{ 'forms.add_property.select_area' | translate }}</option>
                 <option *ngFor="let area of areas" [value]="area.id">{{ area.name }}</option>
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.areaId === 0">
-                Area is required
+                {{ 'forms.add_property.area_required' | translate }}
               </small>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="location" class="form-label">Street Address <span class="required">*</span></label>
+            <label for="location" class="form-label">{{ 'forms.add_property.street_address' | translate }} <span class="required">*</span></label>
             <input
               type="text"
               id="location"
               class="form-control"
               [(ngModel)]="property.location"
               name="location"
-              placeholder="Enter the exact street address"
+              [placeholder]="'forms.add_property.location_placeholder' | translate"
               [class.error]="showValidationErrors && property.location.trim() === ''">
             <small class="error-text" *ngIf="showValidationErrors && property.location.trim() === ''">
-              Location is required
+              {{ 'forms.add_property.location_required' | translate }}
             </small>
           </div>
         </div>
@@ -190,7 +190,7 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="price" class="form-label" >Price <span class="required">*</span></label>
+              <label for="price" class="form-label" >{{ 'forms.add_property.price' | translate }} <span class="required">*</span></label>
               <input
                 type="number"
                 id="price"
@@ -201,12 +201,12 @@
                 min="0"
                 [class.error]="showValidationErrors && property.price === 0">
               <small class="error-text" *ngIf="showValidationErrors && property.price === 0">
-                Price is required
+                {{ 'forms.add_property.price_required' | translate }}
               </small>
             </div>
 
             <div class="form-group">
-              <label for="areaSpace" class="form-label" >Area Space (m²) <span class="required">*</span></label>
+              <label for="areaSpace" class="form-label" >{{ 'forms.add_property.area_space' | translate }} <span class="required">*</span></label>
               <input
                 type="number"
                 id="areaSpace"
@@ -217,7 +217,7 @@
                 min="0"
                 [class.error]="showValidationErrors && property.areaSpace === 0">
               <small class="error-text" *ngIf="showValidationErrors && property.areaSpace === 0">
-                Area space is required
+                {{ 'forms.add_property.area_space_required' | translate }}
               </small>
             </div>
           </div>
@@ -228,7 +228,7 @@
           @else {
              <div class="form-row">
             <div class="form-group">
-              <label for="rooms" class="form-label">Bedrooms <span class="required">*</span></label>
+              <label for="rooms" class="form-label">{{ 'forms.add_property.rooms' | translate }} <span class="required">*</span></label>
               <input
                 type="number"
                 id="rooms"
@@ -239,12 +239,12 @@
                 min="0"
                 [class.error]="showValidationErrors && property.rooms === 0">
               <small class="error-text" *ngIf="showValidationErrors && property.rooms === 0">
-                Bedrooms is required
+                {{ 'forms.add_property.rooms_required' | translate }}
               </small>
             </div>
 
             <div class="form-group">
-              <label for="bathrooms" class="form-label">Bathrooms <span class="required">*</span></label>
+              <label for="bathrooms" class="form-label">{{ 'forms.add_property.bathrooms' | translate }} <span class="required">*</span></label>
               <input
                 type="number"
                 id="bathrooms"
@@ -255,27 +255,27 @@
                 min="0"
                 [class.error]="showValidationErrors && property.bathrooms === 0">
               <small class="error-text" *ngIf="showValidationErrors && property.bathrooms === 0">
-                Bathrooms is required
+                {{ 'forms.add_property.bathrooms_required' | translate }}
               </small>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="finishingLevel" class="form-label">Finishing Level <span class="required">*</span></label>
+              <label for="finishingLevel" class="form-label">{{ 'forms.add_property.finishing_level' | translate }} <span class="required">*</span></label>
               <select
                 id="finishingLevel"
                 class="form-control"
                 [(ngModel)]="property.finishingLevel"
                 name="finishingLevel"
                 [class.error]="showValidationErrors && property.finishingLevel === ''">
-                <option value="">Select Level</option>
-                <option value="Standard">Standard</option>
-                <option value="Semi-Furnished">Semi-Furnished</option>
-                <option value="Luxury">Luxury</option>
+                <option value="">{{ 'forms.add_property.select_level' | translate }}</option>
+                <option value="Standard">{{ 'forms.add_property.standard' | translate }}</option>
+                <option value="Semi-Furnished">{{ 'forms.add_property.semi_furnished' | translate }}</option>
+                <option value="Luxury">{{ 'forms.add_property.luxury' | translate }}</option>
               </select>
               <small class="error-text" *ngIf="showValidationErrors && property.finishingLevel === ''">
-                Finishing level is required
+                {{ 'forms.add_property.finishing_required' | translate }}
               </small>
             </div>
 
@@ -294,12 +294,12 @@
 
           <!-- Main Image -->
           <div class="form-group">
-            <label class="form-label">Main Image <span class="required">*</span></label>
+            <label class="form-label">{{ 'forms.add_property.main_image' | translate }} <span class="required">*</span></label>
             <div class="image-upload-area">
               <div *ngIf="!mainImagePreview" class="upload-placeholder">
                 <i class="bi bi-cloud-upload"></i>
-                <p>Click or drag main image here</p>
-                <small>JPG, PNG (Max 5MB)</small>
+                <p>{{ 'forms.add_property.upload_placeholder' | translate }}</p>
+                <small>{{ 'forms.add_property.file_types' | translate }}</small>
               </div>
               <div *ngIf="mainImagePreview" class="image-preview-main">
                 <img [src]="mainImagePreview" alt="Main Image Preview">
@@ -314,18 +314,18 @@
                 (change)="onMainImageChange($event)">
             </div>
             <small class="error-text" *ngIf="showValidationErrors && !mainImage">
-              Main image is required
+              {{ 'forms.add_property.main_image_required' | translate }}
             </small>
           </div>
 
           <!-- Additional Images -->
           <div class="form-group">
-            <label class="form-label">Additional Images</label>
+            <label class="form-label">{{ 'forms.add_property.additional_images' | translate }}</label>
             <div class="image-upload-area">
               <div *ngIf="additionalImagesPreview.length === 0" class="upload-placeholder">
                 <i class="bi bi-cloud-upload"></i>
-                <p>Click or drag additional images here</p>
-                <small>Multiple files allowed</small>
+                <p>{{ 'forms.add_property.upload_placeholder_additional' | translate }}</p>
+                <small>{{ 'forms.add_property.multiple_files' | translate }}</small>
               </div>
               <div class="images-preview-grid" *ngIf="additionalImagesPreview.length > 0">
                 <div
@@ -349,12 +349,12 @@
           <!-- Images Summary -->
           <div class="images-summary">
             <p>
-              <strong>Main Image:</strong>
+              <strong>{{ 'forms.add_property.main_image' | translate }}:</strong>
               <span *ngIf="mainImage">{{ mainImage.name }}</span>
-              <span *ngIf="!mainImage" class="text-danger">Not selected</span>
+              <span *ngIf="!mainImage" class="text-danger">{{ 'forms.add_property.not_selected' | translate }}</span>
             </p>
             <p *ngIf="additionalImages.length > 0">
-              <strong>Additional Images:</strong> {{ additionalImages.length }} file(s)
+              <strong>{{ 'forms.add_property.additional_images' | translate }}:</strong> {{ additionalImages.length }} {{ 'forms.add_property.files' | translate }}
             </p>
           </div>
         </div>
@@ -368,11 +368,11 @@
           (click)="previousStep()"
           [disabled]="currentStep === 1">
           <i class="bi bi-chevron-right"></i>
-          Previous
+          {{ 'common.previous' | translate }}
         </button>
 
         <div class="progress-info">
-          <span class="progress-text">Step {{ currentStep }} of {{ totalSteps }}</span>
+          <span class="progress-text">{{ 'forms.add_property.step' | translate }} {{ currentStep }} {{ 'forms.add_property.of' | translate }} {{ totalSteps }}</span>
           <div class="progress-bar">
             <div class="progress-fill" [style.width.%]="(currentStep / totalSteps) * 100"></div>
           </div>
@@ -382,7 +382,7 @@
           *ngIf="currentStep < totalSteps"
           class="btn btn-primary"
           (click)="nextStep()">
-          Next
+          {{ 'common.next' | translate }}
           <i class="bi bi-chevron-left"></i>
         </button>
 
@@ -393,11 +393,11 @@
           [disabled]="isSubmitting">
           <span *ngIf="!isSubmitting">
             <i class="bi bi-check-lg"></i>
-            Submit Property
+            {{ 'forms.add_property.submit_property' | translate }}
           </span>
           <span *ngIf="isSubmitting">
             <i class="bi bi-hourglass-split"></i>
-            Submitting...
+            {{ 'forms.add_property.submitting' | translate }}
           </span>
         </button>
       </div>
