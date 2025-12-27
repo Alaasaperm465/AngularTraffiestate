@@ -10,9 +10,9 @@ import { IProperty } from '../../models/iproperty';
 export class PropertyService {
 
   private readonly clientApiUrl = 'https://localhost:7030/api/Client';
-  private readonly ownerApiUrl  = 'https://localhost:7030/api/PropertyOwner';
+  private readonly ownerApiUrl = 'https://localhost:7030/api/PropertyOwner';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /* =====================================================
      🔹 MAIN – Get All Properties (Client → Owner fallback)
@@ -21,11 +21,13 @@ export class PropertyService {
     return this.http.get<any>(`${this.clientApiUrl}/properties`).pipe(
       map(res => this.normalizeProperties(res)),
       catchError(err => {
-        console.warn(' Client API failed, switching to Owner API', err);
-        return this.getAllPropertiesFromOwner();
+        console.error('❌ Error loading properties:', err);
+        return of([]);
       })
     );
   }
+
+
 
   private getAllPropertiesFromOwner(): Observable<IProperty[]> {
     return this.http.get<any>(`${this.ownerApiUrl}/owner-properties`).pipe(
@@ -131,6 +133,24 @@ export class PropertyService {
      ===================================================== */
   getPropertyById(id: number): Observable<IProperty> {
     return this.http.get<IProperty>(`${this.clientApiUrl}/properties/${id}`);
+  }
+
+  /* =====================================================
+     🔹 BOOKED DATES
+     ===================================================== */
+  getBookedDates(propertyId: number): Observable<string[]> {
+    return this.http.get<string[]>(
+      `https://localhost:7030/api/booking/booked-dates/${propertyId}`
+    );
+  }
+
+  checkAvailability(propertyId: number, startDate: string, endDate: string): Observable<{ isAvailable: boolean }> {
+    return this.http.get<{ isAvailable: boolean }>(
+      `https://localhost:7030/api/booking/check-availability`,
+      {
+        params: { propertyId: propertyId.toString(), startDate, endDate }
+      }
+    );
   }
 
   /* =====================================================

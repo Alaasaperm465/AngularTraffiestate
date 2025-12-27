@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
 import { ICreatePropertyDto } from '../../models/icreate-property-dto';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-property',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './edit-property.html',
   styleUrl: './edit-property.css',
 })
@@ -95,7 +97,23 @@ export class EditPropertyComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to load property:', err);
-        alert('Failed to load property. Please check the property ID.');
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to load property. Please check the property ID.',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#fff',
+          color: '#2c3e50',
+          iconColor: '#E2B43B',
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          }
+        });
         this.isLoading = false;
         this.router.navigate(['/ownerDashboard']);
       },
@@ -179,6 +197,23 @@ export class EditPropertyComponent implements OnInit {
    */
   onCityChange(): void {
     this.loadAreas(this.property.cityId);
+  }
+
+  /**
+   * Handle property type change
+   */
+  onPropertyTypeChange(): void {
+    if (this.property.propertyType === 'Land') {
+      // إذا اختار Land، اجعل Purpose تلقائياً Sale
+      this.property.purpose = 'Sale';
+      // صفّر الغرف والحمامات لأن Land لا يحتاج لها
+      this.property.rooms = 0;
+      this.property.bathrooms = 0;
+      this.property.finishingLevel = '';
+    } else {
+      // للعقارات الأخرى، امسح Purpose لكي يختار من جديد
+      this.property.purpose = '';
+    }
   }
 
   /**
@@ -334,14 +369,25 @@ export class EditPropertyComponent implements OnInit {
    * Validate Step 3 - Details
    */
   validateStep3(): boolean {
-    return (
-      this.property.price > 0 &&
-      this.property.areaSpace > 0 &&
-      this.property.rooms > 0 &&
-      this.property.bathrooms > 0 &&
-      this.property.finishingLevel !== ''
-    );
+  // Base validation for all property types
+  const baseValid = (
+    this.property.price > 0 &&
+    this.property.areaSpace > 0
+  );
+
+  // If Land, only base validation is required
+  if (this.property.propertyType === 'Land') {
+    return baseValid;
   }
+
+  // For other property types, validate all fields
+  return (
+    baseValid &&
+    this.property.rooms > 0 &&
+    this.property.bathrooms > 0 &&
+    this.property.finishingLevel !== ''
+  );
+}
 
   /**
    * Validate Step 4 - Images (optional for edit)
@@ -374,7 +420,23 @@ export class EditPropertyComponent implements OnInit {
 
     if (!isValid) {
       this.showValidationErrors = true;
-      alert('الرجاء ملء جميع الحقول المطلوبة');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Validation Error',
+        text: 'Please complete all required fields before proceeding',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       return;
     }
 
@@ -433,14 +495,39 @@ export class EditPropertyComponent implements OnInit {
   submit(): void {
     // Validate all steps
     if (!this.validateStep1() || !this.validateStep2() || !this.validateStep3()) {
-      alert('Please complete all required fields');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'warning',
+        title: 'Validation Error',
+        text: 'Please complete all required fields',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#2c3e50',
+        iconColor: '#E2B43B',
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
       return;
     }
 
     this.isSubmitting = true;
 
+    // Show loading alert
+    Swal.fire({
+      title: 'Updating Property',
+      html: 'Please wait while we save your changes...',
+      allowOutsideClick: false,
+      didOpen: async () => {
+        Swal.showLoading();
+      }
+    });
+
     // Call service with property data and optional images
-    // Backend now supports FormData with newMainImage and newAdditionalImages
     this.propertyService
       .update(
         this.propertyId,
@@ -451,12 +538,29 @@ export class EditPropertyComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           console.log('Property updated successfully:', res);
-          alert('✓ Property updated successfully');
+
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Property Updated',
+            text: res?.message || 'Property updated successfully',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            background: '#fff',
+            color: '#2c3e50',
+            iconColor: '#E2B43B',
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
 
           // Fast redirect
           setTimeout(() => {
             this.router.navigate(['/ownerDashboard']);
-          }, 300);
+          }, 2000);
         },
         error: (err) => {
           console.error('Update error:', err);
@@ -465,7 +569,24 @@ export class EditPropertyComponent implements OnInit {
           const errorMessage = err?.error?.message ||
                               err?.error?.detail ||
                               'Error updating property';
-          alert(errorMessage);
+
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error',
+            text: errorMessage,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: '#fff',
+            color: '#2c3e50',
+            iconColor: '#E2B43B',
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
         },
         complete: () => {
           this.isSubmitting = false;

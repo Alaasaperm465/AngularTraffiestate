@@ -28,10 +28,12 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
-import { IProperty } from '../../models/iproperty';
+import { IProperty, phone, email } from '../../models/iproperty';
+import Swal from 'sweetalert2';
 
 interface PropertyCard {
   id: string;
@@ -60,7 +62,7 @@ interface DashboardFilter {
 @Component({
   selector: 'app-owner-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './owner-dashboard.html',
   styleUrl: './owner-dashboard.css',
 })
@@ -94,7 +96,7 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
     searchTerm: '',
     status: 'all',
     sortBy: 'recent',
-    limit: 12,
+    limit: 6,
     offset: 0,
   };
 
@@ -106,10 +108,14 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
   selectedTab: string = 'my-properties'; // my-properties, favorites, bookmarks, submitted
   isProfileMenuOpen: boolean = false; // Profile sidebar state
 
-  // Pagination
-  currentPage: number = 1;
-  itemsPerPage: number = 12;
+  // See More pagination instead of pages
+  itemsPerLoad: number = 6;
+  currentLoadedCount: number = 6;
   authService: any;
+
+  // Contact Information
+  phone = phone;
+  email = email;
 
   // ============ LIFECYCLE HOOKS ============
   ngOnInit(): void {
@@ -282,32 +288,31 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
   private applyFilter(): void {
     let filtered = [...this.allProperties];
 
-    // Filter by tab
-    switch (this.selectedTab) {
-      case 'favorites':
-        filtered = filtered.filter((p) => p.isFavorite);
-        break;
-      case 'bookmarks':
-        filtered = filtered.filter((p) => p.isBookmarked);
-        break;
-      case 'submitted':
-        filtered = filtered.filter((p) => p.isSubmitted);
-        break;
-      case 'my-properties':
-      default:
-        // Show all properties for my-properties tab
-        break;
-    }
+    // Filter by tab - now only 'my-properties'
+    // (no need for switch case anymore)
 
     // Filter by status if selected
     if (this.filters.status && this.filters.status !== 'all') {
       filtered = filtered.filter((p) => p.status === this.filters.status);
     }
 
-    // Apply pagination
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.displayedProperties = filtered.slice(start, end);
+    // Apply see more pagination
+    this.displayedProperties = filtered.slice(0, this.currentLoadedCount);
+  }
+
+  // ===== See More pagination helpers =====
+  private updateDisplayedPropertiesFromFiltered(filtered: PropertyCard[]): void {
+    this.displayedProperties = filtered.slice(0, this.currentLoadedCount);
+  }
+
+  loadMore(): void {
+    this.currentLoadedCount += this.itemsPerLoad;
+    // Re-apply filtering with new load count
+    this.applyFilter();
+  }
+
+  hasMoreToLoad(): boolean {
+    return this.currentLoadedCount < this.allProperties.length;
   }
 
   // ============ FILTER & SEARCH OPERATIONS ============
@@ -316,7 +321,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    */
   onSearch(searchTerm: string): void {
     this.filters.searchTerm = searchTerm;
-    this.currentPage = 1;
+    this.currentLoadedCount = this.itemsPerLoad;
     this.filters.offset = 0;
     this.loadProperties();
   }
@@ -326,7 +331,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    */
   onStatusChange(status: string): void {
     this.filters.status = status;
-    this.currentPage = 1;
+    this.currentLoadedCount = this.itemsPerLoad;
     this.filters.offset = 0;
     this.applyFilter();
   }
@@ -336,7 +341,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    */
   onSortChange(sortBy: string): void {
     this.filters.sortBy = sortBy;
-    this.currentPage = 1;
+    this.currentLoadedCount = this.itemsPerLoad;
     this.filters.offset = 0;
     this.loadProperties();
   }
@@ -352,7 +357,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
       limit: 12,
       offset: 0,
     };
-    this.currentPage = 1;
+    this.currentLoadedCount = this.itemsPerLoad;
     this.selectedTab = 'my-properties';
   }
 
@@ -362,7 +367,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    */
   switchTab(tab: string): void {
     this.selectedTab = tab;
-    this.currentPage = 1;
+    this.currentLoadedCount = this.itemsPerLoad;
     this.applyFilter();
   }
 
@@ -377,18 +382,10 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    * Get count for tab label
    */
   getTabCount(tab: string): number {
-    switch (tab) {
-      case 'my-properties':
-        return this.totalProperties;
-      case 'favorites':
-        return this.allProperties.filter((p) => p.isFavorite).length;
-      case 'bookmarks':
-        return this.allProperties.filter((p) => p.isBookmarked).length;
-      case 'submitted':
-        return this.allProperties.filter((p) => p.isSubmitted).length;
-      default:
-        return 0;
+    if (tab === 'my-properties') {
+      return this.totalProperties;
     }
+    return 0;
   }
 
   // ============ PROPERTY ACTIONS ============
@@ -411,13 +408,44 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    * Delete property
    */
   deleteProperty(propertyId: string): void {
-    if (confirm('Are you sure you want to delete this property?')) {
-      // TODO: Implement delete via API when method is available
-      this.allProperties = this.allProperties.filter(
-        (p) => p.id !== propertyId
-      );
-      this.applyFilter();
-    }
+    Swal.fire({
+      title: 'Delete Property',
+      text: 'Are you sure you want to delete this property? This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d9534f',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, Delete',
+      cancelButtonText: 'Cancel',
+      background: '#fff',
+      color: '#2c3e50',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // TODO: Implement delete via API when method is available
+        this.allProperties = this.allProperties.filter(
+          (p) => p.id !== propertyId
+        );
+        this.applyFilter();
+
+        // Show success message
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Property deleted successfully!',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: '#fff',
+          color: '#2c3e50',
+          iconColor: '#28a745',
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          }
+        });
+      }
+    });
   }
 
   /**
@@ -573,29 +601,6 @@ getStatusColor(status: string): string {
    */
   hasNoProperties(): boolean {
     return !this.isLoading && this.displayedProperties.length === 0;
-  }
-
-  /**
-   * Get total pages for pagination
-   */
-  getTotalPages(): number {
-    return Math.ceil(
-      this.allProperties.filter((p) => {
-        if (this.selectedTab === 'favorites') return p.isFavorite;
-        if (this.selectedTab === 'bookmarks') return p.isBookmarked;
-        if (this.selectedTab === 'submitted') return p.isSubmitted;
-        return true;
-      }).length / this.itemsPerPage
-    );
-  }
-
-  /**
-   * Navigate to specific page
-   */
-  goToPage(page: number): void {
-    this.currentPage = page;
-    this.applyFilter();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
 }

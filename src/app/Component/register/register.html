@@ -1,286 +1,251 @@
-<div class="register-container">
-  <div class="register-card split-layout">
-    
-    <!-- LEFT SIDE: Form Section -->
-    <div class="form-section">
-      <!-- Decorative Elements -->
-      <div class="register-decoration">
-        <div class="decoration-circle circle-1"></div>
-        <div class="decoration-circle circle-2"></div>
-        <div class="decoration-circle circle-3"></div>
-      </div>
+<div class="forget-password-container">
+  <div class="forget-password-card">
+    <h2>{{ 'forms.register.title' | translate }}</h2>
+    <p class="subtitle">{{ 'forms.register.subtitle' | translate }}</p>
 
-      <!-- Register Header -->
-      <div class="register-header">
-        <div class="logo-wrapper">
-          <i class="fas fa-home"></i>
-          <span>TraffiEstate</span>
-        </div>
-        <h2 class="form-title">Create Account</h2>
-        <p class="form-subtitle">Join PropertyHub to find your perfect property</p>
-      </div>
-
-      <!-- Registration Form -->
-      <form (ngSubmit)="register()" [formGroup]="userFormGroup" novalidate class="register-form">
-        <!-- Name Field -->
-        <div class="form-group">
-          <label for="userName">
-            <i class="fas fa-user"></i>
-            Full Name
-          </label>
-          <div class="input-wrapper">
-            <input
-              type="text"
-              id="userName"
-              formControlName="userName"
-              class="form-input"
-              [class.is-invalid]="isFieldInvalid('userName')"
-              placeholder="Enter your full name"
-              required
-            />
-            <div class="input-icon">
-              <i class="fas fa-user-circle"></i>
-            </div>
-          </div>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('userName')">
-            <i class="fas fa-exclamation-circle"></i>
-            {{ getFieldError('userName') }}
-          </div>
-        </div>
-
-        <!-- Phone Number Field -->
-        <div class="form-group">
-          <label for="phoneNumber">
-            <i class="fas fa-phone"></i>
-            Phone Number
-          </label>
-          <div class="input-wrapper">
-            <input
-              type="tel"
-              id="phoneNumber"
-              formControlName="phoneNumber"
-              class="form-input"
-              [class.is-invalid]="isFieldInvalid('phoneNumber')"
-              placeholder="Enter your phone number"
-              required
-            />
-            <div class="input-icon">
-              <i class="fas fa-phone-alt"></i>
-            </div>
-          </div>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('phoneNumber')">
-            <i class="fas fa-exclamation-circle"></i>
-            {{ getFieldError('phoneNumber') }}
-          </div>
-        </div>
-
-        <!-- Email Field -->
-        <div class="form-group">
-          <label for="email">
-            <i class="fas fa-envelope"></i>
-            Email Address
-          </label>
-          <div class="input-wrapper">
-            <input
-              type="email"
-              id="email"
-              formControlName="email"
-              class="form-input"
-              [class.is-invalid]="isFieldInvalid('email')"
-              placeholder="Enter your email"
-              required
-            />
-            <div class="input-icon">
-              <i class="fas fa-at"></i>
-            </div>
-          </div>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
-            <i class="fas fa-exclamation-circle"></i>
-            {{ getFieldError('email') }}
-          </div>
-        </div>
-
-        <!-- Password Field -->
-        <div class="form-group">
-          <label for="password">
-            <i class="fas fa-lock"></i>
-            Password
-          </label>
-          <div class="input-wrapper">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="password"
-              formControlName="password"
-              class="form-input"
-              [class.is-invalid]="isFieldInvalid('password')"
-              placeholder="Create a strong password"
-              required
-            />
-            <div class="input-icon">
-              <i class="fas fa-key"></i>
-            </div>
-            <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" tabindex="-1">
-              <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-            </button>
-          </div>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
-            <i class="fas fa-exclamation-circle"></i>
-            {{ getFieldError('password') }}
-          </div>
-          <div class="password-hint">
-            <i class="fas fa-info-circle"></i>
-            Must contain at least 8 characters, including uppercase, lowercase, number, and special character
-          </div>
-        </div>
-
-        <!-- Confirm Password Field -->
-        <div class="form-group">
-          <label for="confirmPassword">
-            <i class="fas fa-lock"></i>
-            Confirm Password
-          </label>
-          <div class="input-wrapper">
-            <input
-              [type]="showConfirmPassword ? 'text' : 'password'"
-              id="confirmPassword"
-              formControlName="confirmPassword"
-              class="form-input"
-              [class.is-invalid]="isFieldInvalid('confirmPassword')"
-              placeholder="Re-enter your password"
-              required
-            />
-            <div class="input-icon">
-              <i class="fas fa-key"></i>
-            </div>
-            <button type="button" class="toggle-password" (click)="toggleConfirmPasswordVisibility()" tabindex="-1">
-              <i [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-            </button>
-          </div>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('confirmPassword')">
-            <i class="fas fa-exclamation-circle"></i>
-            {{ getFieldError('confirmPassword') }}
-          </div>
-        </div>
-
-        <!-- Role Selection -->
-        <div class="form-group">
-          <label for="roleName">
-            <i class="fas fa-user-tag"></i>
-            I want to
-          </label>
-          <div class="input-wrapper select-wrapper">
-            <select 
-              id="roleName" 
-              formControlName="roleName" 
-              class="form-input"
-              [class.is-invalid]="isFieldInvalid('roleName')"
-              required
-            >
-              <option value="" disabled selected>Select your role</option>
-              <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
-            </select>
-            <div class="input-icon">
-              <i class="fas fa-briefcase"></i>
-            </div>
-            <div class="select-arrow">
-              <i class="fas fa-chevron-down"></i>
-            </div>
-          </div>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('roleName')">
-            <i class="fas fa-exclamation-circle"></i>
-            {{ getFieldError('roleName') }}
-          </div>
-        </div>
-
-        <!-- Terms Agreement -->
-        <div class="form-group terms-checkbox">
-          <input type="checkbox" id="terms" required>
-          <label for="terms">
-            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-          </label>
-        </div>
-
-        <!-- Submit Button -->
-        <button 
-          type="submit" 
-          class="btn-register"
-          [disabled]="submitted && userFormGroup.invalid"
-        >
-          <i class="fas fa-user-plus"></i>
-          Create Account
-        </button>
-      </form>
-
-      <!-- Login Link -->
-      <div class="login-link">
-        <p>Already have an account?</p>
-        <a routerLink="/login" class="login-link-btn">
-          <i class="fas fa-sign-in-alt"></i>
-          Sign In Here
-        </a>
-      </div>
-
-      <!-- Footer -->
-      <div class="register-footer">
-        <p>By creating an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
-      </div>
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="success-message">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2"/>
+        <path d="M6 10L9 13L14 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      {{ successMessage }}
     </div>
 
-    <!-- RIGHT SIDE: Property Image Section -->
-    <div class="property-section">
-      <div class="property-image-container">
-        <img 
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-          alt="Luxury Property" 
-          class="property-main-image"
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Registration Form -->
+    <form [formGroup]="userFormGroup" (ngSubmit)="register()">
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="userName">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          {{ 'forms.register.full_name' | translate }}
+        </label>
+        <input
+          type="text"
+          id="userName"
+          formControlName="userName"
+          [placeholder]="'forms.register.full_name' | translate"
+          class="form-input"
+          (blur)="markFieldAsTouched('userName')"
+          [class.error]="isFieldInvalid('userName')"
         />
-        <div class="property-overlay">
-          <div class="property-content">
-            <div class="property-badge">
-              <i class="fas fa-star"></i>
-              <span>Premium Properties</span>
-            </div>
-            <div class="property-info">
-              <h2>Find Your Perfect Property</h2>
-              <p class="property-description">
-                Join thousands of satisfied users who found their dream homes and investment opportunities through PropertyHub.
-              </p>
-              <div class="property-features">
-                <div class="feature">
-                  <i class="fas fa-search"></i>
-                  <span>Advanced Search</span>
-                  <small>Find properties matching your criteria</small>
-                </div>
-                <div class="feature">
-                  <i class="fas fa-shield-alt"></i>
-                  <span>Secure Platform</span>
-                  <small>Your data is always protected</small>
-                </div>
-                <div class="feature">
-                  <i class="fas fa-headset"></i>
-                  <span>24/7 Support</span>
-                  <small>Expert assistance anytime</small>
-                </div>
-              </div>
-            </div>
-            <div class="property-testimonial">
-              <div class="testimonial-text">
-                <i class="fas fa-quote-left"></i>
-                <p>"PropertyHub helped me find my perfect investment property within my budget. The platform is amazing!"</p>
-              </div>
-              <div class="testimonial-author">
-                <div class="author-avatar">
-                  <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="author-info">
-                  <strong>Michael Chen</strong>
-                  <span>Real Estate Investor</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <span *ngIf="isFieldInvalid('userName')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('userName') }}
+        </span>
+      </div>
+
+      <!-- Phone Number Field -->
+      <div class="form-group">
+        <label for="phoneNumber">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          {{ 'forms.register.phone_number' | translate }}
+        </label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          [placeholder]="'forms.register.phone_number' | translate"
+          class="form-input"
+          (blur)="markFieldAsTouched('phoneNumber')"
+          [class.error]="isFieldInvalid('phoneNumber')"
+        />
+        <span *ngIf="isFieldInvalid('phoneNumber')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('phoneNumber') }}
+        </span>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          {{ 'forms.register.email_address' | translate }}
+        </label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          [placeholder]="'forms.register.email_address' | translate"
+          class="form-input"
+          (blur)="markFieldAsTouched('email')"
+          [class.error]="isFieldInvalid('email')"
+        />
+        <span *ngIf="isFieldInvalid('email')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('email') }}
+        </span>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="form-group">
+        <label for="roleName">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          {{ 'forms.register.account_type' | translate }}
+        </label>
+        <select
+          id="roleName"
+          formControlName="roleName"
+          class="form-input"
+          (blur)="markFieldAsTouched('roleName')"
+          [class.error]="isFieldInvalid('roleName')"
+        >
+          <option value="" disabled selected>{{ 'forms.register.select_account_type' | translate }}</option>
+          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+        <span *ngIf="isFieldInvalid('roleName')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('roleName') }}
+        </span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          {{ 'forms.register.password' | translate }}
+        </label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            [placeholder]="'forms.register.password' | translate"
+            class="form-input"
+            (blur)="markFieldAsTouched('password')"
+            [class.error]="isFieldInvalid('password')"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+          >
+            <svg *ngIf="!showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <svg *ngIf="showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <span *ngIf="isFieldInvalid('password')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('password') }}
+        </span>
+        <!-- Password Requirements Hint -->
+        <div *ngIf="userFormGroup.get('password')?.touched && !userFormGroup.get('password')?.valid" class="password-hint">
+          <small>
+            <span [class.valid]="userFormGroup.get('password')?.value?.length >= 6">{{ 'forms.register.password_requirements.length' | translate }}</span>
+            <span [class.valid]="userFormGroup.get('password')?.value?.match(/[A-Z]/)">{{ 'forms.register.password_requirements.uppercase' | translate }}</span>
+            <span [class.valid]="userFormGroup.get('password')?.value?.match(/\d/)">{{ 'forms.register.password_requirements.number' | translate }}</span>
+          </small>
         </div>
       </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            <circle cx="12" cy="16" r="1"/>
+          </svg>
+          {{ 'forms.register.confirm_password' | translate }}
+        </label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            [placeholder]="'forms.register.confirm_password' | translate"
+            class="form-input"
+            (blur)="markFieldAsTouched('confirmPassword')"
+            [class.error]="isFieldInvalid('confirmPassword')"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="toggleConfirmPasswordVisibility()"
+            tabindex="-1"
+          >
+            <svg *ngIf="!showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <svg *ngIf="showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <span *ngIf="isFieldInvalid('confirmPassword')" class="error-text">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 6V11M10 14V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          {{ getFieldError('confirmPassword') }}
+        </span>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="isLoading || userFormGroup.invalid"
+      >
+        <svg *ngIf="isLoading" class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+        </svg>
+        {{ isLoading ? ('forms.register.creating_account' | translate) : ('forms.register.create_account' | translate) }}
+      </button>
+    </form>
+
+    <!-- Sign In Link -->
+    <div class="back-to-login">
+      <p>{{ 'forms.register.already_have_account' | translate }} <a routerLink="/login">{{ 'header.sign_in' | translate }}</a></p>
     </div>
   </div>
 </div>

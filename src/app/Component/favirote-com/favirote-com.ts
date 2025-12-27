@@ -5,10 +5,11 @@ import { FavoriteService } from '../../Services/favorite-service';
 import { CommonModule } from '@angular/common';
 import { IProperty, phone, email } from '../../models/iproperty';
 import { RouterModule, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-favirote-com',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './favirote-com.html',
   styleUrl: './favirote-com.css',
 })
@@ -16,12 +17,13 @@ export class FaviroteCom implements OnInit {
   favorites: Favorite[] = [];
   displayedFavorites: Favorite[] = [];
   allProperties: IProperty[] = [];
+  removingIds: Set<number> = new Set();
   // See More pagination
   itemsPerLoad: number = 8;
   currentLoadedCount: number = 8;
 
   favoritesIds: number[] = [];
-  isLoading: boolean = true; // Add loading state
+  isLoading: boolean = true;
   phone = phone;
   email = email;
 
@@ -38,12 +40,12 @@ export class FaviroteCom implements OnInit {
 
   loadFavorites() {
     this.isLoading = true;
-    
+
     // First, get all properties
     this.PropertyService.getAllProperties().subscribe({
       next: (props: IProperty[]) => {
         this.allProperties = props;
-        
+
         // Then get favorites (fetch all in one call with large pageSize)
         this.favoriteService.getMyFavorites(1, 1000).subscribe({
           next: (res: any) => {
@@ -152,18 +154,31 @@ export class FaviroteCom implements OnInit {
     if (event) {
       event.stopPropagation();
     }
-    
+
     const favIndex = this.favorites.findIndex(f => f.propertyId === propertyId);
 
     if (favIndex > -1) {
-      // موجود في الفيفورت → نحذفه
+      // موجود في الفيفورت → نحذفه فوراً من الـ UI
+      this.removingIds.add(propertyId);
+      this.cdn.detectChanges();
+
+      // ثم نحذفه من السيرفر
       this.favoriteService.removeFromFavorites(propertyId).subscribe({
         next: () => {
-          this.favorites.splice(favIndex, 1);
-          this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
-          this.cdn.detectChanges();
+          // بعد انتهاء الـ animation نحذفه من المصفوفة
+          setTimeout(() => {
+            this.favorites = this.favorites.filter(f => f.propertyId !== propertyId);
+            this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
+            this.removingIds.delete(propertyId);
+            this.updateDisplayedFavorites();
+            this.cdn.detectChanges();
+          }, 300);
         },
-        error: err => console.error('Error removing favorite', err)
+        error: err => {
+          console.error('Error removing favorite', err);
+          this.removingIds.delete(propertyId);
+          this.cdn.detectChanges();
+        }
       });
     } else {
       // مش موجود → نضيفه
@@ -171,9 +186,9 @@ export class FaviroteCom implements OnInit {
         next: (fav: Favorite) => {
           const property = this.allProperties.find(p => p.id === propertyId);
           if (property) {
-            this.favorites.push({ 
-              ...fav, 
-              property: property 
+            this.favorites.push({
+              ...fav,
+              property: property
             });
             this.favoritesIds.push(propertyId);
             this.updateDisplayedFavorites();

@@ -1,4 +1,4 @@
-/* ============= BUY & RENT PAGE STYLES ============= */
+/* ============= RENT PAGE STYLES - MATCHING FAVORITES CARDS ============= */
 
 /* HERO SECTION */
 .hero-section {
@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   padding: 80px 20px 60px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .hero-overlay {
@@ -65,10 +65,11 @@
 
 .search-fields-wrapper {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 50px;
+  grid-template-columns: 2fr 1.5fr 1.5fr 60px;
   gap: 12px;
   margin-bottom: 20px;
   align-items: stretch;
+  overflow: visible !important;
 }
 
 .search-field-hero {
@@ -80,6 +81,7 @@
   border-radius: 12px;
   padding: 16px 20px;
   transition: all 0.3s ease;
+  overflow: visible;
 }
 
 .search-field-hero:focus-within {
@@ -103,6 +105,11 @@
   color: #2c3e50;
   outline: none;
   font-weight: 500;
+  cursor: text;
+}
+
+.search-input-hero[readonly] {
+  cursor: pointer;
 }
 
 .search-input-hero::placeholder {
@@ -118,7 +125,8 @@
   flex-shrink: 0;
 }
 
-.search-field-hero:focus-within .toggle-icon {
+.dropdown-wrapper:focus-within .toggle-icon,
+.dropdown-wrapper.active .toggle-icon {
   transform: rotate(180deg);
   color: #E2B43B;
 }
@@ -131,13 +139,14 @@
 .dropdown-menu-hero {
   position: absolute;
   top: calc(100% + 8px);
-  left: -10px;
-  right: -10px;
+  left: 0;
+  right: 0;
+  min-width: 100%;
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  z-index: 9999;
   overflow-y: auto;
   max-height: 320px;
   animation: slideDown 0.3s ease;
@@ -165,11 +174,23 @@
   gap: 12px;
   font-weight: 500;
   white-space: nowrap;
+  user-select: none;
+}
+
+.dropdown-item-hero:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.dropdown-item-hero:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .dropdown-item-hero i {
   color: #E2B43B;
   font-size: 18px;
+  flex-shrink: 0;
 }
 
 .dropdown-item-hero:hover {
@@ -177,11 +198,15 @@
   color: #E2B43B;
 }
 
+.dropdown-item-hero:active {
+  background: rgba(226, 180, 59, 0.2);
+}
+
 .search-btn-hero {
   background: linear-gradient(135deg, #E2B43B, #d4a535);
   border: none;
   border-radius: 12px;
-  padding: 0;
+  padding: 0 24px;
   color: #0B3122;
   font-size: 14px;
   font-weight: 700;
@@ -189,13 +214,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  gap: 8px;
   transition: all 0.3s ease;
   white-space: nowrap;
   box-shadow: 0 4px 12px rgba(226, 180, 59, 0.3);
-  height: 48px;
-  min-height: 48px;
-  width: 50px;
+  height: 56px;
+  min-height: 56px;
   flex-shrink: 0;
 }
 
@@ -205,7 +229,7 @@
 }
 
 .search-btn-hero i {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .quick-search-hero {
@@ -245,11 +269,10 @@
   box-shadow: 0 6px 16px rgba(226, 180, 59, 0.3);
 }
 
-
 /* PROPERTIES SECTION */
 .properties-main-section {
   padding: 60px 0;
-  background: #f5f5f5;
+  background: #f8f9fa;
 }
 
 .container-full {
@@ -428,6 +451,7 @@
   font-size: 14px;
   font-weight: 400;
   color: #6c757d;
+  margin-left: 5px;
 }
 
 .view-toggle {
@@ -464,14 +488,15 @@
   color: #0B3122;
 }
 
-/* PROPERTIES GRID */
+/* ==================== PROPERTIES GRID - MATCHING FAVORITES ==================== */
 .properties-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 28px;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
+/* ==================== PROPERTY CARD - EXACT MATCH WITH FAVORITES ==================== */
 .property-card {
   background: white;
   border-radius: 16px;
@@ -504,6 +529,7 @@
   transform: scale(1.1);
 }
 
+/* Favorite Button - Exact Match */
 .favorite-btn {
   position: absolute;
   top: 16px;
@@ -538,6 +564,7 @@
   color: #e74c3c;
 }
 
+/* Purpose Badge - Exact Match */
 .purpose-badge {
   position: absolute;
   bottom: 16px;
@@ -557,6 +584,7 @@
   color: white;
 }
 
+/* Featured Badge - Exact Match */
 .featured-badge {
   position: absolute;
   top: 16px;
@@ -576,6 +604,7 @@
   font-size: 12px;
 }
 
+/* Property Info - Exact Match */
 .property-info {
   padding: 20px;
 }
@@ -607,6 +636,7 @@
   color: #E2B43B;
 }
 
+/* Property Details - Exact Match */
 .property-details {
   display: flex;
   gap: 16px;
@@ -630,6 +660,7 @@
   font-size: 16px;
 }
 
+/* Property Footer - Exact Match */
 .property-footer {
   display: flex;
   justify-content: space-between;
@@ -657,6 +688,7 @@
   font-weight: 500;
 }
 
+/* Contact Actions - Exact Match */
 .property-contact-actions {
   display: flex;
   gap: 8px;
@@ -700,6 +732,15 @@
 
 .phone-btn:hover {
   background: #1a5a45;
+}
+
+.email-btn {
+  background: #E2B43B;
+  color: #0B3122;
+}
+
+.email-btn:hover {
+  background: #d4a535;
 }
 
 .view-details-btn {
@@ -785,7 +826,7 @@
   box-shadow: 0 6px 20px rgba(226, 180, 59, 0.4);
 }
 
-/* SEE MORE BUTTON */
+/* SEE MORE BUTTON - Exact Match */
 .see-more-section {
   display: flex;
   justify-content: center;
@@ -872,8 +913,81 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
-  white-space: nowrap;
+}
+
+/* ==================== CALL MODAL ==================== */
+.call-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.call-modal-content {
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  animation: slideDown 0.3s ease;
+}
+
+.call-modal-content h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0B3122;
+  margin-bottom: 16px;
+}
+
+.call-modal-content p {
+  font-size: 28px;
+  font-weight: 600;
+  color: #E2B43B;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.call-modal-content button {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
   border: none;
+  cursor: pointer;
+  margin: 5px;
+  transition: all 0.3s ease;
+}
+
+.call-modal-content button:first-of-type {
+  background: #E2B43B;
+  color: #0B3122;
+}
+
+.call-modal-content button:first-of-type:hover {
+  background: #0B3122;
+  color: white;
+  box-shadow: 0 6px 20px rgba(226, 180, 59, 0.4);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .cta-btn.primary {
@@ -921,7 +1035,7 @@
   color: #E2B43B;
 }
 
-/* RESPONSIVE */
+/* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 1200px) {
   .main-layout {
     grid-template-columns: 1fr 260px;
@@ -938,10 +1052,15 @@
   }
 
   .search-fields-wrapper {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .search-field-hero:nth-child(1) {
+    grid-column: 1 / -1;
   }
 
   .search-btn-hero {
+    grid-column: 1 / -1;
     width: 100%;
   }
 
@@ -965,6 +1084,12 @@
   }
 }
 
+@media (max-width: 992px) {
+  .properties-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .hero-main-title {
     font-size: 36px;
@@ -984,10 +1109,16 @@
 
   .search-btn-hero {
     width: 100%;
+    grid-column: 1;
   }
 
   .properties-grid {
     grid-template-columns: 1fr;
+  }
+
+  .property-card {
+    max-width: 400px;
+    margin: 0 auto;
   }
 
   .property-footer {
@@ -1017,30 +1148,9 @@
   }
 }
 
-@media (max-width: 480px) {
-  .search-fields-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .search-btn-hero {
-    width: 100%;
-  }
-
-  .properties-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-  }
-
-  .cta-btn {
-    width: 100%;
-  }
-
+@media (max-width: 576px) {
   .see-more-btn {
     width: 100%;
     justify-content: center;
-    padding: 14px 24px;
   }
 }

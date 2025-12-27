@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Success } from './success';
+import { ChatbotComponent } from './chatbot';
 
-describe('Success', () => {
-  let component: Success;
-  let fixture: ComponentFixture<Success>;
+describe('ChatbotComponent', () => {
+  let component: ChatbotComponent;
+  let fixture: ComponentFixture<ChatbotComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Success]
+      imports: [ChatbotComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Success);
+    fixture = TestBed.createComponent(ChatbotComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -3,8 +3,8 @@
   <!-- ================= HERO ================= -->
   <section class="land-hero">
     <div class="hero-overlay">
-      <h1>Find Your Perfect Land</h1>
-      <p>Discover premium land opportunities across Egypt</p>
+      <h1>{{ 'land.hero.title' | translate }}</h1>
+      <p>{{ 'land.hero.description' | translate }}</p>
     </div>
   </section>
 
@@ -17,11 +17,11 @@
         <div class="search-group">
           <label>
             <i class="bi bi-geo-alt"></i>
-            City / Area
+            {{ 'land.search.city_area' | translate }}
           </label>
           <input
             type="text"
-            placeholder="Cairo, Giza, New Cairo..."
+            [placeholder]="'land.search.city_placeholder' | translate"
             formControlName="city"
           />
         </div>
@@ -30,11 +30,11 @@
         <div class="search-group">
           <label>
             <i class="bi bi-layers"></i>
-            Property Type
+            {{ 'land.search.property_type' | translate }}
           </label>
           <div class="type-display">
             <i class="bi bi-tree"></i>
-            Land
+            {{ 'land.search.land' | translate }}
           </div>
         </div>
 
@@ -42,7 +42,7 @@
         <div class="search-group">
           <label>
             <i class="bi bi-aspect-ratio"></i>
-            Size (sqm)
+            {{ 'land.search.size_sqm' | translate }}
           </label>
           <div class="range-inputs">
             <input type="number" placeholder="Min" formControlName="minSize" min="0" />
@@ -55,7 +55,7 @@
         <div class="search-group">
           <label>
             <i class="bi bi-cash-stack"></i>
-            Price (EGP)
+            {{ 'land.search.price_egp' | translate }}
           </label>
           <div class="range-inputs">
             <input type="number" placeholder="Min" formControlName="minPrice" min="0" />
@@ -65,8 +65,13 @@
         </div>
 
         <!-- Search Button -->
-        <button class="search-btn" type="submit" title="Search">
+        <button class="search-btn" type="submit" [title]="'land.search.search_button' | translate">
           <i class="bi bi-search"></i>
+        </button>
+
+        <!-- Clear Button -->
+        <button class="search-btn clear-btn" type="button" [title]="'common.cancel' | translate" (click)="clearAllFilters()">
+          {{ 'common.cancel' | translate }}
         </button>
 
       </div>
@@ -75,11 +80,11 @@
 
   <!-- ================= QUICK SEARCH ================= -->
   <section class="quick-search-section">
-    <h3>Popular Locations</h3>
+    <h3>{{ 'land.quick_search.title' | translate }}</h3>
     <div class="quick-search-grid">
       <div
         class="quick-search-item"
-        *ngFor="let city of quickSearchCities"
+        *ngFor="let city of quickSearchCities; trackBy: trackByCity"
         (click)="setQuickSearch(city.name)"
       >
         <div class="city-name">
@@ -87,7 +92,7 @@
           {{ city.name }}
         </div>
         <span class="city-count">
-          {{ getCityCount(city.name) }}
+          {{ city.count }}
         </span>
       </div>
     </div>
@@ -101,16 +106,16 @@
 
       <div class="results-header">
         <h3>
-          <span class="count-number">{{ displayedProperties.length }}</span> Lands Shown
-          <span class="page-info" *ngIf="displayedProperties.length > 0">(Showing {{ displayedProperties.length }} of {{ landProperties.length }})</span>
+          <span class="count-number">{{ displayedProperties.length }}</span> {{ 'land.results.lands_shown' | translate }}
+          <span class="page-info" *ngIf="displayedProperties.length > 0">({{ 'land.results.showing' | translate }} {{ displayedProperties.length }} {{ 'land.results.of' | translate }} {{ landProperties.length }})</span>
         </h3>
       </div>
 
       <!-- No Results -->
       <div class="no-results" *ngIf="landProperties.length === 0">
         <i class="bi bi-search"></i>
-        <h4>No lands found</h4>
-        <p>Try adjusting your filters</p>
+        <h4>{{ 'land.results.no_results' | translate }}</h4>
+        <p>{{ 'land.results.try_adjusting' | translate }}</p>
       </div>
 
       <!-- Cards -->
@@ -150,15 +155,16 @@
             <div class="property-details">
               <span class="detail-item">
                 <i class="bi bi-arrows-fullscreen"></i>
-                {{ land.areaSpace }} sqm
+                {{ land.areaSpace }} {{ 'land.results.sqm' | translate }}
               </span>
               <span class="detail-item">
                 <i class="bi bi-eye"></i>
-                {{ land.views || 0 }} Views
+                {{ land.views || 0 }} {{ 'land.results.views' | translate }}
               </span>
               <span class="detail-item">
                 <i class="bi bi-star"></i>
-                {{ land.isFeatured ? 'Featured' : 'Standard' }}
+                <ng-container *ngIf="land.isFeatured">{{ 'land.results.featured' | translate }}</ng-container>
+                <ng-container *ngIf="!land.isFeatured">{{ 'land.results.standard' | translate }}</ng-container>
               </span>
             </div>
 
@@ -169,7 +175,7 @@
             <div class="property-footer">
               <div class="property-price">
                 <span class="price-value">{{ land.price | currency:'EGP':'symbol':'1.0-0' }}</span>
-                <span class="price-period">EGP</span>
+                <span class="price-period">{{ 'common.currency' | translate }}</span>
               </div>
               <div class="property-contact-actions">
                 <a
@@ -182,14 +188,14 @@
                   (click)="$event.stopPropagation()">
                   <i class="bi bi-whatsapp"></i>
                 </a>
-                <a
+                <button
+                  type="button"
                   class="contact-icon-btn phone-btn"
-                  [href]="'tel:' + phone"
                   title="Call Now"
                   aria-label="Call seller"
-                  (click)="$event.stopPropagation()">
+                  (click)="showCallModal(); $event.stopPropagation()">
                   <i class="bi bi-telephone-fill"></i>
-                </a>
+                </button>
                 <a
                   class="contact-icon-btn email-btn"
                   [href]="'mailto:' + email"
@@ -204,7 +210,7 @@
                   [routerLink]="['/property', land.id]"
                   (click)="$event.stopPropagation()">
                   <i class="bi bi-eye"></i>
-                  View
+                  {{ 'land.results.view' | translate }}
                 </button>
               </div>
             </div>
@@ -215,7 +221,7 @@
       <!-- See More Button -->
       <div class="see-more-section" *ngIf="hasMoreToLoad()">
         <button type="button" class="see-more-btn" (click)="loadMore()">
-          See More
+          {{ 'land.results.see_more' | translate }}
           <i class="bi bi-arrow-down"></i>
         </button>
       </div>
@@ -225,8 +231,8 @@
     <!-- ========== FILTERS SIDEBAR ========== -->
     <aside class="filters-sidebar">
       <div class="filters-header">
-        <h3>Filters</h3>
-        <button type="button" class="clear-filters" (click)="clearAllFilters()">Clear All</button>
+        <h3>{{ 'land.filters.title' | translate }}</h3>
+        <button type="button" class="clear-filters" (click)="clearAllFilters()">{{ 'land.filters.clear_all' | translate }}</button>
       </div>
 
       <div class="filter-section">
@@ -235,7 +241,7 @@
         <div class="filter-group">
           <h5>
             <i class="bi bi-sort-down"></i>
-            Sort By
+            {{ 'land.filters.sort_by' | translate }}
           </h5>
           <div class="filter-options">
             <div class="filter-option">
@@ -245,7 +251,7 @@
                 value="newest"
                 (change)="onFilterChange($event)"
               />
-              <label>Newest First</label>
+              <label>{{ 'land.filters.newest' | translate }}</label>
             </div>
             <div class="filter-option">
               <input
@@ -254,7 +260,7 @@
                 value="price-low"
                 (change)="onFilterChange($event)"
               />
-              <label>Price: Low to High</label>
+              <label>{{ 'land.filters.price_low' | translate }}</label>
             </div>
             <div class="filter-option">
               <input
@@ -263,7 +269,7 @@
                 value="price-high"
                 (change)="onFilterChange($event)"
               />
-              <label>Price: High to Low</label>
+              <label>{{ 'land.filters.price_high' | translate }}</label>
             </div>
             <div class="filter-option">
               <input
@@ -272,7 +278,7 @@
                 value="popular"
                 (change)="onFilterChange($event)"
               />
-              <label>Most Popular</label>
+              <label>{{ 'land.filters.popular' | translate }}</label>
             </div>
           </div>
         </div>
@@ -284,7 +290,7 @@
         <div class="filter-group">
           <h5>
             <i class="bi bi-aspect-ratio"></i>
-            Size
+            {{ 'land.filters.size' | translate }}
           </h5>
           <div class="filter-options">
             <div class="filter-option" *ngFor="let size of landSizes">
@@ -293,7 +299,7 @@
                 [value]="size.value"
                 (change)="onFilterChange($event)"
               />
-              <label>{{ size.label }}</label>
+              <label>{{ size.label | translate }}</label>
             </div>
           </div>
         </div>
@@ -305,7 +311,7 @@
         <div class="filter-group">
           <h5>
             <i class="bi bi-currency-dollar"></i>
-            Price
+            {{ 'land.filters.price' | translate }}
           </h5>
           <div class="filter-options">
             <div class="filter-option" *ngFor="let price of landPriceRanges">
@@ -314,7 +320,7 @@
                 [value]="price.value"
                 (change)="onFilterChange($event)"
               />
-              <label>{{ price.label }}</label>
+              <label>{{ price.label | translate }}</label>
             </div>
           </div>
         </div>
@@ -324,4 +330,13 @@
 
   </div>
 
+</div>
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModalFlag">
+  <div class="call-modal-content">
+    <h4>{{ 'property.call_us' | translate }}</h4>
+    <p>{{ phone }}</p>
+    <button (click)="makeCall()">{{ 'common.call_now' | translate }}</button>
+    <button (click)="closeCallModal()">{{ 'common.close' | translate }}</button>
+  </div>
 </div>

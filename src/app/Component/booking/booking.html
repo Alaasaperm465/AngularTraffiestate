@@ -1,0 +1,217 @@
+<div class="booking-page">
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoadingProperty">
+    <div class="spinner-modern"></div>
+    <p>Loading property details...</p>
+  </div>
+
+  <!-- Main Booking Container -->
+  <div class="booking-container" *ngIf="!isLoadingProperty && property">
+
+    <!-- Header -->
+    <div class="booking-header">
+      <button class="back-btn" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i>
+        Back to Property
+      </button>
+      <h1>Book Your Property</h1>
+    </div>
+
+    <div class="booking-layout">
+
+      <!-- Left Section - Property Info & Calendar -->
+      <div class="booking-main">
+
+        <!-- Property Summary Card -->
+        <div class="property-summary-card">
+          <div class="property-image">
+            <img [src]="property.imageUrl" [alt]="property.title">
+          </div>
+          <div class="property-info">
+            <h2>{{ property.title }}</h2>
+            <p class="property-location">
+              <i class="bi bi-geo-alt-fill"></i>
+              {{ property.area }}, {{ property.city }}
+            </p>
+            <div class="property-details-mini">
+              <span><i class="bi bi-door-open"></i> {{ property.rooms }} Rooms</span>
+              <span><i class="bi bi-droplet"></i> {{ property.bathrooms }} Bathrooms</span>
+              <span><i class="bi bi-arrows-fullscreen"></i> {{ property.areaSpace }} m²</span>
+            </div>
+            <div class="price-badge">
+              <span class="price-amount">{{ pricePerDay | currency:'EGP':'symbol':'1.0-0' }}</span>
+              <span class="price-label">/ night</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="calendar-section">
+          <div class="calendar-header">
+            <h3>Select Booking Dates</h3>
+            <p class="calendar-instruction">
+              <i class="bi bi-info-circle"></i>
+              Click on start date then end date
+            </p>
+          </div>
+
+          <!-- Calendar Controls -->
+          <div class="calendar-controls">
+            <button class="month-nav" (click)="previousMonth()">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <h4 class="current-month">{{ getMonthName() }}</h4>
+            <button class="month-nav" (click)="nextMonth()">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="calendar">
+            <!-- Day Headers -->
+            <div class="calendar-day-header">Sun</div>
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+
+            <!-- Calendar Days -->
+            <div
+              *ngFor="let day of calendarDays"
+              class="calendar-day"
+              [class.disabled]="day.disabled"
+              [class.booked]="day.isBooked"
+              [class.past]="day.isPast"
+              [class.selected]="day.isSelected"
+              [class.in-range]="day.isInRange"
+              [class.empty]="!day.date"
+              (click)="selectDate(day)">
+              <span *ngIf="day.date">{{ day.date }}</span>
+              <div class="day-indicator" *ngIf="day.isBooked">
+                <i class="bi bi-x-circle-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendar Legend -->
+          <div class="calendar-legend">
+            <div class="legend-item">
+              <span class="legend-color available"></span>
+              <span>Available</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color selected"></span>
+              <span>Selected</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color booked"></span>
+              <span>Booked</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color past"></span>
+              <span>Past</span>
+            </div>
+          </div>
+
+          <!-- Clear Selection Button -->
+          <button
+            class="clear-selection-btn"
+            *ngIf="selectedStartDate || selectedEndDate"
+            (click)="clearDates()">
+            <i class="bi bi-x-circle"></i>
+            Clear Selection
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Right Section - Booking Summary -->
+      <div class="booking-sidebar">
+        <div class="booking-summary-card sticky-card">
+          <h3>Booking Summary</h3>
+
+          <!-- Selected Dates Display -->
+          <div class="selected-dates" *ngIf="startDate || endDate">
+            <div class="date-display">
+              <label>Check-in Date</label>
+              <div class="date-value">
+                <i class="bi bi-calendar-check"></i>
+                <span *ngIf="startDate">{{ startDate | date:'MM/dd/yyyy' }}</span>
+                <span *ngIf="!startDate" class="placeholder">-- / -- / ----</span>
+              </div>
+            </div>
+            <div class="date-divider">
+              <i class="bi bi-arrow-down"></i>
+            </div>
+            <div class="date-display">
+              <label>Check-out Date</label>
+              <div class="date-value">
+                <i class="bi bi-calendar-x"></i>
+                <span *ngIf="endDate">{{ endDate | date:'MM/dd/yyyy' }}</span>
+                <span *ngIf="!endDate" class="placeholder">-- / -- / ----</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-dates" *ngIf="!startDate && !endDate">
+            <i class="bi bi-calendar2-event"></i>
+            <p>Select booking dates from calendar</p>
+          </div>
+
+          <!-- Price Breakdown -->
+          <div class="price-breakdown" *ngIf="totalPrice > 0">
+            <div class="breakdown-row">
+              <span>{{ pricePerDay | currency:'EGP':'symbol':'1.0-0' }} × {{ getDays() }} {{ getDays() === 1 ? 'night' : 'nights' }}</span>
+              <span>{{ totalPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-divider"></div>
+            <div class="breakdown-row total">
+              <span>Total</span>
+              <span class="total-amount">{{ totalPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+            </div>
+            <div class="duration-badge">
+              <i class="bi bi-moon-stars"></i>
+              {{ getDays() }} {{ getDays() === 1 ? 'night' : 'nights' }}
+            </div>
+          </div>
+
+          <!-- Booking Button -->
+          <button
+            class="book-now-btn"
+            (click)="bookNow()"
+            [disabled]="isLoading || !totalPrice || totalPrice <= 0">
+            <i class="bi" [ngClass]="isLoading ? 'bi-hourglass-split spin' : 'bi-credit-card-fill'"></i>
+            <span *ngIf="!isLoading">Book and Pay Now</span>
+            <span *ngIf="isLoading">Redirecting to payment...</span>
+          </button>
+
+          <!-- Features -->
+          <div class="booking-features">
+            <div class="feature">
+              <i class="bi bi-shield-check"></i>
+              <span>Secure and guaranteed payment</span>
+            </div>
+            <div class="feature">
+              <i class="bi bi-x-circle"></i>
+              <span>Free cancellation up to 48 hours</span>
+            </div>
+            <div class="feature">
+              <i class="bi bi-chat-dots"></i>
+              <span>24/7 technical support</span>
+            </div>
+          </div>
+
+          <!-- Info Note -->
+          <div class="info-note">
+            <i class="bi bi-info-circle-fill"></i>
+            <p>Payment will only be charged after booking confirmation from the owner</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../Services/language';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -13,15 +15,22 @@ export class Navbar implements OnInit, OnDestroy {
   isExploreOpen = false;
   isLoggedIn = false;
   isProfileMenuOpen = false;
+  isPropertiesMenuOpen = false;
   userName: string = '';
   userAvatar: string = 'assets/avatar-default.png';
   userEmail: string = '';
+  userRole: string = ''; // ← Store user role (roleName from token)
 
   private loginListener: any;
   private storageListener: any;
   private logoutListener: any;
 
-  constructor(private router: Router) {}
+  get currentLang(): 'ar' | 'en' {
+    return this.languageService.currentLang as 'ar' | 'en';
+  }
+
+  constructor(private router: Router, private languageService: LanguageService) {
+  }
 
   ngOnInit() {
     this.checkLoginStatus();
@@ -69,14 +78,17 @@ export class Navbar implements OnInit, OnDestroy {
         this.userName = profile.name || profile.firstName || profile.userName || 'User';
         this.userAvatar = profile.avatar || 'assets/avatar-default.png';
         this.userEmail = profile.email || '';
-        console.log('✅ Navbar updated with user:', this.userName);
+        this.userRole = profile.roleName || profile.role || ''; // ← Extract roleName (from JWT) or role
+        console.log('✅ Navbar updated with user:', this.userName, 'Role:', this.userRole);
       } catch (e) {
         this.isLoggedIn = false;
         this.userName = '';
+        this.userRole = '';
       }
     } else {
       this.isLoggedIn = false;
       this.userName = '';
+      this.userRole = '';
     }
   }
 
@@ -86,6 +98,22 @@ export class Navbar implements OnInit, OnDestroy {
 
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  togglePropertiesMenu() {
+    this.isPropertiesMenuOpen = !this.isPropertiesMenuOpen;
+  }
+
+  // Check if user is owner
+  isOwner(): boolean {
+    if (!this.userRole) {
+      console.log('⚠️ No user role set');
+      return false;
+    }
+    const role = this.userRole.toLowerCase().trim();
+    const isOwnerRole = role === 'owner' || role === '1';
+    console.log('🔍 Role check:', { userRole: this.userRole, role, isOwnerRole });
+    return isOwnerRole;
   }
 
   goToFavorites() {
@@ -119,5 +147,9 @@ export class Navbar implements OnInit, OnDestroy {
   // Toggle sidebar in owner-dashboard
   toggleSidebar() {
     window.dispatchEvent(new CustomEvent('toggleProfileMenu'));
+  }
+
+  toggleLanguage() {
+    this.languageService.toggleLanguage();
   }
 }

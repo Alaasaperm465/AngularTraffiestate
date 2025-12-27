@@ -1,1 +1,48 @@
-<p>footer works!</p>
+<!-- Contact CTA Section -->
+<section class="contact-cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-text">
+        <h2>{{ 'home.contact_cta.title' | translate }}</h2>
+        <p>{{ 'home.contact_cta.description' | translate }}</p>
+      </div>
+      <div class="cta-buttons">
+        <a [href]="'https://wa.me/' + phone.replace(/\D/g, '')" class="cta-btn primary" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-whatsapp"></i>
+          {{ 'home.contact_cta.whatsapp' | translate }}
+        </a>
+        <button type="button" class="cta-btn secondary" (click)="callNow()">
+          <i class="bi bi-telephone-fill"></i>
+          {{ 'home.contact_cta.call_us' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item">
+        <i class="bi bi-whatsapp"></i>
+        <span>{{ phone }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-telephone-fill"></i>
+        <span>{{ phone }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-envelope-fill"></i>
+        <span>{{ email }}</span>
+      </div>
+      <div class="contact-item">
+        <i class="bi bi-geo-alt-fill"></i>
+        <span>{{ 'contact_info.cairo_egypt' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModal">
+  <div class="call-modal-content">
+    <h4>Call us at:</h4>
+    <p>{{ phone }}</p>
+    <button (click)="makeCall()">Call Now</button>
+    <button (click)="closeCallModal()">Close</button>
+  </div>
+</div>

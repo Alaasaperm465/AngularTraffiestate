@@ -1,4 +1,4 @@
-/* ============= HOME PAGE STYLES - FIXED ============= */
+/* ============= HOME PAGE STYLES - MATCHING FAVORITES CARDS ============= */
 
 /* HERO SECTION */
 .hero-section {
@@ -249,7 +249,7 @@
   background: linear-gradient(135deg, #E2B43B, #d4a535);
   border: none;
   border-radius: 12px;
-  padding: 0;
+  padding: 0 24px;
   color: #0B3122;
   font-size: 14px;
   font-weight: 700;
@@ -257,13 +257,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  gap: 8px;
   transition: all 0.3s ease;
   white-space: nowrap;
   box-shadow: 0 4px 12px rgba(226, 180, 59, 0.3);
   height: 56px;
   min-height: 56px;
-  width: 60px;
   flex-shrink: 0;
 }
 
@@ -316,7 +315,7 @@
 /* PROPERTIES SECTION */
 .properties-main-section {
   padding: 60px 0;
-  background: #f5f5f5;
+  background: #f8f9fa;
 }
 
 .container-full {
@@ -467,7 +466,7 @@
   margin-bottom: 32px;
   background: white;
   padding: 20px 24px;
-  border-radius: 16px;
+  /* border-radius: 16px; */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -485,7 +484,6 @@
   color: #E2B43B;
 }
 
-/* PAGE INFO - المفقود! */
 .page-info {
   font-size: 14px;
   font-weight: 400;
@@ -527,17 +525,18 @@
   color: #0B3122;
 }
 
-/* PROPERTIES GRID */
+/* ==================== PROPERTIES GRID - MATCHING FAVORITES ==================== */
 .properties-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 28px;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
+/* ==================== PROPERTY CARD - EXACT MATCH WITH FAVORITES ==================== */
 .property-card {
   background: white;
-  border-radius: 16px;
+  /* border-radius: 16px; */
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.4s ease;
@@ -567,6 +566,7 @@
   transform: scale(1.1);
 }
 
+/* Favorite Button - Exact Match */
 .favorite-btn {
   position: absolute;
   top: 16px;
@@ -575,7 +575,7 @@
   height: 40px;
   background: rgba(255, 255, 255, 0.95);
   border: none;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -601,6 +601,7 @@
   color: #e74c3c;
 }
 
+/* Purpose Badge - Exact Match */
 .purpose-badge {
   position: absolute;
   bottom: 16px;
@@ -620,6 +621,7 @@
   color: white;
 }
 
+/* Featured Badge - Exact Match */
 .featured-badge {
   position: absolute;
   top: 16px;
@@ -639,6 +641,7 @@
   font-size: 12px;
 }
 
+/* Property Info - Exact Match */
 .property-info {
   padding: 20px;
 }
@@ -670,6 +673,7 @@
   color: #E2B43B;
 }
 
+/* Property Details - Exact Match */
 .property-details {
   display: flex;
   gap: 16px;
@@ -693,6 +697,7 @@
   font-size: 16px;
 }
 
+/* Property Footer - Exact Match */
 .property-footer {
   display: flex;
   justify-content: space-between;
@@ -720,6 +725,7 @@
   font-weight: 500;
 }
 
+/* Contact Actions - Exact Match */
 .property-contact-actions {
   display: flex;
   gap: 8px;
@@ -763,6 +769,15 @@
 
 .phone-btn:hover {
   background: #1a5a45;
+}
+
+.email-btn {
+  background: #E2B43B;
+  color: #0B3122;
+}
+
+.email-btn:hover {
+  background: #d4a535;
 }
 
 .view-details-btn {
@@ -848,7 +863,7 @@
   box-shadow: 0 6px 20px rgba(226, 180, 59, 0.4);
 }
 
-/* SEE MORE BUTTON - المفقود! */
+/* SEE MORE BUTTON - Exact Match */
 .see-more-section {
   display: flex;
   justify-content: center;
@@ -892,105 +907,7 @@
   transform: translateY(3px);
 }
 
-/* CONTACT CTA */
-.contact-cta-section {
-  background: linear-gradient(135deg, #0B3122 0%, #1a5a45 100%);
-  padding: 80px 0;
-  margin-top: 60px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.cta-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
-}
-
-.cta-text h2 {
-  font-size: 36px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 12px;
-}
-
-.cta-text p {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.cta-buttons {
-  display: flex;
-  gap: 16px;
-  flex-shrink: 0;
-}
-
-.cta-btn {
-  padding: 16px 32px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  white-space: nowrap;
-  border: none;
-}
-
-.cta-btn.primary {
-  background: #E2B43B;
-  color: #0B3122;
-}
-
-.cta-btn.primary:hover {
-  background: #d4a535;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(226, 180, 59, 0.4);
-}
-
-.cta-btn.secondary {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-}
-
-.cta-btn.secondary:hover {
-  background: white;
-  color: #0B3122;
-}
-
-.contact-info {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 14px;
-  justify-content: center;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.contact-item i {
-  font-size: 18px;
-  color: #E2B43B;
-}
-
-/* RESPONSIVE */
+/* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 1200px) {
   .main-layout {
     grid-template-columns: 1fr 260px;
@@ -1039,6 +956,12 @@
   }
 }
 
+@media (max-width: 992px) {
+  .properties-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .hero-main-title {
     font-size: 36px;
@@ -1065,6 +988,11 @@
     grid-template-columns: 1fr;
   }
 
+  .property-card {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
   .property-footer {
     flex-wrap: wrap;
   }
@@ -1072,25 +1000,78 @@
   .property-contact-actions {
     width: 100%;
   }
-
-  .contact-info {
-    justify-content: center;
-    flex-direction: column;
-  }
-
-  .see-more-btn {
-    padding: 12px 28px;
-    font-size: 15px;
-  }
+}
+/* ==================== CALL MODAL ==================== */
+.call-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
 }
 
-@media (max-width: 480px) {
-  .search-tabs-hero {
-    flex-direction: column;
-  }
+.call-modal-content {
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  animation: slideDown 0.3s ease;
+}
 
-  .tab-btn-hero {
-    width: 100%;
-  }
+.call-modal-content h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0B3122;
+  margin-bottom: 16px;
+}
 
+.call-modal-content p {
+  font-size: 28px;
+  font-weight: 600;
+  color: #E2B43B;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.call-modal-content button {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  transition: all 0.3s ease;
+}
+
+.call-modal-content button:first-of-type {
+  background: #E2B43B;
+  color: #0B3122;
+}
+
+.call-modal-content button:first-of-type:hover {
+  background: #0B3122;
+  color: white;
+  box-shadow: 0 6px 20px rgba(226, 180, 59, 0.4);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

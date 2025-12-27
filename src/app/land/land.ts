@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/cor
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IProperty, phone, email } from '../models/iproperty';
 import { FavoriteService } from '../Services/favorite-service';
 import { PropertyService } from '../Services/property';
@@ -9,7 +10,7 @@ import { PropertyService } from '../Services/property';
 @Component({
   selector: 'app-land',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslateModule],
   templateUrl: './land.html',
   styleUrl: './land.css',
 })
@@ -38,20 +39,23 @@ export class Land implements OnInit {
   minSize: number | null = null;
   maxSize: number | null = null;
 
+  // Modal state
+  showCallModalFlag: boolean = false;
+
   // Land-specific filter options
   landSizes = [
-    { label: 'Small (< 1000 sqm)', value: 'under1000' },
-    { label: 'Medium (1000-5000 sqm)', value: '1000-5000' },
-    { label: 'Large (5000-10000 sqm)', value: '5000-10000' },
-    { label: 'Extra Large (> 10000 sqm)', value: 'over10000' }
+    { label: 'land.filters.small', value: 'under1000' },
+    { label: 'land.filters.medium', value: '1000-5000' },
+    { label: 'land.filters.large', value: '5000-10000' },
+    { label: 'land.filters.extra_large', value: 'over10000' }
   ];
 
   landPriceRanges = [
-    { label: 'Under 500,000 EGP', value: 'under500k' },
-    { label: '500,000 - 1,000,000 EGP', value: '500k-1m' },
-    { label: '1,000,000 - 5,000,000 EGP', value: '1m-5m' },
-    { label: '5,000,000 - 10,000,000 EGP', value: '5m-10m' },
-    { label: 'Over 10,000,000 EGP', value: 'over10m' }
+    { label: 'land.filters.under_500k', value: 'under500k' },
+    { label: 'land.filters.range_500k_1m', value: '500k-1m' },
+    { label: 'land.filters.range_1m_5m', value: '1m-5m' },
+    { label: 'land.filters.range_5m_10m', value: '5m-10m' },
+    { label: 'land.filters.over_10m', value: 'over10m' }
   ];
 
   quickSearchCities = [
@@ -271,17 +275,39 @@ export class Land implements OnInit {
     this.onSearch();
   }
 
-  // ===== معالج تغيير السعر =====
+  // ===== معالج تغيير السعر والحجم =====
   onPriceFilterChange(): void {
-    const minPriceEl = document.querySelector('.price-input[placeholder="Min Price"]') as HTMLInputElement;
-    const maxPriceEl = document.querySelector('.price-input[placeholder="Max Price"]') as HTMLInputElement;
-    const minSizeEl = document.querySelector('.size-input[placeholder="Min Size"]') as HTMLInputElement;
-    const maxSizeEl = document.querySelector('.size-input[placeholder="Max Size"]') as HTMLInputElement;
+    // Get price inputs from form control
+    let minPriceValue = this.searchForm.get('minPrice')?.value;
+    let maxPriceValue = this.searchForm.get('maxPrice')?.value;
+    let minSizeValue = this.searchForm.get('minSize')?.value;
+    let maxSizeValue = this.searchForm.get('maxSize')?.value;
 
-    this.minPrice = minPriceEl?.value ? parseInt(minPriceEl.value, 10) : null;
-    this.maxPrice = maxPriceEl?.value ? parseInt(maxPriceEl.value, 10) : null;
-    this.minSize = minSizeEl?.value ? parseInt(minSizeEl.value, 10) : null;
-    this.maxSize = maxSizeEl?.value ? parseInt(maxSizeEl.value, 10) : null;
+    // Validate and prevent negative price values
+    if (minPriceValue !== null && minPriceValue !== '' && minPriceValue <= 0) {
+      this.searchForm.patchValue({ minPrice: '' }, { emitEvent: false });
+      minPriceValue = null;
+    }
+    if (maxPriceValue !== null && maxPriceValue !== '' && maxPriceValue <= 0) {
+      this.searchForm.patchValue({ maxPrice: '' }, { emitEvent: false });
+      maxPriceValue = null;
+    }
+
+    // Validate and prevent negative size values
+    if (minSizeValue !== null && minSizeValue !== '' && minSizeValue <= 0) {
+      this.searchForm.patchValue({ minSize: '' }, { emitEvent: false });
+      minSizeValue = null;
+    }
+    if (maxSizeValue !== null && maxSizeValue !== '' && maxSizeValue <= 0) {
+      this.searchForm.patchValue({ maxSize: '' }, { emitEvent: false });
+      maxSizeValue = null;
+    }
+
+    // Set component properties
+    this.minPrice = minPriceValue ? parseInt(minPriceValue, 10) : null;
+    this.maxPrice = maxPriceValue ? parseInt(maxPriceValue, 10) : null;
+    this.minSize = minSizeValue ? parseInt(minSizeValue, 10) : null;
+    this.maxSize = maxSizeValue ? parseInt(maxSizeValue, 10) : null;
 
     this.onSearch();
   }
@@ -424,5 +450,25 @@ export class Land implements OnInit {
       p.city?.toLowerCase() === cityName.toLowerCase() ||
       p.location?.toLowerCase().includes(cityName.toLowerCase())
     ).length;
+  }
+
+  openCallModal(): void {
+    this.showCallModalFlag = true;
+  }
+
+  closeCallModal(): void {
+    this.showCallModalFlag = false;
+  }
+
+  makeCall(): void {
+    window.location.href = `tel:${this.phone}`;
+  }
+
+  showCallModal(): void {
+    this.openCallModal();
+  }
+
+  trackByCity(index: number, city: any): string {
+    return city.name;
   }
 }

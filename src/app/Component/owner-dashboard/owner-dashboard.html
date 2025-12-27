@@ -1,40 +1,5 @@
 <!-- Owner Dashboard Template - English Design with Fixed Sidebar -->
 <div class="dashboard-container">
-
-  <!-- Fixed Sidebar -->
-  <aside class="sidebar" [class.active]="isProfileMenuOpen">
-    <nav class="profile-menu">
-      <a class="menu-item" (click)="goToProfile(); closeProfileMenu()">
-        <i class="bi bi-person"></i>
-        <span>Profile</span>
-      </a>
-      <a class="menu-item" (click)="switchTab('my-properties'); closeProfileMenu()">
-        <i class="bi bi-house"></i>
-        <span>Dashboard</span>
-      </a>
-      <a class="menu-item" (click)="switchTab('favorites'); closeProfileMenu()">
-        <i class="bi bi-heart"></i>
-        <span>Favorites</span>
-      </a>
-      <a class="menu-item" (click)="goToAddProperty(); closeProfileMenu()">
-        <i class="bi bi-plus-circle"></i>
-        <span>Add Property</span>
-      </a>
-      <a class="menu-item" (click)="goToAnalytics(); closeProfileMenu()">
-        <i class="bi bi-graph-up"></i>
-        <span>Analytics</span>
-      </a>
-      <hr class="menu-divider">
-      <a class="menu-item logout" (click)="logout()">
-        <i class="bi bi-box-arrow-left"></i>
-        <span>Logout</span>
-      </a>
-    </nav>
-  </aside>
-
-  <!-- Overlay for mobile when sidebar is open -->
-  <div class="sidebar-overlay" [class.active]="isProfileMenuOpen" (click)="closeProfileMenu()"></div>
-
   <!-- Main Content -->
   <main class="main-content">
     <!-- Hero Section -->
@@ -42,56 +7,8 @@
       <div class="hero-overlay"></div>
       <div class="container">
         <div class="hero-content">
-          <h1>Dashboard</h1>
-          <p>Manage your properties, track statistics, and interact with clients</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Statistics Section -->
-    <section class="statistics-section">
-      <div class="container">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon total">
-              <i class="bi bi-building"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ totalProperties }}</h3>
-              <p>Total Properties</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon active">
-              <i class="bi bi-check-circle"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ ApprovedProperties }}</h3>
-              <p>Approved</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon pending">
-              <i class="bi bi-clock"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ pendingProperties }}</h3>
-              <p>Pending Review</p>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon rejected" style="color: #e74c3c;">
-              <i class="bi bi-x-circle"></i>
-            </div>
-            <div class="stat-content">
-              <h3>{{ rejectedProperties }}</h3>
-              <p>Rejected</p>
-            </div>
-          </div>
-
+          <h1>{{ 'dashboard.title' | translate }}</h1>
+          <p>{{ 'dashboard.subtitle' | translate }}</p>
         </div>
       </div>
     </section>
@@ -107,30 +24,12 @@
               class="tab-button"
               [class.active]="isTabActive('my-properties')"
               (click)="switchTab('my-properties')">
-              My Properties ({{ getTabCount('my-properties') }})
-            </button>
-            <button
-              class="tab-button"
-              [class.active]="isTabActive('favorites')"
-              (click)="switchTab('favorites')">
-              Favorites ({{ getTabCount('favorites') }})
-            </button>
-            <button
-              class="tab-button"
-              [class.active]="isTabActive('bookmarks')"
-              (click)="switchTab('bookmarks')">
-              Saved ({{ getTabCount('bookmarks') }})
-            </button>
-            <button
-              class="tab-button"
-              [class.active]="isTabActive('submitted')"
-              (click)="switchTab('submitted')">
-              Submitted ({{ getTabCount('submitted') }})
+              {{ 'dashboard.tabs.my_properties' | translate }} ({{ getTabCount('my-properties') }})
             </button>
           </div>
-          <button class="btn-add-property-main" (click)="goToAddProperty()">
+          <button class="btn-add-property-main btn-gold" (click)="goToAddProperty()">
             <i class="bi bi-plus-lg"></i>
-            Add New Property
+            {{ 'dashboard.add_new_property' | translate }}
           </button>
         </div>
 
@@ -139,7 +38,7 @@
           <div class="search-bar">
             <input
               type="text"
-              placeholder="Search your properties..."
+              [placeholder]="'dashboard.search_properties' | translate"
               [(ngModel)]="filters.searchTerm"
               (input)="onSearch(filters.searchTerm)">
             <i class="bi bi-search"></i>
@@ -150,56 +49,57 @@
               [(ngModel)]="filters.status"
               (change)="onStatusChange(filters.status)"
               class="filter-select">
-              <option value="all">All Status</option>
-              <option value="approved">approved</option>
-              <option value="pending">Pending Review</option>
-              <option value="rejected">Rejected</option>
+              <option value="all">{{ 'dashboard.all_status' | translate }}</option>
+              <option value="approved">{{ 'dashboard.approved' | translate }}</option>
+              <option value="pending">{{ 'dashboard.pending_review' | translate }}</option>
+              <option value="rejected">{{ 'dashboard.rejected' | translate }}</option>
             </select>
 
             <select
               [(ngModel)]="filters.sortBy"
               (change)="onSortChange(filters.sortBy)"
               class="filter-select">
-              <option value="recent">Recent</option>
-              <option value="price-high">Price (High)</option>
-              <option value="price-low">Price (Low)</option>
-              <option value="views">Most Viewed</option>
+              <option value="recent">{{ 'dashboard.recent' | translate }}</option>
+              <option value="price-high">{{ 'dashboard.price_high' | translate }}</option>
+              <option value="price-low">{{ 'dashboard.price_low' | translate }}</option>
+              <option value="views">{{ 'dashboard.most_viewed' | translate }}</option>
             </select>
 
             <button class="btn-reset" (click)="resetFilters()">
-              Reset
+              {{ 'dashboard.reset' | translate }}
             </button>
           </div>
         </div>
 
         <!-- Bulk Actions -->
         <div class="bulk-actions" *ngIf="getTotalSelected() > 0">
-          <span>{{ getTotalSelected() }} property selected</span>
-        <button (click)="deselectAllProperties()">إلغاء التحديد</button>
-        <button class="btn-delete">حذف المحدد</button>
+          <span>{{ getTotalSelected() }} {{ 'dashboard.property_selected' | translate }}</span>
+        <button (click)="deselectAllProperties()">{{ 'dashboard.deselect_all' | translate }}</button>
+        <button class="btn-delete">{{ 'dashboard.delete_selected' | translate }}</button>
       </div>
 
       <!-- Loading State -->
       <div class="loading-state" *ngIf="isLoading">
         <div class="spinner"></div>
-        <p>جاري تحميل العقارات...</p>
+        <p>{{ 'dashboard.loading_properties' | translate }}</p>
       </div>
 
       <!-- Error State -->
       <div class="error-state" *ngIf="error && !isLoading">
         <i class="icon-alert-circle"></i>
         <p>{{ error }}</p>
-        <button (click)="loadProperties()">إعادة المحاولة</button>
+        <button (click)="loadProperties()">{{ 'dashboard.general.retry' | translate }}</button>
       </div>
 
       <!-- Empty State -->
       <div class="empty-state" *ngIf="hasNoProperties()">
         <i class="icon-home"></i>
-        <h3>لا توجد عقارات حالياً</h3>
-        <p>ابدأ بإضافة عقارك الأول للظهور هنا</p>
+        <h3>{{ 'dashboard.no_properties' | translate }}</h3>
+        <p>{{ 'dashboard.add_first_property' | translate }}</p>
         <button class="btn-primary" (click)="goToAddProperty()">
           <i class="icon-plus"></i>
-          أضف عقار جديد
+          {{ 'dashboard.add_new' | translate }}
+          Add New Property
         </button>
       </div>
 
@@ -224,8 +124,8 @@
 
             <!-- Status Badge -->
             <span class="status-badge" [ngClass]="getStatusColor(property.status)">
-              {{ property.status === 'approved' ? 'موافق عليه' :
-                 property.status === 'pending' ? 'قيد المراجعة' : 'غير نشط' }}
+              {{ property.status === 'approved' ? 'Approved' :
+                 property.status === 'pending' ? 'Pending Review' : 'Rejected' }}
             </span>
 
             <!-- Quick Actions (favorite/bookmark) -->
@@ -243,22 +143,22 @@
               <h3 class="property-title">{{ property.title }}</h3>
               <p class="property-location">
                 <i class="bi bi-geo-alt-fill"></i>
-                {{ property.location }} - {{ property.areaSpace }} م²
+                {{ property.location }} - {{ property.areaSpace }} m²
               </p>
             </div>
 
             <div class="property-details">
               <span class="detail-item">
                 <i class="bi bi-arrows-fullscreen"></i>
-                {{ property.areaSpace }} م²
+                {{ property.areaSpace }} m²
               </span>
               <span class="detail-item">
                 <i class="bi bi-door-open-fill"></i>
-                {{ property.rooms }} غرف
+                {{ property.rooms }} Rooms
               </span>
               <span class="detail-item">
                 <i class="bi bi-droplet-fill"></i>
-                {{ property.bathrooms }} حمام
+                {{ property.bathrooms }} Baths
               </span>
             </div>
 
@@ -288,68 +188,15 @@
         </div>
       </div>
 
-      <!-- Pagination -->
-      <div class="pagination" *ngIf="getTotalPages() > 1">
-        <button
-          class="page-btn"
-          [disabled]="currentPage === 1"
-          (click)="goToPage(currentPage - 1)">
-          Previous
-        </button>
-
-        <div class="page-numbers">
-          <button
-            *ngFor="let page of [].constructor(getTotalPages()); let i = index"
-            class="page-number"
-            [class.active]="currentPage === i + 1"
-            (click)="goToPage(i + 1)">
-            {{ i + 1 }}
-          </button>
-        </div>
-
-        <button
-          class="page-btn"
-          [disabled]="currentPage === getTotalPages()"
-          (click)="goToPage(currentPage + 1)">
-          Next
+      <!-- See More Button -->
+      <div class="see-more-section" *ngIf="hasMoreToLoad()">
+        <button type="button" class="see-more-btn" (click)="loadMore()">
+          See More
+          <i class="bi bi-arrow-down"></i>
         </button>
       </div>
 
         </div>
       </section>
-
-      <!-- Footer -->
-      <footer class="dashboard-footer">
-        <div class="container">
-          <div class="footer-content">
-            <div class="footer-section">
-              <h4>Golden Bay</h4>
-          <p>منصتك الموثوقة للعقارات في مصر</p>
-        </div>
-
-        <div class="footer-section">
-          <h4>روابط سريعة</h4>
-          <a href="/about">عن الشركة</a>
-          <a href="/contact">اتصل بنا</a>
-          <a href="/terms">الشروط والأحكام</a>
-          <a href="/privacy">سياسة الخصوصية</a>
-        </div>
-
-        <div class="footer-section">
-          <h4>تابعنا</h4>
-          <div class="social-links">
-            <a href="#"><i class="bi bi-facebook"></i></a>
-            <a href="#"><i class="bi bi-twitter"></i></a>
-            <a href="#"><i class="bi bi-instagram"></i></a>
-            <a href="#"><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>© 2024 Golden Bay. All rights reserved.</p>
-      </div>
-        </div>
-      </footer>
     </main>
   </div>
