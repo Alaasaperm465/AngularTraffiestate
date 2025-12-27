@@ -57,7 +57,8 @@ background: url('https://homepress.stylemixthemes.com/main/wp-content/uploads/si
 
 /* HERO SEARCH BOX */
 .hero-search-box {
-  background: white;
+  background: rgba(0, 0, 0, 0.4);
+
   border-radius: 20px;
   padding: 32px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
