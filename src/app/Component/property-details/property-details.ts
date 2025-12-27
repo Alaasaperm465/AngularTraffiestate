@@ -706,14 +706,14 @@ Thank you.`;
       // Redirect to payment after showing the toast
       setTimeout(() => {
         window.location.href = session.url;
-      }, 3000);
+      }, 1000);
     } catch (error) {
       console.error(error);
       Swal.fire({
         toast: true,
         position: 'top-end',
         icon: 'error',
-        title: 'Connection error',
+        title: `This date is already booked - please select another date : ${startDate} to ${endDate}`,
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
