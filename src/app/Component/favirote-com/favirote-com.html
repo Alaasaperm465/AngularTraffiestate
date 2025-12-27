@@ -97,8 +97,8 @@
 
         <div class="property-footer">
           <div class="property-price">
-            <span class="price-value">{{ fav.property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
-            <span class="price-period" *ngIf="fav.property.purpose === 'Rent'">{{ 'dashboard.favorites.month' | translate }}</span>
+            <span class="price-value">{{ fav.property.price | currency:'USD':'symbol':'1.0-0' }}</span>
+            <span class="price-period" *ngIf="fav.property.purpose === 'Rent'">{{ 'property.day' | translate }}</span>
           </div>
 
           <div class="property-contact-actions">

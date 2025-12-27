@@ -220,7 +220,7 @@
 
               <div class="property-footer">
                 <div class="property-price">
-                  <span class="price-value">{{ property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
+                  <span class="price-value">{{ property.price | currency:'USD':'symbol':'1.0-0' }}</span>
                   <span class="price-period" *ngIf="property.purpose === 'Rent'">{{ 'favorites.month' | translate }}</span>
                 </div>
                 <div class="property-contact-actions">

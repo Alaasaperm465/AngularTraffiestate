@@ -295,6 +295,7 @@
       "bedrooms": "Bedrooms",
       "for_rent": "For Rent",
       "month": "/month",
+      "day": "/day",
       "no_image": "No Image"
     },
     "edit": {
