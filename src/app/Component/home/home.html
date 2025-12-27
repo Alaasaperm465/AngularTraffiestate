@@ -2,7 +2,7 @@
 <section class="hero-section">
   <div class="hero-overlay"></div>
   <div class="hero-content-wrapper">
-    
+
     <div class="hero-text-content">
       <h1 class="hero-main-title">{{ 'home.hero.main_title' | translate }}</h1>
       <p class="hero-description">{{ 'home.hero.description' | translate }}</p>
@@ -402,3 +402,13 @@
     </div>
   </div>
 </section>
+
+<!-- Call Modal -->
+<div class="call-modal" *ngIf="showCallModalFlag">
+  <div class="call-modal-content">
+    <h4>{{ 'property.call_us' | translate }}</h4>
+    <p>{{ phone }}</p>
+    <button (click)="makeCall()">{{ 'common.call_now' | translate }}</button>
+    <button (click)="closeCallModal()">{{ 'common.close' | translate }}</button>
+  </div>
+</div>
