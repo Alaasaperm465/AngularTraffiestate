@@ -620,3 +620,38 @@
 .user-message .message-content td {
   border-color: rgba(255, 255, 255, 0.2);
 }
+
+/* Property Links Styling */
+.property-link-blue {
+  color: #007bff !important;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.property-link-blue:hover {
+  color: #0056b3 !important;
+  background-color: rgba(0, 123, 255, 0.1);
+  text-decoration: underline;
+}
+
+.property-link-blue:active {
+  color: #004085 !important;
+  background-color: rgba(0, 123, 255, 0.15);
+}
+
+/* Ensure links are clickable in message content */
+.message-content a,
+.message-content .property-link-blue {
+  pointer-events: auto;
+  text-decoration: underline;
+}
+
+.message-content a:visited,
+.message-content .property-link-blue:visited {
+  color: #007bff;
+}

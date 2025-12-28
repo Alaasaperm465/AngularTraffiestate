@@ -10,7 +10,7 @@
     "AngularTraffieEstate": {
       "projectType": "application",
       "schematics": {
-        
+
       },
       "root": "",
       "sourceRoot": "src",
@@ -28,7 +28,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/flatpickr/dist/flatpickr.min.css"
             ]
           },
           "configurations": {
