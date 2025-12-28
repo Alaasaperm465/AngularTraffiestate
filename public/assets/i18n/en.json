@@ -13,7 +13,7 @@
     "see_more": "See More",
     "call_now": "Call Now",
     "close": "Close",
-    "currency": "EGP",
+    "currency": "USD",
     "home": "Home",
     "loading": "Loading...",
     "error": "Error",
@@ -731,7 +731,7 @@
       "size_sqm": "Size (sqm)",
       "min_size": "Min",
       "max_size": "Max",
-      "price_egp": "Price (EGP)",
+      "price_usd": "Price (USD)",
       "min_price": "Min",
       "max_price": "Max",
       "search_button": "Search"

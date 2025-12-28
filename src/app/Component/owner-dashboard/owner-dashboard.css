@@ -451,6 +451,8 @@
   flex: 1;
   min-width: 300px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .search-bar input {
@@ -461,6 +463,7 @@
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s ease;
+  height: 44px;
 }
 
 .search-bar input:focus {
@@ -468,12 +471,12 @@
   border-color: var(--primary-green);
 }
 
-.search-bar .icon-search {
+.search-bar i {
   position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 15px;
   color: var(--text-light);
+  font-size: 1.1rem;
+  pointer-events: none;
 }
 
 .filters-group {
