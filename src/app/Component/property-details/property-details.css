@@ -1087,4 +1087,7 @@
   border-radius: 50%;
   margin-right: 8px;
 }
-
+flatpickr-day.flatpickr-disabled {
+  /* background: #ff4444 !important; */
+  pointer-events: none !important;
+}
