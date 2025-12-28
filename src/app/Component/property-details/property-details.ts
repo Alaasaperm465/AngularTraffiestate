@@ -795,9 +795,9 @@ openBookingDialog(propertyId: number) {
   Swal.fire({
     title: 'Select Booking Dates',
     html: `
-      <div style="text-align: left; padding: 30px 20px; width: 100%;">
-        <div style="margin-bottom: 25px;">
-          <label style="display: block; text-align: left; margin-bottom: 10px; font-weight: 700; color: #2c3e50; font-size: 15px; letter-spacing: 0.5px;">
+      <div style="text-align: left; padding: 30px 20px; width: 100%; ">
+        <div style="margin-bottom: 25px;" >
+          <label style="display: block; text-align: left; margin-bottom: 10px; font-weight: 700; color: #2c3e50; font-size: 15px; letter-spacing: 0.5px; padding-left: 30px;">
             Check-in Date
           </label>
           <input
@@ -806,12 +806,12 @@ openBookingDialog(propertyId: number) {
             class="swal2-input flatpickr-input"
             placeholder="Select arrival date"
             readonly
-            style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 2px solid #E2B43B; font-size: 15px; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(226, 180, 59, 0.1); background: white; cursor: pointer;">
+            style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 2px solid #E2B43B; font-size: 15px; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(226, 180, 59, 0.1); background: white; cursor: pointer;te">
           <small id="startDateError" style="color: #dc3545; display: none; margin-top: 5px; font-size: 12px; font-weight: 600;"></small>
         </div>
 
         <div style="margin-bottom: 20px;">
-          <label style="display: block; text-align: left; margin-bottom: 10px; font-weight: 700; color: #2c3e50; font-size: 15px; letter-spacing: 0.5px;">
+          <label style="display: block; text-align: left; margin-bottom: 10px; font-weight: 700; color: #2c3e50; font-size: 15px; letter-spacing: 0.5px; padding-left: 30px;">
             Check-out Date
           </label>
           <input
@@ -828,7 +828,7 @@ openBookingDialog(propertyId: number) {
           <small style="color: #856404; font-weight: 600;">⚠️ Some dates in this range are already booked</small>
         </div>
 
-        <div style="margin-top: 15px; padding: 12px; background-color: #ffe6e6; border-radius: 8px; border-left: 4px solid #dc3545;">
+        <div style="margin-top: 15px; padding: 12px; background-color: #ffe6e6; border-radius: 8px; border-left: 4px solid #dc3545;     margin-left: 30px;">
           <small style="color: #721c24; font-weight: 600;">
             🚫 ${disabledDatesSet.size} dates are unavailable (marked with red background)
           </small>
