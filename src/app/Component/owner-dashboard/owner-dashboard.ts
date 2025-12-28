@@ -94,7 +94,7 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
   // Filter & Search
   filters: DashboardFilter = {
     searchTerm: '',
-    status: 'all',
+    status: 'approved',
     sortBy: 'recent',
     limit: 6,
     offset: 0,
@@ -182,7 +182,7 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
  loadProperties(): void {
   this.isLoading = true;
   this.error = null;
-  this.filters.status = 'all'; // Reset status filter
+  this.filters.status = 'approved'; // Reset to approved
 
   this.propertyService
     .getOwnerProperties()
@@ -497,7 +497,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
   resetFilters(): void {
     this.filters = {
       searchTerm: '',
-      status: 'all',
+      status: 'approved',
       sortBy: 'recent',
       limit: 12,
       offset: 0,
