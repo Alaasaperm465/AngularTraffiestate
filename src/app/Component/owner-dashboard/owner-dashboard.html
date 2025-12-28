@@ -125,7 +125,7 @@
             <!-- Status Badge -->
             <span class="status-badge" [ngClass]="getStatusColor(property.status)">
               {{ property.status === 'approved' ? ('dashboard.approved_status' | translate) :
-                 property.status === 'pending' ? ('dashboard.pending_status' | translate) : 
+                 property.status === 'pending' ? ('dashboard.pending_status' | translate) :
                  ('dashboard.rejected_status' | translate) }}
             </span>
 
@@ -167,7 +167,7 @@
             <div class="property-footer">
               <div class="property-price">
                 <span class="price-value">{{ formatPrice(property.price) }}</span>
-                <span class="price-period">EGP</span>
+                <!-- <span class="price-period">USD</span> -->
               </div>
 
               <div class="property-contact-actions">

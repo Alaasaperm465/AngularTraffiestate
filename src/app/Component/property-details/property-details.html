@@ -295,7 +295,7 @@
                   <span><i class="bi bi-arrows-fullscreen"></i> {{ prop.areaSpace || prop.area }}</span>
                 </div>
                 <div class="similar-price">
-                  {{ prop.price | currency:'EGP':'symbol':'1.0-0' }}
+                  {{ prop.price | currency:'USD':'symbol':'1.0-0' }}
                   {{ prop.purpose.toLowerCase() === 'rent' ? ('property.details.per_month' | translate) : '' }}
                 </div>
               </div>

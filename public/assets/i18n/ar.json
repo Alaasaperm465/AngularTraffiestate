@@ -13,7 +13,7 @@
     "see_more": "عرض المزيد",
     "call_now": "اتصل الآن",
     "close": "إغلاق",
-    "currency": "جنيه مصري",
+    "currency": " دولار أمريكي",
     "home": "الرئيسية",
     "loading": "جاري التحميل...",
     "error": "خطأ",
@@ -756,7 +756,7 @@
       "size_sqm": "الحجم (م²)",
       "min_size": "أقل",
       "max_size": "أكثر",
-      "price_egp": "السعر (جنيه مصري)",
+      "price_usd": "السعر (دولار أمريكي)",
       "min_price": "أقل",
       "max_price": "أكثر",
       "search_button": "بحث"
