@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { PaymentService } from '../../Services/payment-service';
 import flatpickr from 'flatpickr';
 import { Instance } from 'flatpickr/dist/types/instance';
+import { delay } from 'rxjs/operators';
 
 // import { loadStripe } from '@stripe/stripe-js';
 
