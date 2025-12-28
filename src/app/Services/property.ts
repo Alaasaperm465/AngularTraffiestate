@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { IProperty } from '../models/iproperty';
 import { HttpClient } from '@angular/common/http';
 import { ICreatePropertyDto } from '../models/icreate-property-dto';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +12,7 @@ import { ICreatePropertyDto } from '../models/icreate-property-dto';
 export class PropertyService {
   private baseUrl = 'https://localhost:7030/api/PropertyOwner';
   private clientBaseUrl = 'https://localhost:7030/api/Client';
+  private viewedProperties = new Set<number>(); // Track viewed properties in this session
 
   constructor(private http: HttpClient) {}
 
@@ -28,10 +31,10 @@ export class PropertyService {
   }
 
   /**
-   * Get property by ID (from PropertyOwner endpoint)
+   * Get property by ID (from Client endpoint)
    */
   getPropertyById(id: number): Observable<IProperty> {
-    return this.http.get<IProperty>(`${this.baseUrl}/${id}`);
+    return this.http.get<IProperty>(`${this.clientBaseUrl}/properties/${id}`);
   }
 
   /**
@@ -63,6 +66,30 @@ export class PropertyService {
     return this.http.get<any>(`${this.baseUrl}?page=${page}&pageSize=${pageSize}`);
   }
 
+  increaseView(propertyId: number) {
+    const url = `${this.clientBaseUrl}/properties/${propertyId}/view`;
+    console.log('📤 Sending request to:', url);
+    
+    return this.http.post(url, {}).pipe(
+      tap(response => {
+        console.log('📥 Response received:', response);
+      }),
+      catchError(error => {
+        console.error('❌ Request failed:', error);
+        throw error;
+      })
+    );
+  }
+
+  // Check if property was already viewed in this session
+  isPropertyViewed(propertyId: number): boolean {
+    return this.viewedProperties.has(propertyId);
+  }
+
+  // Mark property as viewed
+  markPropertyAsViewed(propertyId: number): void {
+    this.viewedProperties.add(propertyId);
+  }
   /**
    * Create new property
    * Endpoint: POST /api/PropertyOwner/Create

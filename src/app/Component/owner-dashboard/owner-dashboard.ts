@@ -266,6 +266,8 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
  * Returns: 'approved' | 'pending' | 'rejected'
  */
 private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
+  console.log('normalizeStatus input:', status, 'type:', typeof status);
+
   // If status is number (from enum)
   if (typeof status === 'number') {
     switch (status) {
@@ -279,9 +281,9 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
   // If status is string (just in case)
   if (typeof status === 'string') {
     const value = status.toLowerCase().trim();
-    if (value === 'pending') return 'pending';
-    if (value === 'approved') return 'approved';
-    if (value === 'rejected') return 'rejected';
+    if (value === 'pending' || value === '0') return 'pending';
+    if (value === 'approved' || value === '1') return 'approved';
+    if (value === 'rejected' || value === '2') return 'rejected';
   }
 
   return 'pending'; // default fallback
@@ -296,7 +298,10 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
     let filtered = [...this.allProperties];
     console.log('📍 Initial filtered count:', filtered.length);
 
-    // Filter by status ONLY if not 'all'
+    // Filter by tab - now only 'my-properties'
+    // (no need for switch case anymore)
+
+    // Filter by status if selected
     if (this.filters.status && this.filters.status !== 'all') {
       filtered = filtered.filter((p) => p.status === this.filters.status);
       console.log('📍 After status filter:', filtered.length);
@@ -313,6 +318,38 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
         p.description.toLowerCase().includes(searchLower)
       );
       console.log('📍 After search filter:', filtered.length);
+    }
+
+    // Apply sorting
+    if (this.filters.sortBy) {
+      switch (this.filters.sortBy) {
+        case 'price-high':
+          filtered.sort((a, b) => b.price - a.price);
+          break;
+        case 'price-low':
+          filtered.sort((a, b) => a.price - b.price);
+          break;
+        case 'recent':
+        default:
+          // Keep original order
+          break;
+      }
+    }
+
+    // Apply sorting
+    if (this.filters.sortBy) {
+      switch (this.filters.sortBy) {
+        case 'price-high':
+          filtered.sort((a, b) => b.price - a.price);
+          break;
+        case 'price-low':
+          filtered.sort((a, b) => a.price - b.price);
+          break;
+        case 'recent':
+        default:
+          // Keep original order
+          break;
+      }
     }
 
     // Apply see more pagination

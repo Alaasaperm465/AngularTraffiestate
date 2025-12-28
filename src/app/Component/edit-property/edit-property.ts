@@ -6,7 +6,7 @@ import { PropertyService } from '../../Services/property';
 import { LocationService } from '../../Services/location';
 import { ICreatePropertyDto } from '../../models/icreate-property-dto';
 import Swal from 'sweetalert2';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-property',
@@ -59,16 +59,43 @@ export class EditPropertyComponent implements OnInit {
   // ID العقار
   propertyId!: number;
 
+  // Translated placeholders
+  placeholders: { [key: string]: string } = {};
+
   constructor(
     private propertyService: PropertyService,
     private locationService: LocationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.loadPropertyId();
     this.loadCities();
+    this.loadPlaceholders();
+  }
+
+  /**
+   * Load translated placeholders
+   */
+  loadPlaceholders(): void {
+    const placeholderKeys = [
+      'property.edit.title_placeholder',
+      'property.edit.description_placeholder',
+      'property.edit.location_placeholder'
+    ];
+    
+    placeholderKeys.forEach(key => {
+      this.placeholders[key] = this.translate.instant(key);
+    });
+    
+    // Listen for language changes
+    this.translate.onLangChange.subscribe(() => {
+      placeholderKeys.forEach(key => {
+        this.placeholders[key] = this.translate.instant(key);
+      });
+    });
   }
 
   /**
@@ -598,25 +625,27 @@ export class EditPropertyComponent implements OnInit {
    * Get step title
    */
   getStepTitle(step: number): string {
-    const titles: { [key: number]: string } = {
-      1: 'Basic Information',
-      2: 'Location',
-      3: 'Property Details',
-      4: 'Images',
+    const titleKeys: { [key: number]: string } = {
+      1: 'forms.add_property.step_titles.0',
+      2: 'forms.add_property.step_titles.1',
+      3: 'forms.add_property.step_titles.2',
+      4: 'forms.add_property.step_titles.3',
     };
-    return titles[step] || '';
+    const key = titleKeys[step];
+    return key ? this.translate.instant(key) : '';
   }
 
   /**
    * Get step description
    */
   getStepDescription(step: number): string {
-    const descriptions: { [key: number]: string } = {
-      1: 'Enter the basic information about your property',
-      2: 'Select the location and area',
-      3: 'Provide detailed information about the property',
-      4: 'Upload images of the property',
+    const descriptionKeys: { [key: number]: string } = {
+      1: 'forms.add_property.step_descriptions.0',
+      2: 'forms.add_property.step_descriptions.1',
+      3: 'forms.add_property.step_descriptions.2',
+      4: 'forms.add_property.step_descriptions.3',
     };
-    return descriptions[step] || '';
+    const key = descriptionKeys[step];
+    return key ? this.translate.instant(key) : '';
   }
 }
