@@ -12,6 +12,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ReviewService, ReviewStats } from '../../Services/reviw-service';
 import Swal from 'sweetalert2';
 import { PaymentService } from '../../Services/payment-service';
+import { delay } from 'rxjs/operators';
 // import { loadStripe } from '@stripe/stripe-js';
 
 
@@ -80,7 +81,7 @@ export class PropertyDetails implements OnInit {
   ) {
     // this.stripePromise = loadStripe('pk_test_51Si3QQDbqOF4TUI3uDFSl1T4YZPwcEyIhtuj0mO4zBdHgrnNM4I91ZWKpvbtIPFXKsFCis7xtlOT3Wfr17l3LAxg00psroH3d5');
   }
-
+  
   ngOnInit(): void {
     this.propertyId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadPropertyDetails();
@@ -99,7 +100,7 @@ export class PropertyDetails implements OnInit {
       },
       error: (err) => console.error(err),
     });
-
+    
     // جلب الريتينج اللي عمله المستخدم (لو عندك API لذلك)
     this.ReviewService.getUserPropertyRating(this.propertyId).subscribe((userRating) => {
       if (userRating) {
@@ -118,11 +119,40 @@ export class PropertyDetails implements OnInit {
         this.loadBookedDates();
 
         console.log('Property loaded:', this.property);
+
+        // Increase view count
+        this.increasePropertyView();
       },
       error: (err: any) => {
         console.error('Error loading property:', err);
       },
     });
+  }
+
+  // Increase view count for the property
+  increasePropertyView(): void {
+    // Only increase view once per property per session
+    if (!this.propertyService.isPropertyViewed(this.propertyId)) {
+      console.log('📈 Increasing view count for property:', this.propertyId);
+      
+      this.propertyService.increaseView(this.propertyId).subscribe({
+        next: (response) => {
+          console.log('✅ View count increased in database');
+          this.propertyService.markPropertyAsViewed(this.propertyId);
+          
+          // Update views count immediately in the UI
+          if (this.property) {
+            this.property.views = (this.property.views || 0) + 1;
+            console.log('👀 Views updated to:', this.property.views);
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error increasing view count:', err);
+        },
+      });
+    } else {
+      console.log('⚠️ Property already viewed in this session');
+    }
   }
 
   // Load booked dates for this property
