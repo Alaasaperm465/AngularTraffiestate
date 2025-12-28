@@ -2,11 +2,12 @@ import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './Component/navbar/navbar';
 import { Footer } from "./Component/footer/footer";
+import { ChatbotComponent } from './chatbot/chatbot';
 import { LanguageService } from './Services/language';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Footer],
+  imports: [RouterOutlet, Navbar, Footer, ChatbotComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
