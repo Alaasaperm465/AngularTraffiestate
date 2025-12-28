@@ -58,12 +58,20 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     // تنسيق رسائل البوت
     let formatted = text;
     
+    // إضافة روابط للعقارات أولاً
+    formatted = this.addPropertyLinks(formatted);
+    
     // إزالة الـ emojis والرموز من البداية
     formatted = formatted.replace(/^[🤖💬📤📥✅❌⚠️💡🔄🔍]*\s*/g, '');
     
     // تحويل الأسطر المتعددة إلى فقرات منفصلة
     formatted = formatted.split('\n').map(line => {
       line = line.trim();
+      
+      // تجاهل الروابط - لا تضيف <p> حولها
+      if (line.includes('<a ') && line.includes('</a>')) {
+        return line;
+      }
       
       // النقاط والقوائم
       if (line.match(/^[•\-\*]\s+/)) {
@@ -98,6 +106,65 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     formatted = formatted.replace(/<p><\/p>/g, '');
     
     return this.sanitizer.bypassSecurityTrustHtml(formatted);
+  }
+
+  /**
+   * إضافة روابط للعقارات في الرسالة
+   * يتعامل مع أنماط مختلفة لتمثيل معرفات العقارات
+   */
+  private addPropertyLinks(text: string): string {
+    let result = text;
+    const detectedIds = new Set<string>();
+
+    // البحث عن جميع معرفات العقارات المحتملة
+    const patterns = [
+      /(?:Property ID|رقم العقار|معرف العقار)[\s:]*#?(\d+)/gi,
+      /ID\s*#?(\d{1,4})\b/gi,
+      /(?:الرقم|رقم|№|#)[\s:]*(\d{1,4})(?:\s|$|[،\.])/gi,
+    ];
+
+    patterns.forEach(pattern => {
+      let match;
+      while ((match = pattern.exec(text)) !== null) {
+        if (match[1]) {
+          const id = match[1].toString().trim();
+          if (id && /^\d+$/.test(id) && parseInt(id) > 0 && parseInt(id) < 100000) {
+            detectedIds.add(id);
+          }
+        }
+      }
+    });
+
+    // النمط 1: Property ID: [number] أو رقم العقار: [number]
+    result = result.replace(/(?:Property ID|رقم العقار|معرف العقار)[\s:]*#?(\d+)/gi, (match, propertyId) => {
+      const id = propertyId.toString().trim();
+      if (id && /^\d+$/.test(id)) {
+        return `<a href="/property/${id}" target="_blank" class="property-link-blue">اضغط هنا</a>`;
+      }
+      return match;
+    });
+
+    // النمط 2: ID #[number]
+    result = result.replace(/ID\s*#?(\d{1,4})\b/gi, (match, propertyId) => {
+      const id = propertyId.trim();
+      if (parseInt(id) > 0 && parseInt(id) < 100000) {
+        return `<a href="/property/${id}" target="_blank" class="property-link-blue">اضغط هنا</a>`;
+      }
+      return match;
+    });
+
+    // النمط 3: الرقم: [number] أو رقم: [number]
+    result = result.replace(/(?:الرقم|رقم|№|#)[\s:]*(\d{1,4})(?=\s|$|[،\.])/gi, (match, propertyId) => {
+      const id = propertyId.toString().trim();
+      if (id && /^\d+$/.test(id) && parseInt(id) > 0 && parseInt(id) < 100000) {
+        if (!match.includes('href')) {
+          return `<a href="/property/${id}" target="_blank" class="property-link-blue">اضغط هنا</a>`;
+        }
+      }
+      return match;
+    });
+
+    return result;
   }
 
   ngOnInit() {
