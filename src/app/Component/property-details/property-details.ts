@@ -18,7 +18,6 @@ import { delay } from 'rxjs/operators';
 
 // import { loadStripe } from '@stripe/stripe-js';
 
-
 @Component({
   selector: 'app-property-details',
   standalone: true,
@@ -84,7 +83,7 @@ export class PropertyDetails implements OnInit {
   ) {
     // this.stripePromise = loadStripe('pk_test_51Si3QQDbqOF4TUI3uDFSl1T4YZPwcEyIhtuj0mO4zBdHgrnNM4I91ZWKpvbtIPFXKsFCis7xtlOT3Wfr17l3LAxg00psroH3d5');
   }
-  
+
   ngOnInit(): void {
     this.propertyId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadPropertyDetails();
@@ -103,7 +102,7 @@ export class PropertyDetails implements OnInit {
       },
       error: (err) => console.error(err),
     });
-    
+
     // جلب الريتينج اللي عمله المستخدم (لو عندك API لذلك)
     this.ReviewService.getUserPropertyRating(this.propertyId).subscribe((userRating) => {
       if (userRating) {
@@ -137,12 +136,12 @@ export class PropertyDetails implements OnInit {
     // Only increase view once per property per session
     if (!this.propertyService.isPropertyViewed(this.propertyId)) {
       console.log('📈 Increasing view count for property:', this.propertyId);
-      
+
       this.propertyService.increaseView(this.propertyId).subscribe({
         next: (response) => {
           console.log('✅ View count increased in database');
           this.propertyService.markPropertyAsViewed(this.propertyId);
-          
+
           // Update views count immediately in the UI
           if (this.property) {
             this.property.views = (this.property.views || 0) + 1;
@@ -390,13 +389,19 @@ export class PropertyDetails implements OnInit {
   // ===== UTILITIES =====
   getPropertyPurposeLabel(): string {
     if (!this.property) return '';
-    const key = this.property.purpose.toLowerCase() === 'rent' ? 'property.details.for_rent' : 'property.details.for_sale';
+    const key =
+      this.property.purpose.toLowerCase() === 'rent'
+        ? 'property.details.for_rent'
+        : 'property.details.for_sale';
     return this.translate.instant(key);
   }
 
   getPriceLabel(): string {
     if (!this.property) return '';
-    const key = this.property.purpose.toLowerCase() === 'rent' ? 'property.details.per_month' : 'property.details.total_price';
+    const key =
+      this.property.purpose.toLowerCase() === 'rent'
+        ? 'property.details.per_day'
+        : 'property.details.total_price';
     return this.translate.instant(key);
   }
 
@@ -771,74 +776,70 @@ Thank you.`;
     }
   }
   // في property-details.ts
-// في أول الملف، أضيفي الـ import ده:
-// import flatpickr from 'flatpickr';
+  // في أول الملف، أضيفي الـ import ده:
+  // import flatpickr from 'flatpickr';
 
-// استبدلي دالة openBookingDialog بالكود ده:
-// في property-details.ts
-// في أول الملف، أضيفي الـ imports دول:
+  // استبدلي دالة openBookingDialog بالكود ده:
+  // في property-details.ts
+  // في أول الملف، أضيفي الـ imports دول:
 
+  // استبدلي دالة openBookingDialog بالكود ده:
+  // في property-details.ts
+  // في أول الملف، أضيفي الـ imports دول:
 
-// استبدلي دالة openBookingDialog بالكود ده:
-// في property-details.ts
-// في أول الملف، أضيفي الـ imports دول:
+  // استبدلي دالة openBookingDialog بالكود ده:
+  // في property-details.ts
+  // في أول الملف، أضيفي الـ imports دول:
+  // في property-details.ts
+  // في أول الملف، أضيفي الـ imports دول:
 
+  // استبدلي دالة openBookingDialog بالكود ده:
+  // في property-details.ts
+  // تأكدي إن الـ import موجود في أول الملف:
 
-// استبدلي دالة openBookingDialog بالكود ده:
-// في property-details.ts
-// في أول الملف، أضيفي الـ imports دول:
-// في property-details.ts
-// في أول الملف، أضيفي الـ imports دول:
+  // استبدلي دالة openBookingDialog بالكود ده:
+  // استبدلي دالة openBookingDialog بالكود ده:
+  // في property-details.ts
+  // في أول الملف، أضيفي الـ imports دول:
 
+  // استبدلي دالة openBookingDialog بالكود ده:
+  openBookingDialog(propertyId: number) {
+    console.log('🔍 Raw bookedDates:', this.bookedDates);
 
-// استبدلي دالة openBookingDialog بالكود ده:
-// في property-details.ts
-// تأكدي إن الـ import موجود في أول الملف:
+    let startDateInstance: Instance | null = null;
+    let endDateInstance: Instance | null = null;
+    let selectedStartDate: string = '';
+    let selectedEndDate: string = '';
 
-// استبدلي دالة openBookingDialog بالكود ده:
-// استبدلي دالة openBookingDialog بالكود ده:
-// في property-details.ts
-// في أول الملف، أضيفي الـ imports دول:
+    // تحويل الـ bookings لـ Set of disabled date strings للبحث السريع
+    const disabledDatesSet = new Set<string>();
 
+    if (this.bookedDates && Array.isArray(this.bookedDates)) {
+      this.bookedDates.forEach((booking: any) => {
+        if (!booking || !booking.startDate || !booking.endDate) return;
 
-// استبدلي دالة openBookingDialog بالكود ده:
-openBookingDialog(propertyId: number) {
-  console.log('🔍 Raw bookedDates:', this.bookedDates);
+        const startStr = booking.startDate.split('T')[0];
+        const endStr = booking.endDate.split('T')[0];
 
-  let startDateInstance: Instance | null = null;
-  let endDateInstance: Instance | null = null;
-  let selectedStartDate: string = '';
-  let selectedEndDate: string = '';
+        // Add all dates in range to Set
+        const start = new Date(startStr);
+        const end = new Date(endStr);
+        const current = new Date(start);
 
-  // تحويل الـ bookings لـ Set of disabled date strings للبحث السريع
-  const disabledDatesSet = new Set<string>();
+        while (current <= end) {
+          const dateStr = current.toISOString().split('T')[0];
+          disabledDatesSet.add(dateStr);
+          current.setDate(current.getDate() + 1);
+        }
+      });
+    }
 
-  if (this.bookedDates && Array.isArray(this.bookedDates)) {
-    this.bookedDates.forEach((booking: any) => {
-      if (!booking || !booking.startDate || !booking.endDate) return;
+    console.log('🚫 Total disabled dates:', disabledDatesSet.size);
+    console.log('🚫 Disabled dates:', Array.from(disabledDatesSet));
 
-      const startStr = booking.startDate.split('T')[0];
-      const endStr = booking.endDate.split('T')[0];
-
-      // Add all dates in range to Set
-      const start = new Date(startStr);
-      const end = new Date(endStr);
-      const current = new Date(start);
-
-      while (current <= end) {
-        const dateStr = current.toISOString().split('T')[0];
-        disabledDatesSet.add(dateStr);
-        current.setDate(current.getDate() + 1);
-      }
-    });
-  }
-
-  console.log('🚫 Total disabled dates:', disabledDatesSet.size);
-  console.log('🚫 Disabled dates:', Array.from(disabledDatesSet));
-
-  Swal.fire({
-    title: 'Select Booking Dates',
-    html: `
+    Swal.fire({
+      title: 'Select Booking Dates',
+      html: `
       <div style="text-align: left; padding: 30px 20px; width: 100%;">
         <div style="margin-bottom: 25px;">
           <label style="display: block; text-align: left; margin-bottom: 10px; font-weight: 700; color: #2c3e50; font-size: 15px; letter-spacing: 0.5px;">
@@ -879,74 +880,74 @@ openBookingDialog(propertyId: number) {
         </div>
       </div>
     `,
-    icon: 'question',
-    iconColor: '#E2B43B',
-    showCancelButton: true,
-    confirmButtonText: 'Confirm Booking',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#E2B43B',
-    cancelButtonColor: '#6c757d',
-    focusConfirm: false,
-    width: '500px',
-    padding: '0',
-    backdrop: true,
-    allowOutsideClick: false,
-    customClass: {
-      popup: 'swal2-custom-popup',
-      htmlContainer: 'swal2-custom-container',
-      confirmButton: 'swal2-custom-confirm-btn',
-      cancelButton: 'swal2-custom-cancel-btn',
-    } as any,
-    willOpen: (popup: any) => {
-      popup.style.borderRadius = '12px';
-      popup.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.2)';
+      icon: 'question',
+      iconColor: '#E2B43B',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm Booking',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#E2B43B',
+      cancelButtonColor: '#6c757d',
+      focusConfirm: false,
+      width: '500px',
+      padding: '0',
+      backdrop: true,
+      allowOutsideClick: false,
+      customClass: {
+        popup: 'swal2-custom-popup',
+        htmlContainer: 'swal2-custom-container',
+        confirmButton: 'swal2-custom-confirm-btn',
+        cancelButton: 'swal2-custom-cancel-btn',
+      } as any,
+      willOpen: (popup: any) => {
+        popup.style.borderRadius = '12px';
+        popup.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.2)';
 
-      const confirmBtn = popup.querySelector('.swal2-custom-confirm-btn') as HTMLElement;
-      if (confirmBtn) {
-        confirmBtn.style.backgroundColor = '#E2B43B';
-        confirmBtn.style.color = '#fff';
-        confirmBtn.style.fontWeight = '700';
-        confirmBtn.style.padding = '12px 28px';
-        confirmBtn.style.borderRadius = '8px';
-        confirmBtn.style.border = 'none';
-        confirmBtn.style.fontSize = '14px';
-        confirmBtn.style.transition = 'all 0.3s ease';
-        confirmBtn.style.cursor = 'pointer';
-      }
-
-      const cancelBtn = popup.querySelector('.swal2-custom-cancel-btn') as HTMLElement;
-      if (cancelBtn) {
-        cancelBtn.style.backgroundColor = '#f8f9fa';
-        cancelBtn.style.color = '#6c757d';
-        cancelBtn.style.fontWeight = '600';
-        cancelBtn.style.padding = '12px 28px';
-        cancelBtn.style.borderRadius = '8px';
-        cancelBtn.style.border = '2px solid #e0e0e0';
-        cancelBtn.style.fontSize = '14px';
-        cancelBtn.style.transition = 'all 0.3s ease';
-        cancelBtn.style.cursor = 'pointer';
-      }
-    },
-    didOpen: () => {
-      setTimeout(() => {
-        const startDateInput = document.getElementById('startDate') as HTMLInputElement;
-        const endDateInput = document.getElementById('endDate') as HTMLInputElement;
-        const bookedWarning = document.getElementById('bookedWarning') as HTMLElement;
-        const startDateError = document.getElementById('startDateError') as HTMLElement;
-        const endDateError = document.getElementById('endDateError') as HTMLElement;
-
-        if (!startDateInput || !endDateInput) {
-          console.error('❌ Inputs not found!');
-          return;
+        const confirmBtn = popup.querySelector('.swal2-custom-confirm-btn') as HTMLElement;
+        if (confirmBtn) {
+          confirmBtn.style.backgroundColor = '#E2B43B';
+          confirmBtn.style.color = '#fff';
+          confirmBtn.style.fontWeight = '700';
+          confirmBtn.style.padding = '12px 28px';
+          confirmBtn.style.borderRadius = '8px';
+          confirmBtn.style.border = 'none';
+          confirmBtn.style.fontSize = '14px';
+          confirmBtn.style.transition = 'all 0.3s ease';
+          confirmBtn.style.cursor = 'pointer';
         }
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const cancelBtn = popup.querySelector('.swal2-custom-cancel-btn') as HTMLElement;
+        if (cancelBtn) {
+          cancelBtn.style.backgroundColor = '#f8f9fa';
+          cancelBtn.style.color = '#6c757d';
+          cancelBtn.style.fontWeight = '600';
+          cancelBtn.style.padding = '12px 28px';
+          cancelBtn.style.borderRadius = '8px';
+          cancelBtn.style.border = '2px solid #e0e0e0';
+          cancelBtn.style.fontSize = '14px';
+          cancelBtn.style.transition = 'all 0.3s ease';
+          cancelBtn.style.cursor = 'pointer';
+        }
+      },
+      didOpen: () => {
+        setTimeout(() => {
+          const startDateInput = document.getElementById('startDate') as HTMLInputElement;
+          const endDateInput = document.getElementById('endDate') as HTMLInputElement;
+          const bookedWarning = document.getElementById('bookedWarning') as HTMLElement;
+          const startDateError = document.getElementById('startDateError') as HTMLElement;
+          const endDateError = document.getElementById('endDateError') as HTMLElement;
 
-        // إضافة الـ CSS Styles
-        const style = document.createElement('style');
-        style.id = 'flatpickr-custom-styles';
-        style.textContent = `
+          if (!startDateInput || !endDateInput) {
+            console.error('❌ Inputs not found!');
+            return;
+          }
+
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          // إضافة الـ CSS Styles
+          const style = document.createElement('style');
+          style.id = 'flatpickr-custom-styles';
+          style.textContent = `
           .flatpickr-calendar {
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
             border-radius: 12px !important;
@@ -1016,147 +1017,146 @@ openBookingDialog(propertyId: number) {
           }
         `;
 
-        const oldStyle = document.getElementById('flatpickr-custom-styles');
-        if (oldStyle) oldStyle.remove();
-        document.head.appendChild(style);
+          const oldStyle = document.getElementById('flatpickr-custom-styles');
+          if (oldStyle) oldStyle.remove();
+          document.head.appendChild(style);
 
-        // Function لفحص إذا كان التاريخ محجوز
-        const isDateDisabled = (date: Date): boolean => {
-          const dateStr = date.toISOString().split('T')[0];
-          const isDisabled = disabledDatesSet.has(dateStr);
-          if (isDisabled) {
-            console.log(`🔍 Checking date ${dateStr}: DISABLED`);
-          }
-          return isDisabled;
-        };
+          // Function لفحص إذا كان التاريخ محجوز
+          const isDateDisabled = (date: Date): boolean => {
+            const dateStr = date.toISOString().split('T')[0];
+            const isDisabled = disabledDatesSet.has(dateStr);
+            if (isDisabled) {
+              console.log(`🔍 Checking date ${dateStr}: DISABLED`);
+            }
+            return isDisabled;
+          };
 
-        // إعداد Check-in flatpickr
-        startDateInstance = flatpickr(startDateInput, {
-          minDate: today,
-          dateFormat: 'Y-m-d',
-          disable: [isDateDisabled], // استخدام function بدل array
-          clickOpens: true,
-          allowInput: false,
-          onChange: (selectedDates: Date[], dateStr: string) => {
-            selectedStartDate = dateStr;
-            startDateError.style.display = 'none';
-            startDateInput.style.borderColor = '#E2B43B';
+          // إعداد Check-in flatpickr
+          startDateInstance = flatpickr(startDateInput, {
+            minDate: today,
+            dateFormat: 'Y-m-d',
+            disable: [isDateDisabled], // استخدام function بدل array
+            clickOpens: true,
+            allowInput: false,
+            onChange: (selectedDates: Date[], dateStr: string) => {
+              selectedStartDate = dateStr;
+              startDateError.style.display = 'none';
+              startDateInput.style.borderColor = '#E2B43B';
 
-            console.log('✅ Check-in selected:', dateStr);
+              console.log('✅ Check-in selected:', dateStr);
 
-            if (endDateInstance && selectedDates[0]) {
-              const nextDay = new Date(selectedDates[0]);
-              nextDay.setDate(nextDay.getDate() + 1);
-              endDateInstance.set('minDate', nextDay);
+              if (endDateInstance && selectedDates[0]) {
+                const nextDay = new Date(selectedDates[0]);
+                nextDay.setDate(nextDay.getDate() + 1);
+                endDateInstance.set('minDate', nextDay);
 
-              if (selectedEndDate && new Date(selectedEndDate) <= new Date(selectedStartDate)) {
-                endDateInstance.clear();
-                selectedEndDate = '';
+                if (selectedEndDate && new Date(selectedEndDate) <= new Date(selectedStartDate)) {
+                  endDateInstance.clear();
+                  selectedEndDate = '';
+                }
               }
-            }
 
-            if (selectedEndDate && this.isDateRangeBooked(selectedStartDate, selectedEndDate)) {
-              const blockedDates = this.getDatesBetween(selectedStartDate, selectedEndDate)
-                .filter(date => this.isDateBooked(date));
-              bookedWarning.style.display = 'block';
-              bookedWarning.innerHTML = `<small style="color: #856404; font-weight: 600;">⚠️ Warning: ${blockedDates.length} date(s) are booked</small>`;
-            } else {
-              bookedWarning.style.display = 'none';
-            }
-          },
-          onDayCreate: (dObj: any, dStr: any, fp: any, dayElem: any) => {
-            const dateStr = dayElem.dateObj.toISOString().split('T')[0];
-            if (disabledDatesSet.has(dateStr)) {
-              dayElem.title = '🚫 This date is already booked';
-              console.log(`🎨 Styling disabled date: ${dateStr}`);
-            }
-          }
-        });
+              if (selectedEndDate && this.isDateRangeBooked(selectedStartDate, selectedEndDate)) {
+                const blockedDates = this.getDatesBetween(
+                  selectedStartDate,
+                  selectedEndDate
+                ).filter((date) => this.isDateBooked(date));
+                bookedWarning.style.display = 'block';
+                bookedWarning.innerHTML = `<small style="color: #856404; font-weight: 600;">⚠️ Warning: ${blockedDates.length} date(s) are booked</small>`;
+              } else {
+                bookedWarning.style.display = 'none';
+              }
+            },
+            onDayCreate: (dObj: any, dStr: any, fp: any, dayElem: any) => {
+              const dateStr = dayElem.dateObj.toISOString().split('T')[0];
+              if (disabledDatesSet.has(dateStr)) {
+                dayElem.title = '🚫 This date is already booked';
+                console.log(`🎨 Styling disabled date: ${dateStr}`);
+              }
+            },
+          });
 
-        // إعداد Check-out flatpickr
-        endDateInstance = flatpickr(endDateInput, {
-          minDate: today,
-          dateFormat: 'Y-m-d',
-          disable: [isDateDisabled], // استخدام function بدل array
-          clickOpens: true,
-          allowInput: false,
-          onChange: (selectedDates: Date[], dateStr: string) => {
-            selectedEndDate = dateStr;
-            endDateError.style.display = 'none';
-            endDateInput.style.borderColor = '#E2B43B';
+          // إعداد Check-out flatpickr
+          endDateInstance = flatpickr(endDateInput, {
+            minDate: today,
+            dateFormat: 'Y-m-d',
+            disable: [isDateDisabled], // استخدام function بدل array
+            clickOpens: true,
+            allowInput: false,
+            onChange: (selectedDates: Date[], dateStr: string) => {
+              selectedEndDate = dateStr;
+              endDateError.style.display = 'none';
+              endDateInput.style.borderColor = '#E2B43B';
 
-            console.log('✅ Check-out selected:', dateStr);
+              console.log('✅ Check-out selected:', dateStr);
 
-            if (selectedStartDate && this.isDateRangeBooked(selectedStartDate, selectedEndDate)) {
-              const blockedDates = this.getDatesBetween(selectedStartDate, selectedEndDate)
-                .filter(date => this.isDateBooked(date));
-              bookedWarning.style.display = 'block';
-              bookedWarning.innerHTML = `<small style="color: #856404; font-weight: 600;">⚠️ Warning: ${blockedDates.length} date(s) are booked</small>`;
-            } else {
-              bookedWarning.style.display = 'none';
-            }
-          },
-          onDayCreate: (dObj: any, dStr: any, fp: any, dayElem: any) => {
-            const dateStr = dayElem.dateObj.toISOString().split('T')[0];
-            if (disabledDatesSet.has(dateStr)) {
-              dayElem.title = '🚫 This date is already booked';
-              console.log(`🎨 Styling disabled date: ${dateStr}`);
-            }
-          }
-        });
+              if (selectedStartDate && this.isDateRangeBooked(selectedStartDate, selectedEndDate)) {
+                const blockedDates = this.getDatesBetween(
+                  selectedStartDate,
+                  selectedEndDate
+                ).filter((date) => this.isDateBooked(date));
+                bookedWarning.style.display = 'block';
+                bookedWarning.innerHTML = `<small style="color: #856404; font-weight: 600;">⚠️ Warning: ${blockedDates.length} date(s) are booked</small>`;
+              } else {
+                bookedWarning.style.display = 'none';
+              }
+            },
+            onDayCreate: (dObj: any, dStr: any, fp: any, dayElem: any) => {
+              const dateStr = dayElem.dateObj.toISOString().split('T')[0];
+              if (disabledDatesSet.has(dateStr)) {
+                dayElem.title = '🚫 This date is already booked';
+                console.log(`🎨 Styling disabled date: ${dateStr}`);
+              }
+            },
+          });
 
-        console.log('✅ Flatpickr initialized successfully');
+          console.log('✅ Flatpickr initialized successfully');
+        }, 150);
+      },
+      preConfirm: () => {
+        if (!selectedStartDate) {
+          Swal.showValidationMessage('❌ Please select check-in date');
+          return null;
+        }
+        if (!selectedEndDate) {
+          Swal.showValidationMessage('❌ Please select check-out date');
+          return null;
+        }
+        if (this.isDateBooked(selectedStartDate)) {
+          Swal.showValidationMessage(`❌ Check-in date ${selectedStartDate} is already booked`);
+          return null;
+        }
+        if (this.isDateBooked(selectedEndDate)) {
+          Swal.showValidationMessage(`❌ Check-out date ${selectedEndDate} is already booked`);
+          return null;
+        }
+        if (new Date(selectedStartDate) >= new Date(selectedEndDate)) {
+          Swal.showValidationMessage('❌ Check-out must be after check-in');
+          return null;
+        }
+        if (this.isDateRangeBooked(selectedStartDate, selectedEndDate)) {
+          const blockedDates = this.getDatesBetween(selectedStartDate, selectedEndDate).filter(
+            (date) => this.isDateBooked(date)
+          );
+          Swal.showValidationMessage(
+            `❌ Cannot book: ${blockedDates.length} date(s) are already booked`
+          );
+          return null;
+        }
 
-      }, 150);
-    },
-    preConfirm: () => {
-      if (!selectedStartDate) {
-        Swal.showValidationMessage('❌ Please select check-in date');
-        return null;
+        return { startDate: selectedStartDate, endDate: selectedEndDate };
+      },
+      willClose: () => {
+        if (startDateInstance) startDateInstance.destroy();
+        if (endDateInstance) endDateInstance.destroy();
+        const style = document.getElementById('flatpickr-custom-styles');
+        if (style) style.remove();
+      },
+    }).then((result: any) => {
+      if (result.isConfirmed && result.value) {
+        console.log('🎉 Booking Confirmed:', result.value);
+        this.proceedWithBooking(propertyId, result.value.startDate, result.value.endDate);
       }
-      if (!selectedEndDate) {
-        Swal.showValidationMessage('❌ Please select check-out date');
-        return null;
-      }
-      if (this.isDateBooked(selectedStartDate)) {
-        Swal.showValidationMessage(`❌ Check-in date ${selectedStartDate} is already booked`);
-        return null;
-      }
-      if (this.isDateBooked(selectedEndDate)) {
-        Swal.showValidationMessage(`❌ Check-out date ${selectedEndDate} is already booked`);
-        return null;
-      }
-      if (new Date(selectedStartDate) >= new Date(selectedEndDate)) {
-        Swal.showValidationMessage('❌ Check-out must be after check-in');
-        return null;
-      }
-      if (this.isDateRangeBooked(selectedStartDate, selectedEndDate)) {
-        const blockedDates = this.getDatesBetween(selectedStartDate, selectedEndDate)
-          .filter(date => this.isDateBooked(date));
-        Swal.showValidationMessage(`❌ Cannot book: ${blockedDates.length} date(s) are already booked`);
-        return null;
-      }
-
-      return { startDate: selectedStartDate, endDate: selectedEndDate };
-    },
-    willClose: () => {
-      if (startDateInstance) startDateInstance.destroy();
-      if (endDateInstance) endDateInstance.destroy();
-      const style = document.getElementById('flatpickr-custom-styles');
-      if (style) style.remove();
-    }
-  }).then((result: any) => {
-    if (result.isConfirmed && result.value) {
-      console.log('🎉 Booking Confirmed:', result.value);
-      this.proceedWithBooking(propertyId, result.value.startDate, result.value.endDate);
-    }
-  });
-}
-
-
-
-
-
-
-
+    });
+  }
 }

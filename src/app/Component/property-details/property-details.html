@@ -370,7 +370,7 @@
   {{ 'common.cancel' | translate }}
 </button> -->
 
-<button type="button" class="contact-btn booking" style="background-color: #0066cc; border: none; cursor: pointer;" (click)="openBookingDialog(property.id)">
+<button type="button" class="contact-btn booking" style="background-color: #0066cc; border: none; cursor: pointer;" (click)="openBookingDialog(property.id)" *ngIf="isRentalProperty">
   <i class="bi bi-calendar-check-fill"></i>
   {{ 'property.details.book_now' | translate }}
 </button>
