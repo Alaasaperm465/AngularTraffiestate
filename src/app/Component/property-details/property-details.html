@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="price-section">
-            <span class="main-price">{{ property.price | currency:'EGP':'symbol':'1.0-0' }}</span>
+            <span class="main-price">{{ property.price | currency:'USD':'symbol':'1.0-0' }}</span>
             <span class="price-label">{{ getPriceLabel() }}</span>
           </div>
         </div>
@@ -80,7 +80,7 @@
           </h2>
 
           <div class="details-grid">
-            <div class="detail-card">
+            <div class="detail-card" *ngIf="property.propertyType?.toLowerCase() !== 'land'">
               <i class="bi bi-door-open-fill"></i>
               <div class="detail-info">
                 <span class="detail-label">{{ 'property.details.bedrooms' | translate }}</span>
@@ -88,7 +88,7 @@
               </div>
             </div>
 
-            <div class="detail-card">
+            <div class="detail-card" *ngIf="property.propertyType?.toLowerCase() !== 'land'">
               <i class="bi bi-droplet-fill"></i>
               <div class="detail-info">
                 <span class="detail-label">{{ 'property.details.bathrooms' | translate }}</span>
@@ -108,15 +108,15 @@
               <i class="bi bi-house"></i>
               <div class="detail-info">
                 <span class="detail-label">{{ 'property.details.type' | translate }}</span>
-                <span class="detail-value">{{ ('property.' + (property.propertyType || 'apartment').toLowerCase()) | translate }}</span>
+                <span class="detail-value">{{ getPropertyTypeLabel() }}</span>
               </div>
             </div>
 
-            <div class="detail-card">
+            <div class="detail-card" *ngIf="property.propertyType?.toLowerCase() !== 'land'">
               <i class="bi bi-paint-bucket"></i>
               <div class="detail-info">
-                <span class="detail-label">{{ 'property.details.finishing' | translate }}</span>
-                <span class="detail-value">{{ ('forms.add_property.' + (property.finishingLevel || 'standard').toLowerCase()) | translate }}</span>
+                <span class="detail-label">{{ 'property.finishing' | translate }}</span>
+                <span class="detail-value">{{ getFinishingLevelLabel() }}</span>
               </div>
             </div>
 
@@ -360,7 +360,7 @@
 
             <button type="button" class="contact-btn whatsapp" (click)="openWhatsApp()">
               <i class="bi bi-whatsapp"></i>
-              WhatsApp
+              {{ 'property.details.whatsapp' | translate }}
             </button>
 <!-- <button
   *ngIf="isRentalProperty"
@@ -372,7 +372,7 @@
 
 <button type="button" class="contact-btn booking" style="background-color: #0066cc; border: none; cursor: pointer;" (click)="openBookingDialog(property.id)">
   <i class="bi bi-calendar-check-fill"></i>
-  Book Now
+  {{ 'property.details.book_now' | translate }}
 </button>
           </div>
 

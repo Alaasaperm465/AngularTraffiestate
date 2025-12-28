@@ -19,7 +19,8 @@
     "error": "خطأ",
     "success": "نجاح",
     "previous": "السابق",
-    "next": "التالي"
+    "next": "التالي",
+    "retry": "حاول مرة أخرى"
   },
   "header": {
     "title": "TraffiEstate",
@@ -180,7 +181,15 @@
       "success_message": "شكراً على رسالتك! سنعود إليك قريباً.",
       "error_message": "حدث خطأ في الإرسال. حاول مرة أخرى.",
       "required_field": "هذا الحقل مطلوب",
-      "invalid_email": "يرجى إدخال بريد إلكتروني صحيح"
+      "invalid_email": "يرجى إدخال بريد إلكتروني صحيح",
+      "email_send_error": "حدث خطأ في الخادم أثناء إرسال البريد",
+      "send_error": "حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.",
+      "social": {
+        "title": "تواصل معنا",
+        "linkedin": "لينكد إن",
+        "instagram": "إنستجرام",
+        "facebook": "فيسبوك"
+      }
     }
   },
   "about": {
@@ -238,8 +247,33 @@
     "land": "أرض",
     "bedrooms": "غرف النوم",
     "bedroom": "غرفة نوم",
+    "type": "النوع",
+    "finishing": "التشطيب",
+    "finishing_values": {
+      "standard": "عادي",
+      "semi_furnished": "شبه مفروش",
+      "luxury": "فاخر",
+      "0": "عادي",
+      "1": "شبه مفروش",
+      "2": "فاخر"
+    },
+    "type_values": {
+      "apartment": "شقة",
+      "villa": "فيلا",
+      "house": "منزل",
+      "studio": "استوديو",
+      "townhouse": "تاون هاوس",
+      "land": "أرض",
+      "0": "شقة",
+      "1": "فيلا",
+      "2": "منزل",
+      "3": "استوديو",
+      "4": "تاون هاوس",
+      "5": "أرض"
+    },
     "details": {
       "title": "تفاصيل العقار",
+      "details_title": "تفاصيل العقار",
       "bedrooms": "غرف النوم",
       "bathrooms": "الحمامات",
       "area": "المساحة",
@@ -253,6 +287,7 @@
       "call_now": "اتصل الآن",
       "send_email": "إرسال بريد إلكتروني",
       "whatsapp": "واتساب",
+      "book_now": "احجز الآن",
       "schedule_visit": "جدولة زيارة",
       "your_name": "اسمك *",
       "your_email": "بريدك الإلكتروني *",
@@ -263,10 +298,15 @@
       "rate_property": "قيم هذا العقار",
       "average_rating": "متوسط التقييم:",
       "reviews": "تقييمات",
+      "rating": "التقييم",
       "you_already_rated": "لقد قيمت بالفعل",
       "submit_rating": "إرسال التقييم",
       "for_sale": "للبيع",
-      "for_rent": "للإيجار"
+      "for_rent": "للإيجار",
+      "per_month": "/شهر",
+      "total_price": "السعر الإجمالي",
+      "loading": "جاري التحميل...",
+      "per_day": "/يوم"
     },
     "amenities": {
       "air_conditioning": "تكييف الهواء",
@@ -366,24 +406,45 @@
         "تفاصيل العقار",
         "الصور"
       ],
+      "step_descriptions": [
+        "أدخل المعلومات الأساسية حول عقارك",
+        "حدد الموقع والمنطقة",
+        "قدم معلومات مفصلة عن العقار",
+        "قم برفع صور العقار"
+      ],
       "property_title": "عنوان العقار *",
+      "title_placeholder": "أدخل عنوان العقار...",
+      "title_required": "عنوان العقار مطلوب",
       "description": "الوصف *",
+      "description_placeholder": "صف عقارك...",
+      "description_required": "الوصف مطلوب",
       "property_type": "نوع العقار *",
       "select_type": "اختر النوع",
+      "property_type_required": "نوع العقار مطلوب",
       "purpose": "الغرض *",
       "select_purpose": "اختر الغرض",
+      "purpose_required": "الغرض مطلوب",
       "for_sale": "للبيع",
       "for_rent": "للإيجار",
       "city": "المدينة *",
       "select_city": "اختر المدينة",
+      "city_required": "المدينة مطلوبة",
       "area": "المنطقة *",
       "select_area": "اختر المنطقة",
+      "area_required": "المنطقة مطلوبة",
       "street_address": "العنوان التفصيلي *",
+      "location_placeholder": "أدخل الموقع التفصيلي...",
+      "location_required": "الموقع التفصيلي مطلوب",
       "price": "السعر *",
+      "price_required": "السعر مطلوب",
       "area_space": "المساحة (م²) *",
+      "area_space_required": "المساحة مطلوبة",
       "rooms": "غرف النوم *",
+      "rooms_required": "غرف النوم مطلوبة",
       "bathrooms": "الحمامات *",
+      "bathrooms_required": "الحمامات مطلوبة",
       "finishing_level": "مستوى التشطيب *",
+      "tt": "التشطيب",
       "select_level": "اختر المستوى",
       "standard": "عادي",
       "semi_furnished": "شبه مفروش",
@@ -394,6 +455,7 @@
       "inactive": "غير نشط",
       "pending": "قيد المراجعة",
       "main_image": "الصورة الرئيسية *",
+      "main_image_required": "الصورة الرئيسية مطلوبة",
       "additional_images": "صور إضافية",
       "upload_placeholder": "انقر أو اسحب الصورة الرئيسية هنا",
       "upload_placeholder_additional": "انقر أو اسحب الصور الإضافية هنا",
@@ -455,6 +517,10 @@
     "edit_property": {
       "title": "تعديل عقارك",
       "subtitle": "قم بتحديث تفاصيل عقارك وصوره بسهولة"
+    },
+    "auth": {
+      "registration_failed": "فشل التسجيل",
+      "email_or_phone_exists": "هذا البريد أو رقم الهاتف مسجل بالفعل"
     },
     "login": {
       "title": "مرحبًا بعودتك",
@@ -569,6 +635,12 @@
     "view": "عرض",
     "edit": "تعديل",
     "delete": "حذف",
+    "rooms": "غرفة نوم",
+    "bathrooms": "حمام",
+    "see_more": "عرض المزيد",
+    "approved_status": "موافق عليه",
+    "pending_status": "قيد المراجعة",
+    "rejected_status": "مرفوض",
     "previous": "السابق",
     "next": "التالي",
     "sidebar": {
@@ -759,10 +831,15 @@
     },
     "form": {
       "name": "الاسم *",
+      "name_placeholder": "الاسم *",
       "email": "البريد الإلكتروني *",
+      "email_placeholder": "البريد الإلكتروني *",
       "phone": "رقم الهاتف (11 رقم) *",
+      "phone_placeholder": "رقم الهاتف (11 رقم) *",
       "subject": "الموضوع *",
+      "subject_placeholder": "الموضوع *",
       "message": "الرسالة *",
+      "message_placeholder": "الرسالة *",
       "send": "إرسال الرسالة",
       "sending": "جاري الإرسال...",
       "success": "تم إرسال رسالتك بنجاح! سنتواصل معك قريبًا.",

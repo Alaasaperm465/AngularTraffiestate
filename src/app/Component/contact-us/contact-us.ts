@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -18,10 +18,12 @@ export class ContactUs implements OnInit {
   submitSuccess = false;
   submitError = false;
   errorMessage = '';
+  placeholders: { [key: string]: string } = {};
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private translate: TranslateService
   ) {
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -32,7 +34,29 @@ export class ContactUs implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadPlaceholders();
+  }
+
+  loadPlaceholders(): void {
+    const placeholderKeys = [
+      'contact.form.name_placeholder',
+      'contact.form.email_placeholder',
+      'contact.form.phone_placeholder',
+      'contact.form.subject_placeholder',
+      'contact.form.message_placeholder'
+    ];
+    
+    placeholderKeys.forEach(key => {
+      this.placeholders[key] = this.translate.instant(key);
+    });
+    
+    this.translate.onLangChange.subscribe(() => {
+      placeholderKeys.forEach(key => {
+        this.placeholders[key] = this.translate.instant(key);
+      });
+    });
+  }
 
   onSubmit(): void {
     if (this.contactForm.valid) {

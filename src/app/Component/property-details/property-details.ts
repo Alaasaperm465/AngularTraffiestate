@@ -400,6 +400,20 @@ export class PropertyDetails implements OnInit {
     return this.translate.instant(key);
   }
 
+  getPropertyTypeLabel(): string {
+    if (!this.property || !this.property.propertyType) return '';
+    const normalized = this.property.propertyType.toLowerCase().replace(/-/g, '_');
+    const key = 'property.type_values.' + normalized;
+    return this.translate.instant(key);
+  }
+
+  getFinishingLevelLabel(): string {
+    if (!this.property || !this.property.finishingLevel) return '';
+    const normalized = this.property.finishingLevel.toLowerCase().replace(/-/g, '_');
+    const key = 'property.finishing_values.' + normalized;
+    return this.translate.instant(key);
+  }
+
   trackById(index: number, item: any): number {
     return item.id;
   }
