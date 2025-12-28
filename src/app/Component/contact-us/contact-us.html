@@ -82,7 +82,7 @@
               type="text"
               formControlName="name"
               class="form-control"
-              placeholder="Name *"
+              [placeholder]="placeholders['contact.form.name_placeholder']"
               [class.invalid]="name?.invalid && name?.touched">
             <span class="error-text" *ngIf="name?.invalid && name?.touched">
               <span *ngIf="name?.errors?.['required']">{{ 'forms.validation.name_required' | translate }}</span>
@@ -96,7 +96,7 @@
               type="email"
               formControlName="email"
               class="form-control"
-              placeholder="Email *"
+              [placeholder]="placeholders['contact.form.email_placeholder']"
               [class.invalid]="email?.invalid && email?.touched">
             <span class="error-text" *ngIf="email?.invalid && email?.touched">
               <span *ngIf="email?.errors?.['required']">{{ 'forms.validation.email_required' | translate }}</span>
@@ -110,7 +110,7 @@
               type="tel"
               formControlName="phone"
               class="form-control"
-              placeholder="Phone Number (11 digits) *"
+              [placeholder]="placeholders['contact.form.phone_placeholder']"
               [class.invalid]="phone?.invalid && phone?.touched"
               maxlength="11">
             <span class="error-text" *ngIf="phone?.invalid && phone?.touched">
@@ -125,7 +125,7 @@
               type="text"
               formControlName="subject"
               class="form-control"
-              placeholder="Subject *"
+              [placeholder]="placeholders['contact.form.subject_placeholder']"
               [class.invalid]="subject?.invalid && subject?.touched">
             <span class="error-text" *ngIf="subject?.invalid && subject?.touched">
               <span *ngIf="subject?.errors?.['required']">{{ 'forms.validation.subject_required' | translate }}</span>
@@ -138,7 +138,7 @@
             <textarea
               formControlName="message"
               class="form-control textarea"
-              placeholder="Message *"
+              [placeholder]="placeholders['contact.form.message_placeholder']"
               rows="6"
               [class.invalid]="message?.invalid && message?.touched"></textarea>
             <span class="error-text" *ngIf="message?.invalid && message?.touched">

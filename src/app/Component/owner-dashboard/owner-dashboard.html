@@ -88,7 +88,7 @@
       <div class="error-state" *ngIf="error && !isLoading">
         <i class="icon-alert-circle"></i>
         <p>{{ error }}</p>
-        <button (click)="loadProperties()">{{ 'dashboard.general.retry' | translate }}</button>
+        <button (click)="loadProperties()">{{ 'common.retry' | translate }}</button>
       </div>
 
       <!-- Empty State -->
@@ -124,8 +124,9 @@
 
             <!-- Status Badge -->
             <span class="status-badge" [ngClass]="getStatusColor(property.status)">
-              {{ property.status === 'approved' ? 'Approved' :
-                 property.status === 'pending' ? 'Pending Review' : 'Rejected' }}
+              {{ property.status === 'approved' ? ('dashboard.approved_status' | translate) :
+                 property.status === 'pending' ? ('dashboard.pending_status' | translate) : 
+                 ('dashboard.rejected_status' | translate) }}
             </span>
 
             <!-- Quick Actions (favorite/bookmark) -->
@@ -154,11 +155,11 @@
               </span>
               <span class="detail-item">
                 <i class="bi bi-door-open-fill"></i>
-                {{ property.rooms }} Rooms
+                {{ property.rooms }} {{ 'dashboard.rooms' | translate }}
               </span>
               <span class="detail-item">
                 <i class="bi bi-droplet-fill"></i>
-                {{ property.bathrooms }} Baths
+                {{ property.bathrooms }} {{ 'dashboard.bathrooms' | translate }}
               </span>
             </div>
 
@@ -172,15 +173,15 @@
               <div class="property-contact-actions">
                 <button class="view-details-btn" (click)="viewPropertyDetails(property.id); $event.stopPropagation()">
                   <i class="bi bi-eye"></i>
-                  View
+                  {{ 'dashboard.view' | translate }}
                 </button>
                 <button class="view-details-btn" (click)="editProperty(property.id); $event.stopPropagation()">
                   <i class="bi bi-pencil"></i>
-                  Edit
+                  {{ 'dashboard.edit' | translate }}
                 </button>
                 <button class="view-details-btn" (click)="deleteProperty(property.id); $event.stopPropagation()">
                   <i class="bi bi-trash"></i>
-                  Delete
+                  {{ 'dashboard.delete' | translate }}
                 </button>
               </div>
             </div>
@@ -191,7 +192,7 @@
       <!-- See More Button -->
       <div class="see-more-section" *ngIf="hasMoreToLoad()">
         <button type="button" class="see-more-btn" (click)="loadMore()">
-          See More
+          {{ 'dashboard.see_more' | translate }}
           <i class="bi bi-arrow-down"></i>
         </button>
       </div>
