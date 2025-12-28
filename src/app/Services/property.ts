@@ -41,6 +41,14 @@ export class PropertyService {
     return this.http.get<IProperty[]>(`${this.baseUrl}/owner-properties`);
   }
 
+  getOwnerPropertiesPending(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${this.baseUrl}/pending`);
+  }
+
+  getOwnerPropertiesRejected(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${this.baseUrl}/Rejected`);
+  }
+
   /**
    * Get form data (cities and areas)
    */

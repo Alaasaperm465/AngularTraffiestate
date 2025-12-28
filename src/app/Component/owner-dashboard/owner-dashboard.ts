@@ -182,15 +182,20 @@ export class OwnerDashboardComponent implements OnInit, OnDestroy {
  loadProperties(): void {
   this.isLoading = true;
   this.error = null;
+  this.filters.status = 'all'; // Reset status filter
 
   this.propertyService
     .getOwnerProperties()
     .pipe(takeUntil(this.destroy$))
     .subscribe({
       next: (properties: IProperty[]) => {
-  console.log('API statuses:', properties.map(p => p.status));
+        console.log('📍 Raw API properties count:', properties.length);
+        console.log('📍 API statuses:', properties.map(p => p.approvalStatus));
 
         this.allProperties = this.mapPropertiesToCards(properties);
+        console.log('📍 Mapped properties count:', this.allProperties.length);
+        console.log('📍 Mapped statuses:', this.allProperties.map(p => p.status));
+
         this.updateStatistics();
         this.applyFilter();
         this.isLoading = false;
@@ -286,18 +291,33 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
    * Apply filtering based on current tab and search
    */
   private applyFilter(): void {
+    console.log('📍 applyFilter called - status:', this.filters.status, 'search:', this.filters.searchTerm);
+
     let filtered = [...this.allProperties];
+    console.log('📍 Initial filtered count:', filtered.length);
 
-    // Filter by tab - now only 'my-properties'
-    // (no need for switch case anymore)
-
-    // Filter by status if selected
+    // Filter by status ONLY if not 'all'
     if (this.filters.status && this.filters.status !== 'all') {
       filtered = filtered.filter((p) => p.status === this.filters.status);
+      console.log('📍 After status filter:', filtered.length);
+    } else {
+      console.log('📍 No status filter applied (all status selected)');
+    }
+
+    // Filter by search term (applied AFTER status filter)
+    if (this.filters.searchTerm && this.filters.searchTerm.trim()) {
+      const searchLower = this.filters.searchTerm.toLowerCase();
+      filtered = filtered.filter((p) =>
+        p.title.toLowerCase().includes(searchLower) ||
+        p.location.toLowerCase().includes(searchLower) ||
+        p.description.toLowerCase().includes(searchLower)
+      );
+      console.log('📍 After search filter:', filtered.length);
     }
 
     // Apply see more pagination
     this.displayedProperties = filtered.slice(0, this.currentLoadedCount);
+    console.log('📍 Final displayed count:', this.displayedProperties.length);
   }
 
   // ===== See More pagination helpers =====
@@ -317,13 +337,14 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
 
   // ============ FILTER & SEARCH OPERATIONS ============
   /**
-   * Handle search input
+   * Handle search input - works on currently loaded properties
    */
   onSearch(searchTerm: string): void {
     this.filters.searchTerm = searchTerm;
-    this.currentLoadedCount = this.itemsPerLoad;
+    this.currentLoadedCount = this.itemsPerLoad; // Reset pagination
     this.filters.offset = 0;
-    this.loadProperties();
+    // Apply filter on current data without reloading
+    this.applyFilter();
   }
 
   /**
@@ -333,7 +354,94 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
     this.filters.status = status;
     this.currentLoadedCount = this.itemsPerLoad;
     this.filters.offset = 0;
-    this.applyFilter();
+
+    if (status === 'all') {
+      this.loadProperties();
+    } else if (status === 'pending') {
+      this.loadPendingProperties();
+    } else if (status === 'rejected') {
+      this.loadRejectedProperties();
+    } else if (status === 'approved') {
+      this.loadApprovedProperties();
+    }
+  }
+
+  /**
+   * Load pending properties
+   */
+  private loadPendingProperties(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    this.propertyService
+      .getOwnerPropertiesPending()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (properties: IProperty[]) => {
+          this.allProperties = this.mapPropertiesToCards(properties);
+          this.updateStatistics();
+          this.applyFilter();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Failed to load pending properties:', error);
+          this.error = 'Failed to load pending properties';
+          this.isLoading = false;
+        }
+      });
+  }
+
+  /**
+   * Load rejected properties
+   */
+  private loadRejectedProperties(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    this.propertyService
+      .getOwnerPropertiesRejected()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (properties: IProperty[]) => {
+          this.allProperties = this.mapPropertiesToCards(properties);
+          this.updateStatistics();
+          this.applyFilter();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Failed to load rejected properties:', error);
+          this.error = 'Failed to load rejected properties';
+          this.isLoading = false;
+        }
+      });
+  }
+
+  /**
+   * Load approved properties
+   */
+  private loadApprovedProperties(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    this.propertyService
+      .getOwnerProperties()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (properties: IProperty[]) => {
+          const approvedOnly = properties.filter(
+            (p) => this.normalizeStatus(p.approvalStatus) === 'approved'
+          );
+          this.allProperties = this.mapPropertiesToCards(approvedOnly);
+          this.updateStatistics();
+          this.applyFilter();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Failed to load approved properties:', error);
+          this.error = 'Failed to load approved properties';
+          this.isLoading = false;
+        }
+      });
   }
 
   /**
@@ -566,7 +674,7 @@ private normalizeStatus(status: any): 'approved' | 'pending' | 'rejected' {
   formatPrice(price: number): string {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EGP',
+      currency: 'USD',
       minimumFractionDigits: 0,
     }).format(price);
   }
