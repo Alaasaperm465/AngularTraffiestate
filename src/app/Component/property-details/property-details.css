@@ -10,6 +10,13 @@
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
+/* booking */
+.flatpickr-input:focus {
+    border-color: #E2B43B;
+    box-shadow: 0 4px 10px rgba(226, 180, 59, 0.25);
+    outline: none;
+  }
+
 /* ============= PROPERTY DETAILS PAGE ============= */
 .property-details-page {
   background: var(--bg-gray);
