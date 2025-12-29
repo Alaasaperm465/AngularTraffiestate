@@ -53,7 +53,7 @@
               class="form-control"
               [(ngModel)]="property.title"
               name="title"
-              [placeholder]="'forms.add_property.title_placeholder' | translate"
+              [placeholder]="placeholders['forms.add_property.title_placeholder']"
               [class.error]="showValidationErrors && property.title.trim() === ''">
             <small class="error-text" *ngIf="showValidationErrors && property.title.trim() === ''">
               {{ 'forms.add_property.title_required' | translate }}
@@ -68,7 +68,7 @@
               [(ngModel)]="property.description"
               name="description"
               rows="5"
-              [placeholder]="'forms.add_property.description_placeholder' | translate"
+              [placeholder]="placeholders['forms.add_property.description_placeholder']"
               [class.error]="showValidationErrors && property.description.trim() === ''"></textarea>
             <small class="error-text" *ngIf="showValidationErrors && property.description.trim() === ''">
               {{ 'forms.add_property.description_required' | translate }}
@@ -173,7 +173,7 @@
               class="form-control"
               [(ngModel)]="property.location"
               name="location"
-              [placeholder]="'forms.add_property.location_placeholder' | translate"
+              [placeholder]="placeholders['forms.add_property.location_placeholder']"
               [class.error]="showValidationErrors && property.location.trim() === ''">
             <small class="error-text" *ngIf="showValidationErrors && property.location.trim() === ''">
               {{ 'forms.add_property.location_required' | translate }}
@@ -367,7 +367,7 @@
           class="btn btn-secondary"
           (click)="previousStep()"
           [disabled]="currentStep === 1">
-          <i class="bi bi-chevron-right"></i>
+          <i class="bi bi-chevron-left"></i>
           {{ 'common.previous' | translate }}
         </button>
 
@@ -383,7 +383,7 @@
           class="btn btn-primary"
           (click)="nextStep()">
           {{ 'common.next' | translate }}
-          <i class="bi bi-chevron-left"></i>
+          <i class="bi bi-chevron-right"></i>
         </button>
 
         <button

@@ -27,6 +27,7 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   isLoading: boolean = false;
   isBusy: boolean = false;
   embeddingsReady: boolean = false;
+  isChatOpen: boolean = false; // التحكم في ظهور الدردشة
   private embeddingsCheckInterval: any;
   private statusCheckCount = 0;
   private maxStatusChecks = 5;
@@ -37,7 +38,6 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     private chatbotService: ChatbotService,
     private sanitizer: DomSanitizer
   ) {
-    this.addBotMessage('مرحباً بك! 👋 أنا مساعدك الذكي في البحث عن العقارات المناسبة');
   }
 
   ngAfterViewChecked() {
@@ -58,12 +58,20 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     // تنسيق رسائل البوت
     let formatted = text;
     
+    // إضافة روابط للعقارات أولاً
+    formatted = this.addPropertyLinks(formatted);
+    
     // إزالة الـ emojis والرموز من البداية
     formatted = formatted.replace(/^[🤖💬📤📥✅❌⚠️💡🔄🔍]*\s*/g, '');
     
     // تحويل الأسطر المتعددة إلى فقرات منفصلة
     formatted = formatted.split('\n').map(line => {
       line = line.trim();
+      
+      // تجاهل الروابط - لا تضيف <p> حولها
+      if (line.includes('<a ') && line.includes('</a>')) {
+        return line;
+      }
       
       // النقاط والقوائم
       if (line.match(/^[•\-\*]\s+/)) {
@@ -100,6 +108,65 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     return this.sanitizer.bypassSecurityTrustHtml(formatted);
   }
 
+  /**
+   * إضافة روابط للعقارات في الرسالة
+   * يتعامل مع أنماط مختلفة لتمثيل معرفات العقارات
+   */
+  private addPropertyLinks(text: string): string {
+    let result = text;
+    const detectedIds = new Set<string>();
+
+    // البحث عن جميع معرفات العقارات المحتملة
+    const patterns = [
+      /(?:Property ID|رقم العقار|معرف العقار)[\s:]*#?(\d+)/gi,
+      /ID\s*#?(\d{1,4})\b/gi,
+      /(?:الرقم|رقم|№|#)[\s:]*(\d{1,4})(?:\s|$|[،\.])/gi,
+    ];
+
+    patterns.forEach(pattern => {
+      let match;
+      while ((match = pattern.exec(text)) !== null) {
+        if (match[1]) {
+          const id = match[1].toString().trim();
+          if (id && /^\d+$/.test(id) && parseInt(id) > 0 && parseInt(id) < 100000) {
+            detectedIds.add(id);
+          }
+        }
+      }
+    });
+
+    // النمط 1: Property ID: [number] أو رقم العقار: [number]
+    result = result.replace(/(?:Property ID|رقم العقار|معرف العقار)[\s:]*#?(\d+)/gi, (match, propertyId) => {
+      const id = propertyId.toString().trim();
+      if (id && /^\d+$/.test(id)) {
+        return `<a href="/property/${id}" target="_blank" class="property-link-blue">اضغط هنا</a>`;
+      }
+      return match;
+    });
+
+    // النمط 2: ID #[number]
+    result = result.replace(/ID\s*#?(\d{1,4})\b/gi, (match, propertyId) => {
+      const id = propertyId.trim();
+      if (parseInt(id) > 0 && parseInt(id) < 100000) {
+        return `<a href="/property/${id}" target="_blank" class="property-link-blue">اضغط هنا</a>`;
+      }
+      return match;
+    });
+
+    // النمط 3: الرقم: [number] أو رقم: [number]
+    result = result.replace(/(?:الرقم|رقم|№|#)[\s:]*(\d{1,4})(?=\s|$|[،\.])/gi, (match, propertyId) => {
+      const id = propertyId.toString().trim();
+      if (id && /^\d+$/.test(id) && parseInt(id) > 0 && parseInt(id) < 100000) {
+        if (!match.includes('href')) {
+          return `<a href="/property/${id}" target="_blank" class="property-link-blue">اضغط هنا</a>`;
+        }
+      }
+      return match;
+    });
+
+    return result;
+  }
+
   ngOnInit() {
     this.initEmbeddings();
   }
@@ -111,7 +178,6 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     console.log('🤖 Initializing embeddings... (this may take a minute)');
     this.isBusy = true;
     this.statusCheckCount = 0;
-    this.addBotMessage('جاري تحضير نموذج البحث الذكي... قد يستغرق دقيقة أو أكثر ⏳');
     
     this.chatbotService.generateEmbeddings()
       .subscribe({
@@ -119,7 +185,6 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.embeddingsReady = true;
           this.isBusy = false;
           console.log('✅ Embeddings generated successfully:', response);
-          this.addBotMessage('✅ تم تحضير نموذج البحث بنجاح! يمكنك الآن البحث عن العقارات التي تريدها.');
           this.shouldScroll = true;
         },
         error: (error) => {
@@ -205,7 +270,8 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
         next: (response) => {
           console.log('📥 Response received:', response);
           const botMessage = typeof response === 'string' ? response : (response.response || JSON.stringify(response));
-          this.addBotMessage(botMessage);
+          const cleanedMessage = this.cleanBotMessage(botMessage);
+          this.addBotMessage(cleanedMessage);
           this.isLoading = false;
           this.shouldScroll = true;
         },
@@ -228,6 +294,25 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.shouldScroll = true;
         }
       });
+  }
+
+  /**
+   * تنقية رسالة البوت من الملاحظات والرسائل غير المرغوبة
+   */
+  private cleanBotMessage(message: string): string {
+    let cleaned = message;
+    
+    // حذف الملاحظة عن استخدام رقم العقار
+    cleaned = cleaned.replace(/💡\s*ملاحظة:?\s*يمكنك استخدام رقم العقار للبحث عن المزيد من التفاصيل والصور\s*/gi, '');
+    
+    // حذف رسالة الاستفسارات والحجز
+    cleaned = cleaned.replace(/📞\s*للاستفسارات أو الحجز،?\s*يرجى التواصل مع مالك العقار مباشر\s*/gi, '');
+    
+    // حذف الفواصل الزائدة والفراغات الإضافية
+    cleaned = cleaned.replace(/[\n\r]+\s*[\n\r]+/g, '\n\n');
+    cleaned = cleaned.trim();
+    
+    return cleaned;
   }
 
   /**
@@ -289,5 +374,22 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.embeddingsCheckInterval) {
       clearInterval(this.embeddingsCheckInterval);
     }
+  }
+
+  /**
+   * فتح/إغلاق الدردشة
+   */
+  toggleChat() {
+    this.isChatOpen = !this.isChatOpen;
+    if (this.isChatOpen) {
+      setTimeout(() => this.scrollToBottom(), 100);
+    }
+  }
+
+  /**
+   * إغلاق الدردشة
+   */
+  closeChat() {
+    this.isChatOpen = false;
   }
 }

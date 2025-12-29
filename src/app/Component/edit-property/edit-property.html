@@ -56,7 +56,7 @@
                 id="title"
                 [(ngModel)]="property.title"
                 name="title"
-                [placeholder]="'property.edit.title_placeholder' | translate"
+                [placeholder]="placeholders['property.edit.title_placeholder']"
                 [class.error]="showValidationErrors && property.title.trim() === ''">
               <small class="error-message" *ngIf="showValidationErrors && property.title.trim() === ''">
                 {{ 'property.edit.title_required' | translate }}
@@ -70,7 +70,7 @@
                 [(ngModel)]="property.description"
                 name="description"
                 rows="5"
-                [placeholder]="'property.edit.description_placeholder' | translate"
+                [placeholder]="placeholders['property.edit.description_placeholder']"
                 [class.error]="showValidationErrors && property.description.trim() === ''"></textarea>
               <small class="error-message" *ngIf="showValidationErrors && property.description.trim() === ''">
                 {{ 'property.edit.description_required' | translate }}
@@ -123,8 +123,8 @@
             </div>
 
             <div class="form-actions">
-              <button type="button" class="btn-secondary" disabled>← {{ 'common.previous' | translate }}</button>
-              <button type="button" class="btn-primary" (click)="nextStep()">{{ 'common.next' | translate }} →</button>
+              <button type="button" class="btn-secondary" disabled><i class="bi bi-chevron-left"></i> {{ 'common.previous' | translate }}</button>
+              <button type="button" class="btn-primary" (click)="nextStep()">{{ 'common.next' | translate }} <i class="bi bi-chevron-right"></i></button>
             </div>
           </div>
 
@@ -175,7 +175,7 @@
                 id="location"
                 [(ngModel)]="property.location"
                 name="location"
-                [placeholder]="'property.edit.location_placeholder' | translate"
+                [placeholder]="placeholders['property.edit.location_placeholder']"
                 [class.error]="showValidationErrors && property.location.trim() === ''">
               <small class="error-message" *ngIf="showValidationErrors && property.location.trim() === ''">
                 {{ 'property.edit.location_required' | translate }}
