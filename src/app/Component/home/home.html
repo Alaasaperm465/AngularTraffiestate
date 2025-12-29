@@ -195,7 +195,7 @@
             <div class="property-info">
               <div class="property-header">
                 <h3 class="property-title">{{ property.title }}</h3>
-                <h3 class="property-title">{{ property.propertyType }}</h3>
+                <h6 class="property-title">{{ property.propertyType }}</h6>
 
                 <p class="property-location">
                   <i class="bi bi-geo-alt-fill"></i>
@@ -223,42 +223,35 @@
                   <span class="price-value">{{ property.price | currency:'USD':'symbol':'1.0-0' }}</span>
                   <span class="price-period" *ngIf="property.purpose === 'Rent'">{{ 'favorites.month' | translate }}</span>
                 </div>
-                <div class="property-contact-actions">
-                  <a
-                    class="contact-icon-btn whatsapp-btn"
-                    [title]="'property.details.whatsapp' | translate"
-                    [attr.aria-label]="'property.details.whatsapp' | translate"
-                    [href]="getWhatsAppLink(phone)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    (click)="$event.stopPropagation()">
-                    <i class="bi bi-whatsapp"></i>
-                  </a>
-                  <button
-                    type="button"
-                    class="contact-icon-btn phone-btn"
-                    [title]="'property.details.call_now' | translate"
-                    [attr.aria-label]="'property.details.call_now' | translate"
-                    (click)="openCallModal(); $event.stopPropagation()">
-                    <i class="bi bi-telephone-fill"></i>
-                  </button>
-                  <a
-                    class="contact-icon-btn email-btn"
-                    [href]="'mailto:' + email"
-                    [title]="'property.details.send_email' | translate"
-                    [attr.aria-label]="'property.details.send_email' | translate"
-                    (click)="$event.stopPropagation()">
-                    <i class="bi bi-envelope-fill"></i>
-                  </a>
-                  <button
-                    type="button"
-                    class="view-details-btn"
-                    [routerLink]="['/property', property.id]"
-                    (click)="$event.stopPropagation()">
-                    <i class="bi bi-eye"></i>
-                    {{ 'property.card.view' | translate }}
-                  </button>
-                </div>
+               <!-- أزرار التواصل -->
+<div class="property-contact-actions">
+  <a
+    class="contact-icon-btn whatsapp-btn"
+    [href]="getWhatsAppLink(phone)"
+    target="_blank"
+    (click)="$event.stopPropagation()">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
+  <button
+    type="button"
+    class="contact-icon-btn phone-btn"
+    (click)="openCallModal(); $event.stopPropagation()">
+    <i class="bi bi-telephone-fill"></i>
+  </button>
+<a class="contact-icon-btn email-btn" [href]="'mailto:' + email" [title]="'property.details.send_email' | translate" [attr.aria-label]="'property.details.send_email' | translate" (click)="$event.stopPropagation()"> <i class="bi bi-envelope-fill"></i> </a>
+</div>
+
+<!-- زرار View Details لوحده -->
+<button
+  type="button"
+  class="view-details-btn view-full"
+  [routerLink]="['/property', property.id]"
+  (click)="$event.stopPropagation()">
+  <i class="bi bi-eye"></i>
+  {{ 'property.card.view' | translate }}
+</button>
+                <!-- </div> -->
               </div>
             </div>
           </div>
