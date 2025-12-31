@@ -15,7 +15,7 @@ export interface UserRating {
   providedIn: 'root'
 })
 export class ReviewService {
-  private apiUrl = 'https://localhost:7030/api/Review';
+  private apiUrl = 'https://traffiestate.runasp.net/api/Review';
 
   constructor(private http: HttpClient) {}
 

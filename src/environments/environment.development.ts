@@ -1,4 +1,5 @@
 export const environment = {
-    apiUrl: 'https://localhost:7030/api',
+    apiUrl: 'https://traffiestate.runasp.net/api',
+
     production: false,
 };

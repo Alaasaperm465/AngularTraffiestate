@@ -10,8 +10,8 @@ import { throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class PropertyService {
-  private baseUrl = 'https://localhost:7030/api/PropertyOwner';
-  private clientBaseUrl = 'https://localhost:7030/api/Client';
+  private baseUrl = 'https://traffiestate.runasp.net/api/PropertyOwner';
+  private clientBaseUrl = 'https://traffiestate.runasp.net/api/Client';
   private viewedProperties = new Set<number>(); // Track viewed properties in this session
 
   constructor(private http: HttpClient) {}
@@ -69,7 +69,7 @@ export class PropertyService {
   increaseView(propertyId: number) {
     const url = `${this.clientBaseUrl}/properties/${propertyId}/view`;
     console.log('📤 Sending request to:', url);
-    
+
     return this.http.post(url, {}).pipe(
       tap(response => {
         console.log('📥 Response received:', response);

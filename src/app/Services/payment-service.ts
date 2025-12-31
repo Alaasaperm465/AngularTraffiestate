@@ -11,7 +11,7 @@ interface PaymentSessionResponse {
   providedIn: 'root'
 })
 export class PaymentService {
-  private apiUrl = 'https://localhost:7030/api/payment';
+  private apiUrl = 'https://traffiestate.runasp.net/api/payment';
 
   constructor(private http: HttpClient) {}
 

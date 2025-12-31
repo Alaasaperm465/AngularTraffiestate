@@ -11,7 +11,7 @@ export interface BookedDateRange {
   providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = 'https://localhost:7030/api/booking';
+  private apiUrl = 'https://traffiestate.runasp.net/api/booking';
 
   constructor(private http: HttpClient) {}
 

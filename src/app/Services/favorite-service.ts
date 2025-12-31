@@ -52,7 +52,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class FavoriteService {
-  private apiUrl = 'https://localhost:7030/api/Favorite'; // تأكد من URL الـ API
+  private apiUrl = 'https://traffiestate.runasp.net/api/Favorite'; // تأكد من URL الـ API
 
   constructor(private http: HttpClient) {}
 

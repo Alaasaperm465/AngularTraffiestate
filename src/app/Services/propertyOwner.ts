@@ -19,7 +19,7 @@ export class PropertyOwnerService {
   pendingProperties = 0;
 
 
-  private baseUrl = `${environment.apiUrl}/api/PropertyOwner`;
+  private baseUrl = `${environment.apiUrl}/PropertyOwner`;
 
   constructor(private http: HttpClient) {}
 
@@ -105,5 +105,5 @@ getOwnerProperties(): Observable<IProperty[]> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);
   }
 
-  
+
 }

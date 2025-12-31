@@ -9,8 +9,8 @@ import { IProperty } from '../../models/iproperty';
 })
 export class PropertyService {
 
-  private readonly clientApiUrl = 'https://localhost:7030/api/Client';
-  private readonly ownerApiUrl = 'https://localhost:7030/api/PropertyOwner';
+  private readonly clientApiUrl = 'https://traffiestate.runasp.net/api/Client';
+  private readonly ownerApiUrl = 'https://traffiestate.runasp.net/api/PropertyOwner';
 
   constructor(private http: HttpClient) { }
 
@@ -140,13 +140,13 @@ export class PropertyService {
      ===================================================== */
   getBookedDates(propertyId: number): Observable<string[]> {
     return this.http.get<string[]>(
-      `https://localhost:7030/api/booking/booked-dates/${propertyId}`
+      `https://traffiestate.runasp.net/api/booking/booked-dates/${propertyId}`
     );
   }
 
   checkAvailability(propertyId: number, startDate: string, endDate: string): Observable<{ isAvailable: boolean }> {
     return this.http.get<{ isAvailable: boolean }>(
-      `https://localhost:7030/api/booking/check-availability`,
+      `https://traffiestate.runasp.net/api/booking/check-availability`,
       {
         params: { propertyId: propertyId.toString(), startDate, endDate }
       }
