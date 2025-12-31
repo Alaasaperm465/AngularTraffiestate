@@ -7,18 +7,15 @@ import { HttpClient } from '@angular/common/http';
 import { PropertyService } from '../../Services/PropertyService/property';
 import { FavoriteService } from '../../Services/favorite-service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ObserveSearchRequest, PropertyInterestAgentService } from '../../Services/property-interest-agent-service';
+import { CityMappingService } from '../../Services/city-mapping-service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
-  imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    RouterModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslateModule],
 })
 export class Home implements OnInit, OnDestroy {
   // ✅ Inject services using Angular 21 style
@@ -28,9 +25,12 @@ export class Home implements OnInit, OnDestroy {
   private propertyService = inject(PropertyService);
   private translate = inject(TranslateService);
 
+  private agentService = inject(PropertyInterestAgentService);
+  private cityMappingService = inject(CityMappingService);
+
   // Form
   searchForm: FormGroup;
-  
+
   // State
   activeTab: string = '';
   properties: IProperty[] = [];
@@ -66,9 +66,9 @@ export class Home implements OnInit, OnDestroy {
     this.searchForm = this.fb.group({
       city: [''],
       propertyType: [''],
-      rooms: ['']
+      rooms: [''],
     });
-    
+
     console.log('🏠 Home component constructor initialized');
   }
 
@@ -105,13 +105,13 @@ export class Home implements OnInit, OnDestroy {
       error: (err) => {
         console.error('❌ Error loading favorites:', err);
         this.favoritesIds = [];
-      }
+      },
     });
   }
 
   loadAllProperties(): void {
     console.log('📡 Fetching properties from API...');
-    
+
     this.propertyService.getAllProperties().subscribe({
       next: (data: IProperty[]) => {
         console.log('✅ Properties loaded successfully');
@@ -119,9 +119,9 @@ export class Home implements OnInit, OnDestroy {
 
         if (data.length > 0) {
           console.log('🔍 Sample property:', data[0]);
-          console.log('🏷️ Available purposes:', [...new Set(data.map(p => p.purpose))]);
-          console.log('🌍 Available cities:', [...new Set(data.map(p => p.city))]);
-          console.log('🏠 Available types:', [...new Set(data.map(p => p.propertyType))]);
+          console.log('🏷️ Available purposes:', [...new Set(data.map((p) => p.purpose))]);
+          console.log('🌍 Available cities:', [...new Set(data.map((p) => p.city))]);
+          console.log('🏠 Available types:', [...new Set(data.map((p) => p.propertyType))]);
         }
 
         this.allProperties = data;
@@ -134,7 +134,7 @@ export class Home implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error('❌ Error loading properties:', err);
-      }
+      },
     });
   }
 
@@ -186,7 +186,7 @@ export class Home implements OnInit, OnDestroy {
 
     // Tab filter (Buy/Rent/All)
     if (this.activeTab && this.activeTab.trim()) {
-      filtered = filtered.filter(p => {
+      filtered = filtered.filter((p) => {
         const purpose = (p.purpose || '').toLowerCase().trim();
         const tab = this.activeTab.toLowerCase().trim();
         return purpose === tab;
@@ -197,7 +197,7 @@ export class Home implements OnInit, OnDestroy {
     // City search
     if (searchData.city && searchData.city.trim()) {
       const citySearch = searchData.city.toLowerCase().trim();
-      filtered = filtered.filter(p => {
+      filtered = filtered.filter((p) => {
         const city = (p.city || '').toLowerCase().trim();
         const area = (p.area || '').toLowerCase().trim();
         return city.includes(citySearch) || area.includes(citySearch);
@@ -208,7 +208,7 @@ export class Home implements OnInit, OnDestroy {
     // Property type from search
     if (searchData.propertyType && searchData.propertyType.trim()) {
       const typeSearch = searchData.propertyType.toLowerCase().trim();
-      filtered = filtered.filter(p => {
+      filtered = filtered.filter((p) => {
         const propertyType = (p.propertyType || '').toLowerCase().trim();
         return propertyType === typeSearch;
       });
@@ -218,7 +218,7 @@ export class Home implements OnInit, OnDestroy {
     // Rooms from search
     if (searchData.rooms && searchData.rooms.trim()) {
       const roomsValue = parseInt(searchData.rooms, 10);
-      filtered = filtered.filter(p => {
+      filtered = filtered.filter((p) => {
         if (searchData.rooms === '4') {
           return (p.rooms || 0) >= 4;
         }
@@ -229,7 +229,7 @@ export class Home implements OnInit, OnDestroy {
 
     // Sidebar property type filter
     if (this.selectedPropertyTypes.size > 0) {
-      filtered = filtered.filter(p => {
+      filtered = filtered.filter((p) => {
         const propertyType = (p.propertyType || '').toLowerCase().trim();
         return this.selectedPropertyTypes.has(propertyType);
       });
@@ -238,7 +238,7 @@ export class Home implements OnInit, OnDestroy {
 
     // Bedrooms filter
     if (this.selectedBedrooms.size > 0) {
-      filtered = filtered.filter(p => {
+      filtered = filtered.filter((p) => {
         const rooms = (p.rooms || 0).toString();
         const has4Plus = this.selectedBedrooms.has('4plus') && (p.rooms || 0) >= 4;
         const hasExactMatch = this.selectedBedrooms.has(rooms);
@@ -249,7 +249,7 @@ export class Home implements OnInit, OnDestroy {
 
     // Area filter
     if (this.selectedAreas.size > 0) {
-      filtered = filtered.filter(p => {
+      filtered = filtered.filter((p) => {
         const area = Number(p.areaSpace) || 0;
         for (const areaRange of this.selectedAreas) {
           if (areaRange === 'under100' && area < 100) return true;
@@ -264,11 +264,11 @@ export class Home implements OnInit, OnDestroy {
 
     // Price filters
     if (this.minPrice !== null && this.minPrice > 0) {
-      filtered = filtered.filter(p => (p.price || 0) >= this.minPrice!);
+      filtered = filtered.filter((p) => (p.price || 0) >= this.minPrice!);
       console.log(`💰 Min price (${this.minPrice}): ${filtered.length} properties`);
     }
     if (this.maxPrice !== null && this.maxPrice > 0) {
-      filtered = filtered.filter(p => (p.price || 0) <= this.maxPrice!);
+      filtered = filtered.filter((p) => (p.price || 0) <= this.maxPrice!);
       console.log(`💰 Max price (${this.maxPrice}): ${filtered.length} properties`);
     }
 
@@ -296,12 +296,20 @@ export class Home implements OnInit, OnDestroy {
     this.updateDisplayedProperties();
 
     console.log(`✅ Final result: ${this.properties.length} properties`);
+
+
+    // Notify Agent of search
+      this.notifyAgentOfSearch(this.searchForm.value, this.properties.length > 0);
+
+
     console.log('🔧 ====== Filter Complete ======');
   }
 
   private updateDisplayedProperties(): void {
     this.displayedProperties = this.properties.slice(0, this.currentLoadedCount);
-    console.log(`📄 Displaying ${this.displayedProperties.length} of ${this.properties.length} properties`);
+    console.log(
+      `📄 Displaying ${this.displayedProperties.length} of ${this.properties.length} properties`
+    );
   }
 
   loadMore(): void {
@@ -389,10 +397,10 @@ export class Home implements OnInit, OnDestroy {
     if (this.favoritesIds.includes(propertyId)) {
       this.favoriteService.removeFromFavorites(propertyId).subscribe({
         next: () => {
-          this.favoritesIds = this.favoritesIds.filter(id => id !== propertyId);
+          this.favoritesIds = this.favoritesIds.filter((id) => id !== propertyId);
           console.log('💔 Removed from favorites:', propertyId);
         },
-        error: (err) => console.error('❌ Error removing favorite:', err)
+        error: (err) => console.error('❌ Error removing favorite:', err),
       });
     } else {
       this.favoriteService.addToFavorites(propertyId).subscribe({
@@ -400,7 +408,7 @@ export class Home implements OnInit, OnDestroy {
           this.favoritesIds.push(propertyId);
           console.log('❤️ Added to favorites:', propertyId);
         },
-        error: (err) => console.error('❌ Error adding favorite:', err)
+        error: (err) => console.error('❌ Error adding favorite:', err),
       });
     }
   }
@@ -464,9 +472,72 @@ export class Home implements OnInit, OnDestroy {
   }
 
   getPurposeLabel(purpose: string): string {
-    const key = purpose.toLowerCase() === 'rent' 
-      ? 'property.details.for_rent' 
-      : 'property.details.for_sale';
+    const key =
+      purpose.toLowerCase() === 'rent' ? 'property.details.for_rent' : 'property.details.for_sale';
     return this.translate.instant(key);
+  }
+
+  private notifyAgentOfSearch(searchData: any, hasResults: boolean): void {
+    // تجاهل البحث الفارغ
+    if (!searchData.city && !searchData.propertyType && !searchData.rooms && !this.activeTab) {
+      console.log('⏭️ Agent: Skipping - no search criteria');
+      return;
+    }
+    // 🔍 الحصول على cityId من city name
+    let cityId: number | null = null;
+
+    if (searchData.city) {
+      cityId = this.cityMappingService.getCityIdFromName(searchData.city);
+    }
+    // ⚠️ إذا لم يتم العثور على cityId، لا نتتبع البحث
+    if (!cityId) {
+      console.log('⚠️ Agent: Cannot track search - city not found in database');
+      return;
+    }
+    // 🏠 تحديد نوع العقار
+    let propertyType = searchData.propertyType || '';
+    if (this.selectedPropertyTypes.size > 0) {
+      propertyType = Array.from(this.selectedPropertyTypes)[0];
+    }
+    if (!propertyType) {
+      console.log('⚠️ Agent: Cannot track - no property type');
+      return;
+    }
+    // 🎯 تحديد الغرض (Rent/Sale)
+    let purpose = 'Rent'; // Default
+    if (this.activeTab === 'buy') {
+      purpose = 'Sale';
+    } else if (this.activeTab === 'rent') {
+      purpose = 'Rent';
+    }
+    // 🛏️ عدد الغرف
+    let bedRooms: number | undefined = undefined;
+    if (searchData.rooms) {
+      const roomsValue = parseInt(searchData.rooms, 10);
+      if (!isNaN(roomsValue) && roomsValue > 0) {
+        bedRooms = roomsValue === 4 ? undefined : roomsValue; // 4+ بنتجاهلها
+      }
+    }
+    // 📦 تجهيز الـ request
+    const agentRequest: ObserveSearchRequest = {
+      cityId: cityId,
+      propertyType: propertyType,
+      purpose: purpose,
+      bedRooms: bedRooms,
+      minPrice: this.minPrice && this.minPrice > 0 ? this.minPrice : undefined,
+      maxPrice: this.maxPrice && this.maxPrice > 0 ? this.maxPrice : undefined,
+      hasResults: hasResults,
+    };
+    console.log('🤖 Agent Notification:', agentRequest);
+    // 📡 إرسال للـ Agent (non-blocking)
+    this.agentService.observeSearch(agentRequest).subscribe({
+      next: () => {
+        console.log('✅ Agent: Search tracked successfully');
+      },
+      error: (err) => {
+        console.warn('⚠️ Agent: Tracking failed (non-critical)', err);
+        // البحث يستمر حتى لو فشل الـ Agent
+      },
+    });
   }
 }
