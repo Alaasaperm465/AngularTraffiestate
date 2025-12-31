@@ -80,7 +80,7 @@
           </h2>
 
           <div class="details-grid">
-            <div class="detail-card" *ngIf="property.propertyType?.toLowerCase() !== 'land'">
+            <div class="detail-card" *ngIf="property.propertyType.toLowerCase() !== 'land'">
               <i class="bi bi-door-open-fill"></i>
               <div class="detail-info">
                 <span class="detail-label">{{ 'property.details.bedrooms' | translate }}</span>
@@ -88,7 +88,7 @@
               </div>
             </div>
 
-            <div class="detail-card" *ngIf="property.propertyType?.toLowerCase() !== 'land'">
+            <div class="detail-card" *ngIf="property.propertyType.toLowerCase() !== 'land'">
               <i class="bi bi-droplet-fill"></i>
               <div class="detail-info">
                 <span class="detail-label">{{ 'property.details.bathrooms' | translate }}</span>
@@ -112,7 +112,7 @@
               </div>
             </div>
 
-            <div class="detail-card" *ngIf="property.propertyType?.toLowerCase() !== 'land'">
+            <div class="detail-card" *ngIf="property.propertyType.toLowerCase() !== 'land'">
               <i class="bi bi-paint-bucket"></i>
               <div class="detail-info">
                 <span class="detail-label">{{ 'property.finishing' | translate }}</span>

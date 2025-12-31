@@ -14,7 +14,7 @@ export interface City {
 })
 export class CityMappingService {
     private http = inject(HttpClient);
-    private apiUrl = `${environment.apiUrl}/api/Client/cities`;
+    private apiUrl = `${environment.apiUrl}/Client/cities`;
 
     // Cache cities to avoid multiple API calls
     private citiesCache$ = new BehaviorSubject<City[] | null>(null);
